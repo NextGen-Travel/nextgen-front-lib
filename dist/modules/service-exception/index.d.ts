@@ -1,6 +1,6 @@
 import { Event } from 'power-helper';
 declare type Channels = {
-    faill: {
+    fail: {
         error: any;
         message: string;
     };

@@ -7,6 +7,7 @@
     "build": "eslint lib --ext .ts && tsc"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^13.13.45",
@@ -31,6 +32,7 @@
     "qs": "^6.11.0",
     "react": "^18.2.0",
     "urql": "2.2.2",
+    "uuid": "^8.3.2",
     "vue-i18n": "8.26.8",
     "vue-router": "3.5.4",
     "yup": "^0.32.11"

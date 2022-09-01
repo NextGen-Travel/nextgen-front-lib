@@ -41,7 +41,7 @@ class ServiceException extends power_helper_1.Event {
     }
     fail(error) {
         const message = this.parseMessage(error);
-        this._getRootModule().emit('faill', {
+        this._getRootModule().emit('fail', {
             error,
             message
         });

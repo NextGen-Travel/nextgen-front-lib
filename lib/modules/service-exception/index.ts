@@ -1,7 +1,7 @@
 import { Event } from 'power-helper'
 
 type Channels = {
-    faill: {
+    fail: {
         error: any
         message: string
     }
@@ -56,7 +56,7 @@ export class ServiceException extends Event<Channels> {
 
     fail(error: any) {
         const message = this.parseMessage(error)
-        this._getRootModule().emit('faill', {
+        this._getRootModule().emit('fail', {
             error,
             message
         })

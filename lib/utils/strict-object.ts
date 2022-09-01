@@ -1,6 +1,6 @@
 import { pick } from 'power-helper'
 import { DeepReadonly } from 'power-helper/types/record'
-import { serviceException } from '../../error'
+import { serviceException } from '../error'
 
 type Params = {
     [key: string]: [typeof String | typeof Boolean | typeof Number, boolean, unknown]
