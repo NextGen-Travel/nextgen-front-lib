@@ -26,7 +26,7 @@ type Route = {
 
 export type Routes<Names extends string> = RouteConfig & {
     children?: Array<Routes<Names>>
-    name?: keyof Names | '*' | '/'
+    name?: Names | '*' | '/'
     meta?: Record<string, any>
 }
 

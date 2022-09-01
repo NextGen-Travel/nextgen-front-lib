@@ -18,7 +18,7 @@ declare type Route = {
 };
 export declare type Routes<Names extends string> = RouteConfig & {
     children?: Array<Routes<Names>>;
-    name?: keyof Names | '*' | '/';
+    name?: Names | '*' | '/';
     meta?: Record<string, any>;
 };
 declare type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>;
