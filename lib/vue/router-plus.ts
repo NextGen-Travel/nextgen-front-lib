@@ -24,7 +24,7 @@ type Route = {
     parent?: string
 }
 
-type Routes<Names extends string> = RouteConfig & {
+export type Routes<Names extends string> = RouteConfig & {
     children?: Array<Routes<Names>>
     name?: keyof Names | '*' | '/'
     meta?: Record<string, any>
@@ -56,6 +56,10 @@ export class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
             this.event.emit('before', { from, to })
             next()
         })
+    }
+
+    static get VueRouter() {
+        return VueRouter
     }
 
     to<K extends keyof T>(name: T, params?: RouteParameters<T[K]['path']>, options?: {

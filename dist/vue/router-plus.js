@@ -18,6 +18,9 @@ class VueRouterPlus extends vue_router_1.default {
             next();
         });
     }
+    static get VueRouter() {
+        return vue_router_1.default;
+    }
     to(name, params, options) {
         this.push({
             name: name,

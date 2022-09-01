@@ -16,7 +16,7 @@ declare type Route = {
     query?: Record<string, string>;
     parent?: string;
 };
-declare type Routes<Names extends string> = RouteConfig & {
+export declare type Routes<Names extends string> = RouteConfig & {
     children?: Array<Routes<Names>>;
     name?: keyof Names | '*' | '/';
     meta?: Record<string, any>;
@@ -36,6 +36,7 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
     constructor(options: RouterOptions & {
         routes: Routes<Extract<string, keyof T>>;
     });
+    static get VueRouter(): typeof VueRouter;
     to<K extends keyof T>(name: T, params?: RouteParameters<T[K]['path']>, options?: {
         query?: T[K]['query'];
     }): void;
