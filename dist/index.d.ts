@@ -6,7 +6,7 @@ declare type Hooks = {
     onUnmounted: typeof onUnmounted;
     getCurrentInstance: typeof getCurrentInstance;
 };
-export declare const vueHooks: Hooks;
+export declare const useVueHooks: () => Hooks;
 export declare const NextgenLib: {
     install(_Vue: any, hooks: Hooks): void;
 };

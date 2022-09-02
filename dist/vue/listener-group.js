@@ -5,7 +5,7 @@ const index_1 = require("../index");
 const error_1 = require("../error");
 const exception = error_1.serviceException.checkout('listener-group');
 const useListenerGroup = () => {
-    const { onUnmounted } = index_1.vueHooks;
+    const { onUnmounted } = (0, index_1.useVueHooks)();
     let isOff = false;
     let listeners = [];
     let offAll = () => {

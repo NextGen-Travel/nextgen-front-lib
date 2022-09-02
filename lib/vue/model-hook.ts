@@ -1,6 +1,6 @@
 // https://www.gushiciku.cn/pl/g2DO/zh-tw
 
-import { vueHooks } from '../index'
+import { useVueHooks } from '../index'
 import { diff as _diff } from 'deep-object-diff'
 import { Event, record, json } from 'power-helper'
 
@@ -54,7 +54,7 @@ export const defineModelHook = <
     schema: () => S
     mixin: (_data: Context<S>) => R
 }) => {
-    const { onUnmounted, reactive, watch } = vueHooks
+    const { onUnmounted, reactive, watch } = useVueHooks()
     const use = () => {
         let data = reactive(params.schema())
         let oridata = params.schema()

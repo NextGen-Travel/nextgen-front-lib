@@ -41,7 +41,7 @@ const createLaravelResourcePaginate = () => {
 };
 exports.createLaravelResourcePaginate = createLaravelResourcePaginate;
 const defineModelHook = (params) => {
-    const { onUnmounted, reactive, watch } = index_1.vueHooks;
+    const { onUnmounted, reactive, watch } = (0, index_1.useVueHooks)();
     const use = () => {
         let data = reactive(params.schema());
         let oridata = params.schema();
