@@ -54,10 +54,10 @@ export const defineModelHook = <
     schema: () => S
     mixin: (_data: Context<S>) => R
 }) => {
-    const { onUnmounted, reactive, watch } = useVueHooks()
     const use = () => {
-        let data = reactive(params.schema())
-        let oridata = params.schema()
+        const { reactive, watch } = useVueHooks()
+        const data = reactive(params.schema())
+        const oridata = params.schema()
 
         // =================
         //
@@ -148,6 +148,7 @@ export const defineModelHook = <
         row: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data: S, emit?: (_data: S) => void) => {
+            const { onUnmounted, watch } = useVueHooks()
             const model = from(data)
 
             // =================

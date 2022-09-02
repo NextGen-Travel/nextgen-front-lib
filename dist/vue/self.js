@@ -4,11 +4,11 @@ exports.VueSelf = void 0;
 const index_1 = require("../index");
 class VueSelf {
     use() {
-        const { reactive, getCurrentInstance } = (0, index_1.useVueHooks)();
-        const nowCurrentInstance = getCurrentInstance();
+        const hooks = (0, index_1.useVueHooks)();
+        const nowCurrentInstance = hooks.getCurrentInstance ? hooks.getCurrentInstance() : null;
         return {
             data(data) {
-                return reactive(data);
+                return (0, index_1.useVueHooks)().reactive(data);
             },
             hasSlot(name = 'default') {
                 let proxy = nowCurrentInstance?.proxy;

@@ -6,7 +6,7 @@ const exception = serviceException.checkout('listener-group')
 type Listener = { off: () => any } | undefined
 
 export const useListenerGroup = () => {
-    const { onUnmounted } = useVueHooks()
+    let { onUnmounted } = useVueHooks()
     let isOff = false
     let listeners: Array<Listener> = []
     let offAll = () => {

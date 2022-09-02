@@ -41,10 +41,10 @@ const createLaravelResourcePaginate = () => {
 };
 exports.createLaravelResourcePaginate = createLaravelResourcePaginate;
 const defineModelHook = (params) => {
-    const { onUnmounted, reactive, watch } = (0, index_1.useVueHooks)();
     const use = () => {
-        let data = reactive(params.schema());
-        let oridata = params.schema();
+        const { reactive, watch } = (0, index_1.useVueHooks)();
+        const data = reactive(params.schema());
+        const oridata = params.schema();
         // =================
         //
         // 負責監聽資料變化
@@ -117,6 +117,7 @@ const defineModelHook = (params) => {
         row: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data, emit) => {
+            const { onUnmounted, watch } = (0, index_1.useVueHooks)();
             const model = from(data);
             // =================
             //
