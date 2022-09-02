@@ -2,9 +2,9 @@
   "name": "nextgen-front-lib",
   "version": "0.0.1",
   "description": "lib.",
-  "main": "./dist/index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "build": "eslint lib --ext .ts && tsc",
+    "build": "eslint src --ext .ts && tsc",
     "deploy": "yarn build && git add . && git commit -m 'update' && git push"
   },
   "devDependencies": {
