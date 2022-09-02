@@ -10,6 +10,4 @@ export const NextgenLib = {
         }
     }
 };
-module.exports = NextgenLib;
-module.exports.NextgenLib = NextgenLib;
 export default NextgenLib;
