@@ -33,9 +33,7 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
             from: _Route;
         };
     }>;
-    constructor(options: RouterOptions & {
-        routes: Routes<Extract<string, keyof T>>;
-    });
+    constructor(options: RouterOptions);
     static get VueRouter(): typeof VueRouter;
     to<K extends keyof T>(name: T, params?: RouteParameters<T[K]['path']>, options?: {
         query?: T[K]['query'];

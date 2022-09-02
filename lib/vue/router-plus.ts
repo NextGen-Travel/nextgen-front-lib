@@ -45,9 +45,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
         }
     }>()
 
-    constructor(options: RouterOptions & {
-        routes: Routes<Extract<string, keyof T>>
-    }) {
+    constructor(options: RouterOptions) {
         super(options)
         this.afterEach((from, to) => {
             this.event.emit('after', { from, to })
