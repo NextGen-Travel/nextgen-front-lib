@@ -1,5 +1,10 @@
 import VueRouter, { RouteConfig, RouterOptions, Route as _Route } from 'vue-router';
 import { RouteParameters } from 'power-helper/types/string';
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        $route: Route;
+    }
+}
 export declare type RouteMixin<P extends Route, T extends Route> = {
     path: `${P['path']}/${T['path']}`;
     query: RouteQuery<P['query']> & RouteQuery<T['query']>;

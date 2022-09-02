@@ -2,6 +2,12 @@ import VueRouter, { RouteConfig, RouterOptions, Route as _Route } from 'vue-rout
 import { Event } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        $route: Route
+    }
+}
+
 export type RouteMixin<
     P extends Route,
     T extends Route
