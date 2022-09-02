@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "downlevelIteration": true,
-    "module": "commonjs",
+    "module": "UMD",
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,

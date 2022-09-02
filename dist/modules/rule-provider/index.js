@@ -1,4 +1,3 @@
-"use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -22,81 +21,92 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RuleProvider = void 0;
-const Yup = __importStar(require("yup"));
-const error_1 = require("../../error");
-const exception = error_1.serviceException.checkout('validate');
-// Validation
-class Validation {
-    properties;
-    constructor(properties) {
-        this.properties = properties;
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
     }
-    get(name) {
-        return this.properties[name].handler;
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "yup", "../../error"], factory);
     }
-    isRequire(name) {
-        return this.properties[name].required;
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.RuleProvider = void 0;
+    const Yup = __importStar(require("yup"));
+    const error_1 = require("../../error");
+    const exception = error_1.serviceException.checkout('validate');
+    // Validation
+    class Validation {
+        properties;
+        constructor(properties) {
+            this.properties = properties;
+        }
+        get(name) {
+            return this.properties[name].handler;
+        }
+        isRequire(name) {
+            return this.properties[name].required;
+        }
+        verify(model) {
+            for (let key in this.properties) {
+                let result = this.get(key)(model[key]);
+                if (result !== true) {
+                    return result;
+                }
+            }
+            return true;
+        }
+        verifyBy(name, value) {
+            return this.get(name)(value);
+        }
     }
-    verify(model) {
-        for (let key in this.properties) {
-            let result = this.get(key)(model[key]);
-            if (result !== true) {
-                return result;
+    const isEmpty = (value) => {
+        if (typeof value === 'string' && value.trim() === '') {
+            return true;
+        }
+        if (value == null) {
+            return true;
+        }
+        return false;
+    };
+    class RuleProvider {
+        options = {
+            rules: {},
+            requireMessage: () => 'required'
+        };
+        constructor(options) {
+            if (options) {
+                Object.assign(this.options, options);
             }
         }
-        return true;
-    }
-    verifyBy(name, value) {
-        return this.get(name)(value);
-    }
-}
-const isEmpty = (value) => {
-    if (typeof value === 'string' && value.trim() === '') {
-        return true;
-    }
-    if (value == null) {
-        return true;
-    }
-    return false;
-};
-class RuleProvider {
-    options = {
-        rules: {},
-        requireMessage: () => 'required'
-    };
-    constructor(options) {
-        if (options) {
-            Object.assign(this.options, options);
-        }
-    }
-    getRule(name, required, ...meta) {
-        let rule = this.options.rules[name];
-        if (rule == null) {
-            throw exception.fail(`Rule ${name} not found.`);
-        }
-        return {
-            required,
-            handler: (value) => {
-                if (required && isEmpty(value)) {
-                    return rule.requireMessage ? rule.requireMessage() : this.options.requireMessage();
-                }
-                if (required === false && isEmpty(value)) {
+        getRule(name, required, ...meta) {
+            let rule = this.options.rules[name];
+            if (rule == null) {
+                throw exception.fail(`Rule ${name} not found.`);
+            }
+            return {
+                required,
+                handler: (value) => {
+                    if (required && isEmpty(value)) {
+                        return rule.requireMessage ? rule.requireMessage() : this.options.requireMessage();
+                    }
+                    if (required === false && isEmpty(value)) {
+                        return true;
+                    }
+                    try {
+                        rule.handler(Yup, meta).notRequired().validateSync(value);
+                    }
+                    catch (error) {
+                        return typeof error === 'string' ? error : error.errors[0];
+                    }
                     return true;
                 }
-                try {
-                    rule.handler(Yup, meta).notRequired().validateSync(value);
-                }
-                catch (error) {
-                    return typeof error === 'string' ? error : error.errors[0];
-                }
-                return true;
-            }
-        };
+            };
+        }
+        defineValidation(cb) {
+            return new Validation(cb(this.getRule.bind(this)));
+        }
     }
-    defineValidation(cb) {
-        return new Validation(cb(this.getRule.bind(this)));
-    }
-}
-exports.RuleProvider = RuleProvider;
+    exports.RuleProvider = RuleProvider;
+});
