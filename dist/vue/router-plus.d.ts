@@ -39,7 +39,7 @@ declare type Channels = {
     };
 };
 export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
-    router: VueRouter;
+    vueRouter: VueRouter;
     static get install(): import("vue").PluginFunction<never>;
     static get VueRouter(): typeof VueRouter;
     setup(options: RouterOptions): Promise<void>;

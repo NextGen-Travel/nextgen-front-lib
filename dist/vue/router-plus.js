@@ -7,7 +7,7 @@ exports.VueRouterPlus = void 0;
 const vue_router_1 = __importDefault(require("vue-router"));
 const power_helper_1 = require("power-helper");
 class VueRouterPlus extends power_helper_1.Event {
-    router;
+    vueRouter;
     static get install() {
         return vue_router_1.default.install;
     }
@@ -15,24 +15,24 @@ class VueRouterPlus extends power_helper_1.Event {
         return vue_router_1.default;
     }
     async setup(options) {
-        this.router = new vue_router_1.default(options);
-        this.router.afterEach((from, to) => {
+        this.vueRouter = new vue_router_1.default(options);
+        this.vueRouter.afterEach((from, to) => {
             this.emit('after', { from, to });
         });
-        this.router.beforeEach((from, to, next) => {
+        this.vueRouter.beforeEach((from, to, next) => {
             this.emit('before', { from, to });
             next();
         });
     }
     to(name, params, options) {
-        this.router.push({
+        this.vueRouter.push({
             name: name,
             params,
             query: options?.query
         });
     }
     getCurrentRoute(_name) {
-        return this.router.currentRoute;
+        return this.vueRouter.currentRoute;
     }
 }
 exports.VueRouterPlus = VueRouterPlus;
