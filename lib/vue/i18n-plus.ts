@@ -6,7 +6,7 @@ import { serviceException } from '../error'
 const exception = serviceException.checkout('i18n-plus')
 
 export class VueI18nPlus<Keys extends string> {
-    i18n!: VueI18n
+    vueI18n!: VueI18n
     namespace!: string
     rawParams!: I18nOptions
 
@@ -19,10 +19,10 @@ export class VueI18nPlus<Keys extends string> {
     }
 
     async setup(namespace: string, params: I18nOptions) {
-        this.i18n = new VueI18n(params)
+        this.vueI18n = new VueI18n(params)
         this.rawParams = params
         this.namespace = namespace
-        if (this.rawParams.messages && this.rawParams.messages[this.i18n.locale][this.namespace] == null) {
+        if (this.rawParams.messages && this.rawParams.messages[this.vueI18n.locale][this.namespace] == null) {
             throw exception.fail(`I18n plus need defined "${namespace}" namespace message.`)
         }
     }
@@ -36,10 +36,10 @@ export class VueI18nPlus<Keys extends string> {
                 vars: params as any
             })
         }
-        return this.i18n.t(`${this.namespace}.${key}`, params).toString()
+        return this.vueI18n.t(`${this.namespace}.${key}`, params).toString()
     }
 
-    exportApi() {
+    export() {
         return this.tt.bind(this)
     }
 }

@@ -9,7 +9,7 @@ const power_helper_1 = require("power-helper");
 const error_1 = require("../error");
 const exception = error_1.serviceException.checkout('i18n-plus');
 class VueI18nPlus {
-    i18n;
+    vueI18n;
     namespace;
     rawParams;
     static get VueI18n() {
@@ -19,10 +19,10 @@ class VueI18nPlus {
         return vue_i18n_1.default.install;
     }
     async setup(namespace, params) {
-        this.i18n = new vue_i18n_1.default(params);
+        this.vueI18n = new vue_i18n_1.default(params);
         this.rawParams = params;
         this.namespace = namespace;
-        if (this.rawParams.messages && this.rawParams.messages[this.i18n.locale][this.namespace] == null) {
+        if (this.rawParams.messages && this.rawParams.messages[this.vueI18n.locale][this.namespace] == null) {
             throw exception.fail(`I18n plus need defined "${namespace}" namespace message.`);
         }
     }
@@ -35,9 +35,9 @@ class VueI18nPlus {
                 vars: params
             });
         }
-        return this.i18n.t(`${this.namespace}.${key}`, params).toString();
+        return this.vueI18n.t(`${this.namespace}.${key}`, params).toString();
     }
-    exportApi() {
+    export() {
         return this.tt.bind(this);
     }
 }
