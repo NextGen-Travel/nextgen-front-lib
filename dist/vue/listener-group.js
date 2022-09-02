@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useListenerGroup = void 0;
 const index_1 = require("../index");
 const error_1 = require("../error");
-const { onUnmounted } = index_1.vueHooks;
 const exception = error_1.serviceException.checkout('listener-group');
 const useListenerGroup = () => {
+    const { onUnmounted } = index_1.vueHooks;
     let isOff = false;
     let listeners = [];
     let offAll = () => {

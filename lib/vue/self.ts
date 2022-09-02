@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import { vueHooks } from '../index'
 
-const { reactive, getCurrentInstance } = vueHooks
-
 export class VueSelf {
     use() {
+        const { reactive, getCurrentInstance } = vueHooks
         const nowCurrentInstance = getCurrentInstance()
         return {
             data<T>(data: T) {

@@ -4,8 +4,6 @@ import { vueHooks } from '../index'
 import { diff as _diff } from 'deep-object-diff'
 import { Event, record, json } from 'power-helper'
 
-const { onUnmounted, reactive, watch } = vueHooks
-
 type Context<S> = {
     data: S
     commit: (_newData: Partial<S>) => void
@@ -56,6 +54,7 @@ export const defineModelHook = <
     schema: () => S
     mixin: (_data: Context<S>) => R
 }) => {
+    const { onUnmounted, reactive, watch } = vueHooks
     const use = () => {
         let data = reactive(params.schema())
         let oridata = params.schema()

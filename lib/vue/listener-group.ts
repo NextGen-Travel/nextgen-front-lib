@@ -1,12 +1,12 @@
 import { vueHooks } from '../index'
 import { serviceException } from '../error'
 
-const { onUnmounted } = vueHooks
 const exception = serviceException.checkout('listener-group')
 
 type Listener = { off: () => any } | undefined
 
 export const useListenerGroup = () => {
+    const { onUnmounted } = vueHooks
     let isOff = false
     let listeners: Array<Listener> = []
     let offAll = () => {

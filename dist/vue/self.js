@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VueSelf = void 0;
 const index_1 = require("../index");
-const { reactive, getCurrentInstance } = index_1.vueHooks;
 class VueSelf {
     use() {
+        const { reactive, getCurrentInstance } = index_1.vueHooks;
         const nowCurrentInstance = getCurrentInstance();
         return {
             data(data) {

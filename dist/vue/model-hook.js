@@ -5,7 +5,6 @@ exports.defineModelHook = exports.createLaravelResourcePaginate = exports.create
 const index_1 = require("../index");
 const deep_object_diff_1 = require("deep-object-diff");
 const power_helper_1 = require("power-helper");
-const { onUnmounted, reactive, watch } = index_1.vueHooks;
 const defineSchema = (data) => data;
 exports.defineSchema = defineSchema;
 const createLaravelPaginate = () => {
@@ -42,6 +41,7 @@ const createLaravelResourcePaginate = () => {
 };
 exports.createLaravelResourcePaginate = createLaravelResourcePaginate;
 const defineModelHook = (params) => {
+    const { onUnmounted, reactive, watch } = index_1.vueHooks;
     const use = () => {
         let data = reactive(params.schema());
         let oridata = params.schema();
