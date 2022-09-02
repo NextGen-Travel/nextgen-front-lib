@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("./index");
-const ruleProvider = new index_1.RuleProvider({
+import { RuleProvider } from './index';
+const ruleProvider = new RuleProvider({
     mode: 'array-format',
     requireMessage: () => 'ouo',
     rules: {

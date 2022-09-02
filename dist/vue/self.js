@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.VueSelf = void 0;
-const index_1 = require("../index");
-class VueSelf {
+import { useVueHooks } from '../index';
+export class VueSelf {
     use() {
-        const hooks = (0, index_1.useVueHooks)();
+        const hooks = useVueHooks();
         const nowCurrentInstance = hooks.getCurrentInstance ? hooks.getCurrentInstance() : null;
         return {
             data(data) {
-                return (0, index_1.useVueHooks)().reactive(data);
+                return useVueHooks().reactive(data);
             },
             hasSlot(name = 'default') {
                 let proxy = nowCurrentInstance?.proxy;
@@ -39,4 +36,3 @@ class VueSelf {
         };
     }
 }
-exports.VueSelf = VueSelf;

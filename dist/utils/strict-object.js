@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStrictObject = void 0;
-const power_helper_1 = require("power-helper");
-const error_1 = require("../error");
-const exception = error_1.serviceException.checkout('StrictObject');
+import { pick } from 'power-helper';
+import { serviceException } from '../error';
+const exception = serviceException.checkout('StrictObject');
 const keyFail = (key) => exception.fail(`Attr ${key} Fail!`);
-const createStrictObject = (envs) => {
+export const createStrictObject = (envs) => {
     let output = {};
     for (let key in envs) {
         let [type, required, value] = envs[key];
-        let valueType = power_helper_1.pick.getType(value);
+        let valueType = pick.getType(value);
         let outputValue = value;
         if (valueType === 'empty') {
             if (required) {
@@ -53,4 +50,3 @@ const createStrictObject = (envs) => {
     }
     return Object.freeze(output);
 };
-exports.createStrictObject = createStrictObject;

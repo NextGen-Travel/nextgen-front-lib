@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseMessage = void 0;
-const parseMessage = (data, def) => {
+export const parseMessage = (data, def) => {
     if (typeof data === 'string') {
         return data;
     }
@@ -17,4 +14,3 @@ const parseMessage = (data, def) => {
     }
     return def || 'unknown error';
 };
-exports.parseMessage = parseMessage;

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isBreakpoint = void 0;
 const breakpoints = {
     xs: {
         min: 0,
@@ -19,7 +16,7 @@ const breakpoints = {
         max: Infinity
     }
 };
-const isBreakpoint = function (breakpoint, el = window) {
+export const isBreakpoint = function (breakpoint, el = window) {
     let width = el instanceof Window ? el.innerWidth : el.clientWidth;
     let matchs = [];
     for (let name in breakpoints) {
@@ -36,4 +33,3 @@ const isBreakpoint = function (breakpoint, el = window) {
     }
     return matchs.includes(breakpoint);
 };
-exports.isBreakpoint = isBreakpoint;

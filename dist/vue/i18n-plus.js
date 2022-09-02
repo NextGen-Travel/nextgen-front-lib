@@ -1,25 +1,19 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.VueI18nPlus = void 0;
-const vue_i18n_1 = __importDefault(require("vue-i18n"));
-const power_helper_1 = require("power-helper");
-const error_1 = require("../error");
-const exception = error_1.serviceException.checkout('i18n-plus');
-class VueI18nPlus {
+import VueI18n from 'vue-i18n';
+import { text } from 'power-helper';
+import { serviceException } from '../error';
+const exception = serviceException.checkout('i18n-plus');
+export class VueI18nPlus {
     vueI18n;
     namespace;
     rawParams;
     static get VueI18n() {
-        return vue_i18n_1.default;
+        return VueI18n;
     }
     static get install() {
-        return vue_i18n_1.default.install;
+        return VueI18n.install;
     }
     async setup(namespace, params) {
-        this.vueI18n = new vue_i18n_1.default(params);
+        this.vueI18n = new VueI18n(params);
         this.rawParams = params;
         this.namespace = namespace;
         if (this.rawParams.messages && this.rawParams.messages[this.vueI18n.locale][this.namespace] == null) {
@@ -28,7 +22,7 @@ class VueI18nPlus {
     }
     tt(key, params) {
         if (key.slice(0, 2) === '##') {
-            return power_helper_1.text.replaceVar({
+            return text.replaceVar({
                 end: '}',
                 start: '{',
                 text: key.slice(2).trim(),
@@ -46,4 +40,3 @@ class VueI18nPlus {
         return this.tt.bind(this);
     }
 }
-exports.VueI18nPlus = VueI18nPlus;

@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Request = void 0;
-const qs_1 = require("qs");
-const power_helper_1 = require("power-helper");
-const error_1 = require("../../error");
-const exception = error_1.serviceException.checkout('request');
-class Request extends power_helper_1.Event {
+import { stringify } from 'qs';
+import { Event, flow } from 'power-helper';
+import { serviceException } from '../../error';
+const exception = serviceException.checkout('request');
+export class Request extends Event {
     mocks = {};
     params;
     installed = false;
@@ -122,7 +119,7 @@ class Request extends power_helper_1.Event {
         };
         // Content Type
         if (context.contentType === 'x-www-form-urlencoded') {
-            context.body = (0, qs_1.stringify)(context.body);
+            context.body = stringify(context.body);
             headers.contentType = 'application/x-www-form-urlencoded';
         }
         if (context.contentType === 'multipart/form-data') {
@@ -157,7 +154,7 @@ class Request extends power_helper_1.Event {
         // Send
         let response = null;
         if (this.mocks && this.mocks[to]) {
-            await power_helper_1.flow.sleep(500);
+            await flow.sleep(500);
             response = this.mocks[to](context);
             this.emit('useMockAfter', {
                 context,
@@ -173,4 +170,3 @@ class Request extends power_helper_1.Event {
         return response;
     }
 }
-exports.Request = Request;

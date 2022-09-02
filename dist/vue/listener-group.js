@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.useListenerGroup = void 0;
-const index_1 = require("../index");
-const error_1 = require("../error");
-const exception = error_1.serviceException.checkout('listener-group');
-const useListenerGroup = () => {
-    let { onUnmounted } = (0, index_1.useVueHooks)();
+import { useVueHooks } from '../index';
+import { serviceException } from '../error';
+const exception = serviceException.checkout('listener-group');
+export const useListenerGroup = () => {
+    let { onUnmounted } = useVueHooks();
     let isOff = false;
     let listeners = [];
     let offAll = () => {
@@ -34,4 +31,3 @@ const useListenerGroup = () => {
         }
     };
 };
-exports.useListenerGroup = useListenerGroup;

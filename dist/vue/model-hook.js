@@ -1,13 +1,9 @@
-"use strict";
 // https://www.gushiciku.cn/pl/g2DO/zh-tw
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineModelHook = exports.createLaravelResourcePaginate = exports.createLaravelPaginate = exports.defineSchema = void 0;
-const index_1 = require("../index");
-const deep_object_diff_1 = require("deep-object-diff");
-const power_helper_1 = require("power-helper");
-const defineSchema = (data) => data;
-exports.defineSchema = defineSchema;
-const createLaravelPaginate = () => {
+import { useVueHooks } from '../index';
+import { diff as _diff } from 'deep-object-diff';
+import { Event, record, json } from 'power-helper';
+export const defineSchema = (data) => data;
+export const createLaravelPaginate = () => {
     return {
         total: 1,
         per_page: 1,
@@ -18,8 +14,7 @@ const createLaravelPaginate = () => {
         data: []
     };
 };
-exports.createLaravelPaginate = createLaravelPaginate;
-const createLaravelResourcePaginate = () => {
+export const createLaravelResourcePaginate = () => {
     return {
         data: [],
         links: {
@@ -39,17 +34,16 @@ const createLaravelResourcePaginate = () => {
         }
     };
 };
-exports.createLaravelResourcePaginate = createLaravelResourcePaginate;
-const defineModelHook = (params) => {
+export const defineModelHook = (params) => {
     const use = () => {
-        const { reactive, watch } = (0, index_1.useVueHooks)();
+        const { reactive, watch } = useVueHooks();
         const data = reactive(params.schema());
         const oridata = params.schema();
         // =================
         //
         // 負責監聽資料變化
         //
-        const event = new power_helper_1.Event();
+        const event = new Event();
         watch(() => data, () => event.emit('update', {}), {
             deep: true
         });
@@ -63,20 +57,20 @@ const defineModelHook = (params) => {
         };
         /** 將資料重新設定成最後儲存的資料 */
         const reset = () => {
-            Object.assign(data, power_helper_1.json.jpjs(oridata));
+            Object.assign(data, json.jpjs(oridata));
         };
         /** 賦予資料 */
         const assign = (newData) => {
-            Object.assign(data, power_helper_1.record.setMapValue(data, newData));
+            Object.assign(data, record.setMapValue(data, newData));
         };
         /** 將既有資料存為原始資料 */
         const commit = (newData) => {
             assign(newData);
-            Object.assign(oridata, power_helper_1.json.jpjs(data));
+            Object.assign(oridata, json.jpjs(data));
         };
         /** 比較資料是否有異 */
         const diff = (target) => {
-            return Object.keys((0, deep_object_diff_1.diff)(data, target)).length !== 0;
+            return Object.keys(_diff(data, target)).length !== 0;
         };
         /** 比較與原始資料是否有異 */
         const isModified = () => {
@@ -117,7 +111,7 @@ const defineModelHook = (params) => {
         row: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data, emit) => {
-            const { onUnmounted, watch } = (0, index_1.useVueHooks)();
+            const { onUnmounted, watch } = useVueHooks();
             const model = from(data);
             // =================
             //
@@ -146,4 +140,3 @@ const defineModelHook = (params) => {
         }
     };
 };
-exports.defineModelHook = defineModelHook;

@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Graphql = void 0;
 // see https://livecycle.io/blogs/graphql-and-typescript/
-const urql_1 = require("urql");
-class Graphql {
+import { createClient } from 'urql';
+export class Graphql {
     client;
     documents;
     constructor(url, documents) {
         this.documents = documents;
-        this.client = (0, urql_1.createClient)({
+        this.client = createClient({
             url
         });
     }
@@ -17,4 +14,3 @@ class Graphql {
         return result.data;
     }
 }
-exports.Graphql = Graphql;

@@ -1,11 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NextgenLib = exports.useVueHooks = void 0;
 const VueHooks = {};
-const useVueHooks = () => VueHooks;
-exports.useVueHooks = useVueHooks;
+export const useVueHooks = () => VueHooks;
 // Utils
-exports.NextgenLib = {
+export const NextgenLib = {
     install(_Vue, hooks) {
         for (let key in hooks) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -14,6 +10,6 @@ exports.NextgenLib = {
         }
     }
 };
-module.exports = exports.NextgenLib;
-module.exports.NextgenLib = exports.NextgenLib;
-exports.default = exports.NextgenLib;
+module.exports = NextgenLib;
+module.exports.NextgenLib = NextgenLib;
+export default NextgenLib;

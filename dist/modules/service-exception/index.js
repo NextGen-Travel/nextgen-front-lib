@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiceException = void 0;
-const power_helper_1 = require("power-helper");
-const message_parser_1 = require("../../utils/message-parser");
-class ServiceException extends power_helper_1.Event {
+import { Event } from 'power-helper';
+import { parseMessage } from '../../utils/message-parser';
+export class ServiceException extends Event {
     serviceName;
     parent = null;
     options = {
@@ -31,7 +28,7 @@ class ServiceException extends power_helper_1.Event {
         if (custom) {
             return custom;
         }
-        return (0, message_parser_1.parseMessage)(data, this.options.defaultError());
+        return parseMessage(data, this.options.defaultError());
     }
     fail(error) {
         const message = this.parseMessage(error);
@@ -47,4 +44,3 @@ class ServiceException extends power_helper_1.Event {
         return child;
     }
 }
-exports.ServiceException = ServiceException;

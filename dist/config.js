@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.config = void 0;
-exports.config = {
+export const config = {
     libName: 'nextgen-front-lib'
 };

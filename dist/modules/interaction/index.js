@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Interaction = void 0;
-const power_helper_1 = require("power-helper");
-class Interaction extends power_helper_1.Event {
+import { Event } from 'power-helper';
+export class Interaction extends Event {
     name;
     steps = [];
     parent;
@@ -74,4 +71,3 @@ class Interaction extends power_helper_1.Event {
         });
     }
 }
-exports.Interaction = Interaction;
