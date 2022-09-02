@@ -27,6 +27,14 @@ export class VueI18nPlus<Keys extends string> {
         }
     }
 
+    /**
+     * 強化版本的 $t，可以讓 Typescript 協助判定是否定義過 key 與自動偵測變數，也可以透過 ## 前綴符號進行暫時定義。
+     * @example 
+     * i18n.tt('hello {N}', { N: 'dave' })
+     * // 如果尚未定義，也可以透過 ## 前綴暫時不檢查
+     * i18n.tt('## hello {N}', { N: 'dave' })
+     */
+
     tt<T extends Keys | `##${string}`>(key: T, params?: VarParameters<'{', '}', T>) {
         if (key.slice(0, 2) === '##') {
             return text.replaceVar({
@@ -41,9 +49,5 @@ export class VueI18nPlus<Keys extends string> {
         } else {
             return key
         }
-    }
-
-    export() {
-        return this.tt.bind(this)
     }
 }
