@@ -1,4 +1,5 @@
 import VueRouter, { RouteConfig, RouterOptions, Route as _Route } from 'vue-router';
+import { Event } from 'power-helper';
 import { RouteParameters } from 'power-helper/types/string';
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -27,19 +28,21 @@ export declare type Routes<Names extends string> = RouteConfig & {
     meta?: Record<string, any>;
 };
 declare type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>;
-export declare class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
-    readonly event: import("power-helper/dist/modules/event").Event<{
-        after: {
-            to: _Route;
-            from: _Route;
-        };
-        before: {
-            to: _Route;
-            from: _Route;
-        };
-    }>;
-    constructor(options: RouterOptions);
+declare type Channels = {
+    after: {
+        to: _Route;
+        from: _Route;
+    };
+    before: {
+        to: _Route;
+        from: _Route;
+    };
+};
+export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
+    router: VueRouter;
+    static get install(): import("vue").PluginFunction<never>;
     static get VueRouter(): typeof VueRouter;
+    setup(options: RouterOptions): Promise<void>;
     to<K extends keyof T>(name: T, params?: RouteParameters<T[K]['path']>, options?: {
         query?: T[K]['query'];
     }): void;

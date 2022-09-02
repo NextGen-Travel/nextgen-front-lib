@@ -37,39 +37,43 @@ export type Routes<Names extends string> = RouteConfig & {
 }
 
 type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>
+type Channels = {
+    after: {
+        to: _Route
+        from: _Route
+    }
+    before: {
+        to: _Route
+        from: _Route
+    }
+}
 
-export class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
+export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
+    router!: VueRouter
 
-    readonly event = new Event<{
-        after: {
-            to: _Route
-            from: _Route
-        }
-        before: {
-            to: _Route
-            from: _Route
-        }
-    }>()
-
-    constructor(options: RouterOptions) {
-        super(options)
-        this.afterEach((from, to) => {
-            this.event.emit('after', { from, to })
-        })
-        this.beforeEach((from, to, next) => {
-            this.event.emit('before', { from, to })
-            next()
-        })
+    static get install() {
+        return VueRouter.install
     }
 
     static get VueRouter() {
         return VueRouter
     }
 
+    async setup(options: RouterOptions) {
+        this.router = new VueRouter(options)
+        this.router.afterEach((from, to) => {
+            this.emit('after', { from, to })
+        })
+        this.router.beforeEach((from, to, next) => {
+            this.emit('before', { from, to })
+            next()
+        })
+    }
+
     to<K extends keyof T>(name: T, params?: RouteParameters<T[K]['path']>, options?: {
         query?: T[K]['query']
     }) {
-        this.push({
+        this.router.push({
             name: name as any,
             params,
             query: options?.query
@@ -77,7 +81,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends VueRouter {
     }
 
     getCurrentRoute<K extends keyof T>(_name?: T) {
-        return this.currentRoute as unknown as {
+        return this.router.currentRoute as unknown as {
             name: string
             params: RouteParameters<T[K]['path']>
             query: Partial<T[K]['query']>

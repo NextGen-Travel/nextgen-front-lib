@@ -1,4 +1,5 @@
 import { Event } from 'power-helper'
+import { parseMessage } from '../../utils/message-parser'
 
 type Channels = {
     fail: {
@@ -44,14 +45,7 @@ export class ServiceException extends Event<Channels> {
         if (custom) {
             return custom
         }
-        if (typeof data === 'string') {
-            return data
-        }
-        let message = data.message
-        if (typeof message === 'string') {
-            return message
-        }
-        return this.options.defaultError()
+        return parseMessage(data, this.options.defaultError())
     }
 
     fail(error: any) {

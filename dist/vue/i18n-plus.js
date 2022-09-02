@@ -8,17 +8,21 @@ const vue_i18n_1 = __importDefault(require("vue-i18n"));
 const power_helper_1 = require("power-helper");
 const error_1 = require("../error");
 const exception = error_1.serviceException.checkout('i18n-plus');
-class VueI18nPlus extends vue_i18n_1.default {
+class VueI18nPlus {
+    i18n;
     namespace;
     rawParams;
     static get VueI18n() {
         return vue_i18n_1.default;
     }
-    constructor(namespace, params) {
-        super(params);
+    static get install() {
+        return vue_i18n_1.default.install;
+    }
+    async setup(namespace, params) {
+        this.i18n = new vue_i18n_1.default(params);
         this.rawParams = params;
         this.namespace = namespace;
-        if (this.rawParams.messages && this.rawParams.messages[this.locale][this.namespace] == null) {
+        if (this.rawParams.messages && this.rawParams.messages[this.i18n.locale][this.namespace] == null) {
             throw exception.fail(`I18n plus need defined "${namespace}" namespace message.`);
         }
     }
@@ -31,7 +35,10 @@ class VueI18nPlus extends vue_i18n_1.default {
                 vars: params
             });
         }
-        return this.t(`${this.namespace}.${key}`, params).toString();
+        return this.i18n.t(`${this.namespace}.${key}`, params).toString();
+    }
+    exportApi() {
+        return this.tt.bind(this);
     }
 }
 exports.VueI18nPlus = VueI18nPlus;

@@ -5,19 +5,24 @@ import { serviceException } from '../error'
 
 const exception = serviceException.checkout('i18n-plus')
 
-export class VueI18nPlus<Keys extends string> extends VueI18n {
-    namespace: string
-    rawParams: I18nOptions
+export class VueI18nPlus<Keys extends string> {
+    i18n!: VueI18n
+    namespace!: string
+    rawParams!: I18nOptions
 
     static get VueI18n() {
         return VueI18n
     }
 
-    constructor(namespace: string, params: I18nOptions) {
-        super(params)
+    static get install() {
+        return VueI18n.install
+    }
+
+    async setup(namespace: string, params: I18nOptions) {
+        this.i18n = new VueI18n(params)
         this.rawParams = params
         this.namespace = namespace
-        if (this.rawParams.messages && this.rawParams.messages[this.locale][this.namespace] == null) {
+        if (this.rawParams.messages && this.rawParams.messages[this.i18n.locale][this.namespace] == null) {
             throw exception.fail(`I18n plus need defined "${namespace}" namespace message.`)
         }
     }
@@ -31,6 +36,10 @@ export class VueI18nPlus<Keys extends string> extends VueI18n {
                 vars: params as any
             })
         }
-        return this.t(`${this.namespace}.${key}`, params).toString()
+        return this.i18n.t(`${this.namespace}.${key}`, params).toString()
+    }
+
+    exportApi() {
+        return this.tt.bind(this)
     }
 }
