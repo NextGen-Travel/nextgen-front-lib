@@ -4,7 +4,7 @@ import { vueHooks } from '../index'
 const { reactive, getCurrentInstance } = vueHooks
 
 export class VueSelf {
-    static use() {
+    use() {
         const nowCurrentInstance = getCurrentInstance()
         return {
             data<T>(data: T) {

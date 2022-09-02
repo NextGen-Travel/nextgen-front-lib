@@ -4,7 +4,7 @@ exports.VueSelf = void 0;
 const index_1 = require("../index");
 const { reactive, getCurrentInstance } = index_1.vueHooks;
 class VueSelf {
-    static use() {
+    use() {
         const nowCurrentInstance = getCurrentInstance();
         return {
             data(data) {

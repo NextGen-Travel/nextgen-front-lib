@@ -1,6 +1,6 @@
 import Vue from 'vue';
 export declare class VueSelf {
-    static use(): {
+    use(): {
         data<T>(data: T): T;
         hasSlot(name?: string): boolean;
         children(): import("vue").VueConstructor<Vue>[];
