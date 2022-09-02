@@ -50,6 +50,6 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channe
         name: string;
         params: RouteParameters<T[K]['path']>;
         query: Partial<T[K]['query']>;
-    };
+    } | null;
 }
 export {};

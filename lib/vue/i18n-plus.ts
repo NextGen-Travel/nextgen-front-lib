@@ -36,7 +36,11 @@ export class VueI18nPlus<Keys extends string> {
                 vars: params as any
             })
         }
-        return this.vueI18n.t(`${this.namespace}.${key}`, params).toString()
+        if (this.vueI18n) {
+            return this.vueI18n.t(`${this.namespace}.${key}`, params).toString()
+        } else {
+            return key
+        }
     }
 
     export() {

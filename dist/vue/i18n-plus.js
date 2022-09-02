@@ -35,7 +35,12 @@ class VueI18nPlus {
                 vars: params
             });
         }
-        return this.vueI18n.t(`${this.namespace}.${key}`, params).toString();
+        if (this.vueI18n) {
+            return this.vueI18n.t(`${this.namespace}.${key}`, params).toString();
+        }
+        else {
+            return key;
+        }
     }
     export() {
         return this.tt.bind(this);

@@ -25,14 +25,16 @@ class VueRouterPlus extends power_helper_1.Event {
         });
     }
     to(name, params, options) {
-        this.vueRouter.push({
-            name: name,
-            params,
-            query: options?.query
-        });
+        if (this.vueRouter) {
+            this.vueRouter.push({
+                name: name,
+                params,
+                query: options?.query
+            });
+        }
     }
     getCurrentRoute(_name) {
-        return this.vueRouter.currentRoute;
+        return this.vueRouter ? this.vueRouter.currentRoute : null;
     }
 }
 exports.VueRouterPlus = VueRouterPlus;
