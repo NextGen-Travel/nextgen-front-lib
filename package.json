@@ -4,7 +4,8 @@
   "description": "lib.",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "eslint lib --ext .ts && tsc"
+    "build": "eslint lib --ext .ts && tsc",
+    "deploy": "yarn build && git add . && git commit -m 'update' && git push"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
