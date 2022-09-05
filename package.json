@@ -7,12 +7,12 @@
     "deploy": "eslint . --ext .ts && git add . && git commit -m 'update' && git push"
   },
   "devDependencies": {
-    "@types/uuid": "^8.3.4",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "^13.13.45",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.18",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "eslint": "^7.32.0",
@@ -28,6 +28,7 @@
     "crypto-js": "^4.1.1",
     "deep-object-diff": "^1.1.7",
     "graphql": "16.5.0",
+    "pinia": "^2.0.21",
     "power-helper": "^0.3.1",
     "qs": "^6.11.0",
     "react": "^18.2.0",
