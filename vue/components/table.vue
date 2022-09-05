@@ -20,12 +20,12 @@
                                 :item="item"
                                 :value="peel(item, field.key)">
                             </slot>
-                            <div v-if="self.hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
+                            <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
                                 {{ peel(item, field.key) }}
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="self.hasSlot('details')" :key="index + 'iddi'">
+                    <tr v-if="hasSlot('details')" :key="index + 'iddi'">
                         <td colspan="100%">
                             <slot class="w-100" name="details" :item="item"></slot>
                         </td>
@@ -57,9 +57,9 @@ import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
+const { reactive, computed, defineProps, onMounted, getCurrentInstance } = useVueHooks()
 const peel = pick.peel
-const { reactive, computed, defineProps, onMounted } = useVueHooks()
-
+const instance = getCurrentInstance()
 // =================
 //
 // define
@@ -136,6 +136,19 @@ const showFields = computed(() => {
 onMounted(() => {
     state.showFields = props.fields.map(e => e.key)
 })
+
+// =================
+//
+// methods
+//
+
+const hasSlot = (name = 'default') => {
+    let proxy = instance?.proxy as any
+    if (proxy) {
+        return !!proxy.$slots[name] || !!proxy.$scopedSlots[name]
+    }
+    return false
+}
 
 </script>
 
