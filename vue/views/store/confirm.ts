@@ -1,8 +1,8 @@
-import { usePinia } from '../../../core'
+import { defineStore } from 'pinia'
 
 type Handler = (_callback: () => void) => any
 
-export const useLayoutConfirmStore = usePinia().defineStore('lib-confirm', {
+export const useLayoutConfirmStore = defineStore('lib-confirm', {
     state: () => ({
         isOpen: false,
         message: '',

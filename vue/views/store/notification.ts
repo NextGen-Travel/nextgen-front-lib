@@ -1,5 +1,5 @@
-import { usePinia } from '../../../core'
 import { createUuid } from '../../../utils/uid'
+import { defineStore } from 'pinia'
 
 export type MessageType = 'info' | 'warning' | 'danger' | 'success'
 
@@ -11,7 +11,7 @@ export type Message = {
     duration: number
 }
 
-export const useLayoutNotificationStore = usePinia().defineStore('lib-notification', {
+export const useLayoutNotificationStore = defineStore('lib-notification', {
     state: () => {
         return {
             messages: [] as Message[]
