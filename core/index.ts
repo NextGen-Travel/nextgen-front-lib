@@ -1,7 +1,9 @@
+import pinia from 'pinia'
 import * as Hooks from 'vue'
 
-const VueHooks: typeof Hooks = {} as any
-const VueOptions: {
+let Pinia: typeof pinia
+let VueHooks: typeof Hooks = {} as any
+let VueOptions: {
     staticUrl: string
     notFoundImage: string
 } = {
@@ -9,14 +11,17 @@ const VueOptions: {
     notFoundImage: ''
 }
 
+export const usePinia = () => Pinia
 export const useVueHooks = () => VueHooks
 export const useVueOptions = () => VueOptions
 
 export const NextgenLib = {
     install(_Vue: any, params: {
         hooks: typeof Hooks
+        pinia: typeof pinia
         options: typeof VueOptions
     }) {
+        Pinia = params.pinia
         for (let key in params.hooks) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
