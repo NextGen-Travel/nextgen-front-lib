@@ -1,9 +1,17 @@
-type Params = {
-    key: string
-    label: string
-    optionShow: boolean
-}
+import { createUuid } from './uid'
 
-export const defineFields = (items: Params[]) => {
-    return items
+export const createTableColumn = <K extends string>(items: {
+    key?: K
+    label: string
+    formatter?: (_value: any, _key: string, _item: any) => any
+    optionShow?: boolean
+}[]) => {
+    return items.map(e => {
+        return {
+            ...e,
+            key: e.key == null ? createUuid() : e.key,
+            formatter: e.formatter == null ? (v: any) => v : e.formatter,
+            optionShow: e.optionShow == null ? false : e.optionShow
+        }
+    })
 }
