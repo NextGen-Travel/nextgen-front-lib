@@ -1,6 +1,6 @@
 import { createUuid } from './uid'
 
-export const createTableColumn = <K extends string>(items: {
+export const defineFields = <K extends string>(items: {
     key?: K
     label: string
     formatter?: (_value: any, _key: string, _item: any) => any
