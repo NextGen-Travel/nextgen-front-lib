@@ -60,6 +60,7 @@ import { useVueHooks } from '../../core'
 const { reactive, computed, defineProps, onMounted, getCurrentInstance } = useVueHooks()
 const peel = pick.peel
 const instance = getCurrentInstance()
+
 // =================
 //
 // define
@@ -150,17 +151,6 @@ const hasSlot = (name = 'default') => {
     return false
 }
 
-</script>
-
-<script lang="ts">
-type Params = {
-    key: string
-    label: string
-    optionShow: boolean
-}
-export const defineFields = (items: Params[]) => {
-    return items
-}
 </script>
 
 <style lang="scss" scoped>
