@@ -1,4 +1,4 @@
-import pinia from 'pinia'
+import * as Pinia from 'pinia'
 import * as Hooks from 'vue'
 
 let VueHooks: typeof Hooks = {} as any
@@ -10,7 +10,7 @@ let VueOptions: {
     notFoundImage: ''
 }
 let plugins: {
-    pinia: typeof pinia
+    pinia: typeof Pinia
 } = {} as any
 
 export const usePinia = () => plugins.pinia
@@ -20,7 +20,7 @@ export const useVueOptions = () => VueOptions
 export const NextgenLib = {
     install(_Vue: any, params: {
         hooks: typeof Hooks
-        pinia: typeof pinia
+        pinia: typeof Pinia
         options: typeof VueOptions
     }) {
         plugins.pinia = params.pinia
