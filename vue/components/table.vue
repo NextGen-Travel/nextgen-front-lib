@@ -18,10 +18,10 @@
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
-                                :value="peel(item, field.key)">
+                                :value="field.formatter(peel(item, field.key), field.key, item)">
                             </slot>
                             <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                {{ peel(item, field.key) }}
+                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item) }}
                             </div>
                         </td>
                     </tr>
@@ -33,7 +33,7 @@
                 </template>
             </tbody>
         </v-simple-table>
-        <Dialog v-model="state.modalShow" :title="filterTitle">
+        <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
                     v-if="field.optionShow"
@@ -44,7 +44,7 @@
                     :key="field.key + 'da'">
                 </v-checkbox>
             </template>
-        </Dialog>
+        </NgDialog>
         <div v-if="showFilter" class="print-no-show component-twr-filter" @click="state.modalShow= true">
             <v-icon small>mdi-filter</v-icon>
         </div>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import Dialog from './dialog.vue'
+import NgDialog from './dialog.vue'
 import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'

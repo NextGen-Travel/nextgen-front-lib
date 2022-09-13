@@ -14,7 +14,7 @@ export type Message = {
 export const useLayoutNotificationStore = defineStore('lib-notification', {
     state: () => {
         return {
-            messages: [] as Message[]
+            _messages: [] as Message[]
         }
     },
     actions: {
@@ -22,7 +22,7 @@ export const useLayoutNotificationStore = defineStore('lib-notification', {
             type: MessageType
             content: string
         }) {
-            this.$state.messages.push({
+            this.$state._messages.push({
                 ...params,
                 id: createUuid(),
                 duration: 0,
@@ -30,10 +30,10 @@ export const useLayoutNotificationStore = defineStore('lib-notification', {
             })
         },
         clear() {
-            this.$state.messages = this.$state.messages.filter(e => e.duration <= 100)
+            this.$state._messages = this.$state._messages.filter(e => e.duration <= 100)
         }
     },
     getters: {
-        messages: state => state.messages
+        messages: state => state._messages
     }
 })

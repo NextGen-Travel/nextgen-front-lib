@@ -4,7 +4,7 @@
   "description": "lib.",
   "main": "./lib/index.js",
   "scripts": {
-    "deploy": "eslint . --ext .ts && git add . && git commit -m 'update' && git push"
+    "deploy": "eslint . --ext .ts && cd playground && yarn build && cd .. && git add . && git commit -m 'update' && git push"
   },
   "devDependencies": {
     "@types/chai": "^4.2.22",
