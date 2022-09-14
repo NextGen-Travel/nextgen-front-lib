@@ -54,7 +54,7 @@ const state = reactive({
 //
 
 const messages = computed(() => {
-    return layoutNotificationStore.$state.messages.slice(0, 4)
+    return layoutNotificationStore.messages.slice(0, 4)
 })
 
 // =================
