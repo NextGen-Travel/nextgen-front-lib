@@ -49,7 +49,7 @@ export const createLaravelResourcePaginate = <T>() => {
 export const createStrapiListResource = <T>() => {
     return {
         data: [] as {
-            id: number
+            id: string
             attributes: T
         }[],
         meta: {
@@ -57,9 +57,7 @@ export const createStrapiListResource = <T>() => {
                 page: 1,
                 pageSize: 10,
                 pageCount: 0,
-                total: 0,
-                start: 0,
-                limit: 10
+                total: 0
             }
         }
     }

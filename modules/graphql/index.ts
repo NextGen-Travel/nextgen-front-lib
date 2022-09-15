@@ -1,8 +1,23 @@
 // see https://livecycle.io/blogs/graphql-and-typescript/
-import { createClient, Client, TypedDocumentNode } from 'urql'
+import { createClient, Client } from 'urql'
+
+type StrapiList<D extends { id?: string | null, attributes?: any }[], M> = {
+    data?: D
+    meta?: M
+}
+
+type ResultToStrapiList<D extends { id?: string | null, attributes?: any }[], M> = {
+    meta: M
+    data: {
+        id: string
+        attributes: D[0]['attributes']
+    }[]
+}
 
 export class Graphql<
-    D extends Record<string, TypedDocumentNode>
+    D extends Record<string, {
+        __apiType?: any
+    }>
 > {
     private client: Client
     private documents: D
@@ -18,7 +33,14 @@ export class Graphql<
         V = Parameters<NonNullable<D[K]['__apiType']>>[0],
         R = ReturnType<NonNullable<D[K]['__apiType']>>
     >(name: K, variable: V) {
-        let result = await this.client.query(this.documents[name], variable as any).toPromise()
-        return result.data as unknown as R
+        let result = await this.client.query(this.documents[name] as any, variable as any).toPromise()
+        let output = result.data as unknown as {
+            [K in keyof R] - ?: NonNullable<R[K]>
+        }
+        type Output = typeof output
+        return output as {
+            [K in keyof Output]: Output[K] extends StrapiList<any, any> ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
+        }
     }
+
 }
