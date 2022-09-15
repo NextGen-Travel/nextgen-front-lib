@@ -46,6 +46,25 @@ export const createLaravelResourcePaginate = <T>() => {
     }
 }
 
+export const createStrapiListResource = <T>() => {
+    return {
+        data: [] as {
+            id: number
+            attributes: T
+        }[],
+        meta: {
+            pagination: {
+                page: 1,
+                pageSize: 10,
+                pageCount: 0,
+                total: 0,
+                start: 0,
+                limit: 10
+            }
+        }
+    }
+}
+
 export const defineModelHook = <
     S extends Record<any, any>,
     R extends Record<any, any>
