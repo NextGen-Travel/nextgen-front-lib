@@ -6,7 +6,7 @@
                     <th
                         v-for="(field, index) in showFields"
                         :key="index + 'ff'"
-                        class="text-left secondary">
+                        class="text-center secondary">
                         {{ field.label }}
                     </th>
                 </tr>

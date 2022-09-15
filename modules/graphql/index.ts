@@ -10,7 +10,7 @@ type ResultToStrapiList<D extends { id?: string | null, attributes?: any }[], M>
     meta: M
     data: {
         id: string
-        attributes: D[0]['attributes']
+        attributes: NonNullable<D[0]['attributes']>
     }[]
 }
 
@@ -38,7 +38,7 @@ export class Graphql<
             [K in keyof R] - ?: NonNullable<R[K]>
         }
         type Output = typeof output
-        return output as {
+        return output as unknown as {
             [K in keyof Output]: Output[K] extends StrapiList<any, any> ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
         }
     }
