@@ -33,6 +33,9 @@
                 </template>
             </tbody>
         </v-simple-table>
+        <v-overlay absolute :value="loading">
+            <v-progress-circular indeterminate size="32"></v-progress-circular>
+        </v-overlay>
         <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
@@ -89,6 +92,11 @@ const props = defineProps({
     items: {
         required: true,
         type: Array as PropType<any[]>
+    },
+    loading: {
+        type: Boolean,
+        required: false,
+        default: () => false
     }
 })
 
