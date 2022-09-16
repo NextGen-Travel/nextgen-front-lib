@@ -1,4 +1,5 @@
 // see https://livecycle.io/blogs/graphql-and-typescript/
+import { pick } from 'power-helper'
 import { createClient, Client } from 'urql'
 
 type StrapiList<D extends { id?: string | null, attributes?: any }[], M> = {
@@ -12,6 +13,20 @@ type ResultToStrapiList<D extends { id?: string | null, attributes?: any }[], M>
         id: string
         attributes: NonNullable<D[0]['attributes']>
     }[]
+}
+
+const fetchNonNullAttr = (data: any) => {
+    if (pick.getType(data) === 'object') {
+        let output = data
+        for (let key in data) {
+            if (data[key] !== null) {
+                output[key] = data[key]
+            }
+        }
+        return output
+    } else {
+        return {}
+    }
 }
 
 export class Graphql<
@@ -33,7 +48,7 @@ export class Graphql<
         V = Parameters<NonNullable<D[K]['__apiType']>>[0],
         R = ReturnType<NonNullable<D[K]['__apiType']>>
     >(name: K, variable: V) {
-        let result = await this.client.query(this.documents[name] as any, variable as any).toPromise()
+        let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any).toPromise()
         let output = result.data as unknown as {
             [K in keyof R] - ?: NonNullable<R[K]>
         }
@@ -42,5 +57,4 @@ export class Graphql<
             [K in keyof Output]: Output[K] extends StrapiList<any, any> ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
         }
     }
-
 }
