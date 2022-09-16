@@ -48,6 +48,13 @@ const state = self.data({
                     state.doc = 'doc-component-table'
                     state.title = 'Component Table'
                 }
+            },
+            {
+                name: 'pagination',
+                click: () => {
+                    state.doc = 'doc-component-pagination'
+                    state.title = 'Component Pagination'
+                }
             }
         ],
         Utils: [

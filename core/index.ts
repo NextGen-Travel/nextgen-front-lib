@@ -1,11 +1,12 @@
 import * as Hooks from 'vue'
-import Dialog from '../vue/components/dialog.vue'
-import Form from '../vue/components/form.vue'
 import Img from '../vue/components/img.vue'
-import Loaders from '../vue/components/loaders.vue'
+import Form from '../vue/components/form.vue'
 import Table from '../vue/components/table.vue'
-import Toolbar from '../vue/components/toolbar.vue'
+import Dialog from '../vue/components/dialog.vue'
 import Upload from '../vue/components/upload.vue'
+import Loaders from '../vue/components/loaders.vue'
+import Toolbar from '../vue/components/toolbar.vue'
+import Pagination from '../vue/components/pagination.vue'
 
 let VueHooks: typeof Hooks = {} as any
 let VueOptions: {
@@ -42,6 +43,7 @@ export const NextgenLib = {
         addComponent('dialog', Dialog)
         addComponent('upload', Upload)
         addComponent('toolbar', Toolbar)
+        addComponent('pagination', Pagination)
     }
 }
 
