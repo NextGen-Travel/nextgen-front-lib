@@ -2,9 +2,12 @@
 import { pick } from 'power-helper'
 import { createClient, Client } from 'urql'
 
-type StrapiList<D extends { id?: string | null, attributes?: any }[], M> = {
-    data?: D
-    meta?: M
+type StrapiList<
+    D extends { id?: string | null, attributes?: any }[] = { id?: string | null, attributes?: any }[],
+    M = Record<string, any>
+> = {
+    data: D
+    meta: M
 }
 
 type ResultToStrapiList<D extends { id?: string | null, attributes?: any }[], M> = {
@@ -53,7 +56,7 @@ export class Graphql<
         }
         type Output = typeof output
         return output as unknown as {
-            [K in keyof Output]: Output[K] extends StrapiList<any, any> ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
+            [K in keyof Output]: Output[K] extends StrapiList ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
         }
     }
 }
