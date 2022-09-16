@@ -36,7 +36,7 @@
         <div v-if="items.length === 0">
             <slot name="no-data"></slot>
         </div>
-        <v-overlay absolute :value="loading">
+        <v-overlay absolute :value="loading" :opacity="0.25">
             <v-progress-circular indeterminate size="32"></v-progress-circular>
         </v-overlay>
         <NgDialog v-model="state.modalShow" :title="filterTitle">
