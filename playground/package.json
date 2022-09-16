@@ -8,6 +8,7 @@
     "update": "yarn upgrade nextgen-front-lib"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "vue": "^2.6.14",
     "vue-codemirror": "4.0.6",
     "vuetify": "^2.6.0"

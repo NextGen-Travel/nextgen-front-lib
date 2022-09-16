@@ -6,7 +6,7 @@
             <slot></slot>
         </div>
         <div class="mb-4 elevation-2">
-            <Editor v-if="code" v-model="code" mode="html"></Editor>
+            <Editor v-if="code" v-model="code" :mode="lang"></Editor>
         </div>
     </div>
 </template>
@@ -24,6 +24,11 @@ const props = defineProps({
         type: String,
         requreid: false,
         default: () => ''
+    },
+    lang: {
+        type: String,
+        requreid: false,
+        default: () => 'html'
     },
     desc: {
         type: String,

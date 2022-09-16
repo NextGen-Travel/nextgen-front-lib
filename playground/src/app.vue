@@ -45,8 +45,17 @@ const state = self.data({
             {
                 name: 'table',
                 click: () => {
-                    state.doc = 'doc-table'
+                    state.doc = 'doc-component-table'
                     state.title = 'Component Table'
+                }
+            }
+        ],
+        Utils: [
+            {
+                name: 'fetch all',
+                click: () => {
+                    state.doc = 'doc-util-fetch-all'
+                    state.title = 'Util Fetch All'
                 }
             }
         ]

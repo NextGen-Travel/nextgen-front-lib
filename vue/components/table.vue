@@ -14,7 +14,7 @@
             <tbody>
                 <template v-for="(item, index) in items">
                     <tr :key="index + 'ii'">
-                        <td v-for="(field, index) in showFields" :key="index + 'ffii'">
+                        <td v-for="(field, index) in showFields" :key="index + 'ffii'" class="text-center">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
