@@ -1,6 +1,6 @@
 <template>
     <div style="position: relative;">
-        <v-simple-table>
+        <v-simple-table v-if="showTable">
             <thead>
                 <tr>
                     <th
@@ -33,6 +33,9 @@
                 </template>
             </tbody>
         </v-simple-table>
+        <div v-if="items.length === 0">
+            <slot name="no-data"></slot>
+        </div>
         <v-overlay absolute :value="loading">
             <v-progress-circular indeterminate size="32"></v-progress-circular>
         </v-overlay>
@@ -135,6 +138,13 @@ const showFields = computed(() => {
             formatter: e.formatter
         }
     })
+})
+
+const showTable = computed(() => {
+    if (hasSlot('no-data') && props.items.length === 0) {
+        return false
+    }
+    return true
 })
 
 // =================
