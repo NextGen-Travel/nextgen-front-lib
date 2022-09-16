@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :max-width="maxWidth" v-model="state.show">
+    <v-dialog v-model="state.show" :max-width="maxWidth" :persistent="persistent">
         <v-card v-if="state.show">
             <v-card-title class="pb-0">
                 <span v-if="title">{{ title }}</span>
@@ -8,6 +8,7 @@
                     <v-icon @click="state.show = false">mdi-close</v-icon>
                 </v-btn>
             </v-card-title>
+            <v-divider class="mb-5 mt-3"></v-divider>
             <div class="pa-5 pt-0">
                 <slot></slot>
             </div>
@@ -26,6 +27,11 @@ const { reactive, watch, onMounted } = useVueHooks()
 //
 
 const props = defineProps({
+    persistent: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
     maxWidth: {
         type: String,
         required: false,

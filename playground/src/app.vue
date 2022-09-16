@@ -55,6 +55,13 @@ const state = self.data({
                     state.doc = 'doc-component-pagination'
                     state.title = 'Component Pagination'
                 }
+            },
+            {
+                name: 'dialog',
+                click: () => {
+                    state.doc = 'doc-component-dialog'
+                    state.title = 'Component Dialog'
+                }
             }
         ],
         Utils: [
