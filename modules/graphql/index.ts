@@ -15,20 +15,6 @@ type ResultToStrapiList<D extends { id?: string | null, attributes?: any }[], M>
     }[]
 }
 
-const fetchNonNullAttr = (data: any) => {
-    if (pick.getType(data) === 'object') {
-        let output = data
-        for (let key in data) {
-            if (data[key] !== null) {
-                output[key] = data[key]
-            }
-        }
-        return output
-    } else {
-        return {}
-    }
-}
-
 export class Graphql<
     D extends Record<string, {
         __apiType?: any
@@ -48,6 +34,19 @@ export class Graphql<
         V = Parameters<NonNullable<D[K]['__apiType']>>[0],
         R = ReturnType<NonNullable<D[K]['__apiType']>>
     >(name: K, variable: V) {
+        let fetchNonNullAttr = (data: any) => {
+            if (pick.getType(data) === 'object') {
+                let output: any = {}
+                for (let key in data) {
+                    if (data[key] != null) {
+                        output[key] = data[key]
+                    }
+                }
+                return output
+            } else {
+                return {}
+            }
+        }
         let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any).toPromise()
         let output = result.data as unknown as {
             [K in keyof R] - ?: NonNullable<R[K]>
