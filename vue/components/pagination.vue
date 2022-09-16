@@ -1,14 +1,14 @@
 <template>
-    <div>
+    <div class="mt-4">
         <v-pagination
-            class="mt-4"
+            v-if="show"
             v-model="page"
             :length="length"
             :disabled="loading"
             :total-visible="7">
         </v-pagination>
         <v-progress-linear
-            v-if="loading"
+            v-if="show && loading"
             color="primary"
             buffer-value="0"
             class="mx-auto"
@@ -30,6 +30,11 @@ const { watch, computed } = useVueHooks()
 //
 
 const props = defineProps({
+    alwaysShow: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
     total: {
         type: Number,
         required: false,
@@ -65,13 +70,27 @@ const emit = defineEmits({
 // computed
 //
 
+const show = computed(() => {
+    if (props.alwaysShow) {
+        return true
+    }
+    if (length.value > 1) {
+        return true
+    }
+    return false
+})
+
 const page = computed({
     get: () => props.value,
     set: value => emit('input', value || 1)
 })
 
 const length = computed(() => {
-    return Math.ceil(props.total / props.prePage)
+    let value = Math.ceil(props.total / props.prePage)
+    if (isNaN(value)) {
+        return 1
+    }
+    return value || 1
 })
 
 // =================
