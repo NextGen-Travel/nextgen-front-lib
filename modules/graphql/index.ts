@@ -70,7 +70,7 @@ export class Graphql<
         return output as unknown as {
             [K in keyof Output]: Output[K] extends StrapiList ? 
                 ResultToStrapiList<Output[K]['data'], Output[K]['meta']> :
-                Output[K] extends { data: StrapiData } ? ResultToStrapiData<Output[K]['data']> : Output[K]
+                Output[K] extends { data?: StrapiData } ? ResultToStrapiData<NonNullable<Output[K]['data']>> : Output[K]
         }
     }
 }
