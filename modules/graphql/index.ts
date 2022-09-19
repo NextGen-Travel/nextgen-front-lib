@@ -4,7 +4,7 @@ import { createClient, Client } from 'urql'
 
 type StrapiList<
     D extends { id?: string | null, attributes?: any }[] = { id?: string | null, attributes?: any }[],
-    M = Record<string, any>
+    M extends Record<string, any> = Record<string, any>
 > = {
     data: D
     meta: M
