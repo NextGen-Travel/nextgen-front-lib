@@ -30,8 +30,9 @@ type ResultToStrapiData<D extends StrapiData> = {
     }
 }
 
-type HookChannels = {
+type HookChannels<K extends string> = {
     request: {
+        name: K
         context: Partial<OperationContext>
     }
 }
@@ -41,7 +42,7 @@ export class Graphql<
         __apiType?: any
     }>
 > {
-    private hooks = new Hook<HookChannels>()
+    private hooks = new Hook<HookChannels<Extract<keyof D, string>>>()
     private client: Client
     private documents: D
     constructor(url: string, documents: D) {
@@ -51,7 +52,7 @@ export class Graphql<
         })
     }
 
-    interceptorRequest(cb: (_params: HookChannels['request']) => Promise<any>) {
+    interceptorRequest(cb: (_params: HookChannels<Extract<keyof D, string>>['request']) => Promise<any>) {
         this.hooks.attach('request', cb)
     }
 
@@ -74,8 +75,9 @@ export class Graphql<
             }
         }
         let context: Partial<OperationContext> = {}
+
         // 有無綁定上下文
-        await this.hooks.notify('request', { context })
+        await this.hooks.notify('request', { name, context })
 
         // 發出請求
         let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any, context).toPromise()
