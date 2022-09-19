@@ -77,7 +77,10 @@ export class Graphql<
         let context: Partial<OperationContext> = {}
 
         // 有無綁定上下文
-        await this.hooks.notify('request', { name, context })
+        await this.hooks.notify('request', {
+            name: name as any,
+            context
+        })
 
         // 發出請求
         let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any, context).toPromise()
