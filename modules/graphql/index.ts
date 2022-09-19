@@ -56,7 +56,7 @@ export class Graphql<
         }
         type Output = typeof output
         return output as unknown as {
-            [K in keyof Output]: Output[K] extends StrapiList ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output
+            [K in keyof Output]: Output[K] extends StrapiList ? ResultToStrapiList<Output[K]['data'], Output[K]['meta']> : Output[K]
         }
     }
 }
