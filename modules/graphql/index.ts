@@ -1,6 +1,6 @@
 // see https://livecycle.io/blogs/graphql-and-typescript/
-import { pick } from 'power-helper'
-import { createClient, Client } from 'urql'
+import { pick, Hook } from 'power-helper'
+import { createClient, Client, OperationContext } from 'urql'
 
 type StrapiData = {
     id?: string | null
@@ -30,11 +30,18 @@ type ResultToStrapiData<D extends StrapiData> = {
     }
 }
 
+type HookChannels = {
+    request: {
+        context: Partial<OperationContext>
+    }
+}
+
 export class Graphql<
     D extends Record<string, {
         __apiType?: any
     }>
 > {
+    private hooks = new Hook<HookChannels>()
     private client: Client
     private documents: D
     constructor(url: string, documents: D) {
@@ -42,6 +49,10 @@ export class Graphql<
         this.client = createClient({
             url
         })
+    }
+
+    interceptorRequest(cb: (_params: HookChannels['request']) => Promise<any>) {
+        this.hooks.attach('request', cb)
     }
 
     async query<
@@ -62,10 +73,17 @@ export class Graphql<
                 return {}
             }
         }
-        let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any).toPromise()
+        let context: Partial<OperationContext> = {}
+        // 有無綁定上下文
+        await this.hooks.notify('request', { context })
+
+        // 發出請求
+        let result = await this.client.query(this.documents[name] as any, fetchNonNullAttr(variable) as any, context).toPromise()
         let output = result.data as unknown as {
             [K in keyof R] - ?: NonNullable<R[K]>
         }
+
+        // 講請求轉換成相應格式
         type Output = typeof output
         return output as unknown as {
             [K in keyof Output]: Output[K] extends StrapiList ? 
