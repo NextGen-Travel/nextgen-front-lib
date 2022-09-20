@@ -25,6 +25,7 @@
     "vue": "2.7.3"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
     "deep-object-diff": "^1.1.7",
     "graphql": "16.5.0",
