@@ -49,6 +49,14 @@ class OpenApiReader {
         this.document = document
     }
 
+    getServiceName() {
+        let first = this.file[0]
+        let name = this.file.replace(/([-_][a-z])/ig, ($1) => {
+            return $1.toUpperCase().replace('-', '').replace('_', '')
+        }).slice(1)
+        return first.toUpperCase() + name
+    }
+
     /**
      * @param {SchemaObject} data 
      * @returns {JSONSchema}
@@ -237,7 +245,7 @@ class OpenApiReader {
         return jsBeautify(`
             /* eslint-disable */
             /* tslint:disable */
-            export type Definitions = ${defined.replace('export interface __', '').replace('/* tslint:disable */', '')}
+            export type ${this.getServiceName()}Definitions = ${defined.replace('export interface __', '').replace('/* tslint:disable */', '')}
         `)
     }
 }
@@ -252,10 +260,12 @@ module.exports = async(params) => {
         fsx.mkdirSync(params.outputDir)
     }
     for (let { name, value } of docUrl.data.links) {
-        console.log(`正在下載： ${name}`)
-        const result = await axios.get(`https://nextgen-travel.github.io/apis-doc/docs/${value}.yaml`)
-        const json = parse(result.data)
-        const reader = new OpenApiReader(path.basename(value), json)
-        fsx.writeFileSync(`${params.outputDir}/${value}.ts`, await reader.exportNextgenRequest())
+        if (value !== 'main') {
+            console.log(`正在下載： ${name}`)
+            const result = await axios.get(`https://nextgen-travel.github.io/apis-doc/docs/${value}.yaml`)
+            const json = parse(result.data)
+            const reader = new OpenApiReader(path.basename(value), json)
+            fsx.writeFileSync(`${params.outputDir}/${value}.ts`, await reader.exportNextgenRequest())
+        }
     }
 }
