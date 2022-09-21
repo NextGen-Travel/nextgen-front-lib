@@ -139,8 +139,13 @@ class OpenApiReader {
      */
 
     getContentType(data) {
-        if (data && data.content['application/json']) {
-            return 'json'
+        if (data && data.content) {
+            if (data.content['application/json']) {
+                return 'json'
+            }
+            if (data.content['application/x-www-form-urlencoded']) {
+                return 'x-www-form-urlencoded'
+            }
         }
         return 'json'
     }
@@ -165,7 +170,14 @@ class OpenApiReader {
 
     pickJsonSchema(data) {
         if (data) {
-            let schema = data?.content?.['application/json']?.schema
+            let schema
+            let type = this.getContentType(data)
+            if (type === 'json') {
+                schema = data.content?.['application/json']?.schema
+            }
+            if (type === 'x-www-form-urlencoded') {
+                schema = data.content?.['application/x-www-form-urlencoded']?.schema
+            }
             if (schema) {
                 return this.schemaToJsonSchema(schema)
             }
