@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <template v-for="(item, index) in items">
-                    <tr :key="index + 'ii'">
+                    <tr :key="index + 'ii'" :class="{ 'component-twr-is-btn': hasClickItemListener }" @click="clickItme(item)">
                         <td v-for="(field, index) in showFields" :key="index + 'ffii'" class="text-center">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
@@ -63,7 +63,7 @@ import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
-const { reactive, computed, defineProps, onMounted, getCurrentInstance } = useVueHooks()
+const { reactive, computed, defineProps, onMounted, getCurrentInstance, defineEmits } = useVueHooks()
 const peel = pick.peel
 const instance = getCurrentInstance()
 
@@ -103,6 +103,10 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits({
+    clickItem: (_item: any) => true
+})
+
 // =================
 //
 // state
@@ -117,6 +121,10 @@ const state = reactive({
 //
 // computed
 //
+
+const hasClickItemListener = computed(() =>{
+    return instance?.proxy.$listeners && instance?.proxy.$listeners.clickItem
+})
 
 const showFilter = computed(() => {
     if (props.filterShow === false) {
@@ -169,9 +177,20 @@ const hasSlot = (name = 'default') => {
     return false
 }
 
+const clickItme = (item: any) => {
+    emit('clickItem', item)
+}
+
 </script>
 
 <style lang="scss" scoped>
+    .component-twr-is-btn {
+        transition: .25s;
+        cursor: pointer;
+    }
+    .component-twr-is-btn:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
     .component-twr-filter {
         top: -10px;
         right: 0;
