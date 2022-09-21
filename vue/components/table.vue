@@ -104,7 +104,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    clickItem: (_item: any) => true
+    ['click-item']: (_item: any) => true
 })
 
 // =================
@@ -123,7 +123,7 @@ const state = reactive({
 //
 
 const hasClickItemListener = computed(() =>{
-    return instance?.proxy.$listeners && instance?.proxy.$listeners.clickItem
+    return instance?.proxy.$listeners && instance?.proxy.$listeners['click-item']
 })
 
 const showFilter = computed(() => {
@@ -178,7 +178,7 @@ const hasSlot = (name = 'default') => {
 }
 
 const clickItme = (item: any) => {
-    emit('clickItem', item)
+    emit('click-item', item)
 }
 
 </script>

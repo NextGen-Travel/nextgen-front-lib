@@ -13,7 +13,14 @@
                 </template>
             </ng-table>
         </Block>
-    </div>
+        <Block :title="clickItem.title" :desc="clickItem.desc" :code="clickItem.code">
+            <ng-table
+                :fields="clickItem.data.fields"
+                :items="clickItem.data.items"
+                @click-item="showHelloUser">
+            </ng-table>
+        </Block>
+    </div> 
 </template>
 
 <script lang="ts" setup>
@@ -119,6 +126,70 @@ const basic = self.data({
     })
 })
 
+const clickItem = self.data({
+    title: 'Click Item',
+    desc: '點擊欄位',
+    data: {
+        fields: defineFields([
+            {
+                key: 'name',
+                label: '姓名'
+            },
+            {
+                key: 'age',
+                label: '年齡'
+            }
+        ]),
+        items: [
+            {
+                name: '小白',
+                age: 20
+            },
+            {
+                name: '小明',
+                age: 15
+            }
+        ]
+    },
+    code: toVueCode({
+        template: /*html*/`
+            <ng-table
+                :fields="clickItem.data.fields"
+                :items="clickItem.data.items"
+                @click-item="showHelloUser">
+            </ng-table>
+        `,
+        script: /*javascript*/`
+            import { reactive } from 'vue'
+            const state = reactive({
+                fields: defineFields([
+                    {
+                        key: 'name',
+                        label: '姓名'
+                    },
+                    {
+                        key: 'age',
+                        label: '年齡'
+                    }
+                ]),
+                items: [
+                    {
+                        name: '小白',
+                        age: 20
+                    },
+                    {
+                        name: '小明',
+                        age: 18
+                    }
+                ]
+            })
+            const showHelloUser = (user) => {
+                alert(\`Hello \${user.name}.\`)
+            }
+        `
+    })
+})
+
 // =================
 //
 // methods
@@ -128,4 +199,7 @@ const showAlert = (name: string) => {
     alert(`Hello ${name}.`)
 }
 
+const showHelloUser = (user) => {
+    alert(`Hello ${user.name}.`)
+}
 </script>
