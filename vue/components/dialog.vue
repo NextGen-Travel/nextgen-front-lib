@@ -1,19 +1,22 @@
 <template>
-    <v-dialog v-model="state.show" :max-width="maxWidth" :persistent="persistent">
-        <v-card v-if="state.show">
-            <v-card-title class="pb-0">
-                <span v-if="title">{{ title }}</span>
-                <v-spacer></v-spacer>
-                <v-btn icon>
-                    <v-icon @click="state.show = false">mdi-close</v-icon>
-                </v-btn>
-            </v-card-title>
-            <v-divider class="mb-5 mt-3"></v-divider>
-            <div class="pa-5 pt-0">
-                <slot></slot>
-            </div>
-        </v-card>
-    </v-dialog>
+    <div>
+        <slot name="active" :switchShow="switchShow"></slot>
+        <v-dialog v-model="state.show" :max-width="maxWidth" :persistent="persistent">
+            <v-card v-if="state.show">
+                <v-card-title class="pb-0">
+                    <span v-if="title">{{ title }}</span>
+                    <v-spacer></v-spacer>
+                    <v-btn icon>
+                        <v-icon @click="state.show = false">mdi-close</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <v-divider class="mb-5 mt-3"></v-divider>
+                <div class="pa-5 pt-0">
+                    <slot></slot>
+                </div>
+            </v-card>
+        </v-dialog>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -85,5 +88,14 @@ watch(() => props.value, () => {
 onMounted(() => {
     state.show = props.value
 })
+
+// =================
+//
+// metohds
+//
+
+const switchShow = () => {
+    state.show = !state.show
+}
 
 </script>
