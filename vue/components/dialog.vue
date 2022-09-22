@@ -1,7 +1,7 @@
 <template>
     <div>
         <slot name="active" :switchShow="switchShow"></slot>
-        <v-dialog v-model="state.show" :max-width="maxWidth" :persistent="persistent">
+        <v-dialog v-model="state.show" width="90vw" :max-width="maxWidth" :persistent="persistent">
             <v-card v-if="state.show">
                 <v-card-title class="pb-0">
                     <span v-if="title">{{ title }}</span>
@@ -12,7 +12,7 @@
                 </v-card-title>
                 <v-divider class="mb-5 mt-3"></v-divider>
                 <div class="pa-5 pt-0">
-                    <slot></slot>
+                    <slot :switchShow="switchShow"></slot>
                 </div>
             </v-card>
         </v-dialog>
@@ -94,8 +94,12 @@ onMounted(() => {
 // metohds
 //
 
-const switchShow = () => {
-    state.show = !state.show
+const switchShow = (show?: boolean) => {
+    if (show == null) {
+        state.show = !state.show
+    } else {
+        state.show = show
+    }
 }
 
 </script>
