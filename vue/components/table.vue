@@ -25,7 +25,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="hasSlot('details')" :key="index + 'iddi'">
+                    <tr v-if="hasSlot('details')" class="component-twr-detail" :key="index + 'iddi'">
                         <td colspan="100%">
                             <slot class="w-100" name="details" :item="item"></slot>
                         </td>
@@ -196,5 +196,9 @@ const clickItme = (item: any) => {
         right: 0;
         position: absolute;
         cursor: pointer;
+    }
+    .component-twr-detail {
+        height: auto !important;
+        padding: 0 !important;
     }
 </style>
