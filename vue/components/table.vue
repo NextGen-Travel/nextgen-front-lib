@@ -18,10 +18,10 @@
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
-                                :value="field.formatter(peel(item, field.key), field.key, item)">
+                                :value="field.formatter(peel(item, field.key), field.key, item, index)">
                             </slot>
                             <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item) }}
+                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item, index) }}
                             </div>
                         </td>
                     </tr>

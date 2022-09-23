@@ -3,7 +3,7 @@ import { createUuid } from './uid'
 export const defineFields = <K extends string>(items: {
     key?: K
     label: string
-    formatter?: (_value: any, _key: string, _item: any) => any
+    formatter?: (_value: any, _key: string, _item: any, _index: number) => any
     optionShow?: boolean
 }[]) => {
     return items.map(e => {
