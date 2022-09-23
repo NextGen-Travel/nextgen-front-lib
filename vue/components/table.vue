@@ -25,8 +25,8 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="hasSlot('details')" class="component-twr-detail" :key="index + 'iddi'">
-                        <td colspan="100%">
+                    <tr v-if="hasSlot('details')" :key="index + 'iddi'">
+                        <td colspan="100%" class="component-twr-detail">
                             <slot class="w-100" name="details" :item="item"></slot>
                         </td>
                     </tr>
