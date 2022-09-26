@@ -234,7 +234,7 @@ export class Request<
         if (context.contentType === 'x-www-form-urlencoded') {
             context.body = stringify(context.body, {
                 arrayFormat: 'brackets'
-            }) as any
+            }).replace('[][]', '[]') as any
             headers.contentType = 'application/x-www-form-urlencoded'
         }
         if (context.contentType === 'multipart/form-data') {
