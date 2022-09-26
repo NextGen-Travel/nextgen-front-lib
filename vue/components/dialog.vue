@@ -35,11 +35,6 @@ const props = defineProps({
         required: false,
         default: () => false
     },
-    autoOpen: {
-        type: Boolean,
-        required: false,
-        default: () => false
-    },
     maxWidth: {
         type: String,
         required: false,
@@ -92,9 +87,6 @@ watch(() => props.value, () => {
 
 onMounted(() => {
     state.show = props.value
-    if (props.autoOpen) {
-        state.show = true
-    }
 })
 
 // =================

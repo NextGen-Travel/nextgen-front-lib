@@ -35,6 +35,11 @@ type HookChannels<K extends string> = {
         name: K
         context: Partial<OperationContext>
     }
+    response: {
+        name: K
+        result: any
+        context: Partial<OperationContext>
+    }
 }
 
 export class Graphql<
@@ -54,6 +59,10 @@ export class Graphql<
 
     interceptorRequest(cb: (_params: HookChannels<Extract<keyof D, string>>['request']) => Promise<any>) {
         this.hooks.attach('request', cb)
+    }
+
+    interceptorResponse(cb: (_params: HookChannels<Extract<keyof D, string>>['response']) => Promise<any>) {
+        this.hooks.attach('response', cb)
     }
 
     async query<
@@ -87,6 +96,13 @@ export class Graphql<
         let output = result.data as unknown as {
             [K in keyof R] - ?: NonNullable<R[K]>
         }
+
+        // 可以作為後續是否錯誤的處理
+        await this.hooks.notify('response', {
+            name: name as any,
+            context,
+            result
+        })
 
         // 講請求轉換成相應格式
         type Output = typeof output
