@@ -232,7 +232,9 @@ export class Request<
         }
         // Content Type
         if (context.contentType === 'x-www-form-urlencoded') {
-            context.body = stringify(context.body) as any
+            context.body = stringify(context.body, {
+                arrayFormat: 'brackets'
+            }) as any
             headers.contentType = 'application/x-www-form-urlencoded'
         }
         if (context.contentType === 'multipart/form-data') {
