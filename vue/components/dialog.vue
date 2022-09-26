@@ -6,8 +6,8 @@
                 <v-card-title class="pb-0">
                     <span v-if="title">{{ title }}</span>
                     <v-spacer></v-spacer>
-                    <v-btn icon>
-                        <v-icon @click="state.show = false">mdi-close</v-icon>
+                    <v-btn icon @click="state.show = false">
+                        <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-card-title>
                 <v-divider class="mb-5 mt-3"></v-divider>
@@ -31,6 +31,11 @@ const { reactive, watch, onMounted } = useVueHooks()
 
 const props = defineProps({
     persistent: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
+    autoOpen: {
         type: Boolean,
         required: false,
         default: () => false
@@ -87,6 +92,9 @@ watch(() => props.value, () => {
 
 onMounted(() => {
     state.show = props.value
+    if (props.autoOpen) {
+        state.show = true
+    }
 })
 
 // =================
