@@ -1,5 +1,5 @@
 import { stringify } from 'qs'
-import { Event, flow } from 'power-helper'
+import { Event, flow, text } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../../core/error'
 
@@ -232,9 +232,17 @@ export class Request<
         }
         // Content Type
         if (context.contentType === 'x-www-form-urlencoded') {
-            context.body = stringify(context.body, {
+            let body: any = {}
+            for (let [key, value] of Object.entries(context.body)) {
+                if (text.lastMatch(key, '[]')) {
+                    body[key.slice(0, -2)] = value
+                } else {
+                    body[key] = value
+                }
+            }
+            context.body = stringify(body, {
                 arrayFormat: 'brackets'
-            }).replace('[][]', '[]') as any
+            }) as any
             headers.contentType = 'application/x-www-form-urlencoded'
         }
         if (context.contentType === 'multipart/form-data') {
