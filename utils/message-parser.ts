@@ -4,16 +4,18 @@ export const parseMessage = (data: any, def: string): string => {
     }
     // Axios
     if (data.name === 'AxiosError') {
-        if (data.response && data.response.data) {
-            if (typeof data.response.data === 'string') {
-                return data.response.data
+        if (typeof data.response?.data === 'string') {
+            return data.response.data
+        }
+        if (data.response?.data?.error?.message) {
+            let mainMessage = data.response.data.error.message
+            let details = data.response?.data?.error?.details
+            if (details) {
+                return `${mainMessage} => ${details}`
             }
-            if (data.response.data.error && data.response.data.message) {
-                return data.response.message
-            }
+            return mainMessage
         }
     }
-    // Gql
     let message = data.message
     if (message) {
         if (typeof message === 'string') {
