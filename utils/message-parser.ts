@@ -10,7 +10,7 @@ export const parseMessage = (data: any, def: string): string => {
         if (data.response?.data?.error?.message) {
             let mainMessage = data.response.data.error.message
             let details = data.response?.data?.error?.details
-            if (details) {
+            if (typeof details === 'string') {
                 return `${mainMessage} => ${details}`
             }
             return mainMessage

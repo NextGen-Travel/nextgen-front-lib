@@ -95,7 +95,7 @@ export class RuleProvider<T extends ProviderOptions> {
                     return true
                 }
                 try {
-                    rule.handler(Yup, meta).notRequired().validateSync(value)
+                    rule.handler(Yup, meta[0]).notRequired().validateSync(value)
                 } catch (error: any) {
                     return typeof error === 'string' ? error : error.errors[0]
                 }
