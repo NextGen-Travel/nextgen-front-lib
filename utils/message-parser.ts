@@ -1,4 +1,5 @@
 export const parseMessage = (data: any, def: string): string => {
+    console.dir('Parse Error =>', data)
     if (typeof data === 'string') {
         return data
     }
