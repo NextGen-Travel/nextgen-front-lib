@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const syncRequestApiTypes = require('./sync-request-api-types')
+const build = require('./build')
 
 const mode = process.argv[2]
 
@@ -11,6 +12,9 @@ const main = async() => {
         await syncRequestApiTypes({
             outputDir
         })
+    }
+    if (mode === 'build') {
+        await build()
     }
 }
 
