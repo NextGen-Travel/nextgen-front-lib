@@ -6,19 +6,25 @@ const exception = serviceException.checkout('validate')
 
 type Rule = {
     required: boolean
-    handler: (_value: any) => string | true
+    handler: (_params: GetParams, _value: any) => string | true
+}
+
+type GetParams = {
+    required?: boolean
 }
 
 // Validation
 
 class Validation<T extends Record<string, Rule>> {
+    private provider: RuleProvider<any>
     private properties: T
-    constructor(properties: T) {
+    constructor(provider: RuleProvider<any>, properties: T) {
+        this.provider = provider
         this.properties = properties
     }
 
-    get<K extends keyof T>(name: K) {
-        return this.properties[name].handler
+    get<K extends keyof T>(name: K, options: GetParams = {}) {
+        return this.properties[name].handler.bind(this.provider, options)
     }
 
     isRequire<K extends keyof T>(name: K) {
@@ -87,11 +93,12 @@ export class RuleProvider<T extends ProviderOptions> {
         }
         return {
             required,
-            handler: (value: any): true | string => {
-                if (required && isEmpty(value)) {
+            handler: (params: GetParams, value: any): true | string => {
+                let rq = params.required == null ? required : params.required
+                if (rq && isEmpty(value)) {
                     return rule.requireMessage ? rule.requireMessage() : this.options.requireMessage()
                 }
-                if (required === false && isEmpty(value)) {
+                if (rq === false && isEmpty(value)) {
                     return true
                 }
                 try {
@@ -110,6 +117,6 @@ export class RuleProvider<T extends ProviderOptions> {
             ReturnType<this['getRule']>
         >
     >(cb: T): Validation<ReturnType<T>> {
-        return new Validation(cb(this.getRule.bind(this))) as any
+        return new Validation(this, cb(this.getRule.bind(this))) as any
     }
 }
