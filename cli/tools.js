@@ -8,7 +8,7 @@ const log = new Log('Nextgen Build')
 module.exports = {
     log,
     run: (cb) => cb(),
-    rootPath: (path) => `${__dirname}/../${path}`,
+    rootPath: (path) => `./${path}`,
     platform: () => {
         if (process.platform === 'win32') {
             return 'Windows'
