@@ -12,20 +12,20 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for="(item, index) in items">
-                    <tr :key="index + 'ii'" :class="{ 'component-twr-is-btn': hasClickItemListener }" @click="clickItme(item)">
+                <template v-for="(item, ti) in items">
+                    <tr :key="ti + 'ii'" :class="{ 'component-twr-is-btn': hasClickItemListener }" @click="clickItme(item)">
                         <td v-for="(field, index) in showFields" :key="index + 'ffii'" class="text-center">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
-                                :value="field.formatter(peel(item, field.key), field.key, item, index)">
+                                :value="field.formatter(peel(item, field.key), field.key, item, ti)">
                             </slot>
                             <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item, index) }}
+                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item, ti) }}
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="hasSlot('details')" :key="index + 'iddi'">
+                    <tr v-if="hasSlot('details')" :key="ti + 'iddi'">
                         <td colspan="100%" class="component-twr-detail">
                             <slot class="w-100" name="details" :item="item"></slot>
                         </td>
