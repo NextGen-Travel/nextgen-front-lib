@@ -106,7 +106,7 @@ class OpenApiReader {
         for (let key in data.properties) {
             /** @type {SchemaObject} */
             let property = data.properties[key]
-            if (property.required == null && Array.isArray(output.required)) {
+            if (data.required == null && Array.isArray(output.required)) {
                 output.required.push(key)
             }
             if (output.properties) {
