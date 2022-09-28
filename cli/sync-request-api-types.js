@@ -99,14 +99,14 @@ class OpenApiReader {
         /** @type {JSONSchema} */
         let output = {
             type: 'object',
-            required: [],
+            required: [...(data.required || [])],
             additionalProperties: false,
             properties: {}
         }
         for (let key in data.properties) {
             /** @type {SchemaObject} */
             let property = data.properties[key]
-            if (property.required !== false && Array.isArray(output.required)) {
+            if (property.required == null && Array.isArray(output.required)) {
                 output.required.push(key)
             }
             if (output.properties) {
