@@ -7,6 +7,7 @@ export const parseMessage = (data: any, def: string): string => {
         if (typeof data.response?.data === 'string') {
             return data.response.data
         }
+        // strapi
         if (data.response?.data?.error?.message) {
             let mainMessage = data.response.data.error.message
             let details = data.response?.data?.error?.details

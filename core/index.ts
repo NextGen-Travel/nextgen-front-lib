@@ -8,6 +8,9 @@ import Loaders from '../vue/components/loaders.vue'
 import Toolbar from '../vue/components/toolbar.vue'
 import Pagination from '../vue/components/pagination.vue'
 
+import type {} from 'node_modules/vue-i18n/types/index'
+import type {} from 'node_modules/vue-router/types/index'
+
 let VueHooks: typeof Hooks = {} as any
 let VueOptions: {
     staticUrl: string

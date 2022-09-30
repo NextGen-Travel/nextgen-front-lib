@@ -94,12 +94,8 @@ onMounted(() => {
 // metohds
 //
 
-const switchShow = (show?: boolean) => {
-    if (show == null) {
-        state.show = !state.show
-    } else {
-        state.show = show
-    }
+const switchShow = () => {
+    state.show = !state.show
 }
 
 </script>
