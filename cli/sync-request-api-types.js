@@ -253,7 +253,7 @@ class OpenApiReader {
                 if (item.body) {
                     for (let key in item.body) {
                         if (item.body[key].format === 'binary') {
-                            item.body[key].type = File
+                            item.body[key].type = 'File'
                         }
                     }
                 }
