@@ -79,8 +79,8 @@ class OpenApiReader {
                 description: data.description || 'no description',
                 examples: data.example ? [data.example] : [],
             }
-            if (data.format) {
-                output.format = data.format
+            if (data.format === 'binary') {
+                output.type = File
             }
             if (data.enum) {
                 output.enum = data.enum

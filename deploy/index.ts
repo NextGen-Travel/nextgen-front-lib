@@ -18,7 +18,7 @@ const main = async() => {
     ])
     print('正在推上 git ...')
     await git.add('.')
-    await git.commit(`feat: ${commitMessage}@${Math.floor(Date.now() / 1000)}`)
+    await git.commit(`feat: ${commitMessage || '例行更新'}@${Math.floor(Date.now() / 1000)}`)
     await git.push()
     print('部署完成。')
     print(`可引用： { "nextgen-front-lib": "git+https://github.com/NextGen-Travel/nextgen-front-lib.git#${current}" }`)
