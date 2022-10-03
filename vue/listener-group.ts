@@ -14,7 +14,7 @@ export const useListenerGroup = () => {
             isOff = true
             listeners.forEach(e => e?.off())
         } else {
-            throw exception.fail('offAll() is failed, because already called.')
+            throw exception.create('offAll() is failed, because already called.')
         }
     }
     onUnmounted(() => {
@@ -28,7 +28,7 @@ export const useListenerGroup = () => {
             if (isOff === false) {
                 listeners.push(...ls)
             } else {
-                throw exception.fail('push() is failed, because already called offAll().')
+                throw exception.create('push() is failed, because already called offAll().')
             }
         }
     }

@@ -19,7 +19,7 @@ export class CryptoAES {
 
     static encrypt<T extends Support>(from: T, target: string, key: string): string {
         if (from === 'php-encryption') {
-            throw exception.fail('CryptoAES encrypt not support php-encryption')
+            throw exception.create('CryptoAES encrypt not support php-encryption')
         } else {
             return AES.encrypt(target, key).toString()
         }

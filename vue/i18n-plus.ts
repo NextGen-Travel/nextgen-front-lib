@@ -23,7 +23,7 @@ export class VueI18nPlus<Keys extends string> {
         this.rawParams = params
         this.namespace = namespace
         if (this.rawParams.messages && this.rawParams.messages[this.vueI18n.locale][this.namespace] == null) {
-            throw exception.fail(`I18n plus need defined "${namespace}" namespace message.`)
+            throw exception.create(`I18n plus need defined "${namespace}" namespace message.`)
         }
     }
 

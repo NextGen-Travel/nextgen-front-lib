@@ -89,7 +89,7 @@ export class RuleProvider<T extends ProviderOptions> {
     ): Rule {
         let rule = this.options.rules[name as string]
         if (rule == null) {
-            throw exception.fail(`Rule ${name as string} not found.`)
+            throw exception.create(`Rule ${name as string} not found.`)
         }
         return {
             required,

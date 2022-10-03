@@ -1,4 +1,4 @@
 import { config } from './config'
-import { ServiceException } from '../modules/service-exception'
+import { Exception } from 'power-helper'
 
-export const serviceException = new ServiceException(config.libName)
+export const serviceException = new Exception(config.libName)

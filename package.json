@@ -4,7 +4,7 @@
   "description": "lib.",
   "main": "./index.js",
   "scripts": {
-    "lint": "eslint . --ext .ts"
+    "test": "eslint . --ext .ts && tsc"
   },
   "bin": {
     "nextgen-front-lib": "./cli/index.js"

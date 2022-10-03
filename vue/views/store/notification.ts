@@ -1,4 +1,4 @@
-import { createUuid } from '../../../utils/uid'
+import { flow } from 'power-helper'
 import { defineStore } from 'pinia'
 
 export type MessageType = 'info' | 'warning' | 'danger' | 'success'
@@ -24,7 +24,7 @@ export const useLayoutNotificationStore = defineStore('lib-notification', {
         }) {
             this.$state._messages.push({
                 ...params,
-                id: createUuid(),
+                id: flow.createUuid(),
                 duration: 0,
                 clicked: false
             })

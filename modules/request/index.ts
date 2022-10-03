@@ -182,7 +182,7 @@ export class Request<
         if (params) {
             for (let key in params) {
                 if (params[key] == null) {
-                    throw exception.fail(`Url ${url} param ${key} is null.`)
+                    throw exception.create(`Url ${url} param ${key} is null.`)
                 }
                 path = path.replace(':' + key, params[key].toString())
             }
@@ -216,7 +216,7 @@ export class Request<
         params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>
     ): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']> {
         if (this.installed === false) {
-            throw exception.fail(`Request ${this.name} not installed.`)
+            throw exception.create(`Request ${this.name} not installed.`)
         }
         let parsed = this.parseUrl(to as string, params.params)
         let headers = params.headers || {}
