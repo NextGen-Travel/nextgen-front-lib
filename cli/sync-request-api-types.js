@@ -8,6 +8,8 @@ const { parse } = require('yaml')
 const { compile } = require('json-schema-to-typescript')
 const { js: jsBeautify } = require('js-beautify')
 
+const baseUrl = 'https://raw.githubusercontent.com/NextGen-Travel/apis-doc/main'
+
 /**
  * @param {string} content 
  */
@@ -186,7 +188,7 @@ class OpenApiReader {
     }
 
     getLink() {
-        return `https://nextgen-travel.github.io/apis-doc/?target=${this.file}`
+        return `${baseUrl}/?target=${this.file}`
     }
 
     export() {
@@ -267,14 +269,14 @@ class OpenApiReader {
  */
 
 module.exports = async(params) => {
-    const docUrl = await axios.get('https://nextgen-travel.github.io/apis-doc/config.json')
+    const docUrl = await axios.get(`${baseUrl}/config.json`)
     if (fsx.existsSync(params.outputDir) === false) {
         fsx.mkdirSync(params.outputDir)
     }
     for (let { name, value } of docUrl.data.links) {
         if (value !== 'main') {
             console.log(`正在下載： ${name}`)
-            const result = await axios.get(`https://nextgen-travel.github.io/apis-doc/docs/${value}.yaml`)
+            const result = await axios.get(`${baseUrl}/docs/${value}.yaml`)
             const json = parse(result.data)
             const reader = new OpenApiReader(path.basename(value), json)
             fsx.writeFileSync(`${params.outputDir}/${value}.ts`, await reader.exportNextgenRequest())
