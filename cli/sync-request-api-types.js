@@ -251,12 +251,11 @@ class OpenApiReader {
             }
             if (tsData.properties) {
                 if (item.body) {
-                    for (let key in item.body) {
-                        if (item.body[key].format === 'binary') {
-                            item.body[key].type = 'File'
+                    for (let key in item.body.properties) {
+                        if (item.body.properties[key].format === 'binary') {
+                            item.body.properties[key].type = File
                         }
                     }
-                    console.log('DDDD', item.body)
                 }
                 tsData.properties[item.path] = {
                     type: 'object',
