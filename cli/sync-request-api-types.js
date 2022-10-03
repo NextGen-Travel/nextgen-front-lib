@@ -79,6 +79,9 @@ class OpenApiReader {
                 description: data.description || 'no description',
                 examples: data.example ? [data.example] : [],
             }
+            if (data.format) {
+                output.format = data.format
+            }
             if (data.enum) {
                 output.enum = data.enum
             }
@@ -148,6 +151,9 @@ class OpenApiReader {
             if (data.content['application/x-www-form-urlencoded']) {
                 return 'x-www-form-urlencoded'
             }
+            if (data.content['multipart/form-data']) {
+                return 'multipart/form-data'
+            }
         }
         return 'json'
     }
@@ -176,6 +182,9 @@ class OpenApiReader {
             let type = this.getContentType(data)
             if (type === 'json') {
                 schema = data.content?.['application/json']?.schema
+            }
+            if (type === 'multipart/form-data') {
+                schema = data.content?.['multipart/form-data']?.schema
             }
             if (type === 'x-www-form-urlencoded') {
                 schema = data.content?.['application/x-www-form-urlencoded']?.schema
