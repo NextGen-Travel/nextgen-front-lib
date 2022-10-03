@@ -16,10 +16,13 @@ const main = async() => {
             message: '請輸入部署訊息：',
         }
     ])
+    print('正在推上 git ...')
     await git.add('.')
-    await git.commit(`feat: ${commitMessage}@${Date.now()}`)
+    await git.commit(`feat: ${commitMessage}@${Math.floor(Date.now() / 1000)}`)
     await git.push()
     print('部署完成。')
+    print(`可引用： { "nextgen-front-lib": "git+https://github.com/NextGen-Travel/nextgen-front-lib.git#${current}" }`)
+    print('或是透過升級： yarn upgrade nextgen-front-lib')
 }
 
 main()
