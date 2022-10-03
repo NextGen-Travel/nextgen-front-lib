@@ -253,7 +253,7 @@ class OpenApiReader {
                 if (item.body) {
                     for (let key in item.body.properties) {
                         if (item.body.properties[key].format === 'binary') {
-                            item.body.properties[key].type = 'File'
+                            item.body.properties[key].tsType = 'File'
                         }
                     }
                 }
@@ -271,11 +271,14 @@ class OpenApiReader {
                 }
             }
         }
-        const defined = await compile(tsData, '__')
+        const defined = await compile(tsData, '__', {
+            ignoreMinAndMaxItems: true,
+            bannerComment: ''
+        })
         return jsBeautify(`
             /* eslint-disable */
             /* tslint:disable */
-            export type ${this.getServiceName()}Definitions = ${defined.replace('export interface __', '').replace('/* tslint:disable */', '')}
+            export type ${this.getServiceName()}Definitions = ${defined.replace('export interface __', '')}
         `)
     }
 }
