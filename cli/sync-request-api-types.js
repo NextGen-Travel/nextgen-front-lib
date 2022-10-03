@@ -80,7 +80,7 @@ class OpenApiReader {
                 examples: data.example ? [data.example] : [],
             }
             if (data.format === 'binary') {
-                output.type = File
+                output.format = data.format
             }
             if (data.enum) {
                 output.enum = data.enum
@@ -250,6 +250,13 @@ class OpenApiReader {
                 tsData.required.push(item.path)
             }
             if (tsData.properties) {
+                if (item.body) {
+                    for (let key in item.body) {
+                        if (item.body[key].format === 'binary') {
+                            item.body[key].type = File
+                        }
+                    }
+                }
                 tsData.properties[item.path] = {
                     type: 'object',
                     description: `[${item.summary}] - ${item.description}`,
