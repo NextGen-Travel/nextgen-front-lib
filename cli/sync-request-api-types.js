@@ -256,6 +256,7 @@ class OpenApiReader {
                             item.body[key].type = 'File'
                         }
                     }
+                    console.log('DDDD', item.body)
                 }
                 tsData.properties[item.path] = {
                     type: 'object',
