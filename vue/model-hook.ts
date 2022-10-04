@@ -38,10 +38,10 @@ export const createLaravelResourcePaginate = <T>() => {
             current_page: 1,
             last_page: 0,
             total: 0,
-            from: '',
+            from: 0,
             path: '',
             per_page: 10,
-            to: ''
+            to: 0
         }
     }
 }
