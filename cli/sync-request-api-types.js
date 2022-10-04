@@ -164,14 +164,19 @@ class OpenApiReader {
 
     pickParametersInQuery(parameters) {
         let queries = parameters.filter(e => e.in === 'query')
+        let required = []
         let queryProperties = {}
         for (let query of queries) {
             queryProperties[query.name] = {
                 type: query.schema.type,
-                required: query.required
+                enum: query.schema.enum
+            }
+            if (queries.require) {
+                required.push(query.name)
             }
         }
         return queries.length === 0 ? null : this.schemaObjectToJsonSchema({
+            required,
             properties: queryProperties
         })
     }

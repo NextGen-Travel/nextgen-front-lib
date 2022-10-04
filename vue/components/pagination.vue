@@ -98,7 +98,7 @@ const length = computed(() => {
 // watch
 //
 
-watch(() => page, () => {
+watch(() => page.value, () => {
     if (props.scrollTo) {
         if (props.scrollTo === 'top') {
             window.scrollTo({
@@ -115,4 +115,3 @@ watch(() => page, () => {
 })
 
 </script>
-    
