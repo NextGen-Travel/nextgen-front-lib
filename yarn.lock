@@ -2004,10 +2004,10 @@ postcss@^8.4.14:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.3.2.tgz#849d82c2a2c9bd2f5df2b4c90fc00f2c0addbb7f"
-  integrity sha512-tqDaV/RI3JV6K26Vgh1EsjMaSF8L6nXe4keKDzBbIc9Upx1PhPTkhliB0dOO1w1kKRMNrdQRUbibzhn53NbRNg==
+power-helper@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.3.3.tgz#a94cf3ef976b90747d4911de1ce43249c6e3f441"
+  integrity sha512-PhDjAvwGf1x4eD199vi99z+EzrTPpphGnDkZTXz030zHcgZP1DAH7zQ6XfUSWPbFhahQl7sOezhP5iSFwvJYNQ==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
