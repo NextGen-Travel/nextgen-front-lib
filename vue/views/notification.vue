@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { Ticker } from 'power-helper'
 import { useVueHooks } from '../../core'
-import { useLayoutNotificationStore, Message, MessageType } from './store/notification'
+import { useLibNotificationStore, Message, MessageType } from './store/notification'
 
 const { reactive, onMounted, onUnmounted, computed } = useVueHooks()
 
@@ -36,7 +36,7 @@ const { reactive, onMounted, onUnmounted, computed } = useVueHooks()
 // store
 //
 
-const layoutNotificationStore = useLayoutNotificationStore()
+const libNotificationStore = useLibNotificationStore()
 
 // =================
 //
@@ -54,7 +54,7 @@ const state = reactive({
 //
 
 const messages = computed(() => {
-    return layoutNotificationStore.messages.slice(0, 4)
+    return libNotificationStore.messages.slice(0, 4)
 })
 
 // =================
@@ -74,7 +74,7 @@ onMounted(() => {
             }
         })
         if (needClear) {
-            layoutNotificationStore.clear()
+            libNotificationStore.clear()
         }
     })
 })
@@ -110,7 +110,7 @@ const clickMessage = (message: Message) => {
 const removeMessage = (message: Message) => {
     setTimeout(() => {
         message.duration = 120
-        layoutNotificationStore.clear()
+        libNotificationStore.clear()
     }, 100)
 }
 </script>

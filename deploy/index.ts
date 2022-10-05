@@ -9,7 +9,13 @@ const main = async() => {
     print('正在檢查程式碼...')
     await exec(['yarn test'])
     print(`正在部署版本: ${current}`)
-    const { commitMessage } = await inquirer.prompt([
+    const { mode, commitMessage } = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'mode',
+            message: '選擇修正類型',
+            choices: ['feat', 'fix']
+        },
         {
             type: 'input',
             name: 'commitMessage',
@@ -18,7 +24,7 @@ const main = async() => {
     ])
     print('正在推上 git ...')
     await git.add('.')
-    await git.commit(`feat: ${commitMessage || '例行更新'}@${Math.floor(Date.now() / 1000)}`)
+    await git.commit(`${mode}: ${commitMessage || '例行更新'}@${Math.floor(Date.now() / 1000)}`)
     await git.push()
     print('部署完成。')
     print(`可引用： { "nextgen-front-lib": "git+https://github.com/NextGen-Travel/nextgen-front-lib.git#${current}" }`)

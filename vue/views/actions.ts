@@ -1,16 +1,15 @@
-import { useLayoutConfirmStore } from './store/confirm'
-import { useLayoutNotificationStore, MessageType } from './store/notification'
+import { useLibConfirmStore } from './store/confirm'
+import { useLibNotificationStore, MessageType } from './store/notification'
 
 const openConfirm = (message: string, handler: (_done: () => void) => void): void => {
-    let confirm = useLayoutConfirmStore()
-    confirm.open({
+    useLibConfirmStore().open({
         message,
         handler
     })
 }
 
 const showToast = (type: MessageType, content: string) => {
-    useLayoutNotificationStore().push({
+    useLibNotificationStore().push({
         type,
         content
     })

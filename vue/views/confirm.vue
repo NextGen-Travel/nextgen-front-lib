@@ -22,11 +22,11 @@
 <script lang="ts" setup>
 import { useVueHooks } from '../../core'
 import { computed, watch } from 'vue'
-import { useLayoutConfirmStore } from './store/confirm'
+import { useLibConfirmStore } from './store/confirm'
 
 const { reactive, defineProps } = useVueHooks()
 
-const confirm = useLayoutConfirmStore()
+const libConfirmStore = useLibConfirmStore()
 
 // =================
 //
@@ -60,8 +60,8 @@ const state = reactive({
 // computed
 //
 
-const open = computed(() => confirm.isOpen)
-const message = computed(() => confirm.message)
+const open = computed(() => libConfirmStore.state.isOpen)
+const message = computed(() => libConfirmStore.state.message)
 
 // =================
 //
@@ -78,7 +78,7 @@ watch(() => open.value, () => {
 //
 
 const close = () => {
-    confirm.cancel()
+    libConfirmStore.cancel()
     setTimeout(() => {
         state.loading = false
     }, 200)
@@ -86,6 +86,6 @@ const close = () => {
 
 const commit = () => {
     state.loading = true
-    confirm.handler(close)
+    libConfirmStore.state.handler(close)
 }
 </script>
