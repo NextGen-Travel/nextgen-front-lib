@@ -183,6 +183,12 @@ const clickItme = (item: any) => {
 
 </script>
 
+<script lang="ts">
+export default {
+    name: 'ng-table'
+}
+</script>
+    
 <style lang="scss" scoped>
     .component-twr-is-btn {
         transition: .25s;

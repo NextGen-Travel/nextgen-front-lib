@@ -1,5 +1,5 @@
 <template>
-    <div @click="clickInput">
+    <div @click="clickInput" style="width: fit-content; height: fit-content;">
         <slot></slot>
         <input
             hidden
@@ -12,12 +12,17 @@
 </template>
 
 <script lang="ts" setup>
+// TODO: fileType 也須透過 js 檢查
 import { Loader } from 'power-helper'
 import { useVueHooks } from '../../core'
 
 export type OutputFile = {
     url: string | ArrayBuffer | null
     file: File
+}
+
+export type UploadData = {
+    files: OutputFile[]
 }
 
 const { ref, defineProps, defineEmits } = useVueHooks()
@@ -87,4 +92,10 @@ const pickFile = async() => {
     }
 }
 
+</script>
+
+<script lang="ts">
+export default {
+    name: 'ng-update'
+}
 </script>

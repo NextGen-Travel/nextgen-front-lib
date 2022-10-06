@@ -1,6 +1,7 @@
 import { flow } from 'power-helper'
 import { defineStore } from 'pinia'
-import { computed, reactive } from 'vue'
+import { useVueHooks } from '../../../core'
+
 
 export type MessageType = 'info' | 'warning' | 'danger' | 'success'
 
@@ -13,6 +14,8 @@ export type Message = {
 }
 
 export const useLibNotificationStore = defineStore('lib-notification', () => {
+    const { reactive, computed } = useVueHooks()
+
     // =================
     //
     // state

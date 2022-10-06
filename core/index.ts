@@ -42,9 +42,9 @@ export const NextgenLib = {
         addComponent('img', Img)
         addComponent('form', Form)
         addComponent('table', Table)
-        addComponent('loader', Loaders)
         addComponent('dialog', Dialog)
         addComponent('upload', Upload)
+        addComponent('loaders', Loaders)
         addComponent('toolbar', Toolbar)
         addComponent('pagination', Pagination)
     }

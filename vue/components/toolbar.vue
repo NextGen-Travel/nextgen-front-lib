@@ -57,3 +57,10 @@ onMounted(() => {
         overflow-x: auto;
     }
 </style>
+
+<script lang="ts">
+export default {
+    name: 'ng-toolbar'
+}
+</script>
+    

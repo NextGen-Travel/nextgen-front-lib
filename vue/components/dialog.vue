@@ -99,3 +99,10 @@ const switchShow = () => {
 }
 
 </script>
+
+<script lang="ts">
+export default {
+    name: 'ng-dialog'
+}
+</script>
+    

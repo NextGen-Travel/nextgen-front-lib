@@ -16,7 +16,6 @@ export class VueSelf {
                 }
                 return false
             },
-
             hasListener(name: string) {
                 let proxy = nowCurrentInstance?.proxy as any
                 if (proxy) {
@@ -24,9 +23,8 @@ export class VueSelf {
                 }
                 return false
             },
-
             children() {
-                let output: typeof Vue[] = []
+                let output: InstanceType<typeof Vue>[] = []
                 let concat = (instance: any) => {
                     output = output.concat(instance.$children)
                     for (let child of instance.$children) {

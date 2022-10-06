@@ -115,3 +115,9 @@ watch(() => page.value, () => {
 })
 
 </script>
+
+<script lang="ts">
+export default {
+    name: 'ng-pagination'
+}
+</script>

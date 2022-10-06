@@ -1,7 +1,9 @@
 <template>
-    <v-form v-model="state.valid" @submit.stop.prevent="submit" :disabled="readonly || loading">
-        <slot :valid="state.valid"></slot>
-    </v-form>
+    <div style="transition: .25s;" :style="`opacity: ${loading ? 0.5 : 1}`">
+        <v-form v-model="state.valid" @submit.stop.prevent="submit" :disabled="readonly || loading">
+            <slot :valid="state.valid"></slot>
+        </v-form>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -70,3 +72,10 @@ const submit = () => {
 }
 
 </script>
+
+<script lang="ts">
+export default {
+    name: 'ng-form'
+}
+</script>
+    

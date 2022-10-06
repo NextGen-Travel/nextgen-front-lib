@@ -25,7 +25,6 @@ const props = defineProps({
     height: String,
     maxHeight: String,
     radius: String,
-    subject: String,
     avatar: {
         type: Boolean,
         default: () => false
@@ -62,6 +61,7 @@ const skeletonStyle = computed(() => {
     style.set('height', props.height, '200px')
     style.set('maxWidth', props.maxWidth)
     style.set('maxHeight', props.maxHeight)
+    style.set('borderRadius', props.radius)
     style.set('display', 'inline-block')
     return style.join()
 })
@@ -146,3 +146,10 @@ const loadStyle = (width: number, height: number) => {
         position: relative;
     }
 </style>
+
+<script lang="ts">
+export default {
+    name: 'ng-img'
+}
+</script>
+    
