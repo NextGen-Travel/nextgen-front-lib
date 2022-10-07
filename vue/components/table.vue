@@ -13,15 +13,23 @@
             </thead>
             <tbody>
                 <template v-for="(item, ti) in items">
-                    <tr :key="ti + 'ii'" :class="{ 'component-twr-is-btn': hasClickItemListener }" @click="clickItme(item)">
-                        <td v-for="(field, index) in showFields" :key="index + 'ffii'" class="text-center">
+                    <tr
+                        :key="ti + 'ii'"
+                        :class="{ 'component-twr-is-btn': hasClickItemListener }"
+                        :style="rowStyle(item)"
+                        @click="clickItme(item)">
+                        <td
+                            v-for="(field, index) in showFields"
+                            class="text-center"
+                            :key="index + 'ffii'"
+                            :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
-                                :value="field.formatter(peel(item, field.key), field.key, item, ti)">
+                                :value="getFieldValue(field, item, ti)">
                             </slot>
                             <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                {{ field.formatter == null ? peel(item, field.key) : field.formatter(peel(item, field.key), field.key, item, ti) }}
+                                {{ getFieldValue(field, item, ti) }}
                             </div>
                         </td>
                     </tr>
@@ -63,6 +71,14 @@ import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
+type Field = {
+    key: string
+    label: string
+    style: () => string
+    formatter: (...args: any[]) => any
+    optionShow: boolean
+}
+
 const { reactive, computed, defineProps, onMounted, getCurrentInstance, defineEmits } = useVueHooks()
 const peel = pick.peel
 const instance = getCurrentInstance()
@@ -73,6 +89,11 @@ const instance = getCurrentInstance()
 //
 
 const props = defineProps({
+    rowStyle: {
+        type: Function as PropType<(item: any) => string>,
+        required: false,
+        default: () => () => ''
+    },
     filterShow: {
         type: Boolean,
         required: false,
@@ -85,12 +106,7 @@ const props = defineProps({
     },
     fields: {
         required: true,
-        type: Array as PropType<Array<{
-            key: string
-            label: string
-            formatter: (...args: any[]) => any
-            optionShow: boolean
-        }>>
+        type: Array as PropType<Array<Field>>
     },
     items: {
         required: true,
@@ -143,6 +159,7 @@ const showFields = computed(() => {
         return {
             key: e.key,
             label: e.label,
+            style: e.style,
             formatter: e.formatter
         }
     })
@@ -179,6 +196,16 @@ const hasSlot = (name = 'default') => {
 
 const clickItme = (item: any) => {
     emit('click-item', item)
+}
+
+const getFieldValue = (field: Field, item: any, index: number) => {
+    // @ts-ignore
+    let value = peel(item, field.key)
+    if (field.formatter == null) {
+        return value
+    } else {
+        return field.formatter(value, field.key, item, index)
+    }
 }
 
 </script>

@@ -115,7 +115,7 @@ export class Request<
             return result
         }
         // 如果不是分頁資料
-        return result.data
+        return result
     }
 
     static fakeLaravelPaginateResult<T>(data: T[]) {
@@ -190,7 +190,7 @@ export class Request<
         return {
             path: path.split('#')[0],
             method
-        }
+        } 
     }
 
     mock<T extends keyof ApisDefinition>(
