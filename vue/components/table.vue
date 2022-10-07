@@ -16,7 +16,7 @@
                     <tr
                         :key="ti + 'ii'"
                         :class="{ 'component-twr-is-btn': hasClickItemListener }"
-                        :style="rowStyle(item)"
+                        :style="rowStyle(item, ti)"
                         @click="clickItme(item)">
                         <td
                             v-for="(field, index) in showFields"
