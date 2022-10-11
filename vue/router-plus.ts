@@ -82,6 +82,10 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
+    back(step = 1) {
+        this.vueRouter.go(step * -1)
+    }
+
     getCurrentRoute<K extends keyof T>(_name?: K) {
         return this.vueRouter ? this.vueRouter.currentRoute as unknown as {
             name: string
