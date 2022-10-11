@@ -1,5 +1,5 @@
 <template>
-    <div :style="state.headerStyleString" class="white">
+    <div :style="state.headerStyleString">
         <v-row class="component-toolbar-wrapper h-100" no-gutters align="center">
             <div style="height: fit-content;">
                 <slot></slot>
@@ -63,4 +63,3 @@ export default {
     name: 'ng-toolbar'
 }
 </script>
-    

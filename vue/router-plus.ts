@@ -1,6 +1,7 @@
 import VueRouter, { RouteConfig, RouterOptions, Route as _Route } from 'vue-router'
 import { Event } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
+import { serviceException } from '../core/error'
 
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -88,11 +89,15 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    getCurrentRoute<K extends keyof T>(_name?: K) {
-        return this.vueRouter ? this.vueRouter.currentRoute as unknown as {
-            name: string
-            params: RouteParameters<T[K]['path']>
-            query: Partial<T[K]['query']>
-        } : null
+    getCurrentRoute<K extends keyof T>(_name?: K): {
+        name: string
+        params: RouteParameters<T[K]['path']>
+        query: Partial<T[K]['query']>
+    } {
+        if (this.vueRouter) {
+            return this.vueRouter.currentRoute as any
+        } else {
+            throw serviceException.create('Router Plus not installed.')
+        }
     }
 }
