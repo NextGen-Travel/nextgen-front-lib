@@ -70,20 +70,22 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         })
     }
 
-    to<K extends keyof T>(name: K, params: RouteParameters<T[K]['path']>, options?: {
+    to<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         if (this.vueRouter) {
             this.vueRouter.push({
                 name: name as any,
-                params,
+                params: params as any,
                 query: options?.query
             })
         }
     }
 
     back(step = 1) {
-        this.vueRouter.go(step * -1)
+        if (this.vueRouter) {
+            this.vueRouter.go(step * -1)
+        }
     }
 
     getCurrentRoute<K extends keyof T>(_name?: K) {
