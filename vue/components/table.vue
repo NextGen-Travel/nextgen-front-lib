@@ -50,16 +50,18 @@
         <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
+                    ref="filters"
                     v-if="field.optionShow"
                     v-model="state.showFields"
                     hide-details
+                    multiple
                     :value="field.key"
                     :label="field.label"
                     :key="field.key + 'da'">
                 </v-checkbox>
             </template>
         </NgDialog>
-        <div v-if="showFilter" class="print-no-show component-twr-filter" @click="state.modalShow= true">
+        <div v-if="showFilter" class="print-no-show component-twr-filter" @click="openFilter">
             <v-icon small>mdi-filter</v-icon>
         </div>
     </div>
@@ -68,7 +70,7 @@
 <script lang="ts" setup>
 import NgDialog from './dialog.vue'
 import { pick } from 'power-helper'
-import { PropType } from 'vue'
+import { PropType, ref } from 'vue'
 import { useVueHooks } from '../../core'
 
 type Field = {
@@ -80,6 +82,7 @@ type Field = {
 }
 
 const { reactive, computed, defineProps, onMounted, getCurrentInstance, defineEmits } = useVueHooks()
+
 const peel = pick.peel
 const instance = getCurrentInstance()
 
@@ -122,6 +125,13 @@ const props = defineProps({
 const emit = defineEmits({
     ['click-item']: (_item: any) => true
 })
+
+// =================
+//
+// refs
+//
+
+const filters = ref()
 
 // =================
 //
@@ -207,6 +217,10 @@ const getFieldValue = (field: Field, item: any, index: number) => {
     } else {
         return field.formatter(value, field.key, item, index)
     }
+}
+
+const openFilter = () => {
+    state.modalShow = true
 }
 
 </script>

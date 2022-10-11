@@ -22,7 +22,7 @@ import { PropType } from 'vue'
 
 defineProps({
     options: {
-        requried: true,
+        required: true,
         type: Object as PropType<{
             confirmTitleText: string
             confirmCancelText: string
