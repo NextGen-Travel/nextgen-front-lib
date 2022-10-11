@@ -4,7 +4,7 @@
   "description": "lib.",
   "main": "./index.js",
   "scripts": {
-    "test": "eslint . --ext .ts && tsc",
+    "test": "eslint . --ext .ts && tsc && vue-tsc --noEmit",
     "deploy": "ts-node ./deploy/index.ts"
   },
   "bin": {
@@ -28,7 +28,8 @@
     "eslint-plugin-standard": "^5.0.0",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
-    "vue": "2.7.10"
+    "vue": "2.7.10",
+    "vue-tsc": "0.40.13"
   },
   "dependencies": {
     "@types/fs-extra": "^9.0.13",

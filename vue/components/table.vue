@@ -74,7 +74,7 @@ import { useVueHooks } from '../../core'
 type Field = {
     key: string
     label: string
-    style: () => string
+    style: (value: any, key: string, item: any, index: number) => string
     formatter: (...args: any[]) => any
     optionShow: boolean
 }
@@ -90,7 +90,7 @@ const instance = getCurrentInstance()
 
 const props = defineProps({
     rowStyle: {
-        type: Function as PropType<(item: any) => string>,
+        type: Function as PropType<(item: any, index: number) => string>,
         required: false,
         default: () => () => ''
     },
@@ -160,7 +160,8 @@ const showFields = computed(() => {
             key: e.key,
             label: e.label,
             style: e.style,
-            formatter: e.formatter
+            formatter: e.formatter,
+            optionShow: e.optionShow
         }
     })
 })
