@@ -34,12 +34,12 @@ export type LaravelResourcePaginate<T> = {
     },
     meta: {
         current_page: number
-        from: string
+        from: number
         path: string
         last_page: number
         total: number
         per_page: number
-        to: string
+        to: number
     }
 }
 
