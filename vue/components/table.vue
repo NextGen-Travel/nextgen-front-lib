@@ -50,7 +50,6 @@
         <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
-                    ref="filters"
                     v-if="field.optionShow"
                     v-model="state.showFields"
                     hide-details
@@ -67,10 +66,12 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
+// vuetify 的 v-checkbox 與 vue3 檢查有衝突，先禁止檢查 ts
+// @ts-nocheck
 import NgDialog from './dialog.vue'
 import { pick } from 'power-helper'
-import { PropType, ref } from 'vue'
+import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
 type Field = {
@@ -81,156 +82,159 @@ type Field = {
     optionShow: boolean
 }
 
-const { reactive, computed, defineProps, onMounted, getCurrentInstance, defineEmits } = useVueHooks()
-
-const peel = pick.peel
-const instance = getCurrentInstance()
-
-// =================
-//
-// define
-//
-
-const props = defineProps({
-    rowStyle: {
-        type: Function as PropType<(item: any, index: number) => string>,
-        required: false,
-        default: () => () => ''
-    },
-    filterShow: {
-        type: Boolean,
-        required: false,
-        default: () => false
-    },
-    filterTitle: {
-        type: String,
-        required: false,
-        default: () => 'Filter'
-    },
-    fields: {
-        required: true,
-        type: Array as PropType<Array<Field>>
-    },
-    items: {
-        required: true,
-        type: Array as PropType<any[]>
-    },
-    loading: {
-        type: Boolean,
-        required: false,
-        default: () => false
-    }
-})
-
-const emit = defineEmits({
-    ['click-item']: (_item: any) => true
-})
-
-// =================
-//
-// refs
-//
-
-const filters = ref()
-
-// =================
-//
-// state
-//
-
-const state = reactive({
-    modalShow: false,
-    showFields: [] as string[]
-})
-
-// =================
-//
-// computed
-//
-
-const hasClickItemListener = computed(() =>{
-    return instance?.proxy.$listeners && instance?.proxy.$listeners['click-item']
-})
-
-const showFilter = computed(() => {
-    if (props.filterShow === false) {
-        return false
-    }
-    for (let field of props.fields) {
-        if (field.optionShow) {
-            return true
-        }
-    }
-    return false
-})
-
-const showFields = computed(() => {
-    return props.fields.filter(e => state.showFields.includes(e.key)).map(e => {
-        return {
-            key: e.key,
-            label: e.label,
-            style: e.style,
-            formatter: e.formatter,
-            optionShow: e.optionShow
-        }
-    })
-})
-
-const showTable = computed(() => {
-    if (hasSlot('no-data') && props.items.length === 0) {
-        return false
-    }
-    return true
-})
-
-// =================
-//
-// mounted
-//
-
-onMounted(() => {
-    state.showFields = props.fields.map(e => e.key)
-})
-
-// =================
-//
-// methods
-//
-
-const hasSlot = (name = 'default') => {
-    let proxy = instance?.proxy as any
-    if (proxy) {
-        return !!proxy.$slots[name] || !!proxy.$scopedSlots[name]
-    }
-    return false
-}
-
-const clickItme = (item: any) => {
-    emit('click-item', item)
-}
-
-const getFieldValue = (field: Field, item: any, index: number) => {
-    // @ts-ignore
-    let value = peel(item, field.key)
-    if (field.formatter == null) {
-        return value
-    } else {
-        return field.formatter(value, field.key, item, index)
-    }
-}
-
-const openFilter = () => {
-    state.modalShow = true
-}
-
-</script>
-
-<script lang="ts">
 export default {
-    name: 'ng-table'
+    name: 'ng-table',
+    components: {
+        NgDialog
+    },
+    props: {
+        rowStyle: {
+            type: Function as PropType<(item: any, index: number) => string>,
+            required: false,
+            default: () => () => ''
+        },
+        filterShow: {
+            type: Boolean,
+            required: false,
+            default: () => false
+        },
+        filterTitle: {
+            type: String,
+            required: false,
+            default: () => 'Filter'
+        },
+        fields: {
+            required: true,
+            type: Array as PropType<Array<Field>>
+        },
+        items: {
+            required: true,
+            type: Array as PropType<any[]>
+        },
+        loading: {
+            type: Boolean,
+            required: false,
+            default: () => false
+        }
+    },
+    emits: {
+        'click-item': (_item: any) => true
+    },
+    setup(props, { emit }) {
+        const { reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
+        const peel = pick.peel
+        const instance = getCurrentInstance()
+
+        // =================
+        //
+        // state
+        //
+
+        const state = reactive({
+            modalShow: false,
+            showFields: [] as string[]
+        })
+
+        // =================
+        //
+        // computed
+        //
+
+        const hasClickItemListener = computed(() =>{
+            return instance?.proxy.$listeners && instance?.proxy.$listeners['click-item']
+        })
+
+        const showFilter = computed(() => {
+            if (props.filterShow === false) {
+                return false
+            }
+            for (let field of props.fields) {
+                if (field.optionShow) {
+                    return true
+                }
+            }
+            return false
+        })
+
+        const showFields = computed(() => {
+            return props.fields.filter(e => state.showFields.includes(e.key)).map(e => {
+                return {
+                    key: e.key,
+                    label: e.label,
+                    style: e.style,
+                    formatter: e.formatter,
+                    optionShow: e.optionShow
+                }
+            })
+        })
+
+        const showTable = computed(() => {
+            if (hasSlot('no-data') && props.items.length === 0) {
+                return false
+            }
+            return true
+        })
+
+        // =================
+        //
+        // mounted
+        //
+
+        onMounted(() => {
+            state.showFields = props.fields.map(e => e.key)
+        })
+
+        // =================
+        //
+        // methods
+        //
+
+        const hasSlot = (name = 'default') => {
+            let proxy = instance?.proxy as any
+            if (proxy) {
+                return !!proxy.$slots[name] || !!proxy.$scopedSlots[name]
+            }
+            return false
+        }
+
+        const clickItme = (item: any) => {
+            emit('click-item', item)
+        }
+
+        const getFieldValue = (field: Field, item: any, index: number) => {
+            // @ts-ignore
+            let value = peel(item, field.key)
+            if (field.formatter == null) {
+                return value
+            } else {
+                return field.formatter(value, field.key, item, index)
+            }
+        }
+
+        const openFilter = () => {
+            state.modalShow = true
+        }
+
+        // =================
+        //
+        // done
+        //
+
+        return {
+            state,
+            hasSlot,
+            hasClickItemListener,
+            showFilter,
+            showFields,
+            showTable,
+            clickItme,
+            getFieldValue,
+            openFilter
+        }
+    }
 }
 </script>
-    
+
 <style lang="scss" scoped>
     .component-twr-is-btn {
         transition: .25s;

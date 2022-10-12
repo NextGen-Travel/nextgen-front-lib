@@ -19,90 +19,92 @@
     </div>
 </template>
 
-<script lang="ts" setup>
-import { useVueHooks } from '../../core'
-
-const { reactive, watch, onMounted } = useVueHooks()
-
-// =================
-//
-// define
-//
-
-const props = defineProps({
-    persistent: {
-        type: Boolean,
-        required: false,
-        default: () => false
-    },
-    maxWidth: {
-        type: String,
-        required: false,
-        default: () => '480px'
-    },
-    title: {
-        type: String,
-        required: false
-    },
-    value: {
-        type: Boolean,
-        required: false
-    }
-})
-
-const emit = defineEmits({
-    input: (_value: boolean) => true
-})
-
-// =================
-//
-// state
-//
-
-const state = reactive({
-    show: false
-})
-
-// =================
-//
-// watch
-//
-
-watch(() => state.show, () => {
-    if (state.show !== props.value) {
-        emit('input', state.show)
-    }
-})
-
-watch(() => props.value, () => {
-    if (state.show !== props.value) {
-        state.show = props.value
-    }
-})
-
-// =================
-//
-// mounted
-//
-
-onMounted(() => {
-    state.show = props.value
-})
-
-// =================
-//
-// metohds
-//
-
-const switchShow = () => {
-    state.show = !state.show
-}
-
-</script>
-
 <script lang="ts">
+import { PropType } from 'vue'
+import { useVueHooks } from '../../core'
 export default {
-    name: 'ng-dialog'
+    props: {
+        persistent: {
+            type: Boolean as PropType<boolean>,
+            required: false,
+            default: () => false
+        },
+        maxWidth: {
+            type: String as PropType<string>,
+            required: false,
+            default: () => '480px'
+        },
+        title: {
+            type: String as PropType<string>,
+            required: false,
+            default: () => null
+        },
+        value: {
+            type: Boolean as PropType<boolean>,
+            required: false,
+            default: () => null
+        }
+    },
+    emits: {
+        input: (_value: boolean) => true
+    },
+    setup(props, { emit }) {
+
+        const { reactive, watch, onMounted } = useVueHooks()
+
+        // =================
+        //
+        // state
+        //
+
+        const state = reactive({
+            show: false
+        })
+
+        // =================
+        //
+        // watch
+        //
+
+        watch(() => state.show, () => {
+            if (state.show !== props.value) {
+                emit('input', state.show)
+            }
+        })
+
+        watch(() => props.value, () => {
+            if (state.show !== props.value) {
+                state.show = !!props.value
+            }
+        })
+
+        // =================
+        //
+        // mounted
+        //
+
+        onMounted(() => {
+            state.show = !!props.value
+        })
+
+        // =================
+        //
+        // metohds
+        //
+
+        const switchShow = () => {
+            state.show = !state.show
+        }
+
+        // =================
+        //
+        // done
+        //
+
+        return {
+            state,
+            switchShow
+        }
+    }
 }
 </script>
-    

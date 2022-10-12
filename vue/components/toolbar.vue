@@ -12,7 +12,8 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script name="ng-toolbar" lang="ts" setup>
+import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 import { StyleString } from 'power-helper'
 
@@ -25,7 +26,7 @@ const { reactive, defineProps, onMounted } = useVueHooks()
 
 const props = defineProps({
     height: {
-        type: String,
+        type: String as PropType<string>,
         required: false,
         default: () => '48px'
     }
@@ -57,9 +58,3 @@ onMounted(() => {
         overflow-x: auto;
     }
 </style>
-
-<script lang="ts">
-export default {
-    name: 'ng-toolbar'
-}
-</script>

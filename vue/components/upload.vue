@@ -11,9 +11,10 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script name="ng-update" lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
 import { Loader } from 'power-helper'
+import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
 export type OutputFile = {
@@ -34,7 +35,7 @@ const { ref, defineProps, defineEmits } = useVueHooks()
 
 defineProps({
     fileType: {
-        type: String,
+        type: String as PropType<string>,
         required: true
     }
 })
@@ -92,10 +93,4 @@ const pickFile = async() => {
     }
 }
 
-</script>
-
-<script lang="ts">
-export default {
-    name: 'ng-update'
-}
 </script>

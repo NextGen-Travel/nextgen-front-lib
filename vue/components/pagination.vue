@@ -31,27 +31,27 @@ const { watch, computed } = useVueHooks()
 
 const props = defineProps({
     alwaysShow: {
-        type: Boolean,
+        type: Boolean as PropType<boolean>,
         required: false,
         default: () => false
     },
     total: {
-        type: Number,
+        type: Number as PropType<number>,
         required: false,
         default: () => 1
     },
     prePage: {
-        type: Number,
+        type: Number as PropType<number>,
         required: false,
         default: () => 1
     },
     value: {
-        type: Number,
+        type: Number as PropType<number>,
         required: false,
         default: () => 1
     },
     loading: {
-        type: Boolean,
+        type: Boolean as PropType<boolean>,
         required: false,
         default: () => false
     },
@@ -114,10 +114,4 @@ watch(() => page.value, () => {
     }
 })
 
-</script>
-
-<script lang="ts">
-export default {
-    name: 'ng-pagination'
-}
 </script>
