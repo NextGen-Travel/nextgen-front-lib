@@ -3,12 +3,6 @@ import { Event } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../core/error'
 
-declare module 'vue' {
-    interface ComponentCustomProperties {
-        $route: Route
-    }
-}
-
 export type RouteMixin<
     P extends Route,
     T extends Route
@@ -49,8 +43,34 @@ type Channels = {
     }
 }
 
+const getRouteNames = (routes: RouteConfig[]) => {
+    let names: string[] = []
+    if (routes) {
+        for (let route of routes) {
+            if (route.name) {
+                names.push(route.name)
+            }
+            if (route.children) {
+                names = names.concat(getRouteNames(route.children))
+            }
+        }
+    }
+    return names
+}
+
+type Params = {
+    home?: () => string
+}
+
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
+    params: Params
+    routeMap: Set<string> = new Set()
     vueRouter!: VueRouter
+
+    constructor(params?: Params) {
+        super()
+        this.params = params || {}
+    }
 
     static get install() {
         return VueRouter.install
@@ -61,6 +81,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     }
 
     async setup(options: RouterOptions) {
+        this.routeMap = new Set([...getRouteNames(options.routes || [])])
         this.vueRouter = new VueRouter(options)
         this.vueRouter.afterEach((from, to) => {
             this.emit('after', { from, to })
@@ -71,15 +92,29 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         })
     }
 
+    toHome() {
+        if (this.vueRouter) {
+            if (this.params.home) {
+                this.to(this.params.home(), {})
+            } else {
+                this.vueRouter.push('/')
+            }
+        }
+    }
+
     to<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         if (this.vueRouter) {
-            this.vueRouter.push({
-                name: name as any,
-                params: params as any,
-                query: options?.query
-            })
+            if (this.routeMap.has(name as string)) {
+                this.vueRouter.push({
+                    name: name as any,
+                    params: params as any,
+                    query: options?.query
+                })
+            } else {
+                this.toHome()
+            }
         }
     }
 
