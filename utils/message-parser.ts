@@ -7,6 +7,16 @@ export const parseMessage = (data: any, def: string): string => {
         if (typeof data.response?.data === 'string') {
             return data.response.data
         }
+        // laravel
+        if (data.response?.data?.errors) {
+            let errors = data.response?.data?.errors
+            if (Array.isArray(errors)) {
+                return errors[0] || def
+            } else {
+                let [error] = Object.values(errors) as string[]
+                return error || def
+            }
+        }
         // strapi
         if (data.response?.data?.error?.message) {
             let mainMessage = data.response.data.error.message

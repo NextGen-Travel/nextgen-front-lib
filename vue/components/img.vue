@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-import { StyleString } from 'power-helper'
+import { StyleString, Resource } from 'power-helper'
 import { useVueHooks, useVueOptions } from '../../core'
 
 export default {
@@ -55,7 +55,11 @@ export default {
     },
     setup(props) {
         const { notFoundImage, staticUrl } = useVueOptions()
-        const { reactive, computed, defineProps, watch, onMounted } = useVueHooks()
+        const { reactive, computed, watch, onMounted } = useVueHooks()
+        const resource = new Resource({
+                def: path => `${staticUrl}/${path}`
+        })
+        const notFound = resource.url(notFoundImage)
 
         // =================
         //
@@ -103,32 +107,20 @@ export default {
         // methods
         //
 
-        const getStaticPath = (path: string) => {
-            if (typeof path !== 'string') {
-                return ''
-            }
-            if (path && path.trim().slice(0, 4) === 'http') {
-                return path
-            } else if (path.match('base64') && path.trim().slice(0, 5) === 'data:') {
-                return path
-            } else {
-                return `${staticUrl}/${path}`
-            }
-        }
-
         const update = () => {
             let image = new Image()
+            let target = props.src ? resource.url(props.src) : notFound
             image.addEventListener('error', () => {
-                state.src = getStaticPath(notFoundImage)
+                state.src = notFound
                 state.loading = false
                 loadStyle(300, 200)
             })
             image.addEventListener('load', () => {
-                state.src = props.src ? getStaticPath(props.src) : getStaticPath(notFoundImage)
+                state.src = target
                 state.loading = false
                 loadStyle(image.width, image.height)
             })
-            image.src = props.src ? getStaticPath(props.src) : getStaticPath(notFoundImage)
+            image.src = target
         }
 
         const loadStyle = (width: number, height: number) => {

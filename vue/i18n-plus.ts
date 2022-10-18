@@ -35,19 +35,43 @@ export class VueI18nPlus<Keys extends string> {
      * i18n.tt('## hello {N}', { N: 'dave' })
      */
 
-    tt<T extends Keys | `##${string}`>(key: T, params?: VarParameters<'{', '}', T>) {
+    tt<
+        T extends Keys | `##${string}`,
+        V extends VarParameters<'{', '}', T extends string ? T : ''>
+    >(key: T, ...vars: V extends Record<string, never> ? any[] : [V]) {
         if (key.slice(0, 2) === '##') {
             return text.replaceVar({
                 end: '}',
                 start: '{',
                 text: key.slice(2).trim(),
-                vars: params as any
+                vars: vars[0] || {}
             })
         }
         if (this.vueI18n) {
-            return this.vueI18n.t(`${this.namespace}.${key}`, params).toString()
+            return this.vueI18n.t(`${this.namespace}.${key}`, ...vars).toString()
         } else {
             return key
+        }
+    }
+
+    export(locale: string) {
+        return <
+            T extends Keys | `##${string}`,
+            V extends VarParameters<'{', '}', T extends string ? T : ''>
+        >(key: T, ...vars: V extends Record<string, never> ? any[] : [V]) => {
+            if (key.slice(0, 2) === '##') {
+                return text.replaceVar({
+                    end: '}',
+                    start: '{',
+                    text: key.slice(2).trim(),
+                    vars: vars[0] || {}
+                })
+            }
+            if (this.vueI18n) {
+                return this.vueI18n.t(`${this.namespace}.${key}`, locale, ...vars).toString()
+            } else {
+                return key
+            }
         }
     }
 }

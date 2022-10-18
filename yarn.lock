@@ -242,11 +242,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/uuid@^8.3.4":
-  version "8.3.4"
-  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
-  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
-
 "@types/yargs-parser@*":
   version "21.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-21.0.0.tgz#0c60e537fa790f5f9472ed2776c2b71ec117351b"
@@ -2122,10 +2117,10 @@ postcss@^8.1.10, postcss@^8.4.14:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.3.3.tgz#a94cf3ef976b90747d4911de1ce43249c6e3f441"
-  integrity sha512-PhDjAvwGf1x4eD199vi99z+EzrTPpphGnDkZTXz030zHcgZP1DAH7zQ6XfUSWPbFhahQl7sOezhP5iSFwvJYNQ==
+power-helper@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.3.4.tgz#c8b99a263d9750d83950966cfcf1ab91f724dfac"
+  integrity sha512-l2DLIqtKE2EP9P5F9MZNNFkBYxRsryw5JMh1gcIQTg8/IHB4IaEQ+wEUnw0UkpRuw/UX6AykGpq4fcCfbraHYg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
