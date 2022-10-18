@@ -2,12 +2,16 @@
     <div v-if="state.loading">
         <v-skeleton-loader :style="skeletonStyle" :type="avatar ? 'avatar' : 'image'"></v-skeleton-loader>
     </div>
+    <div v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
+        <slot></slot>
+    </div>
     <div v-else class="component-img-basic" :style="state.style">
         <slot></slot>
     </div>
 </template>
 
 <script lang="ts">
+import { VueSelf } from '../self'
 import { PropType } from 'vue'
 import { StyleString, Resource } from 'power-helper'
 import { useVueHooks, useVueOptions } from '../../core'
@@ -53,11 +57,15 @@ export default {
             required: false
         }
     },
-    setup(props) {
+    emits: {
+        click: () => true
+    },
+    setup(props, { emit }) {
         const { notFoundImage, staticUrl } = useVueOptions()
         const { reactive, computed, watch, onMounted } = useVueHooks()
+        const self = VueSelf.use()
         const resource = new Resource({
-                def: path => `${staticUrl}/${path}`
+            def: path => `${staticUrl}/${path}`
         })
         const notFound = resource.url(notFoundImage)
 
@@ -107,6 +115,10 @@ export default {
         // methods
         //
 
+        const click = () => {
+            emit('click')
+        }
+
         const update = () => {
             let image = new Image()
             let target = props.src ? resource.url(props.src) : notFound
@@ -147,7 +159,9 @@ export default {
         }
 
         return {
+            self,
             state,
+            click,
             skeletonStyle
         }
     }

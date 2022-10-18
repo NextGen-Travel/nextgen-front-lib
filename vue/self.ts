@@ -2,6 +2,9 @@ import Vue from 'vue'
 import { useVueHooks } from '../core/index'
 
 export class VueSelf {
+    static use() {
+        return (new VueSelf()).use()
+    }
     use() {
         const hooks = useVueHooks()
         const nowCurrentInstance = hooks.getCurrentInstance ? hooks.getCurrentInstance() : null

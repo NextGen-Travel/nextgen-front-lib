@@ -12,10 +12,8 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for="(item, ti) in items">
-                    <tr
-                        :key="ti + 'ii'"
-                        :class="{ 'component-twr-is-btn': hasClickItemListener }"
+                <template v-for="(item, ti) in items" :key="ti + 'ii'">
+                    <tr :class="{ 'component-twr-is-btn': hasClickItemListener }"
                         :style="rowStyle(item, ti)"
                         @click="clickItme(item)">
                         <td
@@ -67,6 +65,7 @@
 </template>
 
 <script lang="ts">
+// FIXME: self hasSlot, self hasClickItemListener
 // vuetify 的 v-checkbox 與 vue3 檢查有衝突，先禁止檢查 ts
 // @ts-nocheck
 import NgDialog from './dialog.vue'

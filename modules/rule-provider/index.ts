@@ -68,6 +68,32 @@ const isEmpty = (value: any) => {
     return false
 }
 
+const ruleToVerifyData = ({ rule, required, requireMessage, meta }: {
+    rule: DefineRule
+    required: boolean
+    meta: any[]
+    requireMessage: () => string
+}) => {
+    return {
+        required,
+        handler: (params: GetParams, value: any): true | string => {
+            let rq = params.required == null ? required : params.required
+            if (rq && isEmpty(value)) {
+                return rule.requireMessage ? rule.requireMessage() : requireMessage()
+            }
+            if (rq === false && isEmpty(value)) {
+                return true
+            }
+            try {
+                rule.handler(Yup, meta[0]).notRequired().validateSync(value)
+            } catch (error: any) {
+                return typeof error === 'string' ? error : error.errors[0]
+            }
+            return true
+        }
+    }
+}
+
 export class RuleProvider<T extends ProviderOptions> {
     readonly options: ProviderOptions = {
         rules: {},
@@ -91,32 +117,29 @@ export class RuleProvider<T extends ProviderOptions> {
         if (rule == null) {
             throw exception.create(`Rule ${name as string} not found.`)
         }
-        return {
+        return ruleToVerifyData({
+            meta,
             required,
-            handler: (params: GetParams, value: any): true | string => {
-                let rq = params.required == null ? required : params.required
-                if (rq && isEmpty(value)) {
-                    return rule.requireMessage ? rule.requireMessage() : this.options.requireMessage()
-                }
-                if (rq === false && isEmpty(value)) {
-                    return true
-                }
-                try {
-                    rule.handler(Yup, meta[0]).notRequired().validateSync(value)
-                } catch (error: any) {
-                    return typeof error === 'string' ? error : error.errors[0]
-                }
-                return true
-            }
-        }
+            requireMessage: this.options.requireMessage,
+            rule
+        })
+    }
+
+    customize(rule: DefineRule & { required: boolean }) {
+        return ruleToVerifyData({
+            meta: [],
+            required: rule.required,
+            requireMessage: this.options.requireMessage,
+            rule
+        })
     }
 
     defineValidation<
-        T extends (_rule: this['getRule']) => Record<
+        T extends (_rule: this['getRule'], _customize: this['customize']) => Record<
             string,
             ReturnType<this['getRule']>
         >
     >(cb: T): Validation<ReturnType<T>> {
-        return new Validation(this, cb(this.getRule.bind(this))) as any
+        return new Validation(this, cb(this.getRule.bind(this), this.customize.bind(this))) as any
     }
 }
