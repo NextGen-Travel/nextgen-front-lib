@@ -20,7 +20,7 @@ import { computed, PropType } from 'vue';
 
 const { defineProps, onMounted, onUnmounted, reactive, ref } = useVueHooks()
 
-const content = ref<HTMLDivElement>()
+const content = ref()
 const observer = new ResizeObserver(() => refresh())
 
 // =================
@@ -86,7 +86,7 @@ const appClass = computed(() => {
 
 onMounted(() => {
     if (content.value) {
-        observer.observe(content.value)
+        observer.observe(content.value.$el)
     }
     refresh()
 })
