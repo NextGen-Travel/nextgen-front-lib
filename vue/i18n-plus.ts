@@ -54,6 +54,10 @@ export class VueI18nPlus<Keys extends string> {
         }
     }
 
+    path<T extends Keys>(key: T) {
+        return `${this.namespace}.${key}`
+    }
+
     export(locale: string) {
         return <
             T extends Keys | `##${string}`,
