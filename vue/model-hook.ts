@@ -159,6 +159,7 @@ export const defineModelHook = <
     }
 
     return {
+        _SchemaType: null as unknown as S,
         use,
         from,
         /** 只獲取 schema */

@@ -2,17 +2,17 @@
     <div v-if="state.loading">
         <v-skeleton-loader :style="skeletonStyle" :type="avatar ? 'avatar' : 'image'"></v-skeleton-loader>
     </div>
-    <div v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
+    <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
     </div>
-    <div v-else class="component-img-basic" :style="state.style">
+    <div ref="wrapper2" v-else class="component-img-basic" :style="state.style">
         <slot></slot>
     </div>
 </template>
 
 <script lang="ts">
 import { VueSelf } from '../self'
-import { PropType } from 'vue'
+import { PropType, ref } from 'vue'
 import { StyleString, Resource } from 'power-helper'
 import { useVueHooks, useVueOptions } from '../../core'
 
@@ -55,6 +55,11 @@ export default {
         src: {
             type: String as PropType<string>,
             required: false
+        },
+        square: {
+            type: Boolean,
+            required: false,
+            default: () => false
         }
     },
     emits: {
@@ -68,6 +73,14 @@ export default {
             def: path => `${staticUrl}/${path}`
         })
         const notFound = resource.url(notFoundImage)
+
+        // =================
+        //
+        // refs
+        //
+
+        const wrapper = ref<HTMLDivElement>()
+        const wrapper2 = ref<HTMLDivElement>()
 
         // =================
         //
@@ -137,7 +150,7 @@ export default {
 
         const loadStyle = (width: number, height: number) => {
             let code = new StyleString()
-            code.set('width', props.width)
+            code.set('width', props.width, `${width}px`)
             code.set('maxWidth', props.maxWidth)
             code.set('height', props.height)
             code.set('maxHeight', props.maxHeight)
@@ -146,7 +159,6 @@ export default {
                 code.set('backgroundSize', 'cover')
             }
             if (props.height == null) {
-                code.set('width', `${width}px`)
                 code.set('height', `${height}px`)
             }
             if (props.avatar) {
@@ -156,12 +168,32 @@ export default {
                 code.set('backgroundImage', `url('${state.src}')`)
             }
             state.style = code.join()
+            if (props.square) {
+                self.nextTick(() => {
+                    let width = getContentWidth()
+                    if (width) {
+                        code.set('height', `${width}px`)
+                        state.style = code.join()
+                    }
+                })
+            }
         }
+
+        const getContentWidth = () => {
+            return wrapper2.value?.clientWidth || wrapper.value?.clientWidth || 0
+        }
+
+        // =================
+        //
+        // done
+        //
 
         return {
             self,
             state,
             click,
+            wrapper,
+            wrapper2,
             skeletonStyle
         }
     }
