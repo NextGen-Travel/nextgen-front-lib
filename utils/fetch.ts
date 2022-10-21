@@ -13,6 +13,23 @@ type StrapiList = {
     }[]
 }
 
+type LaravelResourcePaginate = {
+    data: any[]
+    links: {
+        first: string
+        last: string
+        prev: string
+        next: string
+    }
+    meta: {
+        current_page: number
+        from: number
+        path: string
+        per_page: number
+        to: number
+    }
+}
+
 export const fetchAll = async<T, R>(params: {
     pick: (_result: R) => T[]
     done: (_result: R) => boolean
@@ -39,6 +56,18 @@ export const fetchAllForStrapi = async<T extends StrapiList>(cb: (_page: number)
         pick: result => result.data,
         fetch: async(page) => {
             let result = await cb(page)
+            return result
+        }
+    })
+    return items
+}
+
+export const fetchAllForLaravelPaginate = async<T extends LaravelResourcePaginate>(cb: (_page: number) => Promise<T>) => {
+    const items = await fetchAll<T['data'][0], T>({
+        pick: result => result.data,
+        done: result => !result.links.next,
+        fetch: async(page) => {
+            const result = await cb(page)
             return result
         }
     })
