@@ -67,7 +67,7 @@ const state = reactive({
 //
 
 const appClass = computed(() => {
-    let outputs = []
+    let outputs: string[] = []
     if (props.app) {
         outputs.push('lib-component-fixed-bar-app')
         if (props.position === 'top') {
