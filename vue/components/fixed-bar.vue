@@ -1,15 +1,17 @@
 <template>
-    <v-toolbar
-        class="lib-component-fixed-bar"
-        height="auto"
-        :dark="dark"
-        :color="color"
-        :style="position === 'top' ? 'top: 0' : 'bottom: 0'">
+    <div>
         <div :style="`height: ${state.contentHeight}px`"></div>
-        <div ref="content" :class="appClass">
-            <slot></slot>
-        </div>
-    </v-toolbar>
+        <v-toolbar
+            class="lib-component-fixed-bar"
+            height="auto"
+            :dark="dark"
+            :color="color"
+            :style="position === 'top' ? 'top: 0' : 'bottom: 0'">
+            <div ref="content" :class="appClass">
+                <slot></slot>
+            </div>
+        </v-toolbar>
+    </div>
 </template>
 
 <script lang="ts" setup>
