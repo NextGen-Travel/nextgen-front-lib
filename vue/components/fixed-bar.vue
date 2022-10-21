@@ -2,12 +2,13 @@
     <div>
         <div :style="`height: ${state.contentHeight}px`"></div>
         <v-toolbar
+            ref="content"
             class="lib-component-fixed-bar"
             height="auto"
             :dark="dark"
             :color="color"
             :style="position === 'top' ? 'top: 0' : 'bottom: 0'">
-            <div ref="content" :class="appClass">
+            <div :class="appClass">
                 <slot></slot>
             </div>
         </v-toolbar>
@@ -16,13 +17,12 @@
 
 <script lang="ts" setup>
 import { useVueHooks } from '../../core'
-import { ElementListenerGroup } from 'power-helper'
 import { computed, PropType } from 'vue';
 
 const { defineProps, onMounted, onUnmounted, reactive, ref } = useVueHooks()
 
-let elementListenerGroup: null | ElementListenerGroup<HTMLDivElement> = null
-let content = ref<HTMLDivElement>()
+const content = ref<HTMLDivElement>()
+const observer = new ResizeObserver(() => refresh())
 
 // =================
 //
@@ -68,14 +68,16 @@ const state = reactive({
 //
 
 const appClass = computed(() => {
+    let outputs = []
     if (props.app) {
+        outputs.push('lib-component-fixed-bar-app')
         if (props.position === 'top') {
-            return 'lib-component-fixed-bar-app-top lib-component-fixed-bar-app'
+            outputs.push('lib-component-fixed-bar-app-top')
         } else {
-            return 'lib-component-fixed-bar-app-bottom lib-component-fixed-bar-app'
+            outputs.push('lib-component-fixed-bar-app-bottom')
         }
     }
-    return ''
+    return outputs.join(' ')
 })
 
 // =================
@@ -85,18 +87,13 @@ const appClass = computed(() => {
 
 onMounted(() => {
     if (content.value) {
-        elementListenerGroup = new ElementListenerGroup(content.value)
-        elementListenerGroup.add('resize', () => {
-            refresh()
-        })
+        observer.observe(content.value)
     }
     refresh()
 })
 
 onUnmounted(() => {
-    if (elementListenerGroup) {
-        elementListenerGroup.clear()
-    }
+    observer.disconnect()
 })
 
 // =================
@@ -118,7 +115,6 @@ const refresh = () => {
     left: 0;
     width: 100%;
     z-index: 10;
-    box-shadow: rgb(99 99 99 / 20%) 0 0px 8px 0;
 }
 .lib-component-fixed-bar-app-top {
     padding-top: constant(safe-area-inset-top);
