@@ -102,7 +102,7 @@ onUnmounted(() => {
 
 const refresh = () => {
     if (content.value) {
-        state.contentHeight = content.value.clientHeight
+        state.contentHeight = content.value.$el.clientHeight
     }
 }
 
