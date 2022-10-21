@@ -1,17 +1,16 @@
 <template>
     <div>
         <div :style="`height: ${state.contentHeight}px`"></div>
-        <v-toolbar
+        <v-app-bar
             ref="content"
             class="lib-component-fixed-bar"
             height="auto"
             :dark="dark"
             :color="color"
+            :class="appClass"
             :style="position === 'top' ? 'top: 0' : 'bottom: 0'">
-            <div :class="appClass">
-                <slot></slot>
-            </div>
-        </v-toolbar>
+            <slot></slot>
+        </v-app-bar>
     </div>
 </template>
 
