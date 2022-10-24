@@ -51,7 +51,7 @@
             <template v-for="field in fields">
                 <v-checkbox
                     v-if="field.optionShow"
-                    v-model="state.showFields"
+                    v-model:input-value="state.showFields"
                     hide-details
                     multiple
                     :value="field.key"
@@ -67,9 +67,6 @@
 </template>
 
 <script lang="ts">
-// FIXME: self hasSlot, self hasClickItemListener
-// vuetify 的 v-checkbox 與 vue3 檢查有衝突，先禁止檢查 ts
-// @ts-nocheck
 import NgDialog from './dialog.vue'
 import { pick } from 'power-helper'
 import { PropType } from 'vue'

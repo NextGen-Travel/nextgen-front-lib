@@ -17,5 +17,8 @@
       "dom",
       "ES2015"
     ]
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
   }
 }
