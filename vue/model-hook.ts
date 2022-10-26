@@ -3,10 +3,13 @@
 import { useVueHooks } from '../core/index'
 import { diff as _diff } from 'deep-object-diff'
 import { Event, record, json } from 'power-helper'
+import { createStateManager } from './state-manager'
+import { useListenerGroup } from './listener-group'
 
 type Context<S> = {
     data: S
     commit: (_newData: Partial<S>) => void
+    stateManager: ReturnType<typeof createStateManager>
 }
 
 export type ModelType<T extends { use: () => any }> = ReturnType<T['use']>
@@ -75,6 +78,7 @@ export const defineModelHook = <
         const { reactive, watch } = useVueHooks()
         const data = reactive(params.schema())
         const oridata = params.schema()
+        const stateManager = createStateManager()
 
         // =================
         //
@@ -83,6 +87,7 @@ export const defineModelHook = <
 
         const event = new Event<{
             update: Record<string, unknown>
+            rebuild: Record<string, unknown>
         }>()
 
         watch(() => data, () => event.emit('update', {}), {
@@ -99,7 +104,7 @@ export const defineModelHook = <
             Object.assign(data, params.schema())
         }
 
-        /** 將資料重新設定成最後儲存的資料 */
+        /** 將資料重新設定成最後 commit 的資料 */
         const reset = () => {
             Object.assign(data, json.jpjs(oridata))
         }
@@ -120,9 +125,17 @@ export const defineModelHook = <
             return Object.keys(_diff(data, target)).length !== 0
         }
 
-        /** 比較與原始資料是否有異 */
+        /** 比較現在的狀態與 最後 commit 的資料是否有異 */
         const isModified = () => {
             return diff(oridata)
+        }
+
+        /** 將資料重新設定成初始資料，並將儲存的資料也改成初始資料 */
+        const rebuild = () => {
+            stateManager.reset()
+            clear()
+            Object.assign(oridata, params.schema())
+            event.emit('rebuild', {})
         }
 
         // =================
@@ -132,10 +145,17 @@ export const defineModelHook = <
 
         const mixin = params.mixin({
             data,
-            commit
+            commit,
+            stateManager
         })
 
+        // =================
+        //
+        // done
+        //
+
         return {
+            d: data,
             data,
             diff,
             clear,
@@ -143,6 +163,7 @@ export const defineModelHook = <
             event,
             commit,
             assign,
+            rebuild,
             isModified,
             ...mixin
         }
@@ -159,6 +180,7 @@ export const defineModelHook = <
     }
 
     return {
+        _ModelType: null as unknown as ReturnType<typeof use>,
         _SchemaType: null as unknown as S,
         use,
         from,
@@ -166,8 +188,9 @@ export const defineModelHook = <
         row: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data: S, emit?: (_data: S) => void) => {
-            const { onUnmounted, watch } = useVueHooks()
+            const { watch } = useVueHooks()
             const model = from(data)
+            const listenerGroup = useListenerGroup()
 
             // =================
             //
@@ -188,8 +211,9 @@ export const defineModelHook = <
             //
 
             if (emit) {
-                const listener = model.event.on('update', () => emit(model.data))
-                onUnmounted(() => listener.off())
+                listenerGroup.push([
+                    model.event.on('update', () => emit(model.data))
+                ])
             }
 
             // =================
