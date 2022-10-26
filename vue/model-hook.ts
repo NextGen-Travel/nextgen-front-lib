@@ -68,10 +68,12 @@ export const createStrapiListResource = <T>() => {
 
 export const defineModelHook = <
     S extends Record<any, any>,
-    R extends Record<any, any>
+    R extends Record<any, any>,
+    T extends Record<any, (..._args: any[]) => any>,
 >(params: {
     name: string
     schema: () => S
+    static?: T,
     mixin: (_data: Context<S>) => R
 }) => {
     const use = () => {
@@ -180,6 +182,8 @@ export const defineModelHook = <
     }
 
     return {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ...params.static!,
         _ModelType: null as unknown as ReturnType<typeof use>,
         _SchemaType: null as unknown as S,
         use,
