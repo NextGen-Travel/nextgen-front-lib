@@ -1,19 +1,24 @@
 <template>
-    <div @click="clickInput" style="width: fit-content; height: fit-content;">
+    <div @click="clickInput" style="width: fit-content; height: fit-content; position: relative;">
         <slot></slot>
         <input
             hidden
             ref="fileInput"
             type="file"
             :accept="fileType"
+            :disabled="state.reading || loading"
             @change="pickFile"
         />
+        <v-overlay absolute :value="loading || state.reading" :opacity="0.35">
+            <v-progress-circular indeterminate size="32"></v-progress-circular>
+        </v-overlay>
     </div>
 </template>
 
 <script name="ng-update" lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
 import { Loader } from 'power-helper'
+import { VueSelf } from '../self'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 
@@ -26,6 +31,7 @@ export type UploadData = {
     files: OutputFile[]
 }
 
+const self = VueSelf.use()
 const { ref, defineProps, defineEmits } = useVueHooks()
 
 // =================
@@ -34,6 +40,11 @@ const { ref, defineProps, defineEmits } = useVueHooks()
 //
 
 defineProps({
+    loading: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
+    },
     fileType: {
         type: String as PropType<string>,
         required: true
@@ -52,6 +63,15 @@ const emit = defineEmits({
 //
 
 const fileInput = ref<HTMLInputElement>()
+
+// =================
+//
+// state
+//
+
+const state = self.data({
+    reading: false
+})
 
 // =================
 //
@@ -86,7 +106,9 @@ const pickFile = async() => {
                 })
             })
         }
+        state.reading = true
         await loader.start({})
+        state.reading = false
         emit('uploaded', {
             files: outputFiles
         })

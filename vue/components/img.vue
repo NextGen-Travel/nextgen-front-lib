@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { VueSelf } from '../self'
-import { onUnmounted, PropType, ref } from 'vue'
+import { PropType, ref } from 'vue'
 import { useVueHooks, useVueOptions } from '../../core'
 import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-helper'
 
@@ -78,7 +78,7 @@ export default {
     },
     setup(props, { emit }) {
         const { notFoundImage, staticUrl } = useVueOptions()
-        const { reactive, computed, watch, onMounted } = useVueHooks()
+        const { reactive, computed, watch, onMounted, onUnmounted } = useVueHooks()
         const self = VueSelf.use()
         const debounce = new Debounce({
             delay: 100
