@@ -1,10 +1,13 @@
 <template>
     <div style="transition: .25s;" :style="`opacity: ${loading ? 0.5 : 1}`">
         <v-form
+            ref="checkform"
             v-model="state.valid"
             @submit.stop.prevent="submit"
-            :disabled="readonly || loading">
-            <slot :valid="state.valid"></slot>
+            :lazy-validation="lazyValidation"
+            :readonly="readonly"
+            :disabled="disabled || loading">
+            <slot :valid="state.valid" :validate="validate"></slot>
         </v-form>
     </div>
 </template>
@@ -25,6 +28,16 @@ export default {
             type: Boolean as PropType<boolean>,
             required: false,
             default: false
+        },
+        disabled: {
+            type: Boolean as PropType<boolean>,
+            required: false,
+            default: false
+        },
+        lazyValidation: {
+            type: Boolean as PropType<boolean>,
+            required: false,
+            default: false
         }
     },
     emits: {
@@ -33,7 +46,14 @@ export default {
     },
     setup(props, { emit }) {
 
-        const { reactive, watch, onMounted } = useVueHooks()
+        const { reactive, watch, onMounted, ref } = useVueHooks()
+
+        // =================
+        //
+        // ref
+        //
+
+        const checkform = ref()
 
         // =================
         //
@@ -51,7 +71,7 @@ export default {
         //
 
         watch(() => state.valid, () => {
-            emit('input', state.valid)
+            emitStatus()
         })
 
         // =================
@@ -68,10 +88,22 @@ export default {
         // methods
         //
 
+        const emitStatus = () => {
+            emit('input', state.valid)
+        }
+
         const submit = () => {
             if (state.valid) {
                 emit('submit')
             }
+        }
+
+        const validate = (cb: () => any) => {
+            let valid = checkform.value.validate()
+            if (valid) {
+                cb()
+            }
+            emitStatus()
         }
 
         // =================
@@ -81,7 +113,9 @@ export default {
 
         return {
             state,
-            submit
+            submit,
+            validate,
+            checkform
         }
     }
 }
