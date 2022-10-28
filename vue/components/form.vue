@@ -98,10 +98,12 @@ export default {
             }
         }
 
-        const validate = (cb: () => any) => {
+        const validate = (cb: () => any, fail?: () => any) => {
             let valid = checkform.value.validate()
             if (valid) {
                 cb()
+            } else if (fail) {
+                fail()
             }
             emitStatus()
         }
