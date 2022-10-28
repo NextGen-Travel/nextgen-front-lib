@@ -3,8 +3,8 @@
 const fsx = require('fs-extra')
 const path = require('path')
 const axios = require('axios')
-const { pick } = require('power-helper')
-const { parse } = require('yaml')
+const toJsonSchema = require('@openapi-contrib/openapi-schema-to-json-schema')
+const { bundle } = require('@apidevtools/swagger-cli')
 const { compile } = require('json-schema-to-typescript')
 const { js: jsBeautify } = require('js-beautify')
 
@@ -65,32 +65,29 @@ class OpenApiReader {
      */
 
     schemaToJsonSchema(data)  {
-        if (data['$ref']) {
-            data = pick.peel(this.document, data['$ref'].replace(/\//g, '.').slice(2))
-        }
-        if (data.type === 'object') {
+        if (data.type === 'object' && 'properties' in data && data.properties == null) {
+            return {
+                type: 'any'
+            }
+        } else if (data.type === 'object') {
             return this.schemaObjectToJsonSchema(data)
         } else if (data.type === 'array') {
             return this.schemaArrayToJsonSchema(data)
         } else {
             /** @type {JSONSchema} */
-            let output = {
-                type: data.type,
-                description: data.description || 'no description',
-                examples: data.example ? [data.example] : [],
+            let output = toJsonSchema(data)
+            if (data.example) {
+                output.description = descBeautify(`
+                    @example ${data.example}
+                `)
             }
-            if (data.format === 'binary') {
-                output.format = data.format
-            }
-            if (data.enum) {
-                output.enum = data.enum
-            }
-            if (data.description) {
+            if (data.description && data.example) {
                 output.description = descBeautify(`
                     ${data.description}
                     @example ${data.example}
                 `)
             }
+            delete output.$schema
             return output
         }
     }
@@ -104,7 +101,7 @@ class OpenApiReader {
         /** @type {JSONSchema} */
         let output = {
             type: 'object',
-            required: [...(data.required || [])],
+            required: data.required || [],
             additionalProperties: false,
             properties: {}
         }
@@ -168,8 +165,10 @@ class OpenApiReader {
         let queryProperties = {}
         for (let query of queries) {
             queryProperties[query.name] = {
-                type: query.schema.type,
-                enum: query.schema.enum
+                type: query.schema.type
+            }
+            if (query.schema.enum) {
+                queryProperties[query.name] = query.schema.enum
             }
             if (queries.require) {
                 required.push(query.name)
@@ -199,10 +198,6 @@ class OpenApiReader {
             }
         }
         return null
-    }
-
-    getLink() {
-        return `${baseUrl}/?target=${this.file}`
     }
 
     export() {
@@ -246,7 +241,6 @@ class OpenApiReader {
         let tsData = {
             type: 'object',
             required: [],
-            description: `${result.title}\n@see ${this.getLink()}`,
             additionalProperties: false,
             properties: {}
         }
@@ -283,6 +277,9 @@ class OpenApiReader {
         return jsBeautify(`
             /* eslint-disable */
             /* tslint:disable */
+            /**
+             * @see https://nextgen-travel.github.io/apis-doc/?target=${this.file}
+             */
             export type ${this.getServiceName()}Definitions = ${defined.replace('export interface __', '')}
         `)
     }
@@ -300,9 +297,10 @@ module.exports = async(params) => {
     for (let { name, value } of docUrl.data.links) {
         if (value !== 'main') {
             console.log(`正在下載： ${name}`)
-            const result = await axios.get(`${baseUrl}/docs/${value}.yaml`)
-            const json = parse(result.data)
-            const reader = new OpenApiReader(path.basename(value), json)
+            const result = await bundle(`${baseUrl}/docs/${value}.yaml`, {
+                dereference: true
+            })
+            const reader = new OpenApiReader(path.basename(value), JSON.parse(result))
             fsx.writeFileSync(`${params.outputDir}/${value}.ts`, await reader.exportNextgenRequest())
         }
     }

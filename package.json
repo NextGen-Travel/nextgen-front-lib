@@ -11,6 +11,8 @@
     "nextgen-front-lib": "./cli/index.js"
   },
   "devDependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.2.0",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
     "@types/fs-extra": "^9.0.13",
@@ -41,14 +43,13 @@
     "json-schema-to-typescript": "^11.0.2",
     "openapi-types": "^12.0.2",
     "pinia": "2.0.16",
-    "power-helper": "^0.4.1",
+    "power-helper": "^0.4.2",
     "qs": "^6.11.0",
     "react": "^18.2.0",
     "simple-git": "^3.14.1",
     "urql": "2.2.2",
     "vue-i18n": "8.27.2",
     "vue-router": "3.6.5",
-    "yaml": "^2.1.1",
     "yargs": "^17.5.1",
     "yup": "^0.32.11"
   }
