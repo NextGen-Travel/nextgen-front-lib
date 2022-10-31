@@ -1,6 +1,5 @@
 import { flow } from 'power-helper'
-import { defineStore } from 'pinia'
-import { useVueHooks } from '../../../core'
+import { useVueOptions, useVueHooks } from '../../../core'
 
 
 export type MessageType = 'info' | 'warning' | 'danger' | 'success'
@@ -13,55 +12,63 @@ export type Message = {
     duration: number
 }
 
-export const useLibNotificationStore = defineStore('lib-notification', () => {
-    const { reactive, computed } = useVueHooks()
+let store: any = null
 
-    // =================
-    //
-    // state
-    //
-
-    const state = reactive({
-        messages: [] as Message[]
-    })
-
-    // =================
-    //
-    // actions
-    //
-
-    const push = (params: {
-        type: MessageType
-        content: string
-    }) => {
-        state.messages.push({
-            ...params,
-            id: flow.createUuid(),
-            duration: 0,
-            clicked: false
+export const useLibNotificationStore = () => {
+    if (store == null) {
+        const options = useVueOptions()
+        store = options.pinia.defineStore('lib-notification', () => {
+            const { reactive, computed } = useVueHooks()
+        
+            // =================
+            //
+            // state
+            //
+        
+            const state = reactive({
+                messages: [] as Message[]
+            })
+        
+            // =================
+            //
+            // actions
+            //
+        
+            const push = (params: {
+                type: MessageType
+                content: string
+            }) => {
+                state.messages.push({
+                    ...params,
+                    id: flow.createUuid(),
+                    duration: 0,
+                    clicked: false
+                })
+            }
+        
+            const clear = () => {
+                state.messages = state.messages.filter(e => e.duration <= 100)
+            }
+        
+            // =================
+            //
+            // getters
+            //
+        
+            const messages = computed(() => state.messages)
+        
+            // =================
+            //
+            // done
+            //
+        
+            return {
+                push,
+                clear,
+                state,
+                messages
+            }
         })
     }
-
-    const clear = () => {
-        state.messages = state.messages.filter(e => e.duration <= 100)
-    }
-
-    // =================
-    //
-    // getters
-    //
-
-    const messages = computed(() => state.messages)
-
-    // =================
-    //
-    // done
-    //
-
-    return {
-        push,
-        clear,
-        state,
-        messages
-    }
-})
+    return store()
+}

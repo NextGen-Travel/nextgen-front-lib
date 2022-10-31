@@ -1,45 +1,52 @@
-import { defineStore } from 'pinia'
-import { useVueHooks } from '../../../core'
+import { useVueOptions, useVueHooks } from '../../../core'
 
 type Handler = (_callback: () => void) => any
 
-export const useLibConfirmStore = defineStore('lib-confirm', () => {
-    const { reactive } = useVueHooks()
+let store: any = null
 
-    // =================
-    //
-    // state
-    //
-
-    const state = reactive({
-        isOpen: false,
-        message: '',
-        handler: null as unknown as Handler
-    })
-
-    // =================
-    //
-    // actions
-    //
-
-    const open = ({ message, handler }: { handler: Handler, message: string }) => {
-        state.isOpen = true
-        state.message = message
-        state.handler = handler
+export const useLibConfirmStore = () => {
+    if (store == null) {
+        const options = useVueOptions()
+        store = options.pinia.defineStore('lib-confirm', () => {
+            const { reactive } = useVueHooks()
+        
+            // =================
+            //
+            // state
+            //
+        
+            const state = reactive({
+                isOpen: false,
+                message: '',
+                handler: null as unknown as Handler
+            })
+        
+            // =================
+            //
+            // actions
+            //
+        
+            const open = ({ message, handler }: { handler: Handler, message: string }) => {
+                state.isOpen = true
+                state.message = message
+                state.handler = handler
+            }
+        
+            const cancel = () => {
+                state.isOpen = false
+            }
+        
+            // =================
+            //
+            // done
+            //
+        
+            return {
+                open,
+                state,
+                cancel
+            }
+        })
     }
-
-    const cancel = () => {
-        state.isOpen = false
-    }
-
-    // =================
-    //
-    // done
-    //
-
-    return {
-        open,
-        state,
-        cancel
-    }
-})
+    return store()
+}

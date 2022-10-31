@@ -1,4 +1,5 @@
 import * as Hooks from 'vue'
+import * as Pinia from 'pinia'
 import Img from '../vue/components/img.vue'
 import Form from '../vue/components/form.vue'
 import Table from '../vue/components/table.vue'
@@ -14,9 +15,11 @@ import type {} from 'node_modules/vue-router/types/index'
 
 let VueHooks: typeof Hooks = {} as any
 let VueOptions: {
+    pinia: typeof Pinia
     staticUrl: string
     notFoundImage: string
 } = {
+    pinia: null as any,
     staticUrl: '',
     notFoundImage: ''
 }

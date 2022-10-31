@@ -1,12 +1,14 @@
 <template>
     <v-app>
-        <Confirm
-            :title-text="options.confirmTitleText"
-            :cancel-text="options.confirmCancelText"
-            :confirm-text="options.confirmConfirmText">
-        </Confirm>
-        <Notification></Notification>
-        <slot></slot>
+        <div v-if="show">
+            <Confirm
+                :title-text="options.confirmTitleText"
+                :cancel-text="options.confirmCancelText"
+                :confirm-text="options.confirmConfirmText">
+            </Confirm>
+            <Notification></Notification>
+            <slot></slot>
+        </div>
     </v-app>
 </template>
 
@@ -14,6 +16,9 @@
 import Confirm from './confirm.vue'
 import Notification from './notification.vue'
 import { PropType } from 'vue'
+import { useVueHooks } from '../../core'
+
+const { onMounted, ref } = useVueHooks()
 
 // =================
 //
@@ -31,4 +36,21 @@ defineProps({
     }
 })
 
+// =================
+//
+// refs
+//
+
+const show = ref(false)
+
+// =================
+//
+// mounted
+//
+
+onMounted(() => {
+    setTimeout(() => {
+        show.value = true
+    }, 10)
+})
 </script>
