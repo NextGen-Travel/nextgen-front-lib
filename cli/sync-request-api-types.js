@@ -65,7 +65,11 @@ class OpenApiReader {
      */
 
     schemaToJsonSchema(data)  {
-        if (data.type === 'object' && 'properties' in data && data.properties == null) {
+        if (data == null) {
+            return {
+                type: 'any'
+            }
+        } else if (data.type === 'object' && 'properties' in data && data.properties == null) {
             return {
                 type: 'any'
             }
@@ -164,12 +168,7 @@ class OpenApiReader {
         let required = []
         let queryProperties = {}
         for (let query of queries) {
-            queryProperties[query.name] = {
-                type: query.schema.type
-            }
-            if (query.schema.enum) {
-                queryProperties[query.name] = query.schema.enum
-            }
+            queryProperties[query.name] = this.schemaToJsonSchema(query.schema)
             if (queries.require) {
                 required.push(query.name)
             }
