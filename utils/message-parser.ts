@@ -7,6 +7,10 @@ export const parseMessage = (data: any, def: string): string => {
         if (typeof data.response?.data === 'string') {
             return data.response.data
         }
+        // nextgen
+        if (data.response?.data?.msg) {
+            return data.response?.data?.msg || def
+        }
         // laravel
         if (data.response?.data?.errors) {
             let errors = data.response?.data?.errors
