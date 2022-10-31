@@ -7,6 +7,7 @@ let store: any = null
 export const useLibConfirmStore = () => {
     if (store == null) {
         const options = useVueOptions()
+        console.log('DDD', options)
         store = options.pinia.defineStore('lib-confirm', () => {
             const { reactive } = useVueHooks()
         
