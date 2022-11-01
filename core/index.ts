@@ -14,34 +14,55 @@ import type {} from 'node_modules/vue-i18n/types/index'
 import type {} from 'node_modules/vue-router/types/index'
 
 let VueHooks: typeof Hooks = {} as any
-let VueOptions: {
+
+let VuePlugins: {
     pinia: typeof Pinia
+} = {
+    pinia: null as any
+}
+
+let libOptions: {
     staticUrl: string
     notFoundImage: string
 } = {
-    pinia: null as any,
     staticUrl: '',
     notFoundImage: ''
 }
 
+let libEnv = {
+    version: 1,
+    stage: '',
+    service: '',
+}
+
 export const useVueHooks = () => VueHooks
-export const useVueOptions = () => VueOptions
+export const useVuePlugins = () => VuePlugins
+export const useLibOptions = () => libOptions
+export const useLibEnv = () => libEnv
 
 export const NextgenLib = {
     install(_Vue: any, params: {
+        env: typeof libEnv
         hooks: typeof Hooks
-        options: typeof VueOptions
+        pinia: typeof Pinia
+        options: typeof libOptions
     }) {
         for (let key in params.hooks) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             VueHooks[key] = params.hooks[key]
         }
-        for (let key in (params.options || {})) {
+        for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            VueOptions[key] = params.options[key]
+            libOptions[key] = params.options[key]
         }
+        for (let key in params.env) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            libEnv[key] = params.env[key]
+        }
+        VuePlugins.pinia = params.pinia
         const addComponent = (name: string, component: any) => _Vue.component(`ng-${name}`, component)
         addComponent('img', Img)
         addComponent('form', Form)

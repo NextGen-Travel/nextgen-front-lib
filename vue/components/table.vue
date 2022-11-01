@@ -61,7 +61,9 @@
             </template>
         </NgDialog>
         <div v-if="showFilter" class="print-no-show component-twr-filter" @click="openFilter">
-            <v-icon small>mdi-filter</v-icon>
+            <v-badge color="primary" offset-x="5" offset-y="5" dot bordered :value="filters.length > 0">
+                <v-icon small>mdi-filter</v-icon>
+            </v-badge>
         </div>
     </div>
 </template>
@@ -71,6 +73,7 @@ import NgDialog from './dialog.vue'
 import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
+import { useLocalStorage } from '../../core/storage'
 
 type Field = {
     key: string
@@ -90,6 +93,11 @@ export default {
             type: Function as PropType<(item: any, index: number) => string>,
             required: false,
             default: () => () => ''
+        },
+        filterMemory: {
+            type: String,
+            required: false,
+            default: () => ''
         },
         filterShow: {
             type: Boolean,
@@ -119,9 +127,10 @@ export default {
         'click-item': (_item: any) => true
     },
     setup(props, { emit }) {
-        const { reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
+        const { watch, reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
         const peel = pick.peel
         const instance = getCurrentInstance()
+        const localStorage = useLocalStorage()
 
         // =================
         //
@@ -173,6 +182,18 @@ export default {
             return true
         })
 
+        const filters = computed(() => {
+            let fields = props.fields.map(e => e.key)
+            return fields.filter(e => !state.showFields.includes(e))
+        })
+
+        // =================
+        //
+        // watch
+        //
+
+        watch(() => state.showFields, () => syncFilterMemory(), { deep: true })
+
         // =================
         //
         // mounted
@@ -180,12 +201,32 @@ export default {
 
         onMounted(() => {
             state.showFields = props.fields.map(e => e.key)
+            let filterName = props.filterMemory
+            if (filterName) {
+                let data = localStorage.get('tablefilterMemories')
+                if (data[filterName]) {
+                    state.showFields = state.showFields.filter(e => !data[filterName].includes(e))
+                }
+            }
         })
 
         // =================
         //
         // methods
         //
+
+        const syncFilterMemory = () => {
+            let key = props.filterMemory
+            if (key) {
+                let data = localStorage.get('tablefilterMemories')
+                if (data[key]) {
+                    data[key] = filters.value
+                } else {
+                    data[key] = []
+                }
+                localStorage.set('tablefilterMemories', data)
+            }
+        }
 
         const hasSlot = (name = 'default') => {
             let proxy = instance?.proxy as any
@@ -220,6 +261,7 @@ export default {
 
         return {
             state,
+            filters,
             hasSlot,
             hasClickItemListener,
             showFilter,

@@ -1,4 +1,4 @@
-import { useVueOptions, useVueHooks } from '../../../core'
+import { useVuePlugins, useVueHooks } from '../../../core'
 
 type Handler = (_callback: () => void) => any
 
@@ -6,10 +6,9 @@ let store: any = null
 
 export const useLibConfirmStore = () => {
     if (store == null) {
-        const options = useVueOptions()
-        console.log('DDD', options)
-        store = options.pinia.defineStore('lib-confirm', () => {
-            const { reactive } = useVueHooks()
+        const { pinia } = useVuePlugins()
+        const { reactive } = useVueHooks()
+        store = pinia.defineStore('lib-confirm', () => {
         
             // =================
             //

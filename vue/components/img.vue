@@ -19,7 +19,7 @@
 <script lang="ts">
 import { VueSelf } from '../self'
 import { PropType, ref } from 'vue'
-import { useVueHooks, useVueOptions } from '../../core'
+import { useVueHooks, useLibOptions } from '../../core'
 import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-helper'
 
 export default {
@@ -77,7 +77,7 @@ export default {
         click: () => true
     },
     setup(props, { emit }) {
-        const { notFoundImage, staticUrl } = useVueOptions()
+        const { notFoundImage, staticUrl } = useLibOptions()
         const { reactive, computed, watch, onMounted, onUnmounted } = useVueHooks()
         const self = VueSelf.use()
         const debounce = new Debounce({

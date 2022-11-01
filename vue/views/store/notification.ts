@@ -1,5 +1,5 @@
 import { flow } from 'power-helper'
-import { useVueOptions, useVueHooks } from '../../../core'
+import { useVuePlugins, useVueHooks } from '../../../core'
 
 
 export type MessageType = 'info' | 'warning' | 'danger' | 'success'
@@ -16,8 +16,8 @@ let store: any = null
 
 export const useLibNotificationStore = () => {
     if (store == null) {
-        const options = useVueOptions()
-        store = options.pinia.defineStore('lib-notification', () => {
+        const { pinia } = useVuePlugins()
+        store = pinia.defineStore('lib-notification', () => {
             const { reactive, computed } = useVueHooks()
         
             // =================
@@ -42,7 +42,7 @@ export const useLibNotificationStore = () => {
                     ...params,
                     id: flow.createUuid(),
                     duration: 0,
-                    clicked: false
+                    clicked: params.type === 'danger'
                 })
             }
         

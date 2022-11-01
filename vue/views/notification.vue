@@ -1,26 +1,28 @@
 <template>
     <div class="lib-notification">
-        <div
-            v-for="message of messages"
-            class="lib-notification-block mt-2 mr-2"
-            :key="message.id">
-            <v-card @click="clickMessage(message)" dark :color="getColor(message.type)">
-                <v-progress-linear
-                    v-if="message.clicked === false"
-                    color="light-blue lighten-5"
-                    height="3"
-                    :value="100 - message.duration">
-                </v-progress-linear>
-                <v-row class="pa-3" no-gutters align="center">
-                    <v-icon dark> mdi-alert</v-icon>
-                    <div class="ml-3">{{ message.content }}</div>
-                    <v-spacer></v-spacer>
-                    <v-btn icon @click.stop="removeMessage(message)">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                </v-row>
-            </v-card>
-        </div>
+        <transition-group name="lib-notification-list">
+            <div
+                v-for="message of messages"
+                class="lib-notification-block mt-2 mr-2"
+                :key="message.id">
+                <v-card outlined @click="clickMessage(message)">
+                    <v-progress-linear
+                        v-if="message.clicked === false"
+                        height="2"
+                        :color="getColor(message.type)"
+                        :value="100 - message.duration">
+                    </v-progress-linear>
+                    <v-row class="pa-3" no-gutters align="center" :class="`${getColor(message.type)}--text`">
+                        <v-icon :color="getColor(message.type)">{{ getIcon(message.type) }}</v-icon>
+                        <div class="ml-3">{{ message.content }}</div>
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click.stop="removeMessage(message)" :color="getColor(message.type)">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </v-row>
+                </v-card>
+            </div>
+        </transition-group>
     </div>
 </template>
 
@@ -65,7 +67,7 @@ const messages = computed(() => {
 onMounted(() => {
     state.ticker.on('next', () => {
         let needClear = false
-        messages.value.forEach(message => {
+        messages.value.forEach((message: any) => {
             if (message.clicked === false) {
                 message.duration += 5
                 if (message.duration >= 100) {
@@ -99,7 +101,22 @@ const getColor = (type: MessageType) => {
         return 'success'
     }
     if (type === 'warning') {
-        return 'warning lighten-1'
+        return 'warning'
+    }
+}
+
+const getIcon = (type: MessageType) => {
+    if (type === 'danger') {
+        return 'mdi-alert-circle'
+    }
+    if (type === 'info') {
+        return 'mdi-email'
+    }
+    if (type === 'success') {
+        return 'mdi-check'
+    }
+    if (type === 'warning') {
+        return 'mdi-comment-alert'
     }
 }
 
@@ -125,5 +142,21 @@ const removeMessage = (message: Message) => {
             width: 320px;
             min-width: 260px;
         }
+    }
+    .lib-notification-list-move, .lib-notification-list-enter-active, .lib-notification-list-leave-active {
+        transition: all 0.25s;
+    }
+
+    .lib-notification-list-leave-to {
+        opacity: 0;
+    }
+
+    .lib-notification-list-enter {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .lib-notification-list-leave-active:not(:last-child) {
+        position: absolute;
     }
 </style>

@@ -21,10 +21,9 @@
 
 <script lang="ts" setup>
 import { useVueHooks } from '../../core'
-import { computed, watch } from 'vue'
 import { useLibConfirmStore } from './store/confirm'
 
-const { reactive, defineProps } = useVueHooks()
+const { computed, watch, reactive, defineProps } = useVueHooks()
 
 const libConfirmStore = useLibConfirmStore()
 
