@@ -1,11 +1,13 @@
 <template>
     <div :style="state.headerStyleString">
         <v-row class="component-toolbar-wrapper h-100" no-gutters align="center">
-            <div style="height: fit-content;">
+            <div :style="style">
                 <slot></slot>
             </div>
-            <v-spacer></v-spacer>
-            <div style="height: fit-content;">
+            <div v-if="self.hasSlot('center')" class="text-center" :style="style">
+                <slot name="center"></slot>
+            </div>
+            <div class="text-right" :style="style">
                 <slot name="right"></slot>
             </div>
         </v-row>
@@ -13,11 +15,13 @@
 </template>
 
 <script name="ng-toolbar" lang="ts" setup>
+import { VueSelf } from '../self'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
 import { StyleString } from 'power-helper'
 
-const { reactive, defineProps, onMounted } = useVueHooks()
+const self = VueSelf.use()
+const { reactive, defineProps, onMounted, computed } = useVueHooks()
 
 // =================
 //
@@ -41,10 +45,28 @@ const state = reactive({
     headerStyleString: ''
 })
 
+// =================
+//
+// mounted
+//
+
 onMounted(() => {
     let styleString = new StyleString()
     styleString.set('height', props.height)
     state.headerStyleString = styleString.join()
+})
+
+// =================
+//
+// computed
+//
+
+const style = computed(() => {
+    let width = '50%'
+    if (self.hasSlot('center')) {
+        width = '33.33333%'
+    }
+    return `height: fit-content; width: ${width};`
 })
 
 </script>

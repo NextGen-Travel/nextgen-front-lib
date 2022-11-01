@@ -152,6 +152,9 @@ export default {
         })
 
         const showFilter = computed(() => {
+            if (props.items.length === 0) {
+                return false
+            }
             if (props.filterShow === false) {
                 return false
             }
