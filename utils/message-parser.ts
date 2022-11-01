@@ -8,8 +8,8 @@ export const parseMessage = (data: any, def: string): string => {
             return data.response.data
         }
         // nextgen
-        if (data.response?.data?.msg) {
-            return data.response?.data?.msg || def
+        if (data.response?.data?.data?.msg) {
+            return data.response?.data?.data?.msg || def
         }
         // laravel
         if (data.response?.data?.errors) {
