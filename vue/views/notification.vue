@@ -12,9 +12,9 @@
                         :color="getColor(message.type)"
                         :value="100 - message.duration">
                     </v-progress-linear>
-                    <v-row class="pa-3" no-gutters align="center" :class="`${getColor(message.type)}--text`">
+                    <v-row class="pa-3 flex-nowrap" no-gutters align="center" :class="`${getColor(message.type)}--text`">
                         <v-icon :color="getColor(message.type)">{{ getIcon(message.type) }}</v-icon>
-                        <div class="ml-3">{{ message.content }}</div>
+                        <div class="ml-3" style="overflow: auto;">{{ message.content }}</div>
                         <v-spacer></v-spacer>
                         <v-btn icon @click.stop="removeMessage(message)" :color="getColor(message.type)">
                             <v-icon>mdi-close</v-icon>
