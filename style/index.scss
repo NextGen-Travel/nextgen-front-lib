@@ -26,6 +26,12 @@ $box: (
     }
 }
 
+@for $var from 0 through 10 {
+    .opacity-#{$var} {
+        opacity: $var * 0.1;
+    }
+}
+
 @media print {
     * {
         box-sizing: border-box;
