@@ -15,7 +15,9 @@ body {
 
 $box: (
     "w": "width",
-    "h": "height"
+    "max-w": "max-width",
+    "h": "height",
+    "max-h": "max-height"
 );
 
 @each $key, $value in $box {

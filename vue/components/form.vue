@@ -93,7 +93,8 @@ export default {
         }
 
         const submit = () => {
-            if (state.valid) {
+            let valid = checkform.value.validate()
+            if (valid) {
                 emit('submit')
             }
         }
