@@ -35,6 +35,7 @@ const descBeautify = (content) => {
  *      body: null | Record<string, any>
  *      query: null | Record<string, any>
  *      response: null | Record<string, any>
+ *      parameters: ParameterObject[]
  *      contentType: null | 'json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
  *  }} OutputObject 
  */
@@ -211,6 +212,8 @@ class OpenApiReader {
                 if (api) {
                     let data = api[method]
                     if (data) {
+                        /** @type {ParameterObject[]} */
+                        let parameters = data['parameters']
                         let contentType = this.getContentType(data.requestBody)
                         let body = this.pickJsonSchema(data.requestBody)
                         let response = this.pickJsonSchema(data.responses['200'])
@@ -218,6 +221,7 @@ class OpenApiReader {
                             summary: data.summary || 'no summary',
                             description: data.description || 'no description',
                             path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}`,
+                            parameters,
                             method: method,
                             body,
                             contentType: contentType === 'json' ? null : contentType,
@@ -257,7 +261,10 @@ class OpenApiReader {
                 }
                 tsData.properties[item.path] = {
                     type: 'object',
-                    description: `[${item.summary}] - ${item.description}`,
+                    description: [
+                        `[${item.summary}] - ${item.description}`,
+                        ...item.parameters.filter(e => e.in === 'path').map(e => `@params {${e.schema.type || '*'}} ${e.name} - ${e.description}`)
+                    ].join('\n'),
                     required: ['body', 'query', 'response', 'contentType'],
                     additionalProperties: false,
                     properties: {
