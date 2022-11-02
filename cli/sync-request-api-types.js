@@ -263,7 +263,7 @@ class OpenApiReader {
                     type: 'object',
                     description: [
                         `[${item.summary}] - ${item.description}`,
-                        ...item.parameters.filter(e => e.in === 'path').map(e => `@params {${e.schema.type || '*'}} ${e.name} - ${e.description}`)
+                        ...item.parameters?.filter(e => e.in === 'path').map(e => `@params {${e.schema.type || '*'}} ${e.name} - ${e.description}`)
                     ].join('\n'),
                     required: ['body', 'query', 'response', 'contentType'],
                     additionalProperties: false,
