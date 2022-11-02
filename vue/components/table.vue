@@ -21,7 +21,7 @@
                         <td
                             v-for="(field, index) in showFields"
                             class="text-center"
-                            :key="index + 'ffii'"
+                            :key="field.key"
                             :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
@@ -70,9 +70,9 @@
 
 <script lang="ts">
 import NgDialog from './dialog.vue'
-import { pick } from 'power-helper'
 import { PropType } from 'vue'
 import { useVueHooks } from '../../core'
+import { pick, Debounce } from 'power-helper'
 import { useLocalStorage } from '../../core/storage'
 
 type Field = {
@@ -127,7 +127,7 @@ export default {
         'click-item': (_item: any) => true
     },
     setup(props, { emit }) {
-        const { watch, reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
+        const { onUnmounted, watch, reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
         const peel = pick.peel
         const instance = getCurrentInstance()
         const localStorage = useLocalStorage()
@@ -138,6 +138,7 @@ export default {
         //
 
         const state = reactive({
+            reloaded: true,
             modalShow: false,
             showFields: [] as string[]
         })
@@ -192,10 +193,29 @@ export default {
 
         // =================
         //
+        // debounce
+        //
+
+        const debounce = new Debounce({
+            delay: 50
+        })
+
+        debounce.on('trigger', () => {
+            state.reloaded = false
+            setTimeout(() => {
+                state.reloaded = true
+            }, 10)
+        })
+
+        // =================
+        //
         // watch
         //
 
-        watch(() => state.showFields, () => syncFilterMemory(), { deep: true })
+        watch(() => state.showFields, () => {
+            syncFilterMemory()
+            debounce.input('')
+        }, { deep: true })
 
         // =================
         //
@@ -211,6 +231,10 @@ export default {
                     state.showFields = state.showFields.filter(e => !data[filterName].includes(e))
                 }
             }
+        })
+
+        onUnmounted(() => {
+            debounce.close()
         })
 
         // =================
