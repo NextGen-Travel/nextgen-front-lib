@@ -62,7 +62,7 @@ $view-box-height: (
 
 @for $var from 0 through 9 {
     .opacity-#{$var}5 {
-        opacity: $var * 0.1 + 0.5;
+        opacity: $var * 0.1 + 0.05;
     }
 }
 
