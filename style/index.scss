@@ -54,9 +54,15 @@ $view-box-height: (
     }
 }
 
-@for $var from 0 through 20 {
-    .opacity-#{$var * 10 / 2} {
-        opacity: $var * 0.05;
+@for $var from 0 through 10 {
+    .opacity-#{$var} {
+        opacity: $var * 0.1;
+    }
+}
+
+@for $var from 0 through 10 {
+    .opacity-#{$var}5 {
+        opacity: $var * 0.1 / 2;
     }
 }
 
