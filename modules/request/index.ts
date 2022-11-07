@@ -43,12 +43,13 @@ export type LaravelResourcePaginate<T> = {
     }
 }
 
-export type RequestContext = {
+export type RequestContext<C> = {
     path: string
     form: HTMLFormElement
     body: Record<string, any>
     query: Record<string, any>
     method: string
+    config: C
     headers: Record<string, string>
     contentType: ContentTypes
     responseType?: 'arraybuffer' | 'json'
@@ -80,13 +81,13 @@ type QueryParams<To extends string, Api extends DefinedFormat> = StringParams<To
 
 type ModuleParams<R extends Request<any, any>, C> = {
     name: string
-    http: (_context: RequestContext) => Promise<any>
+    http: (_context: RequestContext<C>) => Promise<any>
     install?: (_request: R, _config: C) => Promise<any>
 }
 
 type Channels = {
     useMockAfter: {
-        context: RequestContext
+        context: RequestContext<any>
         response: any
     }
 }
@@ -100,6 +101,7 @@ export class Request<
     private mocks: Partial<Record<keyof ApisDefinition, any>> = {}
     private params: ModuleParams<this, Config>
     private installed = false
+    private config: Config | null = null
     constructor(params: ModuleParams<Request<Config, ApisDefinition>, Config>) {
         super()
         this.params = params
@@ -153,7 +155,7 @@ export class Request<
 
     static async AxiosRequest(params: {
         axios: any
-        context: RequestContext
+        context: RequestContext<any>
     }) {
         let { axios, context } = params
         let { method, path, query, headers, responseType, body } = context
@@ -195,7 +197,7 @@ export class Request<
 
     mock<T extends keyof ApisDefinition>(
         to: T,
-        response: (_ctx: RequestContext) => Extract<ApisDefinition[T], DefinedFormat>['response']
+        response: (_ctx: RequestContext<any>) => Extract<ApisDefinition[T], DefinedFormat>['response']
     ) {
         this.mocks[to] = response
     }
@@ -206,6 +208,7 @@ export class Request<
 
     async install(config: Config) {
         if (this.params.install) {
+            this.config = config
             await this.params.install(this, config)
         }
         this.installed = true
@@ -220,12 +223,13 @@ export class Request<
         }
         let parsed = this.parseUrl(to as string, params.params)
         let headers = params.headers || {}
-        let context: RequestContext = {
+        let context: RequestContext<any> = {
             path: parsed.path,
             form: document.createElement('form'),
             body: (params.body || {}) as any,
             query: (params.query || {}) as any,
             headers,
+            config: this.config,
             contentType: params.contentType || 'json',
             responseType: params.responseType,
             method: parsed.method

@@ -1853,6 +1853,11 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.4.1.tgz#ae4562c007473b932a6200d403268dd2fffc6ade"
@@ -2229,10 +2234,10 @@ postcss@^8.1.10, postcss@^8.4.14:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.4.3.tgz#a2acbd4b6a3af519f60e1fa5a25069fd14e28449"
-  integrity sha512-em/DFYxbbch0iVacFi+MXCDLVrUcyY4S48rxl9UvhL+zUsg6SKXNIUfgLd3L5YpWL0jOvkANoPWzYrE0ErnyFA==
+power-helper@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.4.5.tgz#6a19a4102c6a56d34d8cdbe387a758d97053a84a"
+  integrity sha512-fWcYj7dw4KsbA+jzr0NPyDndYJygzMNEF9FDGewKqCtcaemCS7tkm9opxSNzXZQti8INy4ucWKZBeXcOi2zNDQ==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
