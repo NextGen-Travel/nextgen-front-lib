@@ -43,7 +43,7 @@ export type LaravelResourcePaginate<T> = {
     }
 }
 
-export type RequestContext<C> = {
+export type RequestContext<C = any> = {
     path: string
     form: HTMLFormElement
     body: Record<string, any>
