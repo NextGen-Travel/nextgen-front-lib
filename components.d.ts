@@ -1,5 +1,5 @@
-declare module '@vue/runtime-core' {
-  export interface GlobalComponents {
-    NgDoalog: typeof import('./vue/components/dialog.vue')['default']
-  }
+import { DefineComponent } from 'vue'
+
+export interface GlobalComponents {
+  NgDoalog: DefineComponent<import('./vue/components/dialog.vue')['default']>
 }
