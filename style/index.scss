@@ -28,6 +28,32 @@ $box: (
     }
 }
 
+$view-box-width: (
+    "vw": "width",
+    "max-vw": "max-width"
+);
+
+$view-box-height: (
+    "vh": "height",
+    "max-vh": "max-height"
+);
+
+@each $key, $value in $view-box-width {
+    @for $var from 0 through 20 {
+        .#{$key}-#{$var * 5} {
+            #{$value}: $var * 5vw;
+        }
+    }
+}
+
+@each $key, $value in $view-box-height {
+    @for $var from 0 through 20 {
+        .#{$key}-#{$var * 5} {
+            #{$value}: $var * 5vh;
+        }
+    }
+}
+
 @for $var from 0 through 10 {
     .opacity-#{$var} {
         opacity: $var * 0.1;

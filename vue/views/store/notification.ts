@@ -24,7 +24,7 @@ export const useLibNotificationStore = () => {
             //
             // state
             //
-        
+
             const state = reactive({
                 messages: [] as Message[]
             })
