@@ -86,9 +86,13 @@ export class CasAuthClient extends Event<Channels> {
     }
 
     static decode(context: string) {
+        console.log('1:', context)
         let uri = decodeURIComponent(context)
+        console.log('2:', uri)
         let base64 = CryptoAES.decrypt('crypto-js', uri, cryptoKey)
+        console.log('3:', base64)
         let json = atob(base64)
+        console.log('4:', json)
         return JSON.parse(json) as {
             appId: string
             token: string
