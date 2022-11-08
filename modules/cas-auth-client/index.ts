@@ -138,8 +138,8 @@ export class CasAuthClient extends Event<Channels> {
     }
 
     autoSignIn(queryKey = 'auth') {
-        let urls = location.href.split(/#.*\?/)
-        let url = new URL(urls.join(urls[0].match(/\?/g) ? '&' : '?'))
+        let urls = location.href.split('#')
+        let url = new URL(urls[0])
         let auth = url.searchParams.get(queryKey)
         let output = {
             isSignIn: false
