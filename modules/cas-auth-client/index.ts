@@ -38,7 +38,6 @@ const env = {
 
 export class CasAuthClient extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
-    private params!: Params
     private payload: null | TokenPayload = null
     private status = {
         appId: '',
@@ -144,6 +143,13 @@ export class CasAuthClient extends Event<Channels> {
     getPayload(): TokenPayload {
         if (this.payload) {
             return this.payload
+        }
+        throw signInError()
+    }
+
+    getToken() {
+        if (this.payload) {
+            return this.status.token
         }
         throw signInError()
     }
