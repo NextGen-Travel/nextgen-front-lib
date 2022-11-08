@@ -82,14 +82,12 @@ export class CasAuthClient extends Event<Channels> {
         const json = JSON.stringify(params)
         const base64 = btoa(json)
         const key = CryptoAES.encrypt('crypto-js', base64, cryptoKey)
-        return encodeURIComponent(key)
+        return key
     }
 
-    static decode(context: string) {
-        console.log('1:', context)
-        let uri = decodeURIComponent(context)
-        console.log('2:', uri)
-        let base64 = CryptoAES.decrypt('crypto-js', uri, cryptoKey)
+    static decode(key: string) {
+        console.log('2:', key)
+        let base64 = CryptoAES.decrypt('crypto-js', key, cryptoKey)
         console.log('3:', base64)
         let json = atob(base64)
         console.log('4:', json)
@@ -239,10 +237,12 @@ export class CasAuthClient extends Event<Channels> {
     }
 
     async getServiceLink(service: Services, queryKey = 'auth') {
-        let context = CasAuthClient.encode({
+        let key = CasAuthClient.encode({
             appId: this.status.appId,
             token: this.status.token
         })
-        return `${links[service][this.params.stage]}?${queryKey}=${context}`
+        let url = new URL(links[service][this.params.stage])
+        url.searchParams.set(queryKey, key)
+        return url.toString()
     }
 }
