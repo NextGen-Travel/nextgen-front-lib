@@ -224,6 +224,37 @@ export type CasAuthDefinitions = {
         contentType: null;
     };
     /**
+     * [建立帳號 使用 accessToken for client server] - no description
+     * @param {string} appId - appId(uuid)
+     */
+    "post@v1/register/auth/:appId": {
+        body: {
+            /**
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbXRzZW5nMUBuZXh0Z2VuLmNvbS5oayIsInBhc3N3b3JkIjoiMTIzNDU2Nzg5IiwiYWNjb3VudCI6InNhbXRzZW5nMSIsImFwcElkIjoiNmYwNDZlNTEtZmQ1NC00NzQ5LWIzYWMtNjhlOGEzN2Y1ZTg2IiwiaXNzIjoi5Ym16K296Jel5oi_IiwiZXhwIjoxNjY3ODExNDU4LCJpYXQiOjE2Njc4MTExNTh9.zcFggF3GsJJlQTS1fxreWvyTCviA6rKhkvSI3kiKYRQ
+             */
+            accessToken: string;
+        };
+        query: {
+            service ? : string;
+        };
+        response: {
+            msg: string;
+            data: {
+                user: {
+                    id: number;
+                    username: string;
+                    email: string;
+                    provider: string;
+                    confirmed: boolean;
+                    blocked: boolean;
+                    createdAt: string;
+                    updatedAt: string;
+                };
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [取得 company 啟用的服務狀態] - no description
      */
     "get@v1/private/company/state": {

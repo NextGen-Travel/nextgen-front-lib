@@ -73,7 +73,9 @@ export type UlitmatePosDefinitions = {
      */
     "get@transactions": {
         body: null;
-        query: null;
+        query: {
+            contactId ? : number;
+        };
         response: {
             data: {
                 /**

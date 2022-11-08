@@ -1026,6 +1026,7 @@ export type GeniusCartAppDefinitions = {
                 created_at: string;
                 updated_at: string;
                 balance: number;
+                provider: string;
             };
         };
         contentType: null;
