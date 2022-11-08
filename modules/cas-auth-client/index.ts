@@ -6,7 +6,6 @@ import { serviceException } from '../../core/error'
 
 type Params = {
     stage: 'dev' | 'prod'
-    service: 'nss' | 'pos' | 'scrm' | 'dispensing'
 }
 
 type TokenPayload = {
@@ -160,7 +159,7 @@ export class CasAuthClient extends Event<Channels> {
         throw signInError()
     }
 
-    async getServiceToken() {
+    async getServiceToken(service: 'nss' | 'pos' | 'scrm' | 'dispensing') {
         if (this.payload) {
             let response = await this.api('get@v1/private/auth/:appId', {
                 params: {
@@ -168,7 +167,7 @@ export class CasAuthClient extends Event<Channels> {
                 },
                 query: {
                     expand: 'profile',
-                    service: this.params.service
+                    service
                 }
             })
             return response.data.accessToken
