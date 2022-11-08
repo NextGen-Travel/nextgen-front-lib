@@ -4,6 +4,7 @@ import { casApi } from './request'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
 
+type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 type Params = {
     stage: 'dev' | 'prod'
 }
@@ -36,8 +37,36 @@ const env = {
     }
 }
 
+const links: Record<Services, {
+    dev: string
+    prod: string
+    stage: string
+}> = {
+    nss: {
+        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
+        prod: 'https://dispensing.cloudsatlas.com.hk',
+        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+    },
+    pos: {
+        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
+        prod: 'https://dispensing.cloudsatlas.com.hk',
+        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+    },
+    scrm: {
+        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
+        prod: 'https://dispensing.cloudsatlas.com.hk',
+        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+    },
+    dispensing: {
+        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
+        prod: 'https://dispensing.cloudsatlas.com.hk',
+        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+    }
+}
+
 export class CasAuthClient extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
+    private params!: Params
     private payload: null | TokenPayload = null
     private status = {
         appId: '',
@@ -63,6 +92,7 @@ export class CasAuthClient extends Event<Channels> {
             baseUrl: env[params.stage].url
         })
         this.api = casApi.export()
+        this.params = params
         let storage = useLocalStorage()
         let auth = storage.get('casAuth')
         if (auth) {
@@ -95,9 +125,9 @@ export class CasAuthClient extends Event<Channels> {
         }
     }
 
-    autoSignIn() {
+    autoSignIn(queryKey = 'auth') {
         let url = new URL(location.href)
-        let auth = url.searchParams.get('auth')
+        let auth = url.searchParams.get(queryKey)
         let output = {
             isSignIn: false
         }
@@ -172,7 +202,7 @@ export class CasAuthClient extends Event<Channels> {
         throw signInError()
     }
 
-    async getServiceToken(service: 'nss' | 'pos' | 'scrm' | 'dispensing') {
+    async getServiceToken(service: Services) {
         if (this.payload) {
             let response = await this.api('get@v1/private/auth/:appId', {
                 params: {
@@ -186,5 +216,10 @@ export class CasAuthClient extends Event<Channels> {
             return response.data.accessToken
         }
         throw signInError()
+    }
+
+    async getServiceLink(service: Services, queryKey = 'auth') {
+        let token = await this.getServiceToken(service)
+        return `${links[service][this.params.stage]}?${queryKey}=${token}`
     }
 }
