@@ -67,6 +67,11 @@ export default {
             type: String as PropType<string>,
             required: false
         },
+        block: {
+            type: Boolean,
+            required: false,
+            default: () => false
+        },
         square: {
             type: Boolean,
             required: false,
@@ -121,7 +126,7 @@ export default {
             style.set('maxWidth', props.maxWidth)
             style.set('maxHeight', props.maxHeight)
             style.set('borderRadius', props.radius)
-            style.set('display', 'inline-block')
+            style.set('display', props.block ? 'block' : 'inline-block')
             return style.join()
         })
 
@@ -193,6 +198,9 @@ export default {
             }
             if (props.avatar) {
                 code.set('borderRadius', '1000em')
+            }
+            if (props.block) {
+                code.set('display', 'block')
             }
             if (state.src) {
                 code.set('backgroundImage', `url('${state.src}')`)
