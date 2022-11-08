@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode'
 import { Event } from 'power-helper'
 import { casApi } from './request'
+import { CryptoAES } from '../crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
 
@@ -26,6 +27,7 @@ type Channels = {
     }
 }
 
+const cryptoKey = 'nextgen-key-1234'
 const exception = serviceException.checkout('modules cas')
 const signInError = () => exception.create('No SingIn.')
 const env = {
@@ -77,11 +79,17 @@ export class CasAuthClient extends Event<Channels> {
         appId: string
         token: string
     }) {
-        return encodeURIComponent(btoa(JSON.stringify(params)))
+        const json = JSON.stringify(params)
+        const base64 = btoa(json)
+        const key = CryptoAES.encrypt('crypto-js', base64, cryptoKey)
+        return encodeURIComponent(key)
     }
 
     static decode(context: string) {
-        return JSON.parse(atob(decodeURIComponent(context))) as {
+        let uri = decodeURIComponent(context)
+        let base64 = CryptoAES.decrypt('crypto-js', uri, cryptoKey)
+        let json = atob(base64)
+        return JSON.parse(json) as {
             appId: string
             token: string
         }
@@ -220,6 +228,10 @@ export class CasAuthClient extends Event<Channels> {
 
     async getServiceLink(service: Services, queryKey = 'auth') {
         let token = await this.getServiceToken(service)
-        return `${links[service][this.params.stage]}?${queryKey}=${token}`
+        let context = CasAuthClient.encode({
+            appId: this.status.appId,
+            token
+        })
+        return encodeURIComponent(`${links[service][this.params.stage]}?${queryKey}=${context}`)
     }
 }
