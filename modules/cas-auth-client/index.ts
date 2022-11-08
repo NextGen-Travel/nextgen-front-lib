@@ -163,8 +163,9 @@ export class CasAuthClient extends Event<Channels> {
             this.emit('signOut', {
                 client: this
             })
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     isSignIn() {
@@ -174,29 +175,33 @@ export class CasAuthClient extends Event<Channels> {
     isExpired() {
         if (this.payload) {
             return Date.now() > (this.payload.exp * 1000)
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     getPayload(): TokenPayload {
         if (this.payload) {
             return this.payload
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     getAppId() {
         if (this.payload) {
             return this.status.appId
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     getToken() {
         if (this.payload) {
             return this.status.token
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     async refresh() {
@@ -206,8 +211,9 @@ export class CasAuthClient extends Event<Channels> {
                 appId: this.status.appId,
                 token: response.data.jwt
             })
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     async getServiceToken(service: Services) {
@@ -222,8 +228,9 @@ export class CasAuthClient extends Event<Channels> {
                 }
             })
             return response.data.accessToken
+        } else {
+            throw signInError()
         }
-        throw signInError()
     }
 
     async getServiceLink(service: Services, queryKey = 'auth') {
