@@ -147,6 +147,13 @@ export class CasAuthClient extends Event<Channels> {
         throw signInError()
     }
 
+    getAppId() {
+        if (this.payload) {
+            return this.status.appId
+        }
+        throw signInError()
+    }
+
     getToken() {
         if (this.payload) {
             return this.status.token
