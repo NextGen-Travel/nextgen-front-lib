@@ -239,6 +239,6 @@ export class CasAuthClient extends Event<Channels> {
             appId: this.status.appId,
             token
         })
-        return encodeURIComponent(`${links[service][this.params.stage]}?${queryKey}=${context}`)
+        return `${links[service][this.params.stage]}?${queryKey}=${context}`
     }
 }
