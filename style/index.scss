@@ -16,8 +16,10 @@ body {
 $box: (
     "w": "width",
     "max-w": "max-width",
+    "min-w": "min-width",
     "h": "height",
-    "max-h": "max-height"
+    "max-h": "max-height",
+    "min-h": "min-height"
 );
 
 @each $key, $value in $box {
@@ -30,12 +32,14 @@ $box: (
 
 $view-box-width: (
     "vw": "width",
-    "max-vw": "max-width"
+    "max-vw": "max-width",
+    "min-vw": "min-width"
 );
 
 $view-box-height: (
     "vh": "height",
-    "max-vh": "max-height"
+    "max-vh": "max-height",
+    "min-vh": "min-height"
 );
 
 @each $key, $value in $view-box-width {
