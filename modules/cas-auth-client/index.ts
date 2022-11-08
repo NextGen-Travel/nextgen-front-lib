@@ -5,9 +5,10 @@ import { CryptoAES } from '../crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
 
+type Stages = 'dev' | 'stage' | 'prod'
 type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 type Params = {
-    stage: 'dev' | 'prod'
+    stage: Stages
 }
 
 type TokenPayload = {
@@ -30,8 +31,11 @@ type Channels = {
 const cryptoKey = 'nextgen-key-1234'
 const exception = serviceException.checkout('modules cas')
 const signInError = () => exception.create('No SingIn.')
-const env = {
+const env: Record<Stages, { url: string }> = {
     dev: {
+        url: 'https://cas-api-dev.cloudsatlas.com.hk/api'
+    },
+    stage: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api'
     },
     prod: {
@@ -39,11 +43,7 @@ const env = {
     }
 }
 
-const links: Record<Services, {
-    dev: string
-    prod: string
-    stage: string
-}> = {
+const links: Record<Services, Record<Stages, string>> = {
     nss: {
         dev: 'https://dispensing-dev.cloudsatlas.com.hk',
         prod: 'https://dispensing.cloudsatlas.com.hk',

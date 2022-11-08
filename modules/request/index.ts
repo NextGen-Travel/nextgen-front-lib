@@ -207,8 +207,8 @@ export class Request<
     }
 
     async install(config: Config) {
+        this.config = config
         if (this.params.install) {
-            this.config = config
             await this.params.install(this, config)
         }
         this.installed = true
