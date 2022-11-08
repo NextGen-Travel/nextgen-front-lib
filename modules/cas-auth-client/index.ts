@@ -216,7 +216,7 @@ export class CasAuthClient extends Event<Channels> {
         }
     }
 
-    async getServiceToken(service: Services) {
+    async getServiceData(service: Services) {
         if (this.payload) {
             let response = await this.api('get@v1/private/auth/:appId', {
                 params: {
@@ -227,17 +227,16 @@ export class CasAuthClient extends Event<Channels> {
                     service
                 }
             })
-            return response.data.accessToken
+            return response.data
         } else {
             throw signInError()
         }
     }
 
     async getServiceLink(service: Services, queryKey = 'auth') {
-        let token = await this.getServiceToken(service)
         let context = CasAuthClient.encode({
             appId: this.status.appId,
-            token
+            token: this.status.token
         })
         return `${links[service][this.params.stage]}?${queryKey}=${context}`
     }
