@@ -339,9 +339,7 @@ export type MedicinePrivateDefinitions = {
                 name: string;
                 description: string;
                 type: string;
-                [k: string]: unknown;
             };
-            [k: string]: unknown;
         } & {
             store: {
                 id: number;
@@ -352,9 +350,7 @@ export type MedicinePrivateDefinitions = {
                 district: string;
                 address: string;
                 enable: boolean;
-                [k: string]: unknown;
             };
-            [k: string]: unknown;
         };
         contentType: null;
     };
@@ -368,7 +364,7 @@ export type MedicinePrivateDefinitions = {
             email ? : string;
             mobile ? : string;
             phoneNumber ? : string;
-            accountＮo ? : string;
+            accountNo ? : string;
         };
         response: {
             data: {

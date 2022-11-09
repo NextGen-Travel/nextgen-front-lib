@@ -80,9 +80,7 @@ class OpenApiReader {
             return this.schemaArrayToJsonSchema(data)
         } else {
             /** @type {JSONSchema} */
-            let output = toJsonSchema(data, {
-                strictMode: false
-            })
+            let output = toJsonSchema(data)
             if (data.example) {
                 output.description = descBeautify(`
                     @example ${data.example}
@@ -246,7 +244,6 @@ class OpenApiReader {
         let tsData = {
             type: 'object',
             required: [],
-            additionalProperties: false,
             properties: {}
         }
         for (let item of result.outputs) {
@@ -268,7 +265,6 @@ class OpenApiReader {
                         ...(item?.parameters?.filter(e => e.in === 'path').map(e => `@param {${e.schema.type || '*'}} ${e.name} - ${e.description}`) || [])
                     ].join('\n'),
                     required: ['body', 'query', 'response', 'contentType'],
-                    additionalProperties: false,
                     properties: {
                         body: item.body == null ? { type: 'null' } : item.body,
                         query: item.query == null ? { type: 'null' } : item.query,
@@ -280,6 +276,7 @@ class OpenApiReader {
         }
         const defined = await compile(tsData, '__', {
             ignoreMinAndMaxItems: true,
+            additionalProperties: false,
             bannerComment: ''
         })
         return jsBeautify(`
