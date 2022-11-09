@@ -24,6 +24,9 @@ type Channels = {
     signIn: {
         client: CasAuthClientConstructor
     }
+    refresh: {
+        client: CasAuthClientConstructor
+    }
     signOut: {
         client: CasAuthClientConstructor
     }
@@ -211,6 +214,9 @@ export class CasAuthClientConstructor extends Event<Channels> {
             useLocalStorage().set('casAuth', {
                 appId: this.status.appId,
                 token: response.data.jwt
+            })
+            this.emit('refresh', {
+                client: this
             })
         } else {
             throw signInError()
