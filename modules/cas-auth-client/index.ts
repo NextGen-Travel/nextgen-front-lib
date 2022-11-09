@@ -233,7 +233,7 @@ export class CasAuthClient extends Event<Channels> {
         }
     }
 
-    async getServiceLink(service: Services, queryKey = 'auth') {
+    getServiceLink(service: Services, queryKey = 'auth') {
         let key = CasAuthClient.encode({
             appId: this.status.appId,
             token: this.status.token
