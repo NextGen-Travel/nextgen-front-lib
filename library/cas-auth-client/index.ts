@@ -211,10 +211,12 @@ export class CasAuthClientConstructor extends Event<Channels> {
     async refresh() {
         if (this.payload) {
             const response = await this.api('get@v1/private/auth/renew', {})
-            useLocalStorage().set('casAuth', {
+            const data = {
                 appId: this.status.appId,
                 token: response.data.jwt
-            })
+            }
+            useLocalStorage().set('casAuth', data)
+            this.status = data
             this.emit('refresh', {
                 client: this
             })
