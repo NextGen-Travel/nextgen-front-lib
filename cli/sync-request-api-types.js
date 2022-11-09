@@ -80,7 +80,9 @@ class OpenApiReader {
             return this.schemaArrayToJsonSchema(data)
         } else {
             /** @type {JSONSchema} */
-            let output = toJsonSchema(data)
+            let output = toJsonSchema(data, {
+                strictMode: false
+            })
             if (data.example) {
                 output.description = descBeautify(`
                     @example ${data.example}

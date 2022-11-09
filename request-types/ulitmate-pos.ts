@@ -13,27 +13,24 @@ export type UlitmatePosDefinitions = {
         response: {
             data: {
                 /**
-                 * @example A藥局
+                 * 商店名稱
                  */
                 name: string;
                 /**
-                 * @example 0945761435
+                 * 電話
                  */
                 mobile: string;
                 /**
-                 * @example 香港
+                 * 國家
                  */
                 country: string;
-                /**
-                 * @example 尖沙嘴頂好北路50巷10號
-                 */
                 state: string;
                 /**
-                 * @example 九龍
+                 * 城市
                  */
                 city: string;
                 /**
-                 * @example 111
+                 * 郵遞區號
                  */
                 zip_code: string;
             };
@@ -49,19 +46,19 @@ export type UlitmatePosDefinitions = {
         response: {
             data: {
                 /**
-                 * @example 1
+                 * 店員 ID
                  */
                 user_id: number;
                 /**
-                 * @example A店員
+                 * 店員姓名
                  */
                 user_name: string;
                 /**
-                 * @example 2
+                 * 藥劑師 ID
                  */
                 pharmacist_id: number;
                 /**
-                 * @example 陳藥劑師
+                 * 藥劑師姓名
                  */
                 pharmacist_name: string;
             };
@@ -79,45 +76,30 @@ export type UlitmatePosDefinitions = {
         response: {
             data: {
                 /**
-                 * @example 180
+                 * 訂單編號
                  */
                 id: number;
                 /**
-                 * @example 陳藥師
+                 * 藥師姓名
                  */
                 pharmacist_name: string;
                 /**
-                 * @example 頭痛
+                 * 症狀
                  */
                 prescription_sign_message: string;
                 /**
-                 * @example A店員
+                 * 使用者名稱
                  */
                 username: string;
                 /**
-                 * @example A病人
+                 * 病人姓名
                  */
                 contact_name: string;
                 /**
-                 * @example 2022-10-21T09:33:52.000Z
+                 * 訂單產生日期
                  */
                 created_at: string;
             } [];
-            links: {
-                first: string;
-                last: string;
-                prev: string;
-                next: string;
-            };
-            meta: {
-                current_page: number;
-                from: number;
-                last_page: number;
-                path: string;
-                per_page: number;
-                to: number;
-                total: number;
-            };
         };
         contentType: null;
     };
@@ -127,82 +109,68 @@ export type UlitmatePosDefinitions = {
     "post@transactions": {
         body: {
             /**
-             * @example 4
+             * 病人 ID
              */
             contact_id ? : number;
             /**
              * 病人姓名
-             * @example 桂綸鎂
              */
             contact_name: string;
             /**
              * 醫生姓名
-             * @example 王醫師
              */
             doctor_name ? : string;
-            /**
-             * @example 8
-             */
             hospital_key ? : number;
             /**
              * 醫院名稱
-             * @example 中九龍診所
              */
             hospital_name ? : string;
             /**
              * 配藥日期
-             * @example 2022-10-20T00:00:00.000Z
              */
             prescription_sign_created_at ? : string;
             /**
              * 處方簽症狀
-             * @example 頭痛
              */
             prescription_sign_message ? : string;
+            /**
+             * 藥品清單
+             */
             products ? : string;
             /**
              * 病人身分證字號
-             * @example A12345678
              */
             contact_custom_field1: string;
             /**
              * 病人手機
-             * @example 0962875124
              */
             contact_mobile ? : string;
             /**
              * 病人性別
-             * @example M
              */
-            contact_custom_field2 ? : string;
+            contact_custom_field2 ? : "F" | "M";
             /**
              * 病人生日
-             * @example 1990/1/20
              */
             contact_dob ? : string;
             /**
              * 病人藥物忌諱
-             * @example 八角
              */
             contact_custom_field3 ? : string;
             /**
              * 購買人 id
-             * @example 8
              */
             purchase_id ? : number;
             /**
              * 購買人姓名
-             * @example 戴立忍
              */
             purchase_name ? : string;
             /**
              * 購買人電話
-             * @example 09937645284
              */
             purchase_mobile ? : string;
             /**
              * 購買人身份證字號
-             * @example B8230185284
              */
             purchase_identy_number ? : string;
         };
@@ -219,11 +187,29 @@ export type UlitmatePosDefinitions = {
         query: null;
         response: {
             data: {
+                /**
+                 * 訂單編號
+                 */
                 id: number;
+                /**
+                 * 訂單產生日期
+                 */
                 created_at: string;
+                /**
+                 * 病人 ID
+                 */
                 contact_id: number;
+                /**
+                 * 病人生日
+                 */
                 contact_dob: string;
+                /**
+                 * 病人姓名
+                 */
                 contact_name: string;
+                /**
+                 * 總金額
+                 */
                 total_amount: string;
             };
         };
@@ -250,6 +236,8 @@ export type UlitmatePosDefinitions = {
                 cautions: {} [];
                 custom_caution: string;
                 dosage_form: string;
+                unit: string;
+                usage: number;
             } [];
             links: {
                 first: string;
@@ -414,50 +402,29 @@ export type UlitmatePosDefinitions = {
             data: {
                 /**
                  * 顧客 id
-                 * @example 20
                  */
                 id: number;
                 /**
                  * 顧客類型(病人 or 購買人)
-                 * @example customer
                  */
-                type: string;
+                type: "patient" | "customer" | "p_and_c";
                 /**
                  * 顧客名稱
-                 * @example 王大明
                  */
                 name: string;
                 /**
                  * 手機號碼
-                 * @example 0934987146
                  */
                 mobile: string;
                 /**
                  * 身分證字號
-                 * @example Z12345678
                  */
                 accountNo: string;
                 /**
                  * 建立日期
-                 * @example 2022-10-21T00:00:00.000Z
                  */
                 created_at: string;
             } [];
-            links: {
-                first: string;
-                last: string;
-                prev: string;
-                next: string;
-            };
-            meta: {
-                current_page: number;
-                from: number;
-                last_page: number;
-                path: string;
-                per_page: number;
-                to: number;
-                total: number;
-            };
         };
         contentType: null;
     };
@@ -467,18 +434,15 @@ export type UlitmatePosDefinitions = {
     "post@contacts": {
         body: {
             /**
-             * 客戶類型 patient/customer/p_and_c
-             * @example patient
+             * 客戶類型 patient/customer
              */
-            type: string;
+            type: "patient" | "customer";
             /**
              * 身分證字號
-             * @example A12345678
              */
             accountNo ? : string;
             /**
              * 地址
-             * @example 九龍灣
              */
             address ? : string;
             allergyDrug ? : string[];
@@ -487,42 +451,44 @@ export type UlitmatePosDefinitions = {
             ingredientNote ? : string[];
             /**
              * 生日
-             * @example 2022-10-1
              */
             birthday ? : string;
             /**
              * 藥物忌諱
-             * @example 消炎藥
              */
             drugTaBoo ? : string;
             /**
              * 電子信箱
-             * @example abcdefg@nextgen.com.hk
              */
             email ? : string;
             /**
              * 性別
-             * @example F
              */
-            gender ? : string;
+            gender ? : "F" | "M";
             /**
              * 手機號碼
-             * @example 0911765872
              */
             mobile ? : string;
             /**
              * 姓名
-             * @example 桂綸鎂
              */
             name: string;
             /**
              * 電話
-             * @example 025438762
              */
             phoneNumber ? : string;
         };
         query: null;
-        response: null;
+        response: {
+            /**
+             * 顧客 id
+             */
+            contactId: number;
+            /**
+             * 是否成功
+             */
+            success: boolean;
+        };
         contentType: null;
     };
     /**
@@ -536,57 +502,46 @@ export type UlitmatePosDefinitions = {
             data: {
                 /**
                  * 顧客 id
-                 * @example 20
                  */
                 id: number;
                 /**
                  * 顧客類型(病人 or 購買人)
-                 * @example customer
                  */
-                type: string;
+                type: "patient" | "customer" | "p_and_c";
                 /**
                  * 身分證字號
-                 * @example 3412753
                  */
                 identity_id: string;
                 /**
                  * 顧客名稱
-                 * @example A病人
                  */
                 name: string;
                 /**
                  * 性別
-                 * @example M
                  */
-                gender: string;
+                gender: "F" | "M";
                 /**
                  * 生日
-                 * @example 2022-09-07T00:00:00.000Z
                  */
                 birthday: string;
                 /**
                  * email
-                 * @example allen@nextgen.com.hk
                  */
                 email: string;
                 /**
                  * 手機號碼
-                 * @example 0934184625
                  */
                 mobile: string;
                 /**
                  * 電話號碼
-                 * @example 07 654876
                  */
                 phoneNumber: string;
                 /**
                  * 地址
-                 * @example 大安區, 台北市, 台灣 11033
                  */
                 address: string;
                 /**
                  * 藥物忌諱
-                 * @example 八角
                  */
                 drugTaBoo: string;
                 allergyDrugs: {
@@ -611,7 +566,6 @@ export type UlitmatePosDefinitions = {
                 } [];
                 /**
                  * 建立日期
-                 * @example 2022-10-21T00:00:00.000Z
                  */
                 created_at: string;
             };
@@ -624,18 +578,15 @@ export type UlitmatePosDefinitions = {
     "put@contacts/:id": {
         body: {
             /**
-             * 客戶類型 patient/customer/p_and_c
-             * @example patient
+             * 客戶類型 patient/customer
              */
-            type: string;
+            type: "patient" | "customer";
             /**
              * 身分證字號
-             * @example A12345678
              */
             accountNo ? : string;
             /**
              * 地址
-             * @example 九龍灣
              */
             address ? : string;
             allergyDrug ? : string[];
@@ -644,37 +595,30 @@ export type UlitmatePosDefinitions = {
             ingredientNote ? : string[];
             /**
              * 生日
-             * @example 2022-10-1
              */
             birthday ? : string;
             /**
              * 藥物忌諱
-             * @example 消炎藥
              */
             drugTaBoo ? : string;
             /**
              * 電子信箱
-             * @example abcdefg@nextgen.com.hk
              */
             email ? : string;
             /**
              * 性別
-             * @example F
              */
-            gender ? : string;
+            gender ? : "F" | "M";
             /**
              * 手機號碼
-             * @example 0911765872
              */
             mobile ? : string;
             /**
              * 姓名
-             * @example 桂綸鎂
              */
             name: string;
             /**
              * 電話
-             * @example 025438762
              */
             phoneNumber ? : string;
         };

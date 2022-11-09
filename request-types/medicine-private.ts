@@ -339,7 +339,22 @@ export type MedicinePrivateDefinitions = {
                 name: string;
                 description: string;
                 type: string;
+                [k: string]: unknown;
             };
+            [k: string]: unknown;
+        } & {
+            store: {
+                id: number;
+                nameEn: string;
+                nameCn: string;
+                rxNo: string;
+                tel: string;
+                district: string;
+                address: string;
+                enable: boolean;
+                [k: string]: unknown;
+            };
+            [k: string]: unknown;
         };
         contentType: null;
     };
@@ -1029,8 +1044,8 @@ export type MedicinePrivateDefinitions = {
         response: {
             id: number;
             name: string;
-            alternativeText: unknown;
-            caption: unknown;
+            alternativeText: string | null;
+            caption: string | null;
             width: number;
             height: number;
             formats: {
@@ -1040,7 +1055,7 @@ export type MedicinePrivateDefinitions = {
                     hash: string;
                     mime: string;
                     name: string;
-                    path: unknown;
+                    path: string | null;
                     size: number;
                     width: number;
                     height: number;
@@ -1051,7 +1066,7 @@ export type MedicinePrivateDefinitions = {
                     hash: string;
                     mime: string;
                     name: string;
-                    path: unknown;
+                    path: string | null;
                     size: number;
                     width: number;
                     height: number;
@@ -1062,7 +1077,7 @@ export type MedicinePrivateDefinitions = {
                     hash: string;
                     mime: string;
                     name: string;
-                    path: unknown;
+                    path: string | null;
                     size: number;
                     width: number;
                     height: number;
@@ -1073,7 +1088,7 @@ export type MedicinePrivateDefinitions = {
                     hash: string;
                     mime: string;
                     name: string;
-                    path: unknown;
+                    path: string | null;
                     size: number;
                     width: number;
                     height: number;
@@ -1084,9 +1099,9 @@ export type MedicinePrivateDefinitions = {
             mime: string;
             size: number;
             url: string;
-            previewUrl: unknown;
+            previewUrl: string | null;
             provider: string;
-            provider_metadata: unknown;
+            provider_metadata: string | null;
             createdAt: string;
             updatedAt: string;
         } [];
