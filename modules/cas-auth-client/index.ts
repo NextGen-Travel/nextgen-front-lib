@@ -5,8 +5,8 @@ import { CryptoAES } from '../crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
 
+export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 type Stages = 'dev' | 'stage' | 'prod'
-type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 type Params = {
     stage: Stages
 }
