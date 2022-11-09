@@ -1,11 +1,12 @@
 import jwtDecode from 'jwt-decode'
 import { Event } from 'power-helper'
 import { casApi } from './request'
-import { CryptoAES } from '../crypto'
+import { CryptoAES } from '../../modules/crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
+
 type Stages = 'dev' | 'stage' | 'prod'
 type Params = {
     stage: Stages
@@ -21,10 +22,10 @@ type TokenPayload = {
 
 type Channels = {
     signIn: {
-        client: CasAuthClient
+        client: CasAuthClientConstructor
     }
     signOut: {
-        client: CasAuthClient
+        client: CasAuthClientConstructor
     }
 }
 
@@ -66,7 +67,7 @@ const links: Record<Services, Record<Stages, string>> = {
     }
 }
 
-export class CasAuthClient extends Event<Channels> {
+export class CasAuthClientConstructor extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
     private params!: Params
     private payload: null | TokenPayload = null
@@ -75,7 +76,7 @@ export class CasAuthClient extends Event<Channels> {
         token: ''
     }
 
-    static encode(params: {
+    encode(params: {
         appId: string
         token: string
     }) {
@@ -85,7 +86,7 @@ export class CasAuthClient extends Event<Channels> {
         return encodeURIComponent(key)
     }
 
-    static decode(key: string) {
+    decode(key: string) {
         let base64 = CryptoAES.decrypt('crypto-js', decodeURIComponent(key), cryptoKey)
         let json = atob(base64)
         return JSON.parse(json) as {
@@ -140,7 +141,7 @@ export class CasAuthClient extends Event<Channels> {
             isSignIn: false
         }
         if (auth) {
-            let data = CasAuthClient.decode(auth)
+            let data = this.decode(auth)
             if (data) {
                 this.signIn({
                     appId: data.appId,
@@ -234,7 +235,7 @@ export class CasAuthClient extends Event<Channels> {
     }
 
     getServiceLink(service: Services, queryKey = 'auth') {
-        let key = CasAuthClient.encode({
+        let key = this.encode({
             appId: this.status.appId,
             token: this.status.token
         })
@@ -243,3 +244,5 @@ export class CasAuthClient extends Event<Channels> {
         return url.href
     }
 }
+
+export const CasAuthClient = new CasAuthClientConstructor()
