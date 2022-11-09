@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { Request } from '../request'
+import { Request } from '../../modules/request'
 import { useLocalStorage } from '../../core/storage'
 import { CasAuthDefinitions } from '../../request-types/cas-auth'
 
