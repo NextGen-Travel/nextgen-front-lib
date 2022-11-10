@@ -33,15 +33,21 @@ type Channels = {
 const cryptoKey = 'nextgen-key-1234'
 const exception = serviceException.checkout('modules cas')
 const signInError = () => exception.create('No SingIn.')
-const env: Record<Stages, { url: string }> = {
+const env: Record<Stages, {
+    url: string
+    oneTapEndpoint: string
+}> = {
     dev: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api'
+        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
+        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     },
     stage: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api'
+        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
+        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     },
     prod: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api'
+        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
+        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     }
 }
 
@@ -52,9 +58,9 @@ const links: Record<Services, Record<Stages, string>> = {
         stage: 'https://dispensing-stage.cloudsatlas.com.hk'
     },
     pos: {
-        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
-        prod: 'https://dispensing.cloudsatlas.com.hk',
-        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+        dev: 'https://erp-dispensing-dev.cloudsatlas.com.hk',
+        prod: 'https://erp-dispensing.cloudsatlas.com.hk',
+        stage: 'https://erp-dispensing-stage.cloudsatlas.com.hk'
     },
     scrm: {
         dev: 'https://dispensing-dev.cloudsatlas.com.hk',
@@ -110,6 +116,31 @@ export class CasAuthClientConstructor extends Event<Channels> {
             this.signIn(auth)
             if (this.isSignIn()) {
                 await this.refresh()
+            }
+        }
+    }
+
+    oneTap() {
+        let url = env[this.stage].oneTapEndpoint
+        let newWindow = window.open(`${url}?origin=${location.origin}`, '_blank', 'height=200, width=150')
+        if (newWindow) {
+            newWindow.addEventListener('message', (data) => {
+                console.log(data)
+                newWindow?.close()
+            })
+        }
+    }
+
+    emitOneTap() {
+        let urls = location.href.split('#')
+        let url = new URL(urls[0])
+        let targetOrigin = url.searchParams.get('origin')
+        if (targetOrigin && this.payload) {
+            if (window.parent) {
+                window.parent.postMessage(this.encode({
+                    appId: this.status.appId,
+                    token: this.status.token
+                }), origin)
             }
         }
     }
