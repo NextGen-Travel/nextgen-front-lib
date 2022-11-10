@@ -4,7 +4,7 @@ import { casApi } from './request'
 import { CryptoAES } from '../../modules/crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
-import { useLibEnv } from 'core'
+import { useLibEnv } from '../../core'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
