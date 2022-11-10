@@ -93,8 +93,8 @@ export class CasAuthClientConstructor extends Event<Channels> {
     constructor() {
         super()
         window.addEventListener('message', (data) => {
+            console.log(data)
             if (data.data.isCasLogin) {
-                console.log(data.data)
                 if (this.openWindow) {
                     this.openWindow.close()
                     this.openWindow = null
