@@ -14,6 +14,17 @@ export type GeniusCartAppDefinitions = {
         contentType: null;
     };
     /**
+     * [測試app url跳轉使用] - no description
+     */
+    "get@redirect": {
+        body: null;
+        query: {
+            url_scheme ? : string;
+        };
+        response: null;
+        contentType: null;
+    };
+    /**
      * [no summary] - no description
      */
     "get@sliders": {

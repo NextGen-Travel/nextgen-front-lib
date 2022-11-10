@@ -39,7 +39,7 @@ const env: Record<Stages, {
 }> = {
     dev: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        oneTapEndpoint: 'http://localhost:8080'
     },
     stage: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
@@ -122,7 +122,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
     openSignIn() {
         let url = env[this.stage].oneTapEndpoint
-        let newWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=200, width=150')
+        let newWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
         if (newWindow) {
             newWindow.addEventListener('message', (data) => {
                 console.log(data)
