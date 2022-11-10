@@ -126,7 +126,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
         if (newWindow) {
             newWindow.addEventListener('message', (data) => {
                 console.log(data)
-                newWindow?.close()
+                // newWindow?.close()
             })
         }
     }
