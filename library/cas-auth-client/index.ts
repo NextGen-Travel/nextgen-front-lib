@@ -121,24 +121,28 @@ export class CasAuthClientConstructor extends Event<Channels> {
         }
     }
 
-    openSignIn(): Promise<{
+    openSignIn(options?: {
+        autoSign?: boolean
+    }): Promise<{
         appId: string
         token: string
     }> {
         return new Promise((resolve, reject) => {
             let url = env[this.stage].oneTapEndpoint
             let isSuccess = false
+            let isAutoSignIng = options?.autoSign == null ? true : options?.autoSign
             let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
             this.elementListenerGroup.clear()
             this.elementListenerGroup.add('message', (data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
                     let context = this.decode(data.data.auth)
-                    this.elementListenerGroup.clear()
-                    this.signIn({
-                        appId: context.appId,
-                        token: context.token
-                    })
+                    if (isAutoSignIng) {
+                        this.signIn({
+                            appId: context.appId,
+                            token: context.token
+                        })
+                    }
                     resolve({
                         appId: context.appId,
                         token: context.token
@@ -146,6 +150,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
                     if (openWindow) {
                         openWindow.close()
                     }
+                    this.elementListenerGroup.clear()
                 }
             })
             openWindow?.addEventListener('close', () => {
