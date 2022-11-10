@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { useVueHooks } from '../core/index'
 
 export class VueSelf {
@@ -25,19 +24,6 @@ export class VueSelf {
                     return !!proxy.$listeners || !!proxy.$listeners[name]
                 }
                 return false
-            },
-            children() {
-                let output: InstanceType<typeof Vue>[] = []
-                let concat = (instance: any) => {
-                    output = output.concat(instance.$children)
-                    for (let child of instance.$children) {
-                        concat(child)
-                    }
-                }
-                if (nowCurrentInstance) {
-                    concat(nowCurrentInstance.proxy)
-                }
-                return output
             },
             forceUpdate() {
                 nowCurrentInstance?.proxy?.$forceUpdate()

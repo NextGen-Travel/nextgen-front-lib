@@ -4,13 +4,11 @@ import { casApi } from './request'
 import { CryptoAES } from '../../modules/crypto'
 import { useLocalStorage } from '../../core/storage'
 import { serviceException } from '../../core/error'
+import { useLibEnv } from 'core'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
 type Stages = 'dev' | 'stage' | 'prod'
-type Params = {
-    stage: Stages
-}
 
 type TokenPayload = {
     id: number
@@ -72,11 +70,14 @@ const links: Record<Services, Record<Stages, string>> = {
 
 export class CasAuthClientConstructor extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
-    private params!: Params
     private payload: null | TokenPayload = null
     private status = {
         appId: '',
         token: ''
+    }
+
+    private get stage() {
+        return useLibEnv().stage as Stages
     }
 
     encode(params: {
@@ -98,12 +99,11 @@ export class CasAuthClientConstructor extends Event<Channels> {
         }
     }
 
-    async install(params: Params) {
+    async install() {
         await casApi.install({
-            baseUrl: env[params.stage].url
+            baseUrl: env[this.stage].url
         })
         this.api = casApi.export()
-        this.params = params
         let storage = useLocalStorage()
         let auth = storage.get('casAuth')
         if (auth) {
@@ -247,7 +247,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
             appId: this.status.appId,
             token: this.status.token
         })
-        let url = new URL(links[service][this.params.stage])
+        let url = new URL(links[service][this.stage])
         url.searchParams.set(queryKey, key)
         return url.href
     }
