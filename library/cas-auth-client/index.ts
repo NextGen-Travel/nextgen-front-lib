@@ -120,28 +120,14 @@ export class CasAuthClientConstructor extends Event<Channels> {
         }
     }
 
-    oneTap() {
+    openSignIn() {
         let url = env[this.stage].oneTapEndpoint
-        let newWindow = window.open(`${url}?origin=${location.origin}`, '_blank', 'height=200, width=150')
+        let newWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=200, width=150')
         if (newWindow) {
             newWindow.addEventListener('message', (data) => {
                 console.log(data)
                 newWindow?.close()
             })
-        }
-    }
-
-    emitOneTap() {
-        let urls = location.href.split('#')
-        let url = new URL(urls[0])
-        let targetOrigin = url.searchParams.get('origin')
-        if (targetOrigin && this.payload) {
-            if (window.parent) {
-                window.parent.postMessage(this.encode({
-                    appId: this.status.appId,
-                    token: this.status.token
-                }), origin)
-            }
         }
     }
 
@@ -285,3 +271,5 @@ export class CasAuthClientConstructor extends Event<Channels> {
 }
 
 export const CasAuthClient = new CasAuthClientConstructor()
+
+window.CasAuthClient = CasAuthClient
