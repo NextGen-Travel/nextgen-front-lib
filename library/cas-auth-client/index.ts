@@ -121,22 +121,38 @@ export class CasAuthClientConstructor extends Event<Channels> {
         }
     }
 
-    openSignIn() {
-        let url = env[this.stage].oneTapEndpoint
-        let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
-        this.elementListenerGroup.clear()
-        this.elementListenerGroup.add('message', (data) => {
-            if (data.data.isCasLogin) {
-                let context = this.decode(data.data.auth)
-                this.elementListenerGroup.clear()
-                this.signIn({
-                    appId: context.appId,
-                    token: context.token
-                })
-                if (openWindow) {
-                    openWindow.close()
+    openSignIn(): Promise<{
+        appId: string
+        token: string
+    }> {
+        return new Promise((resolve, reject) => {
+            let url = env[this.stage].oneTapEndpoint
+            let isSuccess = false
+            let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
+            this.elementListenerGroup.clear()
+            this.elementListenerGroup.add('message', (data) => {
+                if (data.data.isCasLogin) {
+                    isSuccess = true
+                    let context = this.decode(data.data.auth)
+                    this.elementListenerGroup.clear()
+                    this.signIn({
+                        appId: context.appId,
+                        token: context.token
+                    })
+                    resolve({
+                        appId: context.appId,
+                        token: context.token
+                    })
+                    if (openWindow) {
+                        openWindow.close()
+                    }
                 }
-            }
+            })
+            openWindow?.addEventListener('close', () => {
+                if (isSuccess === false) {
+                    reject('user_close_windows')
+                }
+            })
         })
     }
 
