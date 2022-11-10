@@ -2643,12 +2643,34 @@ export type GeniusCartAppDefinitions = {
     /**
      * [google 註冊登入] - 前端提供token供後端驗證確認後進行註冊並交換token給前端
      */
-    "post@auth/verify": {
+    "post@auth/verify/google": {
         body: {
             /**
              * 前端拿到Google提供的token
              */
             credential ? : string;
+        };
+        query: null;
+        response: {
+            data: {
+                token: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [facebook 註冊登入] - 前端提供token供後端驗證確認後進行註冊並交換token給前端
+     */
+    "post@auth/verify/facebook": {
+        body: {
+            /**
+             * 前端拿到Facebook提供的token
+             */
+            token: string;
+            /**
+             * 依照使用者使用裝置決定是否提供
+             */
+            url_scheme ? : string;
         };
         query: null;
         response: {
