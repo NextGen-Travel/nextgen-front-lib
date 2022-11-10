@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import { Event } from 'power-helper'
+import { Event, ElementListenerGroup } from 'power-helper'
 import { casApi } from './request'
 import { CryptoAES } from '../../modules/crypto'
 import { useLocalStorage } from '../../core/storage'
@@ -28,14 +28,11 @@ type Channels = {
     signOut: {
         client: CasAuthClientConstructor
     }
-    openWindowResult: {
-        
-    }
 }
 
 const cryptoKey = 'nextgen-key-1234'
 const exception = serviceException.checkout('modules cas')
-const signInError = () => exception.create('No SingIn.')
+const signInError = () => exception.create('No singin.')
 const env: Record<Stages, {
     url: string
     oneTapEndpoint: string
@@ -80,7 +77,7 @@ const links: Record<Services, Record<Stages, string>> = {
 export class CasAuthClientConstructor extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
     private payload: null | TokenPayload = null
-    private openWindow: null | Window = null
+    private elementListenerGroup = new ElementListenerGroup(window)
     private status = {
         appId: '',
         token: ''
@@ -88,19 +85,6 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
     private get stage() {
         return useLibEnv().stage as Stages
-    }
-
-    constructor() {
-        super()
-        window.addEventListener('message', (data) => {
-            console.log(data)
-            if (data.data.isCasLogin) {
-                if (this.openWindow) {
-                    this.openWindow.close()
-                    this.openWindow = null
-                }
-            }
-        })
     }
 
     encode(params: {
@@ -139,13 +123,30 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
     openSignIn() {
         let url = env[this.stage].oneTapEndpoint
-        this.openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
+        let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
+        this.elementListenerGroup.clear()
+        this.elementListenerGroup.add('message', (data) => {
+            if (data.data.isCasLogin) {
+                let context = this.decode(data.data.auth)
+                this.elementListenerGroup.clear()
+                this.signIn({
+                    appId: context.appId,
+                    token: context.token
+                })
+                if (openWindow) {
+                    openWindow.close()
+                }
+            }
+        })
     }
 
     signIn(params: {
         appId: string
         token: string
     }) {
+        if (this.isSignIn()) {
+            this.signOut()
+        }
         this.payload = jwtDecode(params.token)
         this.status = {
             appId: params.appId,
