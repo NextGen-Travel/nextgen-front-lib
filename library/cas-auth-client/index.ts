@@ -28,6 +28,9 @@ type Channels = {
     signOut: {
         client: CasAuthClientConstructor
     }
+    openWindowResult: {
+        
+    }
 }
 
 const cryptoKey = 'nextgen-key-1234'
@@ -77,6 +80,7 @@ const links: Record<Services, Record<Stages, string>> = {
 export class CasAuthClientConstructor extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
     private payload: null | TokenPayload = null
+    private openWindow: null | Window = null
     private status = {
         appId: '',
         token: ''
@@ -84,6 +88,19 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
     private get stage() {
         return useLibEnv().stage as Stages
+    }
+
+    constructor() {
+        super()
+        window.addEventListener('message', (data) => {
+            if (data.data.isCasLogin) {
+                console.log(data.data)
+                if (this.openWindow) {
+                    this.openWindow.close()
+                    this.openWindow = null
+                }
+            }
+        })
     }
 
     encode(params: {
@@ -122,13 +139,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
     openSignIn() {
         let url = env[this.stage].oneTapEndpoint
-        let newWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
-        if (newWindow) {
-            newWindow.addEventListener('message', (data) => {
-                console.log(data)
-                // newWindow?.close()
-            })
-        }
+        this.openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
     }
 
     signIn(params: {
