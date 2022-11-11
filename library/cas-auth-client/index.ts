@@ -202,4 +202,10 @@ export class CasAuthClientConstructor extends Event<Channels> {
 
 export const CasAuthClient = new CasAuthClientConstructor()
 
+declare global {
+    interface Window {
+        CasAuthClient: CasAuthClientConstructor
+    }
+}
+
 window.CasAuthClient = CasAuthClient
