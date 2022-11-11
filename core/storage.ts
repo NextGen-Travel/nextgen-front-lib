@@ -24,13 +24,7 @@ export const useLocalStorage = () => {
             }
         },
         defaultColumns: {
-            tablefilterMemories: () => ({}) as Record<string, string[]>,
-            casAuth: () => {
-                return null as null | {
-                    appId: string
-                    token: string
-                }
-            }
+            tablefilterMemories: () => ({}) as Record<string, string[]>
         }
     })
     return storage

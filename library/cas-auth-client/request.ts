@@ -1,6 +1,5 @@
 import Axios from 'axios'
 import { Request } from '../../modules/request'
-import { useLocalStorage } from '../../core/storage'
 import { CasAuthDefinitions } from '../../request-types/cas-auth'
 
 export const casApi = new Request<{
@@ -8,16 +7,9 @@ export const casApi = new Request<{
 }, CasAuthDefinitions>({
     name: 'casApi',
     http: async(context) => {
-        let casAuth = useLocalStorage().get('casAuth')
-        let headers = {}
-        if (context.path.match('/private/')) {
-            headers = {
-                Authorization: `Bearer ${casAuth?.token}`
-            }
-        }
         let axios = Axios.create({
             baseURL: context.config.baseUrl,
-            headers
+            headers: context.headers
         })
         let result: any = await Request.AxiosRequest({
             axios,

@@ -1,10 +1,8 @@
 import jwtDecode from 'jwt-decode'
-import { Event, ElementListenerGroup } from 'power-helper'
 import { casApi } from './request'
 import { CryptoAES } from '../../modules/crypto'
-import { useLocalStorage } from '../../core/storage'
-import { serviceException } from '../../core/error'
 import { useLibEnv } from '../../core'
+import { Event, ElementListenerGroup } from 'power-helper'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
@@ -19,20 +17,17 @@ type TokenPayload = {
 }
 
 type Channels = {
-    signIn: {
+    signInResponse: {
         client: CasAuthClientConstructor
-    }
-    refresh: {
-        client: CasAuthClientConstructor
-    }
-    signOut: {
-        client: CasAuthClientConstructor
+        context: Context
+        service: {
+            token: string
+        }
     }
 }
 
 const cryptoKey = 'nextgen-key-1234'
-const exception = serviceException.checkout('modules cas')
-const signInError = () => exception.create('No singin.')
+
 const env: Record<Stages, {
     url: string
     oneTapEndpoint: string
@@ -74,20 +69,29 @@ const links: Record<Services, Record<Stages, string>> = {
     }
 }
 
+type Context = {
+    appId: string
+    token: string
+    payload: TokenPayload
+}
+
 export class CasAuthClientConstructor extends Event<Channels> {
     private api!: ReturnType<typeof casApi.export>
-    private payload: null | TokenPayload = null
     private elementListenerGroup = new ElementListenerGroup(window)
-    private status = {
-        appId: '',
-        token: ''
-    }
 
     private get stage() {
         return useLibEnv().stage as Stages
     }
 
-    encode(params: {
+    private toContext(data: Omit<Context, 'payload'>): Context {
+        return {
+            appId: data.appId,
+            token: data.token,
+            payload: jwtDecode(data.token)
+        }
+    }
+
+    _encode(params: {
         appId: string
         token: string
     }) {
@@ -97,13 +101,10 @@ export class CasAuthClientConstructor extends Event<Channels> {
         return encodeURIComponent(key)
     }
 
-    decode(key: string) {
+    _decode(key: string) {
         let base64 = CryptoAES.decrypt('crypto-js', decodeURIComponent(key), cryptoKey)
         let json = atob(base64)
-        return JSON.parse(json) as {
-            appId: string
-            token: string
-        }
+        return this.toContext(JSON.parse(json))
     }
 
     async install() {
@@ -111,46 +112,24 @@ export class CasAuthClientConstructor extends Event<Channels> {
             baseUrl: env[this.stage].url
         })
         this.api = casApi.export()
-        let storage = useLocalStorage()
-        let auth = storage.get('casAuth')
-        if (auth) {
-            this.signIn(auth)
-            if (this.isSignIn()) {
-                await this.refresh()
-            }
-        }
     }
 
-    openSignIn(options?: {
-        autoSign?: boolean
-    }): Promise<{
-        appId: string
-        token: string
-    }> {
+    signIn(service: Services): Promise<Context> {
         return new Promise((resolve, reject) => {
             let url = env[this.stage].oneTapEndpoint
             let isSuccess = false
-            let isAutoSignIng = options?.autoSign == null ? true : options?.autoSign
             let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
             this.elementListenerGroup.clear()
             this.elementListenerGroup.add('message', (data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let context = this.decode(data.data.auth)
-                    if (isAutoSignIng) {
-                        this.signIn({
-                            appId: context.appId,
-                            token: context.token
-                        })
-                    }
-                    resolve({
-                        appId: context.appId,
-                        token: context.token
-                    })
+                    let context = this._decode(data.data.auth)
+                    resolve(context)
                     if (openWindow) {
                         openWindow.close()
                     }
                     this.elementListenerGroup.clear()
+                    this.signInAfter(service, context)
                 }
             })
             openWindow?.addEventListener('close', () => {
@@ -161,142 +140,60 @@ export class CasAuthClientConstructor extends Event<Channels> {
         })
     }
 
-    signIn(params: {
-        appId: string
-        token: string
-    }) {
-        if (this.isSignIn()) {
-            this.signOut()
-        }
-        this.payload = jwtDecode(params.token)
-        this.status = {
-            appId: params.appId,
-            token: params.token
-        }
-        useLocalStorage().set('casAuth', {
-            appId: params.appId,
-            token: params.token
-        })
-        if (this.isExpired()) {
-            this.signOut()
-        } else {
-            this.emit('signIn', {
-                client: this
-            })
-        }
-    }
-
-    autoSignIn(queryKey = 'auth') {
+    autoSignIn(service: Services, queryKey = 'auth') {
         let urls = location.href.split('#')
         let url = new URL(urls[0])
         let auth = url.searchParams.get(queryKey)
         let output = {
-            isSignIn: false
+            success: false
         }
         if (auth) {
-            let data = this.decode(auth)
+            let data = this._decode(auth)
             if (data) {
-                this.signIn({
-                    appId: data.appId,
-                    token: data.token
-                })
-                output.isSignIn = true
+                this.signInAfter(service, data)
+                output.success = true
             }
         }
         return output
     }
 
-    signOut() {
-        if (this.payload) {
-            useLocalStorage().remove('casAuth')
-            this.payload = null
-            this.status = {
-                appId: '',
-                token: ''
+    private async signInAfter(service: Services, context: Context) {
+        let response = await this.getServiceData(service, context)
+        this.emit('signInResponse', {
+            client: this,
+            context,
+            service: {
+                token: response.jwt
             }
-            this.emit('signOut', {
-                client: this
-            })
-        } else {
-            throw signInError()
-        }
-    }
-
-    isSignIn() {
-        return this.payload != null
-    }
-
-    isExpired() {
-        if (this.payload) {
-            return Date.now() > (this.payload.exp * 1000)
-        } else {
-            throw signInError()
-        }
-    }
-
-    getPayload(): TokenPayload {
-        if (this.payload) {
-            return this.payload
-        } else {
-            throw signInError()
-        }
-    }
-
-    getAppId() {
-        if (this.payload) {
-            return this.status.appId
-        } else {
-            throw signInError()
-        }
-    }
-
-    getToken() {
-        if (this.payload) {
-            return this.status.token
-        } else {
-            throw signInError()
-        }
-    }
-
-    async refresh() {
-        if (this.payload) {
-            const response = await this.api('get@v1/private/auth/renew', {})
-            const data = {
-                appId: this.status.appId,
-                token: response.data.jwt
-            }
-            useLocalStorage().set('casAuth', data)
-            this.status = data
-            this.emit('refresh', {
-                client: this
-            })
-        } else {
-            throw signInError()
-        }
-    }
-
-    async getServiceData(service: Services) {
-        if (this.payload) {
-            let response = await this.api('get@v1/private/auth/:appId', {
-                params: {
-                    appId: this.status.appId
-                },
-                query: {
-                    expand: 'profile,validity',
-                    service
-                }
-            })
-            return response.data
-        } else {
-            throw signInError()
-        }
-    }
-
-    getServiceLink(service: Services, queryKey = 'auth') {
-        let key = this.encode({
-            appId: this.status.appId,
-            token: this.status.token
         })
+    }
+
+    parseToken(token: string) {
+        let payload: TokenPayload = jwtDecode(token)
+        return {
+            payload,
+            isExpired: Date.now() > (payload.exp * 1000)
+        }
+    }
+
+    async getServiceData(service: Services, context: Omit<Context, 'payload'>) {
+        let response = await this.api('get@v1/private/auth/:appId', {
+            params: {
+                appId: context.appId
+            },
+            query: {
+                expand: 'profile,validity',
+                service
+            },
+            headers: {
+                Authorization: `Bearer ${context.token}`
+            }
+        })
+        return response.data
+    }
+
+    _getServiceLink(service: Services, context: Omit<Context, 'payload'>, queryKey = 'auth') {
+        let key = this._encode(context)
         let url = new URL(links[service][this.stage])
         url.searchParams.set(queryKey, key)
         return url.href
@@ -304,11 +201,5 @@ export class CasAuthClientConstructor extends Event<Channels> {
 }
 
 export const CasAuthClient = new CasAuthClientConstructor()
-
-declare global {
-    interface Window {
-        CasAuthClient: CasAuthClientConstructor
-    }
-}
 
 window.CasAuthClient = CasAuthClient
