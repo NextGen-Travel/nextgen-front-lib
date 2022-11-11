@@ -176,7 +176,7 @@ export class CasAuthClientConstructor {
     }
 
     _decode(key: string): Context {
-        let json = atob(key)
+        let json = decodeURIComponent(atob(key))
         let data = JSON.parse(json)
         return data
     }
