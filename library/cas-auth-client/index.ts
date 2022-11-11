@@ -21,6 +21,7 @@ type Channels = {
         client: CasAuthClientConstructor
         context: Context
         service: {
+            name: Services
             token: string
         }
     }
@@ -114,58 +115,76 @@ export class CasAuthClientConstructor extends Event<Channels> {
         this.api = casApi.export()
     }
 
-    signIn(service: Services): Promise<Context> {
+    signIn(service: Services): Promise<{
+        success: boolean
+        token: string | null
+    }> {
         return new Promise((resolve, reject) => {
             let url = env[this.stage].oneTapEndpoint
             let isSuccess = false
             let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
             this.elementListenerGroup.clear()
-            this.elementListenerGroup.add('message', (data) => {
+            this.elementListenerGroup.add('message', async(data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let context = this._decode(data.data.auth)
-                    resolve(context)
+                    let result = await this.parseAuth(service, data.data.auth)
+                    resolve({
+                        success: true,
+                        token: result.service.token
+                    })
                     if (openWindow) {
                         openWindow.close()
                     }
                     this.elementListenerGroup.clear()
-                    this.signInAfter(service, context)
+
                 }
             })
             openWindow?.addEventListener('close', () => {
                 if (isSuccess === false) {
-                    reject('user_close_windows')
+                    reject({
+                        success: false,
+                        message: 'user_close_windows'
+                    })
                 }
             })
         })
     }
 
-    autoSignIn(service: Services, queryKey = 'auth') {
+    async autoSignIn(service: Services, queryKey = 'auth') {
         let urls = location.href.split('#')
         let url = new URL(urls[0])
         let auth = url.searchParams.get(queryKey)
         let output = {
-            success: false
+            success: false,
+            token: null as string | null
         }
         if (auth) {
-            let data = this._decode(auth)
-            if (data) {
-                this.signInAfter(service, data)
-                output.success = true
-            }
+            let result = await this.parseAuth(service, auth)
+            output.success = true
+            output.token = result.service.token
         }
         return output
     }
 
-    private async signInAfter(service: Services, context: Context) {
-        let response = await this.getServiceData(service, context)
+    async parseAuth(serviceName: Services, auth: string) {
+        let context = this._decode(auth)
+        let serviceData = await this.getServiceData(serviceName, {
+            appId: context.appId,
+            token: context.token
+        })
+        let service = {
+            name: serviceName,
+            token: serviceData.jwt
+        }
         this.emit('signInResponse', {
             client: this,
             context,
-            service: {
-                token: response.jwt
-            }
+            service
         })
+        return {
+            context,
+            service
+        }
     }
 
     parseToken(token: string) {
