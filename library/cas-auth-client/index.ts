@@ -143,7 +143,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
                 if (isSuccess === false) {
                     reject({
                         success: false,
-                        message: 'user_close_windows'
+                        message: 'user_close_window'
                     })
                 }
             })
