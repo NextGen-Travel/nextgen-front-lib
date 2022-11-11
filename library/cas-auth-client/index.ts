@@ -1,25 +1,16 @@
-import jwtDecode from 'jwt-decode'
 import { casApi } from './request'
 import { useLibEnv } from '../../core'
 import { ElementListenerGroup } from 'power-helper'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
-type Stages = 'dev' | 'stage' | 'prod'
-
-type Context = {
+export type Context = {
     appId: string
     serviceName: Services
     serviceToken: string
 }
 
-type TokenPayload = {
-    id: number
-    iat: number
-    exp: number
-    email: string
-    username: string
-}
+type Stages = 'dev' | 'stage' | 'prod'
 
 const QueryKey = 'cas-auth-key'
 const QueryOriginKey = 'cas-origin'
@@ -40,29 +31,6 @@ const env: Record<Stages, {
     prod: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
         endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
-    }
-}
-
-const links: Record<Services, Record<Stages, string>> = {
-    nss: {
-        dev: '',
-        prod: '',
-        stage: ''
-    },
-    pos: {
-        dev: '',
-        prod: '',
-        stage: ''
-    },
-    scrm: {
-        dev: '', // 'scrm-dev.cloudsatlas.com.hk'
-        prod: '',
-        stage: '', // 'scrm.cloudsatlas.com.hk'
-    },
-    dispensing: {
-        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
-        prod: '', // 'https://dispensing.cloudsatlas.com.hk'
-        stage: '' // 'https://dispensing-stage.cloudsatlas.com.hk'
     }
 }
 
@@ -160,10 +128,6 @@ export class CasAuthClientConstructor {
         }
     }
 
-    isSupportService(service: Services) {
-        return !!links[service][this.stage]
-    }
-
     // =================
     //
     // 系統專用
@@ -179,21 +143,6 @@ export class CasAuthClientConstructor {
         let json = decodeURIComponent(atob(key))
         let data = JSON.parse(json)
         return data
-    }
-
-    _parseJwtToken(token: string) {
-        let payload: TokenPayload = jwtDecode(token)
-        return {
-            payload,
-            isExpired: Date.now() > (payload.exp * 1000)
-        }
-    }
-
-    _getServiceLink(context: Context) {
-        let key = this._encode(context)
-        let url = new URL(links[context.serviceName][this.stage])
-        url.searchParams.set(QueryKey, key)
-        return url.href
     }
 }
 
