@@ -24,4 +24,33 @@ export class CryptoAES {
             return AES.encrypt(target, key).toString()
         }
     }
+
+    static loaclStroageIntercept(ns: string) {
+        return {
+            get(key: string, value: any, { storage, isDefault, defaultValue }: any) {
+                if (isDefault) {
+                    return value
+                }
+                try {
+                    let data = CryptoAES.decrypt('crypto-js', value.hash, `${ns}/1234`)
+                    if (data !== JSON.stringify(value.data)) {
+                        storage.remove(key as any)
+                        return defaultValue()
+                    } else {
+                        return value.data
+                    }
+                } catch (error) {
+                    storage.remove(key as any)
+                    return defaultValue()
+                }
+            },
+            set(key: string, value: any) {
+                return {
+                    hash: CryptoAES.encrypt('crypto-js', JSON.stringify(value), `${ns}/1234`),
+                    data: value,
+                    createdAt: Date.now()
+                }
+            }
+        }
+    }
 }
