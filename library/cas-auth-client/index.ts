@@ -27,6 +27,7 @@ type Channels = {
     }
 }
 
+const queryKey = 'cat-auth-key'
 const cryptoKey = 'nextgen-key-1234'
 
 const env: Record<Stages, {
@@ -150,7 +151,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
         })
     }
 
-    async autoSignIn(service: Services, queryKey = 'auth') {
+    async autoSignIn(service: Services) {
         let urls = location.href.split('#')
         let url = new URL(urls[0])
         let auth = url.searchParams.get(queryKey)
@@ -162,11 +163,12 @@ export class CasAuthClientConstructor extends Event<Channels> {
             let result = await this.parseAuth(service, auth)
             output.success = true
             output.token = result.service.token
+            window.history.pushState(null, '', location.href.replace(`${queryKey}=`, `${queryKey}-x=`));
         }
         return output
     }
 
-    async parseAuth(serviceName: Services, auth: string) {
+    private async parseAuth(serviceName: Services, auth: string) {
         let context = this._decode(auth)
         let serviceData = await this.getServiceData(serviceName, {
             appId: context.appId,
@@ -211,7 +213,7 @@ export class CasAuthClientConstructor extends Event<Channels> {
         return response.data
     }
 
-    _getServiceLink(service: Services, context: Omit<Context, 'payload'>, queryKey = 'auth') {
+    _getServiceLink(service: Services, context: Omit<Context, 'payload'>) {
         let key = this._encode(context)
         let url = new URL(links[service][this.stage])
         url.searchParams.set(queryKey, key)
