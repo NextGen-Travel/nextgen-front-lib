@@ -1,12 +1,17 @@
 import jwtDecode from 'jwt-decode'
 import { casApi } from './request'
-import { CryptoAES } from '../../modules/crypto'
 import { useLibEnv } from '../../core'
-import { Event, ElementListenerGroup } from 'power-helper'
+import { ElementListenerGroup } from 'power-helper'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
 type Stages = 'dev' | 'stage' | 'prod'
+
+type Context = {
+    appId: string
+    serviceName: Services
+    serviceToken: string
+}
 
 type TokenPayload = {
     id: number
@@ -16,97 +21,57 @@ type TokenPayload = {
     username: string
 }
 
-type Channels = {
-    signInResponse: {
-        client: CasAuthClientConstructor
-        context: Context
-        service: {
-            name: Services
-            token: string
-        }
-    }
-}
-
-const queryKey = 'cat-auth-key'
-const cryptoKey = 'nextgen-key-1234'
+const QueryKey = 'cas-auth-key'
+const QueryOriginKey = 'cas-origin'
+const QueryServiceKey = 'cas-service'
 
 const env: Record<Stages, {
     url: string
-    oneTapEndpoint: string
+    endpoint: string
 }> = {
     dev: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     },
     stage: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     },
     prod: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     }
 }
 
 const links: Record<Services, Record<Stages, string>> = {
     nss: {
-        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
-        prod: 'https://dispensing.cloudsatlas.com.hk',
-        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+        dev: '',
+        prod: '',
+        stage: ''
     },
     pos: {
-        dev: 'https://erp-dispensing-dev.cloudsatlas.com.hk',
-        prod: 'https://erp-dispensing.cloudsatlas.com.hk',
-        stage: 'https://erp-dispensing-stage.cloudsatlas.com.hk'
+        dev: '',
+        prod: '',
+        stage: ''
     },
     scrm: {
-        dev: 'https://dispensing-dev.cloudsatlas.com.hk',
-        prod: 'https://dispensing.cloudsatlas.com.hk',
-        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+        dev: '', // 'scrm-dev.cloudsatlas.com.hk'
+        prod: '',
+        stage: '', // 'scrm.cloudsatlas.com.hk'
     },
     dispensing: {
         dev: 'https://dispensing-dev.cloudsatlas.com.hk',
-        prod: 'https://dispensing.cloudsatlas.com.hk',
-        stage: 'https://dispensing-stage.cloudsatlas.com.hk'
+        prod: '', // 'https://dispensing.cloudsatlas.com.hk'
+        stage: '' // 'https://dispensing-stage.cloudsatlas.com.hk'
     }
 }
 
-type Context = {
-    appId: string
-    token: string
-    payload: TokenPayload
-}
-
-export class CasAuthClientConstructor extends Event<Channels> {
+export class CasAuthClientConstructor {
     private api!: ReturnType<typeof casApi.export>
     private elementListenerGroup = new ElementListenerGroup(window)
 
     private get stage() {
         return useLibEnv().stage as Stages
-    }
-
-    private toContext(data: Omit<Context, 'payload'>): Context {
-        return {
-            appId: data.appId,
-            token: data.token,
-            payload: jwtDecode(data.token)
-        }
-    }
-
-    _encode(params: {
-        appId: string
-        token: string
-    }) {
-        const json = JSON.stringify(params)
-        const base64 = btoa(json)
-        const key = CryptoAES.encrypt('crypto-js', base64, cryptoKey)
-        return encodeURIComponent(key)
-    }
-
-    _decode(key: string) {
-        let base64 = CryptoAES.decrypt('crypto-js', decodeURIComponent(key), cryptoKey)
-        let json = atob(base64)
-        return this.toContext(JSON.parse(json))
     }
 
     async install() {
@@ -116,28 +81,34 @@ export class CasAuthClientConstructor extends Event<Channels> {
         this.api = casApi.export()
     }
 
+    /**
+     * 打開登入視窗
+     * @param service 登入的服務名稱
+     */
+
     signIn(service: Services): Promise<{
         success: boolean
-        token: string | null
+        serviceToken: string | null
     }> {
+        let url = new URL(env[this.stage].endpoint)
+        url.searchParams.set(QueryOriginKey, location.origin)
+        url.searchParams.set(QueryServiceKey, service)
+        let isSuccess = false
+        let openWindow = window.open(url.href, '_blank', 'height=˙720, width=480')
         return new Promise((resolve, reject) => {
-            let url = env[this.stage].oneTapEndpoint
-            let isSuccess = false
-            let openWindow = window.open(`${url}?cas-origin=${location.origin}`, '_blank', 'height=640, width=480')
             this.elementListenerGroup.clear()
             this.elementListenerGroup.add('message', async(data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let result = await this.parseAuth(service, data.data.auth)
+                    let result = await this.parseAuth(data.data.auth)
                     resolve({
                         success: true,
-                        token: result.service.token
+                        serviceToken: result.service.jwt
                     })
                     if (openWindow) {
                         openWindow.close()
                     }
                     this.elementListenerGroup.clear()
-
                 }
             })
             openWindow?.addEventListener('close', () => {
@@ -151,45 +122,66 @@ export class CasAuthClientConstructor extends Event<Channels> {
         })
     }
 
-    async autoSignIn(service: Services) {
+    /**
+     * 驗證網址是否含有登入資訊
+     * @param service 登入的服務名稱
+     */
+
+    async autoSignIn() {
         let urls = location.href.split('#')
         let url = new URL(urls[0])
-        let auth = url.searchParams.get(queryKey)
+        let auth = url.searchParams.get(QueryKey)
         let output = {
             success: false,
-            token: null as string | null
+            serviceToken: null as string | null
         }
         if (auth) {
-            let result = await this.parseAuth(service, auth)
+            let result = await this.parseAuth(auth)
+            output.serviceToken = result.service.jwt
             output.success = true
-            output.token = result.service.token
-            window.history.pushState(null, '', location.href.replace(`${queryKey}=`, `${queryKey}-x=`));
+            window.history.pushState(null, '', location.href.replace(`${QueryKey}=`, `${QueryKey}-x=`));
         }
         return output
     }
 
-    private async parseAuth(serviceName: Services, auth: string) {
+    private async parseAuth(auth: string) {
         let context = this._decode(auth)
-        let serviceData = await this.getServiceData(serviceName, {
-            appId: context.appId,
-            token: context.token
-        })
-        let service = {
-            name: serviceName,
-            token: serviceData.jwt
-        }
-        this.emit('signInResponse', {
-            client: this,
-            context,
-            service
-        })
+        let service = await this.getServiceData(context)
         return {
             context,
             service
         }
     }
 
-    parseToken(token: string) {
+    // TODO: 依照個別服務額外處理
+    async getServiceData(_context: Context) {
+        return {
+            jwt: '123'
+        }
+    }
+
+    isSupportService(service: Services) {
+        return !!links[service][this.stage]
+    }
+
+    // =================
+    //
+    // 系統專用
+    //
+
+    _encode(params: Context) {
+        const json = JSON.stringify(params)
+        const base64 = btoa(json)
+        return encodeURIComponent(base64)
+    }
+
+    _decode(key: string): Context {
+        let json = atob(key)
+        let data = JSON.parse(json)
+        return data
+    }
+
+    _parseJwtToken(token: string) {
         let payload: TokenPayload = jwtDecode(token)
         return {
             payload,
@@ -197,26 +189,10 @@ export class CasAuthClientConstructor extends Event<Channels> {
         }
     }
 
-    async getServiceData(service: Services, context: Omit<Context, 'payload'>) {
-        let response = await this.api('get@v1/private/auth/:appId', {
-            params: {
-                appId: context.appId
-            },
-            query: {
-                expand: 'profile,validity',
-                service
-            },
-            headers: {
-                Authorization: `Bearer ${context.token}`
-            }
-        })
-        return response.data
-    }
-
-    _getServiceLink(service: Services, context: Omit<Context, 'payload'>) {
+    _getServiceLink(context: Context) {
         let key = this._encode(context)
-        let url = new URL(links[service][this.stage])
-        url.searchParams.set(queryKey, key)
+        let url = new URL(links[context.serviceName][this.stage])
+        url.searchParams.set(QueryKey, key)
         return url.href
     }
 }
