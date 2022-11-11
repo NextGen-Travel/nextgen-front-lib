@@ -12,9 +12,9 @@ export type Context = {
 
 type Stages = 'dev' | 'stage' | 'prod'
 
-const QueryKey = 'cas-auth-key'
-const QueryOriginKey = 'cas-origin'
-const QueryServiceKey = 'cas-service'
+export const QueryKey = 'cas-key'
+export const QueryOriginKey = 'cas-origin'
+export const QueryServiceKey = 'cas-service'
 
 const env: Record<Stages, {
     url: string
