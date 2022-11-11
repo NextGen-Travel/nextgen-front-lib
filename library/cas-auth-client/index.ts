@@ -36,7 +36,7 @@ const env: Record<Stages, {
 }> = {
     dev: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        oneTapEndpoint: 'http://localhost:8081'
+        oneTapEndpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
     },
     stage: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
