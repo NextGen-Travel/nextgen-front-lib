@@ -35,6 +35,32 @@ const env: Record<Stages, {
     }
 }
 
+// =================
+//
+// private
+//
+
+const decode = (key: string): Context => {
+    let json = decodeURIComponent(atob(key))
+    let data = JSON.parse(json)
+    return data
+}
+
+const parseAuth = async(auth: string) => {
+    let context = decode(auth)
+    let service = await getServiceData(context)
+    return {
+        context,
+        service
+    }
+}
+
+// TODO: 依照個別服務額外處理
+const getServiceData = async(_context: Context) => {
+    return {
+        jwt: '123'
+    }
+}
 
 export class CasAuthClientConstructor {
     private api!: ReturnType<typeof casApi.export>
@@ -74,7 +100,7 @@ export class CasAuthClientConstructor {
                 }
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let result = await this.#parseAuth(data.data.key)
+                    let result = await parseAuth(data.data.key)
                     resolve({
                         success: true,
                         serviceToken: result.service.jwt
@@ -117,44 +143,12 @@ export class CasAuthClientConstructor {
             serviceToken: null as string | null
         }
         if (auth) {
-            let result = await this.#parseAuth(auth)
+            let result = await parseAuth(auth)
             output.serviceToken = result.service.jwt
             output.success = true
             window.history.pushState(null, '', location.href.replace(`${QueryKey}=`, `${QueryKey}-x=`));
         }
         return output
-    }
-
-    // =================
-    //
-    // private
-    //
-
-    async #parseAuth(auth: string) {
-        let context = this._decode(auth)
-        let service = await this.#getServiceData(context)
-        return {
-            context,
-            service
-        }
-    }
-
-    // TODO: 依照個別服務額外處理
-    async #getServiceData(_context: Context) {
-        return {
-            jwt: '123'
-        }
-    }
-
-    // =================
-    //
-    // 系統專用
-    //
-
-    _decode(key: string): Context {
-        let json = decodeURIComponent(atob(key))
-        let data = JSON.parse(json)
-        return data
     }
 }
 
