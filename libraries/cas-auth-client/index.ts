@@ -70,7 +70,7 @@ export class CasAuthClientConstructor {
             this.elementListenerGroup.add('message', async(data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let result = await this.parseAuth(data.data.key)
+                    let result = await this.#parseAuth(data.data.key)
                     resolve({
                         success: true,
                         serviceToken: result.service.jwt
@@ -113,7 +113,7 @@ export class CasAuthClientConstructor {
             serviceToken: null as string | null
         }
         if (auth) {
-            let result = await this.parseAuth(auth)
+            let result = await this.#parseAuth(auth)
             output.serviceToken = result.service.jwt
             output.success = true
             window.history.pushState(null, '', location.href.replace(`${QueryKey}=`, `${QueryKey}-x=`));
@@ -121,9 +121,14 @@ export class CasAuthClientConstructor {
         return output
     }
 
-    private async parseAuth(auth: string) {
+    // =================
+    //
+    // private
+    //
+
+    async #parseAuth(auth: string) {
         let context = this._decode(auth)
-        let service = await this.getServiceData(context)
+        let service = await this.#getServiceData(context)
         return {
             context,
             service
@@ -131,7 +136,7 @@ export class CasAuthClientConstructor {
     }
 
     // TODO: 依照個別服務額外處理
-    async getServiceData(_context: Context) {
+    async #getServiceData(_context: Context) {
         return {
             jwt: '123'
         }
@@ -141,12 +146,6 @@ export class CasAuthClientConstructor {
     //
     // 系統專用
     //
-
-    _encode(params: Context) {
-        const json = JSON.stringify(params)
-        const base64 = btoa(json)
-        return encodeURIComponent(base64)
-    }
 
     _decode(key: string): Context {
         let json = decodeURIComponent(atob(key))
