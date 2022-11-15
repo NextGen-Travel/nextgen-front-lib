@@ -1,6 +1,6 @@
 import { casApi } from './request'
 import { useLibEnv } from '../../core'
-import { ElementListenerGroup } from 'power-helper'
+import { text, ElementListenerGroup } from 'power-helper'
 
 export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
 
@@ -60,7 +60,8 @@ export class CasAuthClientConstructor {
         success: boolean
         serviceToken: string | null
     }> {
-        let url = new URL(env[this.stage].endpoint)
+        let endpoint = env[this.stage].endpoint
+        let url = new URL(endpoint)
         url.searchParams.set(QueryOriginKey, location.origin)
         url.searchParams.set(QueryServiceKey, service)
         let isSuccess = false
@@ -68,6 +69,9 @@ export class CasAuthClientConstructor {
         return new Promise((resolve, reject) => {
             this.elementListenerGroup.clear()
             this.elementListenerGroup.add('message', async(data) => {
+                if (text.headMatch(data.origin, endpoint) === false) {
+                    return null
+                }
                 if (data.data.isCasLogin) {
                     isSuccess = true
                     let result = await this.#parseAuth(data.data.key)
