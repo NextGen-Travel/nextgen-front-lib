@@ -47,6 +47,9 @@ export class Graphql<
         __apiType?: any
     }>
 > {
+    _resultType: {
+        [K in keyof D]: ReturnType<NonNullable<D[K]['__apiType']>>
+    } = null as unknown as any
     private hooks = new Hook<HookChannels<Extract<keyof D, string>>>()
     private client: Client
     private documents: D
