@@ -15,6 +15,7 @@ type Stages = 'dev' | 'stage' | 'prod'
 export const QueryKey = 'cas-key'
 export const QueryOriginKey = 'cas-origin'
 export const QueryServiceKey = 'cas-service'
+export const QuertRedirectKey = 'cas-redirect'
 
 const env: Record<Stages, {
     url: string
@@ -22,17 +23,18 @@ const env: Record<Stages, {
 }> = {
     dev: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        endpoint: 'https://login-dev.cloudsatlas.com.hk'
     },
     stage: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        url: 'https://cas-api-stage.cloudsatlas.com.hk/api',
+        endpoint: 'https://login-stage.cloudsatlas.com.hk'
     },
     prod: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        endpoint: 'http://frontend-dedicated.s3-website-ap-southeast-1.amazonaws.com/sso/dev/index.html'
+        url: 'https://cas-api.cloudsatlas.com.hk/api',
+        endpoint: 'https://login.cloudsatlas.com.hk'
     }
 }
+
 
 export class CasAuthClientConstructor {
     private api!: ReturnType<typeof casApi.export>
@@ -68,7 +70,7 @@ export class CasAuthClientConstructor {
             this.elementListenerGroup.add('message', async(data) => {
                 if (data.data.isCasLogin) {
                     isSuccess = true
-                    let result = await this.parseAuth(data.data.auth)
+                    let result = await this.parseAuth(data.data.key)
                     resolve({
                         success: true,
                         serviceToken: result.service.jwt
@@ -88,6 +90,13 @@ export class CasAuthClientConstructor {
                 }
             })
         })
+    }
+
+    redirectSignIn(service: Services, redirectUrl?: string) {
+        let url = new URL(env[this.stage].endpoint)
+        url.searchParams.set(QuertRedirectKey, redirectUrl || location.origin)
+        url.searchParams.set(QueryServiceKey, service)
+        window.open(url.href, '_self')
     }
 
     /**
