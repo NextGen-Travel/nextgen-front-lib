@@ -1,6 +1,11 @@
 <template>
-    <div v-if="state.loading">
-        <v-skeleton-loader :style="skeletonStyle" :type="avatar ? 'avatar' : 'image'"></v-skeleton-loader>
+    <div v-if="skeleton === 'always' || state.loading" :style="skeletonStyle">
+        <v-skeleton-loader
+            v-if="skeleton !== 'hide'"
+            width="100%"
+            height="100%"
+            :type="avatar ? 'avatar' : 'image'">
+        </v-skeleton-loader>
     </div>
     <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
@@ -25,6 +30,11 @@ import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-hel
 export default {
     name: 'ng-img',
     props: {
+        skeleton: {
+            type: String as PropType<'hide' | 'auto' | 'always'>,
+            required: false,
+            default: () => 'auto'
+        },
         width: {
             type: String as PropType<string>,
             required: false,
@@ -125,6 +135,7 @@ export default {
             style.set('height', props.height, '200px')
             style.set('maxWidth', props.maxWidth)
             style.set('maxHeight', props.maxHeight)
+            style.set('overflow', 'hidden')
             style.set('borderRadius', props.radius)
             style.set('display', props.block ? 'block' : 'inline-block')
             return style.join()
@@ -246,5 +257,10 @@ export default {
         background-repeat: no-repeat;
         background-position: center;
         position: relative;
+    }
+    ::v-deep .v-skeleton-loader.v-skeleton-loader--is-loading {
+        .v-skeleton-loader__image {
+            height: 100%;
+        }
     }
 </style>

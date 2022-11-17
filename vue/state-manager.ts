@@ -2,15 +2,13 @@ import { useVueHooks } from '../core/index'
 import { defineModelHook } from './model-hook'
 
 type Model = ReturnType<typeof defineModelHook>['_ModelType']
+type Store = {
+    cb: () => any
+    data: any
+    isModel: boolean
+}
 
 export const createStateManager = () => {
-
-    type Store = {
-        cb: () => any
-        data: any
-        isModel: boolean
-    }
-
     const { ref, reactive } = useVueHooks()
     const stateStore: Array<Store> = []
 
