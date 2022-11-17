@@ -1,4 +1,5 @@
 import { casApi } from './request'
+import { scrmApi } from './request-scrm'
 import { useLibEnv } from '../../core'
 import { text, ElementListenerGroup } from 'power-helper'
 
@@ -19,18 +20,22 @@ export const QuertRedirectKey = 'cas-redirect'
 
 const env: Record<Stages, {
     url: string
+    scrmUrl: string
     endpoint: string
 }> = {
     dev: {
         url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
+        scrmUrl: 'https://scrm-api-dev.cloudsatlas.com.hk/api',
         endpoint: 'https://login-dev.cloudsatlas.com.hk'
     },
     stage: {
         url: 'https://cas-api-stage.cloudsatlas.com.hk/api',
+        scrmUrl: 'https://scrm-api-stage.cloudsatlas.com.hk/api',
         endpoint: 'https://login-stage.cloudsatlas.com.hk'
     },
     prod: {
         url: 'https://cas-api.cloudsatlas.com.hk/api',
+        scrmUrl: 'https://scrm-api.cloudsatlas.com.hk/api',
         endpoint: 'https://login.cloudsatlas.com.hk'
     }
 }
@@ -55,15 +60,24 @@ const parseAuth = async(auth: string) => {
     }
 }
 
-// TODO: 依照個別服務額外處理
-const getServiceData = async(_context: Context) => {
-    return {
-        jwt: '123'
+const getServiceData = async(context: Context) => {
+    let output = {
+        jwt: ''
     }
+    if (context.serviceName === 'scrm') {
+        let api = scrmApi.export()
+        let result = await api('post@auth/sso/verify', {
+            body: {
+                appId: context.appId,
+                accessToken: context.serviceToken
+            }
+        })
+        output.jwt = result.data.token
+    }
+    return output
 }
 
 export class CasAuthClientConstructor {
-    private api!: ReturnType<typeof casApi.export>
     private elementListenerGroup = new ElementListenerGroup(window)
 
     private get stage() {
@@ -74,7 +88,9 @@ export class CasAuthClientConstructor {
         await casApi.install({
             baseUrl: env[this.stage].url
         })
-        this.api = casApi.export()
+        await scrmApi.install({
+            baseUrl: env[this.stage].scrmUrl
+        })
     }
 
     /**

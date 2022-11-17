@@ -2632,34 +2632,18 @@ export type GeniusCartAppDefinitions = {
         contentType: null;
     };
     /**
-     * [第三方登入] - 第三方登入
-     * @param {string} provider - undefined
+     * [第三方註冊登入] - 前端提供token及provider供後端驗證確認後進行註冊並交換token給前端
      */
-    "get@auth/:provider": {
-        body: null;
-        query: null;
-        response: null;
-        contentType: null;
-    };
-    /**
-     * [get response from provider] - get response from provider
-     * @param {string} provider - undefined
-     */
-    "get@auth/:provider/callback": {
-        body: null;
-        query: null;
-        response: null;
-        contentType: null;
-    };
-    /**
-     * [google 註冊登入] - 前端提供token供後端驗證確認後進行註冊並交換token給前端
-     */
-    "post@auth/verify/google": {
+    "post@auth/verify": {
         body: {
             /**
-             * 前端拿到Google提供的token
+             * 前端提供token
              */
-            credential ? : string;
+            token: string;
+            /**
+             * 依照provider設定( facebook || google )
+             */
+            provider: string;
         };
         query: null;
         response: {
@@ -2670,19 +2654,28 @@ export type GeniusCartAppDefinitions = {
         contentType: null;
     };
     /**
-     * [facebook 註冊登入] - 前端提供token供後端驗證確認後進行註冊並交換token給前端
+     * [第三方註冊登入(google)] - 前端提供token及provider供後端驗證確認後進行註冊並交換token給前端
      */
-    "post@auth/verify/facebook": {
+    "post@auth/verify/google": {
         body: {
             /**
-             * 前端拿到Facebook提供的token
+             * 前端提供token
              */
             token: string;
-            /**
-             * 依照使用者使用裝置決定是否提供
-             */
-            url_scheme ? : string;
         };
+        query: null;
+        response: {
+            data: {
+                token: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [第三方註冊登入(facebook)] - 前端呼叫第三方登入進行驗證後交換token給前端
+     */
+    "get@auth/verify/facebook": {
+        body: null;
         query: null;
         response: {
             data: {

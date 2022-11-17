@@ -397,6 +397,7 @@ export type UlitmatePosDefinitions = {
             neme ? : string;
             mobile ? : string;
             keyword ? : string;
+            type ? : "patient" | "customer" | "p_and_c";
         };
         response: {
             data: {

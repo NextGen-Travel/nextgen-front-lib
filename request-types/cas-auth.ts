@@ -41,7 +41,9 @@ export type CasAuthDefinitions = {
              */
             password: string;
         };
-        query: null;
+        query: {
+            service ? : string;
+        };
         response: {
             msg: string;
             data: {
@@ -108,7 +110,7 @@ export type CasAuthDefinitions = {
         contentType: null;
     };
     /**
-     * [取得登入 accessToken] - no description
+     * [取得登入 Bearer jwt] - no description
      * @param {string} appId - appId(uuid)
      */
     "get@v1/private/auth/:appId": {
@@ -267,6 +269,8 @@ export type CasAuthDefinitions = {
                 pos: boolean;
                 scrm: boolean;
                 dispensing: boolean;
+                nssCallback: string;
+                posCallback: string;
             };
         };
         contentType: null;
