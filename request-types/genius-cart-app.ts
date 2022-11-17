@@ -1858,7 +1858,7 @@ export type GeniusCartAppDefinitions = {
             /**
              * 使用者圖片
              */
-            photo: File;
+            photo ? : File;
             /**
              * 使用者名稱
              * @example 試試看
@@ -1868,32 +1868,32 @@ export type GeniusCartAppDefinitions = {
              * 傳真號碼
              * @example 666-1456
              */
-            fax: string;
+            fax ? : string;
             /**
              * 電話號碼
              * @example 0912345678
              */
-            phone: string;
+            phone ? : string;
             /**
              * 國家ID
              * @example 215
              */
-            country: number;
+            country ? : number;
             /**
              * 區域ID
              * @example 45
              */
-            state: number;
+            state ? : number;
             /**
              * 郵遞區號
              * @example 166
              */
-            zip: string;
+            zip ? : string;
             /**
              * 住址
              * @example 信義區大安路
              */
-            address: string;
+            address ? : string;
         };
         query: null;
         response: {

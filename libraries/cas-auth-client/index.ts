@@ -99,6 +99,7 @@ export class CasAuthClientConstructor {
      */
 
     signIn(service: Services): Promise<{
+        appId: string
         success: boolean
         serviceToken: string | null
     }> {
@@ -118,6 +119,7 @@ export class CasAuthClientConstructor {
                     isSuccess = true
                     let result = await parseAuth(data.data.key)
                     resolve({
+                        appId: result.context.appId,
                         success: true,
                         serviceToken: result.service.jwt
                     })
@@ -155,11 +157,13 @@ export class CasAuthClientConstructor {
         let url = new URL(urls[0])
         let auth = url.searchParams.get(QueryKey)
         let output = {
+            appId: '',
             success: false,
             serviceToken: null as string | null
         }
         if (auth) {
             let result = await parseAuth(auth)
+            output.appId = result.context.appId
             output.serviceToken = result.service.jwt
             output.success = true
             window.history.pushState(null, '', location.href.replace(`${QueryKey}=`, `${QueryKey}-x=`));
