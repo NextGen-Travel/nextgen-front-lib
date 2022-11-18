@@ -817,17 +817,26 @@ export type GeniusCartAppDefinitions = {
         query: null;
         response: {
             data: {
-                id: number;
-                name: string;
                 images: string[];
-                brand_name: string;
+                name: string;
                 details: string;
                 policy: string;
+                sku: string;
+                stock: number;
+                specification: {
+                    size: string;
+                    color: string;
+                    size_qty: number;
+                    size_price: number;
+                    total_price: number;
+                } [];
+                id: number;
+                brand_name: string;
                 max_price: number;
                 min_price: number;
-                tags: string;
-                stock: number;
+                tags: string[];
                 type: string;
+                price: number;
             };
         };
         contentType: null;

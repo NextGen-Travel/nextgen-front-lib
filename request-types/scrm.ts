@@ -22,7 +22,24 @@ export type ScrmDefinitions = {
         query: null;
         response: {
             data: {
-                token: string;
+                msg: string;
+                data: {
+                    jwt: string;
+                    user: {
+                        id: number;
+                        displayName: string;
+                        avatar: {
+                            id: number;
+                            url: string;
+                        };
+                        company: {
+                            id: number;
+                        };
+                        role: {
+                            type: string;
+                        };
+                    };
+                };
             };
         };
         contentType: null;
@@ -216,7 +233,12 @@ export type ScrmDefinitions = {
      * @param {number} id - undefined
      */
     "delete@users/:id": {
-        body: null;
+        body: {
+            /**
+             * 刪除使用者需要輸入登入者的密碼驗證身份
+             */
+            password: string;
+        };
         query: null;
         response: {
             msg: string;
