@@ -72,7 +72,7 @@ const getServiceData = async(context: Context) => {
                 accessToken: context.serviceToken
             }
         })
-        output.jwt = result.data.data.jwt
+        output.jwt = result.data.jwt
     }
     return output
 }

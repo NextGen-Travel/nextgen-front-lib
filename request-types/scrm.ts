@@ -21,23 +21,21 @@ export type ScrmDefinitions = {
         };
         query: null;
         response: {
+            msg: string;
             data: {
-                msg: string;
-                data: {
-                    jwt: string;
-                    user: {
+                jwt: string;
+                user: {
+                    id: number;
+                    displayName: string;
+                    avatar: {
                         id: number;
-                        displayName: string;
-                        avatar: {
-                            id: number;
-                            url: string;
-                        };
-                        company: {
-                            id: number;
-                        };
-                        role: {
-                            type: string;
-                        };
+                        url: string;
+                    };
+                    company: {
+                        id: number;
+                    };
+                    role: {
+                        type: string;
                     };
                 };
             };
