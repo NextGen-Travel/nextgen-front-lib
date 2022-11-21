@@ -1,11 +1,11 @@
 import Axios from 'axios'
 import { Request } from '../../modules/request'
-import { ScrmDefinitions } from '../../request-types/scrm'
+import { MedicinePublicDefinitions } from '../../request-types/medicine-public'
 
-export const scrmApi = new Request<{
+export const dispensingApi = new Request<{
     baseUrl: string
-}, ScrmDefinitions>({
-    name: 'scrm',
+}, MedicinePublicDefinitions>({
+    name: 'dispensing',
     http: async(context) => {
         let axios = Axios.create({
             baseURL: context.config.baseUrl,

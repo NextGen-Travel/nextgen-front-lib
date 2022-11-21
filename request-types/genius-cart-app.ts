@@ -749,6 +749,7 @@ export type GeniusCartAppDefinitions = {
         query: {
             status ? : 1 | 0;
             hot ? : number;
+            hotSort ? : number;
             new ? : number;
             sale ? : number;
             category ? : number;

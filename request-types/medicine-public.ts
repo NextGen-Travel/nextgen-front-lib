@@ -56,6 +56,57 @@ export type MedicinePublicDefinitions = {
         contentType: null;
     };
     /**
+     * [從 SSO 登入後要進到這個系統] - no description
+     */
+    "post@users-permissions/auth/sso/verify": {
+        body: {
+            /**
+             * uuid
+             * @example 77046e51-fd54-4749-b3ac-68e8a37f5e86
+             */
+            appId: string;
+            /**
+             * token
+             * @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6Ijc3MDQ2ZTUxLWZkNTQtNDc0OS1iM2FjLTY4ZThhMzdmNWU4NiIsImlzcyI6Iua4r-S5nea4r1RFU1QiLCJleHAiOjE2NzI0NDQ4MDAsImFjY291bnQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AMTIzLmNvbSIsInBhc3N3b3JkIjoiQWRtaW4xMjMiLCJpYXQiOjE2NjgwNjMzOTd9.GFO_lF2gb3fKDC3UMR4aTyQvUI8W4gre4h1d21uacEA
+             */
+            accessToken: string;
+        };
+        query: null;
+        response: {
+            data: {
+                jwt: string;
+                user: {
+                    id: number;
+                    username: string;
+                    email: string;
+                    provider: string;
+                    confirmed: boolean;
+                    blocked: boolean;
+                    createdAt: string;
+                    updatedAt: string;
+                    memo: string;
+                    level: string;
+                    startedAt: string;
+                    finishedAt: string;
+                    isPharmacist: boolean;
+                    store: {
+                        id: number;
+                        nameCn: string;
+                        nameEn: string;
+                        tel: string;
+                        address: string;
+                        district: string;
+                        rxNo: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        publishedAt: string;
+                    };
+                };
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [獲取醫院列表] - no description
      */
     "get@hospitals": {
