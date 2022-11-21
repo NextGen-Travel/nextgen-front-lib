@@ -147,7 +147,7 @@ export class CasAuthClientConstructor {
         url.searchParams.set(QueryOriginKey, location.origin)
         url.searchParams.set(QueryServiceKey, service)
         let isSuccess = false
-        let openWindow = window.open(url.href, '_blank', 'height=˙720, width=480')
+        let openWindow = window.open(url.href, '_blank', 'height=720, width=480')
         return new Promise((resolve, reject) => {
             this.elementListenerGroup.clear()
             this.elementListenerGroup.add('message', async(data) => {
