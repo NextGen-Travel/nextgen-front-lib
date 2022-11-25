@@ -46,7 +46,8 @@ export default {
         }
     },
     emits: {
-        input: (_value: boolean) => true
+        input: (_value: boolean) => true,
+        close: () => true
     },
     setup(props, { emit }) {
 
@@ -69,6 +70,9 @@ export default {
         watch(() => state.show, () => {
             if (state.show !== props.value) {
                 emit('input', state.show)
+                if (state.show === false) {
+                    emit('close')
+                }
             }
         })
 
