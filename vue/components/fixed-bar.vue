@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { useVueHooks } from '../../core'
-import { computed, PropType } from 'vue';
+import { computed, PropType } from 'vue'
 
 const { defineProps, onMounted, onUnmounted, reactive, ref } = useVueHooks()
 
