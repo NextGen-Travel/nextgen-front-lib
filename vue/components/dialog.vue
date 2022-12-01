@@ -6,7 +6,7 @@
                 <v-card-title class="pb-0">
                     <span v-if="title">{{ title }}</span>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="state.show = false">
+                    <v-btn v-if="!hideClose" icon @click="state.show = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-card-title>
@@ -33,6 +33,11 @@ export default {
             type: String as PropType<string>,
             required: false,
             default: () => '480px'
+        },
+        hideClose: {
+            type: Boolean,
+            required: false,
+            default: () => false
         },
         title: {
             type: String as PropType<string>,

@@ -76,7 +76,6 @@ const style = computed(() => {
         flex-wrap: nowrap;
         white-space: nowrap;
         width: 100%;
-        overflow-y: hidden;
-        overflow-x: auto;
+        overflow: hidden;
     }
 </style>
