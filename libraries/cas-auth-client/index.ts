@@ -6,7 +6,7 @@ import { dispensingApi } from './request-dispensing'
 import { useLibEnv } from '../../core'
 import { text, ElementListenerGroup } from 'power-helper'
 
-export type Services = 'nss' | 'pos' | 'scrm' | 'dispensing'
+export type Services = 'nss' | 'erp' | 'scrm' | 'dispensing'
 
 export type Context = {
     appId: string
