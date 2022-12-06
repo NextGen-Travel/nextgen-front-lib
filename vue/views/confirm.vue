@@ -5,13 +5,13 @@
             persistent
             max-width="500px">
             <v-card>
-                <v-card-title>{{ titleText }}</v-card-title>
+                <v-card-title>{{ $t('ng.confirmTitleText') }}</v-card-title>
                 <v-card-text>{{ message }}</v-card-text>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
-                    <v-btn @click="close" text :disabled="state.loading">{{ cancelText }}</v-btn>
+                    <v-btn @click="close" text :disabled="state.loading">{{ $t('ng.confirmCancelText') }}</v-btn>
                     <v-btn color="success" @click="commit" :loading="state.loading">
-                        {{ confirmText }}
+                        {{ $t('ng.confirmConfirmText') }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -23,26 +23,9 @@
 import { useVueHooks } from '../../core'
 import { useLibConfirmStore } from './store/confirm'
 
-const { computed, watch, reactive, defineProps } = useVueHooks()
+const { computed, watch, reactive } = useVueHooks()
 
 const libConfirmStore = useLibConfirmStore()
-
-// =================
-//
-// defined
-//
-
-defineProps({
-    titleText: {
-        type: String
-    },
-    cancelText: {
-        type: String
-    },
-    confirmText: {
-        type: String
-    }
-})
 
 // =================
 //

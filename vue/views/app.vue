@@ -1,11 +1,7 @@
 <template>
     <v-app>
         <div>
-            <Confirm
-                :title-text="options.confirmTitleText"
-                :cancel-text="options.confirmCancelText"
-                :confirm-text="options.confirmConfirmText">
-            </Confirm>
+            <Confirm></Confirm>
             <Notification></Notification>
             <slot></slot>
         </div>
@@ -15,22 +11,4 @@
 <script setup lang="ts">
 import Confirm from './confirm.vue'
 import Notification from './notification.vue'
-import { PropType } from 'vue'
-
-// =================
-//
-// defined
-//
-
-defineProps({
-    options: {
-        required: true,
-        type: Object as PropType<{
-            confirmTitleText: string
-            confirmCancelText: string
-            confirmConfirmText: string
-        }>
-    }
-})
-
 </script>

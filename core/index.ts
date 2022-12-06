@@ -9,7 +9,7 @@ import Loaders from '../vue/components/loaders.vue'
 import Toolbar from '../vue/components/toolbar.vue'
 import FixedBar from '../vue/components/fixed-bar.vue'
 import Pagination from '../vue/components/pagination.vue'
-
+import _Locales from './locales'
 import type {} from 'node_modules/vue-i18n/types/index'
 import type {} from 'node_modules/vue-router/types/index'
 
@@ -39,6 +39,7 @@ export const useVueHooks = () => VueHooks
 export const useVuePlugins = () => VuePlugins
 export const useLibOptions = () => libOptions
 export const useLibEnv = () => libEnv
+export const Locales = _Locales
 
 export const NextgenLib = {
     install(_Vue: any, params: {
