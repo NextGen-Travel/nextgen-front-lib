@@ -9,8 +9,8 @@
                 <v-card-text>{{ message }}</v-card-text>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
-                    <v-btn @click="close" text :disabled="state.loading">{{ $t('ng.confirmCancelText') }}</v-btn>
-                    <v-btn color="success" @click="commit" :loading="state.loading">
+                    <v-btn name="ng-confirm-close" @click="close" text :disabled="state.loading">{{ $t('ng.confirmCancelText') }}</v-btn>
+                    <v-btn name="ng-confirm-confirm" color="success" @click="commit" :loading="state.loading">
                         {{ $t('ng.confirmConfirmText') }}
                     </v-btn>
                 </v-card-actions>

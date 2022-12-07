@@ -6,7 +6,7 @@
                 <v-card-title class="pb-0">
                     <span v-if="title">{{ title }}</span>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="!hideClose" icon @click="state.show = false">
+                    <v-btn name="ng-dialog-close" v-if="!hideClose" icon @click="state.show = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-card-title>
