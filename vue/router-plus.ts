@@ -118,6 +118,25 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
+    blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+        query?: T[K]['query']
+    }) {
+        if (this.vueRouter) {
+            if (this.routeMap.has(name as string)) {
+                const result = this.vueRouter.resolve({
+                    name: name as any,
+                    params: params as any,
+                    query: options?.query
+                })
+                window.open(result.href)
+            } else {
+                throw serviceException.create(`Router ${name as string} not found.`)
+            }
+        } else {
+            throw serviceException.create('Router Plus not installed.')
+        }
+    }
+
     back(step = 1) {
         if (this.vueRouter) {
             this.vueRouter.go(step * -1)
