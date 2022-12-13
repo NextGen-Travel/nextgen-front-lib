@@ -4,7 +4,7 @@
             v-model="state.dialog"
             persistent
             max-width="360px">
-            <v-card style="position: relative;" :dark="false">
+            <v-card style="position: relative;" light>
                 <v-card-title>
                     <v-spacer></v-spacer>
                     {{ title }}
