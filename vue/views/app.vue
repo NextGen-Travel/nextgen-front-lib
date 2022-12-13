@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <div>
+            <Choices></Choices>
             <Confirm></Confirm>
             <Notification></Notification>
             <slot></slot>
@@ -9,6 +10,7 @@
 </template>
 
 <script setup lang="ts">
+import Choices from './choices.vue'
 import Confirm from './confirm.vue'
 import Notification from './notification.vue'
 </script>

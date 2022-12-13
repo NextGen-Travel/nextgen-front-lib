@@ -3,7 +3,7 @@
         <v-dialog
             v-model="state.dialog"
             persistent
-            max-width="500px">
+            max-width="360px">
             <v-card>
                 <v-card-title>{{ $t('ng.confirmTitleText') }}</v-card-title>
                 <v-card-text>{{ message }}</v-card-text>

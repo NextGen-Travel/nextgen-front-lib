@@ -32,7 +32,7 @@ export default {
         maxWidth: {
             type: String as PropType<string>,
             required: false,
-            default: () => '480px'
+            default: () => '360px'
         },
         hideClose: {
             type: Boolean,
