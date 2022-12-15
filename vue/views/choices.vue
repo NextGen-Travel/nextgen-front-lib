@@ -10,10 +10,11 @@
                     {{ title }}
                     <v-spacer></v-spacer>
                 </v-card-title>
-                <div>
-                    <img width="100%" :src="image">
+                <div class="text-center">
+                    <v-icon v-if="icon" color="primary" style="font-size: 200px">{{ icon }}</v-icon>
+                    <img v-if="image" width="100%" :src="image">
                 </div>
-                <v-card-text class="mt-4">{{ desc }}</v-card-text>
+                <v-card-text v-if="desc" class="mt-4">{{ desc }}</v-card-text>
                 <div class="pa-4 pt-0">
                     <v-btn
                         v-for="btn of btns"
@@ -69,6 +70,7 @@ const state = reactive({
 //
 
 const open = computed(() => libChoicesStore.state.isOpen)
+const icon = computed(() => libChoicesStore.state.icon)
 const desc = computed(() => libChoicesStore.state.desc)
 const btns = computed(() => libChoicesStore.state.btns)
 const title = computed(() => libChoicesStore.state.title)

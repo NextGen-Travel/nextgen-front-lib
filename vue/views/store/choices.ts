@@ -7,7 +7,8 @@ type ChoicesBtn = {
 }
 export type ChoicesParams = {
     title: string
-    image: string
+    image?: string
+    icon?: string
     desc: string
     btns: Array<ChoicesBtn>
 }
@@ -28,7 +29,8 @@ export const useLibChoicesStore = () => {
             const state = reactive({
                 isOpen: false,
                 title: '',
-                image: '',
+                image: '' as string | undefined,
+                icon: '' as string | undefined,
                 desc: '',
                 btns: [] as Array<ChoicesBtn>
             })
@@ -38,10 +40,11 @@ export const useLibChoicesStore = () => {
             // actions
             //
         
-            const open = ({ title, image, desc, btns }: ChoicesParams) => {
+            const open = ({ title, image, desc, icon, btns }: ChoicesParams) => {
                 state.isOpen = true
                 state.title = title
                 state.image = image
+                state.icon = icon
                 state.desc = desc
                 state.btns = btns
             }
