@@ -4,6 +4,7 @@
 const syncRequestApiTypes = require('./sync-request-api-types')
 const build = require('./build')
 const setup = require('./setup')
+const { prompt } = require('inquirer')
 
 let mode = process.argv[2]
 
