@@ -5,6 +5,7 @@ import { MedicinePublicDefinitions } from '../../request-types/medicine-public'
 import { dispensingApi } from './request-dispensing'
 import { useLibEnv } from '../../core'
 import { text, ElementListenerGroup } from 'power-helper'
+import { config } from './config'
 
 export type Services = 'nss' | 'erp' | 'scrm' | 'dispensing'
 
@@ -14,7 +15,7 @@ export type Context = {
     serviceToken: string
 }
 
-type Stages = 'dev' | 'stage' | 'prod'
+export type Stages = 'dev' | 'stage' | 'prod'
 
 export const QueryKey = 'cas-key'
 export const QueryOriginKey = 'cas-origin'
@@ -39,30 +40,8 @@ type OutputData<T extends Services> = {
     serviceToken: string
 }
 
-const env: Record<Stages, {
-    url: string
-    scrmUrl: string
-    endpoint: string
-    dispensingUrl: string
-}> = {
-    dev: {
-        url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
-        scrmUrl: 'https://scrm-api-dev.cloudsatlas.com.hk/api',
-        dispensingUrl: 'https://medicine-api-dev.cloudsatlas.com.hk/api',
-        endpoint: 'https://login-dev.cloudsatlas.com.hk'
-    },
-    stage: {
-        url: 'https://cas-api-stage.cloudsatlas.com.hk/api',
-        scrmUrl: 'https://scrm-api-stage.cloudsatlas.com.hk/api',
-        dispensingUrl: 'https://medicine-api-stage.cloudsatlas.com.hk/api',
-        endpoint: 'https://login-stage.cloudsatlas.com.hk'
-    },
-    prod: {
-        url: 'https://cas-api.cloudsatlas.com.hk/api',
-        scrmUrl: 'https://scrm-api.cloudsatlas.com.hk/api',
-        dispensingUrl: 'https://medicine-api.cloudsatlas.com.hk/api',
-        endpoint: 'https://login.cloudsatlas.com.hk'
-    }
+type InstallParams = {
+    organization: 'cas' | 'nextgen'
 }
 
 // =================
@@ -116,22 +95,28 @@ const getServiceData = async<T extends Services>(context: Context) => {
 }
 
 export class CasAuthClientConstructor {
+    private params!: InstallParams
     private elementListenerGroup = new ElementListenerGroup(window)
 
     private get stage() {
         return useLibEnv().stage as Stages
     }
 
-    async install() {
+    private get organization() {
+        return config[this.stage].organizations[this.params.organization]
+    }
+
+    async install(params: InstallParams) {
+        this.params = params
         await Promise.all([
             casApi.install({
-                baseUrl: env[this.stage].url
+                baseUrl: this.organization.url
             }),
             scrmApi.install({
-                baseUrl: env[this.stage].scrmUrl
+                baseUrl: this.organization.scrmUrl
             }),
             dispensingApi.install({
-                baseUrl: env[this.stage].dispensingUrl
+                baseUrl: this.organization.dispensingUrl
             })
         ])
     }
@@ -142,7 +127,7 @@ export class CasAuthClientConstructor {
      */
 
     signIn<T extends Services>(service: T): Promise<OutputData<T>> {
-        let endpoint = env[this.stage].endpoint
+        let endpoint = this.organization.endpoint
         let url = new URL(endpoint)
         url.searchParams.set(QueryOriginKey, location.origin)
         url.searchParams.set(QueryServiceKey, service)
@@ -182,7 +167,7 @@ export class CasAuthClientConstructor {
     }
 
     redirectSignIn(service: Services, redirectUrl?: string) {
-        let url = new URL(env[this.stage].endpoint)
+        let url = new URL(this.organization.endpoint)
         url.searchParams.set(QuertRedirectKey, redirectUrl || location.origin)
         url.searchParams.set(QueryServiceKey, service)
         window.open(url.href, '_self')
