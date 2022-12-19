@@ -17,10 +17,10 @@ export type Context = {
 
 export type Stages = 'dev' | 'stage' | 'prod'
 
-export const QueryKey = 'cas-key'
-export const QueryOriginKey = 'cas-origin'
-export const QueryServiceKey = 'cas-service'
-export const QuertRedirectKey = 'cas-redirect'
+export const QueryKey = 'sso-key'
+export const QueryOriginKey = 'sso-origin'
+export const QueryServiceKey = 'sso-service'
+export const QueryRedirectKey = 'sso-redirect'
 
 type ServiceUser<T extends Services> = 
     T extends 'scrm' ? ScrmDefinitions['post@auth/sso/verify']['response']['data']['user'] : (
@@ -168,7 +168,7 @@ export class CasAuthClientConstructor {
 
     redirectSignIn(service: Services, redirectUrl?: string) {
         let url = new URL(this.organization.endpoint)
-        url.searchParams.set(QuertRedirectKey, redirectUrl || location.origin)
+        url.searchParams.set(QueryRedirectKey, redirectUrl || location.origin)
         url.searchParams.set(QueryServiceKey, service)
         window.open(url.href, '_self')
     }

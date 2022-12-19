@@ -9,6 +9,7 @@ import Loaders from '../vue/components/loaders.vue'
 import Toolbar from '../vue/components/toolbar.vue'
 import FixedBar from '../vue/components/fixed-bar.vue'
 import Pagination from '../vue/components/pagination.vue'
+import OutlineText from '../vue/components/outline-text.vue'
 import _Locales from './locales'
 import type {} from 'node_modules/vue-i18n/types/index'
 import type {} from 'node_modules/vue-router/types/index'
@@ -74,6 +75,7 @@ export const NextgenLib = {
         addComponent('toolbar', Toolbar)
         addComponent('fixed-bar', FixedBar)
         addComponent('pagination', Pagination)
+        addComponent('outline-text', OutlineText)
     }
 }
 
