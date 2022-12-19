@@ -1,11 +1,11 @@
 import { casApi } from './request'
+import { config } from './config'
 import { scrmApi } from './request-scrm'
+import { useLibEnv } from '../../core'
+import { dispensingApi } from './request-dispensing'
 import { ScrmDefinitions } from '../../request-types/scrm'
 import { MedicinePublicDefinitions } from '../../request-types/medicine-public'
-import { dispensingApi } from './request-dispensing'
-import { useLibEnv } from '../../core'
 import { text, ElementListenerGroup } from 'power-helper'
-import { config } from './config'
 
 export type Services = 'nss' | 'erp' | 'scrm' | 'dispensing'
 
@@ -94,7 +94,7 @@ const getServiceData = async<T extends Services>(context: Context) => {
     return output
 }
 
-export class CasAuthClientConstructor {
+export class SsoAuthClientConstructor {
     private params!: InstallParams
     private elementListenerGroup = new ElementListenerGroup(window)
 
@@ -200,12 +200,12 @@ export class CasAuthClientConstructor {
     }
 }
 
-export const CasAuthClient = new CasAuthClientConstructor()
+export const SsoAuthClient = new SsoAuthClientConstructor()
 
 declare global {
     interface Window {
-        CasAuthClient: CasAuthClientConstructor
+        SsoAuthClient: SsoAuthClientConstructor
     }
 }
 
-window.CasAuthClient = CasAuthClient
+window.SsoAuthClient = SsoAuthClient
