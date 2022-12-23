@@ -63,6 +63,19 @@ export type MedicinePrivateDefinitions = {
                  * @example true
                  */
                 enable: boolean;
+                /**
+                 * 是否啟用 SSO
+                 * @example true
+                 */
+                SSO: boolean;
+                /**
+                 * 若 SSO=true 要有 appId
+                 */
+                appId: string;
+                /**
+                 * 若 SSO=true 要有 accessKey
+                 */
+                accessKey: string;
             };
         };
         query: null;
@@ -132,6 +145,19 @@ export type MedicinePrivateDefinitions = {
                  * @example true
                  */
                 enable: boolean;
+                /**
+                 * 是否啟用 SSO
+                 * @example true
+                 */
+                SSO: boolean;
+                /**
+                 * 若 SSO=true 要有 appId
+                 */
+                appId: string;
+                /**
+                 * 若 SSO=true 要有 accessKey
+                 */
+                accessKey: string;
             };
         };
         query: null;
@@ -851,7 +877,7 @@ export type MedicinePrivateDefinitions = {
             usage: string[];
             dosage: number[];
             unit: string[];
-            packageImages: (number | null)[];
+            packageImages: number[][];
         };
         query: null;
         response: {
@@ -978,13 +1004,14 @@ export type MedicinePrivateDefinitions = {
              */
             productName_zh: string;
             images: number[];
+            uuidArr: string[];
             sku: string[];
             packageName: string[];
             dosageForm: string[];
             usage: string[];
             dosage: number[];
             unit: string[];
-            packageImages: (number | null)[];
+            packageImages: number[][];
         };
         query: null;
         response: {
@@ -1034,7 +1061,7 @@ export type MedicinePrivateDefinitions = {
      */
     "post@upload": {
         body: {
-            images: File;
+            files: File;
         };
         query: null;
         response: {

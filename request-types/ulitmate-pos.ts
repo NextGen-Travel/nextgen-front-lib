@@ -176,7 +176,7 @@ export type UlitmatePosDefinitions = {
         };
         query: null;
         response: null;
-        contentType: null;
+        contentType: "x-www-form-urlencoded";
     };
     /**
      * [單一交易] - 取得單一交易資訊
@@ -258,6 +258,97 @@ export type UlitmatePosDefinitions = {
         contentType: null;
     };
     /**
+     * [暫存交易] - no description
+     */
+    "post@transactions/suspend": {
+        body: {
+            /**
+             * 病人 ID
+             */
+            contact_id ? : number | null;
+            /**
+             * 病人姓名
+             */
+            contact_name: string;
+            /**
+             * 醫生姓名
+             */
+            doctor_name ? : string;
+            hospital_key ? : string;
+            /**
+             * 醫院名稱
+             */
+            hospital_name ? : string;
+            /**
+             * 配藥日期
+             */
+            prescription_sign_created_at ? : string;
+            /**
+             * 處方簽症狀
+             */
+            prescription_sign_message ? : string;
+            /**
+             * 藥品清單
+             */
+            products ? : string;
+            /**
+             * 病人身分證字號
+             */
+            contact_custom_field1: string;
+            /**
+             * 病人手機
+             */
+            contact_mobile ? : string;
+            /**
+             * 病人性別
+             */
+            contact_custom_field2 ? : "F" | "M";
+            /**
+             * 病人生日
+             */
+            contact_dob ? : string;
+            /**
+             * 病人藥物忌諱
+             */
+            contact_custom_field3 ? : string;
+            /**
+             * 購買人 id
+             */
+            purchase_id ? : number | null;
+            /**
+             * 購買人姓名
+             */
+            purchase_name ? : string;
+            /**
+             * 購買人電話
+             */
+            purchase_mobile ? : string;
+            /**
+             * 購買人身份證字號
+             */
+            purchase_identy_number ? : string;
+            token ? : string;
+        };
+        query: null;
+        response: {
+            data: {
+                /**
+                 * success code
+                 */
+                success: number;
+                /**
+                 * response message
+                 */
+                msg: string;
+                /**
+                 * 暫存交易 id
+                 */
+                transaction_id: number;
+            };
+        };
+        contentType: "x-www-form-urlencoded";
+    };
+    /**
      * [產品清單] - 取得產品清單
      */
     "get@products": {
@@ -308,21 +399,6 @@ export type UlitmatePosDefinitions = {
                  */
                 product_custom_field4: string;
             } [];
-            links: {
-                first: string;
-                last: string;
-                prev: string;
-                next: string;
-            };
-            meta: {
-                current_page: number;
-                from: number;
-                last_page: number;
-                path: string;
-                per_page: number;
-                to: number;
-                total: number;
-            };
         };
         contentType: null;
     };
@@ -348,9 +424,13 @@ export type UlitmatePosDefinitions = {
                  */
                 name: string;
                 /**
-                 * 單位 id
+                 * 單位 Key
                  */
-                unit_id: number;
+                unit_key: string;
+                /**
+                 * 單位簡稱
+                 */
+                unit_short_name: string;
                 /**
                  * 庫存數量
                  */
@@ -359,10 +439,6 @@ export type UlitmatePosDefinitions = {
                  * 庫存警告數量
                  */
                 alert_quantity: string;
-                /**
-                 * 單位簡稱
-                 */
-                unit_short_name: string;
                 /**
                  * 售價
                  */
@@ -490,7 +566,7 @@ export type UlitmatePosDefinitions = {
              */
             success: boolean;
         };
-        contentType: null;
+        contentType: "x-www-form-urlencoded";
     };
     /**
      * [取得單一客戶資訊] - 取得單一客戶詳細資訊
@@ -625,6 +701,6 @@ export type UlitmatePosDefinitions = {
         };
         query: null;
         response: null;
-        contentType: null;
+        contentType: "x-www-form-urlencoded";
     };
 }

@@ -824,6 +824,10 @@ export type GeniusCartAppDefinitions = {
                 policy: string;
                 sku: string;
                 stock: number;
+                /**
+                 * true 表示有開啟多規格，反之則無
+                 */
+                specification_type: boolean;
                 specification: {
                     size: string;
                     color: string;

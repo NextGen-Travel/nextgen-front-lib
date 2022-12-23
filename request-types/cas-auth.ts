@@ -42,6 +42,7 @@ export type CasAuthDefinitions = {
             password: string;
         };
         query: {
+            channel : string;
             service ? : string;
         };
         response: {
@@ -74,11 +75,6 @@ export type CasAuthDefinitions = {
              * @example dev@nextgen.com.hk
              */
             email: string;
-            /**
-             * 帳號
-             * @example dev
-             */
-            account: string;
         };
         query: null;
         response: null;
@@ -87,7 +83,7 @@ export type CasAuthDefinitions = {
     /**
      * [修改密碼] - no description
      */
-    "post@v1/auth/reset-password": {
+    "post@auth/reset-password": {
         body: {
             /**
              * 一次性
@@ -116,6 +112,7 @@ export type CasAuthDefinitions = {
     "get@v1/private/auth/:appId": {
         body: null;
         query: {
+            channel : string;
             service ? : string;
             expand ? : string;
         };
@@ -159,6 +156,7 @@ export type CasAuthDefinitions = {
     "post@v1/auth/:appId": {
         body: null;
         query: {
+            channel : string;
             service ? : string;
             expand ? : string;
         };
@@ -237,6 +235,7 @@ export type CasAuthDefinitions = {
             accessToken: string;
         };
         query: {
+            channel : string;
             service ? : string;
         };
         response: {
@@ -265,12 +264,13 @@ export type CasAuthDefinitions = {
         response: {
             msg: string;
             data: {
+                channel: string;
                 nss: boolean;
-                pos: boolean;
+                erp: boolean;
                 scrm: boolean;
                 dispensing: boolean;
                 nssCallback: string;
-                posCallback: string;
+                erpCallback: string;
             };
         };
         contentType: null;
