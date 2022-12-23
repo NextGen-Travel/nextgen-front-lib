@@ -43,14 +43,14 @@ export default {
             required: false,
             default: () => null
         },
-        value: {
+        modelValue: {
             type: Boolean as PropType<boolean>,
             required: false,
             default: () => null
         }
     },
     emits: {
-        input: (_value: boolean) => true,
+        'update:modelValue': (_value: boolean) => true,
         close: () => true
     },
     setup(props, { emit }) {
@@ -70,17 +70,17 @@ export default {
         //
 
         watch(() => state.show, () => {
-            if (state.show !== props.value) {
-                emit('input', state.show)
+            if (state.show !== props.modelValue) {
+                emit('update:modelValue', state.show)
                 if (state.show === false) {
                     emit('close')
                 }
             }
         })
 
-        watch(() => props.value, () => {
-            if (state.show !== props.value) {
-                state.show = !!props.value
+        watch(() => props.modelValue, () => {
+            if (state.show !== props.modelValue) {
+                state.show = !!props.modelValue
             }
         })
 
@@ -90,7 +90,7 @@ export default {
         //
 
         onMounted(() => {
-            state.show = !!props.value
+            state.show = !!props.modelValue
         })
 
         // =================

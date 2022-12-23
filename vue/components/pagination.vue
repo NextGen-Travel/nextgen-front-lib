@@ -42,7 +42,7 @@ const props = defineProps({
         required: false,
         default: () => 1
     },
-    value: {
+    modelValue: {
         type: Number as PropType<number>,
         required: false,
         default: () => 1
@@ -59,7 +59,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    input: (_value: number) => true
+    'update:modelValue': (_value: number) => true
 })
 
 // =================
@@ -78,8 +78,8 @@ const show = computed(() => {
 })
 
 const page = computed({
-    get: () => props.value,
-    set: value => emit('input', value || 1)
+    get: () => props.modelValue,
+    set: value => emit('update:modelValue', value || 1)
 })
 
 const length = computed(() => {
