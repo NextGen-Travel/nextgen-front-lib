@@ -20,10 +20,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useVueHooks } from '../../core'
+import { computed, watch, reactive } from 'vue'
 import { useLibConfirmStore } from './store/confirm'
-
-const { computed, watch, reactive } = useVueHooks()
 
 const libConfirmStore = useLibConfirmStore()
 

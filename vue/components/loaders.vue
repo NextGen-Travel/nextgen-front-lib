@@ -10,10 +10,7 @@
 
 <script lang="ts" setup>
 import { Loader } from 'power-helper'
-import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
-
-const { reactive, onUnmounted, defineProps, onMounted } = useVueHooks()
+import { PropType, reactive, onUnmounted, defineProps, onMounted } from 'vue'
 
 const props = defineProps({
     items: {

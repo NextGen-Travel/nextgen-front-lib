@@ -14,14 +14,13 @@
     </div>
 </template>
 
-<script name="ng-toolbar" lang="ts" setup>
+<script lang="ts" setup>
 import { VueSelf } from '../self'
 import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
 import { StyleString } from 'power-helper'
+import { reactive, defineProps, onMounted, computed } from 'vue'
 
 const self = VueSelf.use()
-const { reactive, defineProps, onMounted, computed } = useVueHooks()
 
 // =================
 //

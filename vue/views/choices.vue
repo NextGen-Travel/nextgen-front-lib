@@ -47,10 +47,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useVueHooks } from '../../core'
 import { useLibChoicesStore } from './store/choices'
-
-const { computed, watch, reactive } = useVueHooks()
+import { computed, watch, reactive } from 'vue'
 
 const libChoicesStore = useLibChoicesStore()
 

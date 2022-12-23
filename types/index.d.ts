@@ -1,0 +1,19 @@
+import '@vue/runtime-core'
+
+declare module '@vue/runtime-core' {
+    export interface GlobalComponents {
+        NgApp: typeof import('../vue/views/app.vue')['default']
+        NgDialog: typeof import('../vue/components/dialog.vue')['default']
+        NgFixedBar: typeof import('../vue/components/fixed-bar.vue')['default']
+        NgForm: typeof import('../vue/components/form.vue')['default']
+        NgImg: typeof import('../vue/components/img.vue')['default']
+        NgLoaders: typeof import('../vue/components/loaders.vue')['default']
+        NgOutlineText: typeof import('../vue/components/outline-text.vue')['default']
+        NgPagination: typeof import('../vue/components/pagination.vue')['default']
+        NgTable: typeof import('../vue/components/table.vue')['default']
+        NgToolbar: typeof import('../vue/components/toolbar.vue')['default']
+        NgUpload: typeof import('../vue/components/upload.vue')['default']
+    }
+}
+
+export {}

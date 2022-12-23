@@ -70,10 +70,10 @@
 
 <script lang="ts">
 import NgDialog from './dialog.vue'
-import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
+import { VueSelf } from '../self'
 import { pick, Debounce } from 'power-helper'
 import { useLocalStorage } from '../../core/storage'
+import { PropType, onUnmounted, watch, reactive, computed, onMounted, getCurrentInstance } from 'vue'
 
 type Field = {
     key: string
@@ -127,7 +127,7 @@ export default {
         'click-item': (_item: any) => true
     },
     setup(props, { emit }) {
-        const { onUnmounted, watch, reactive, computed, onMounted, getCurrentInstance } = useVueHooks()
+        const self = VueSelf.use()
         const peel = pick.peel
         const instance = getCurrentInstance()
         const localStorage = useLocalStorage()
@@ -149,7 +149,7 @@ export default {
         //
 
         const hasClickItemListener = computed(() =>{
-            return instance?.proxy.$listeners && instance?.proxy.$listeners['click-item']
+            return self.hasListener('click-item')
         })
 
         const showFilter = computed(() => {

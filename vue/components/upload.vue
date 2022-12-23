@@ -19,8 +19,7 @@
 // TODO: fileType 也須透過 js 檢查
 import { Loader } from 'power-helper'
 import { VueSelf } from '../self'
-import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
+import { PropType, ref, defineProps, defineEmits } from 'vue'
 
 export type OutputFile = {
     url: string | ArrayBuffer | null
@@ -32,7 +31,6 @@ export type UploadData = {
 }
 
 const self = VueSelf.use()
-const { ref, defineProps, defineEmits } = useVueHooks()
 
 // =================
 //

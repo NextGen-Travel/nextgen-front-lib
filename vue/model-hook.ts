@@ -1,10 +1,10 @@
 // https://www.gushiciku.cn/pl/g2DO/zh-tw
 
-import { useVueHooks } from '../core/index'
 import { diff as _diff } from 'deep-object-diff'
-import { Event, record, json } from 'power-helper'
-import { createStateManager } from './state-manager'
+import { reactive, watch } from 'vue'
 import { useListenerGroup } from './listener-group'
+import { createStateManager } from './state-manager'
+import { Event, record, json } from 'power-helper'
 
 type Context<S> = {
     data: S
@@ -77,7 +77,6 @@ export const defineModelHook = <
     mixin: (_data: Context<S>) => R
 }) => {
     const use = () => {
-        const { reactive, watch } = useVueHooks()
         const data = reactive(params.schema())
         const oridata = params.schema()
         const stateManager = createStateManager()
@@ -192,7 +191,6 @@ export const defineModelHook = <
         row: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data: S, emit?: (_data: S) => void) => {
-            const { watch } = useVueHooks()
             const model = from(data)
             const listenerGroup = useListenerGroup()
 

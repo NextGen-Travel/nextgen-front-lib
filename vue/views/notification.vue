@@ -28,10 +28,8 @@
 
 <script setup lang="ts">
 import { Ticker } from 'power-helper'
-import { useVueHooks } from '../../core'
+import { reactive, onMounted, onUnmounted, computed } from 'vue'
 import { useLibNotificationStore, Message, MessageType } from './store/notification'
-
-const { reactive, onMounted, onUnmounted, computed } = useVueHooks()
 
 // =================
 //

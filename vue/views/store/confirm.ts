@@ -1,52 +1,44 @@
-import { useVuePlugins, useVueHooks } from '../../../core'
+import { reactive } from 'vue'
+import { defineStore } from 'pinia'
 
 type Handler = (_callback: () => void) => any
 
-let store: any = null
+export const useLibConfirmStore = defineStore('lib-confirm', () => {
+        
+    // =================
+    //
+    // state
+    //
 
-export const useLibConfirmStore = () => {
-    if (store == null) {
-        const { pinia } = useVuePlugins()
-        const { reactive } = useVueHooks()
-        store = pinia.defineStore('lib-confirm', () => {
-        
-            // =================
-            //
-            // state
-            //
-        
-            const state = reactive({
-                isOpen: false,
-                message: '',
-                handler: null as unknown as Handler
-            })
-        
-            // =================
-            //
-            // actions
-            //
-        
-            const open = ({ message, handler }: { handler: Handler, message: string }) => {
-                state.isOpen = true
-                state.message = message
-                state.handler = handler
-            }
-        
-            const cancel = () => {
-                state.isOpen = false
-            }
-        
-            // =================
-            //
-            // done
-            //
-        
-            return {
-                open,
-                state,
-                cancel
-            }
-        })
+    const state = reactive({
+        isOpen: false,
+        message: '',
+        handler: null as unknown as Handler
+    })
+
+    // =================
+    //
+    // actions
+    //
+
+    const open = ({ message, handler }: { handler: Handler, message: string }) => {
+        state.isOpen = true
+        state.message = message
+        state.handler = handler
     }
-    return store()
-}
+
+    const cancel = () => {
+        state.isOpen = false
+    }
+
+    // =================
+    //
+    // done
+    //
+
+    return {
+        open,
+        state,
+        cancel
+    }
+})

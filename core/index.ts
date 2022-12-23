@@ -1,5 +1,5 @@
-import * as Hooks from 'vue'
-import * as Pinia from 'pinia'
+import type { App } from 'vue'
+import { toHump } from '../utils/text'
 import Img from '../vue/components/img.vue'
 import Form from '../vue/components/form.vue'
 import Table from '../vue/components/table.vue'
@@ -11,18 +11,8 @@ import FixedBar from '../vue/components/fixed-bar.vue'
 import Pagination from '../vue/components/pagination.vue'
 import OutlineText from '../vue/components/outline-text.vue'
 import _Locales from './locales'
-import type {} from 'node_modules/vue-i18n/types/index'
-import type {} from 'node_modules/vue-router/types/index'
 
-let VueHooks: typeof Hooks = {} as any
-
-let VuePlugins: {
-    pinia: typeof Pinia
-} = {
-    pinia: null as any
-}
-
-let libOptions: {
+const libOptions: {
     staticUrl: string
     notFoundImage: string
 } = {
@@ -30,30 +20,21 @@ let libOptions: {
     notFoundImage: ''
 }
 
-let libEnv = {
+const libEnv = {
     version: 1,
     stage: '',
     service: '',
 }
 
-export const useVueHooks = () => VueHooks
-export const useVuePlugins = () => VuePlugins
 export const useLibOptions = () => libOptions
 export const useLibEnv = () => libEnv
 export const Locales = _Locales
 
 export const NextgenLib = {
-    install(_Vue: any, params: {
+    install(vue: App, params: {
         env: typeof libEnv
-        hooks: typeof Hooks
-        pinia: typeof Pinia
         options: typeof libOptions
     }) {
-        for (let key in params.hooks) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            VueHooks[key] = params.hooks[key]
-        }
         for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -64,8 +45,10 @@ export const NextgenLib = {
             // @ts-ignore
             libEnv[key] = params.env[key]
         }
-        VuePlugins.pinia = params.pinia
-        const addComponent = (name: string, component: any) => _Vue.component(`ng-${name}`, component)
+        const addComponent = (name: string, component: any) => {
+            vue.component(`ng-${name}`, component)
+            vue.component(`Ng${toHump(name)}`, component)
+        }
         addComponent('img', Img)
         addComponent('form', Form)
         addComponent('table', Table)

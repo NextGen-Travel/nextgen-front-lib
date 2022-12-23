@@ -1,39 +1,29 @@
-import VueI18n, { I18nOptions } from 'vue-i18n'
+
+
 import { text } from 'power-helper'
 import { VarParameters } from 'power-helper/types/string'
 import { serviceException } from '../core/error'
+import { I18n, I18nOptions, createI18n } from 'vue-i18n'
 
 const exception = serviceException.checkout('i18n-plus')
 
 export class VueI18nPlus<Keys extends string> {
-    vueI18n!: VueI18n
+    vueI18n!: I18n
     namespace!: string
     rawParams!: I18nOptions
 
-    static get VueI18n() {
-        return VueI18n
-    }
-
-    static get install() {
-        return VueI18n.install
-    }
-
     async setup(namespace: string, params: I18nOptions) {
-        this.vueI18n = new VueI18n(params)
+        this.vueI18n = createI18n(params)
         this.rawParams = params
         this.namespace = namespace
-        if (this.rawParams.messages && this.rawParams.messages[this.vueI18n.locale][this.namespace] == null) {
+        if (params.messages && params.messages?.[params.locale || '']?.[this.namespace] == null) {
             throw exception.create(`I18n plus need defined "${namespace}" namespace message.`)
         }
     }
 
-    /**
-     * 強化版本的 $t，可以讓 Typescript 協助判定是否定義過 key 與自動偵測變數，也可以透過 ## 前綴符號進行暫時定義。
-     * @example 
-     * i18n.tt('hello {N}', { N: 'dave' })
-     * // 如果尚未定義，也可以透過 ## 前綴暫時不檢查
-     * i18n.tt('## hello {N}', { N: 'dave' })
-     */
+    get t() {
+        return this.vueI18n.global.t as (_key: string, _value1?: any, _value2?: any) => string
+    }
 
     tt<
         T extends Keys | `##${string}`,
@@ -48,7 +38,7 @@ export class VueI18nPlus<Keys extends string> {
             })
         }
         if (this.vueI18n) {
-            return this.vueI18n.t(`${this.namespace}.${key}`, ...vars).toString()
+            return this.t(`${this.namespace}.${key}`, vars[0])
         } else {
             return key
         }
@@ -72,7 +62,7 @@ export class VueI18nPlus<Keys extends string> {
                 })
             }
             if (this.vueI18n) {
-                return this.vueI18n.t(`${this.namespace}.${key}`, locale, ...vars).toString()
+                return this.t(`${this.namespace}.${key}`, locale, vars[0]).toString()
             } else {
                 return key
             }

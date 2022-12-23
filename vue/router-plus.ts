@@ -1,7 +1,7 @@
-import VueRouter, { RouteConfig, RouterOptions, Route as _Route } from 'vue-router'
 import { Event } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../core/error'
+import { createRouter, Router, RouterOptions, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 
 export type RouteMixin<
     P extends Route,
@@ -25,7 +25,7 @@ type Route = {
     parent?: string
 }
 
-export type Routes<Names extends string> = RouteConfig & {
+export type Routes<Names extends string> = RouteRecordRaw & {
     children?: Array<Routes<Names>>
     name?: Names | '*' | '/'
     meta?: Record<string, any>
@@ -34,21 +34,21 @@ export type Routes<Names extends string> = RouteConfig & {
 type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>
 type Channels = {
     after: {
-        to: _Route
-        from: _Route
+        to: RouteLocationNormalized
+        from: RouteLocationNormalized
     }
     before: {
-        to: _Route
-        from: _Route
+        to: RouteLocationNormalized
+        from: RouteLocationNormalized
     }
 }
 
-const getRouteNames = (routes: RouteConfig[]) => {
+const getRouteNames = (routes: readonly RouteRecordRaw[]) => {
     let names: string[] = []
     if (routes) {
         for (let route of routes) {
-            if (route.name) {
-                names.push(route.name)
+            if (route && route.name) {
+                names.push(route.name.toString())
             }
             if (route.children) {
                 names = names.concat(getRouteNames(route.children))
@@ -65,31 +65,30 @@ type Params = {
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params
     routeMap: Set<string> = new Set()
-    vueRouter!: VueRouter
+    vueRouter!: Router
 
     constructor(params?: Params) {
         super()
         this.params = params || {}
     }
 
-    static get install() {
-        return VueRouter.install
-    }
-
-    static get VueRouter() {
-        return VueRouter
-    }
-
     async setup(options: RouterOptions) {
-        this.routeMap = new Set([...getRouteNames(options.routes || [])])
-        this.vueRouter = new VueRouter(options)
+        this.routeMap = new Set(getRouteNames(options.routes))
+        this.vueRouter = createRouter(options)
         this.vueRouter.afterEach((from, to) => {
-            this.emit('after', { from, to })
+            this.emit('after', {
+                to,
+                from
+            })
         })
         this.vueRouter.beforeEach((from, to, next) => {
-            this.emit('before', { from, to })
+            this.emit('before', {
+                to,
+                from
+            })
             next()
         })
+        return this.vueRouter
     }
 
     toHome() {
@@ -118,6 +117,12 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
+    back(step = 1) {
+        if (this.vueRouter) {
+            this.vueRouter.go(step * -1)
+        }
+    }
+
     blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
@@ -137,21 +142,19 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    back(step = 1) {
-        if (this.vueRouter) {
-            this.vueRouter.go(step * -1)
-        }
-    }
-
     getCurrentRoute<K extends keyof T>(_name?: K): {
         name: string
         params: RouteParameters<T[K]['path']>
         query: Partial<T[K]['query']>
     } {
         if (this.vueRouter) {
-            return this.vueRouter.currentRoute as any
+            return this.vueRouter.currentRoute.value as any
         } else {
-            throw serviceException.create('Router Plus not installed.')
+            return {
+                name: '',
+                query: {},
+                params: {} as any
+            }
         }
     }
 }

@@ -19,10 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue';
-import { useVueHooks } from '../../core'
-
-const { watch, computed } = useVueHooks()
+import { PropType, watch, computed } from 'vue'
 
 // =================
 //

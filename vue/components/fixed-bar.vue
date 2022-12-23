@@ -15,10 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useVueHooks } from '../../core'
-import { computed, PropType } from 'vue'
-
-const { defineProps, onMounted, onUnmounted, reactive, ref } = useVueHooks()
+import { computed, PropType, defineProps, onMounted, onUnmounted, reactive, ref } from 'vue'
 
 const content = ref()
 const observer = new ResizeObserver(() => refresh())

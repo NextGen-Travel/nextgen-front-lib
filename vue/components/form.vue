@@ -13,8 +13,7 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
+import { PropType, reactive, watch, onMounted, ref } from 'vue'
 
 export default {
     name: 'ng-form',
@@ -45,8 +44,6 @@ export default {
         submit: () => true
     },
     setup(props, { emit }) {
-
-        const { reactive, watch, onMounted, ref } = useVueHooks()
 
         // =================
         //

@@ -20,8 +20,7 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { useVueHooks } from '../../core'
+import { PropType, reactive, watch, onMounted } from 'vue'
 export default {
     props: {
         persistent: {
@@ -55,8 +54,6 @@ export default {
         close: () => true
     },
     setup(props, { emit }) {
-
-        const { reactive, watch, onMounted } = useVueHooks()
 
         // =================
         //

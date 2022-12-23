@@ -1,29 +1,28 @@
-import { useVueHooks } from '../core/index'
+import { toHump } from '../utils/text'
+import { getCurrentInstance, reactive, useSlots, useAttrs, ref } from 'vue'
 
 export class VueSelf {
     static use() {
         return (new VueSelf()).use()
     }
     use() {
-        const hooks = useVueHooks()
-        const nowCurrentInstance = hooks.getCurrentInstance ? hooks.getCurrentInstance() : null
+        const nowCurrentInstance = getCurrentInstance ? getCurrentInstance() : null
         return {
+            ref<T>(data: T) {
+                return ref(data as any) as {
+                    value: T
+                }
+            },
             data<T>(data: T) {
-                return useVueHooks().reactive(data as any) as T
+                return reactive(data as any) as T
             },
             hasSlot(name = 'default') {
-                let proxy = nowCurrentInstance?.proxy as any
-                if (proxy) {
-                    return !!proxy.$slots[name] || !!proxy.$scopedSlots[name]
-                }
-                return false
+                let slot = useSlots()
+                return !!slot[name]
             },
             hasListener(name: string) {
-                let proxy = nowCurrentInstance?.proxy as any
-                if (proxy) {
-                    return !!proxy.$listeners || !!proxy.$listeners[name]
-                }
-                return false
+                let attrs = useAttrs()
+                return !!attrs[`on${toHump(name)}`]
             },
             forceUpdate() {
                 nowCurrentInstance?.proxy?.$forceUpdate()
