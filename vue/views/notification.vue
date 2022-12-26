@@ -10,14 +10,21 @@
                         v-if="message.clicked === false"
                         height="2"
                         :color="getColor(message.type)"
-                        :value="100 - message.duration">
+                        :model-value="100 - message.duration">
                     </v-progress-linear>
                     <v-row class="pa-3 flex-nowrap" no-gutters align="center" :class="`${getColor(message.type)}--text`">
-                        <v-icon :color="getColor(message.type)">{{ getIcon(message.type) }}</v-icon>
-                        <div class="ml-3" style="overflow: auto;">{{ message.content }}</div>
+                        <v-icon :color="getColor(message.type)">
+                            {{ getIcon(message.type) }}
+                        </v-icon>
+                        <div class="ml-3" style="overflow: auto;">
+                            {{ message.content }}
+                        </div>
                         <v-spacer></v-spacer>
-                        <v-btn icon @click.stop="removeMessage(message)" :color="getColor(message.type)">
-                            <v-icon>mdi-close</v-icon>
+                        <v-btn
+                            variant="plain"
+                            icon="mdi-close"
+                            @click.stop="removeMessage(message)"
+                            :color="getColor(message.type)">
                         </v-btn>
                     </v-row>
                 </v-card>
@@ -130,10 +137,11 @@ const removeMessage = (message: Message) => {
 }
 </script>
 
+
 <style lang="scss" scoped>
     .lib-notification {
         position: fixed;
-        z-index: 1000;
+        z-index: 10000;
         right: 0;
         top: 0;
         .lib-notification-block {
@@ -144,16 +152,13 @@ const removeMessage = (message: Message) => {
     .lib-notification-list-move, .lib-notification-list-enter-active, .lib-notification-list-leave-active {
         transition: all 0.25s;
     }
-
     .lib-notification-list-leave-to {
         opacity: 0;
     }
-
     .lib-notification-list-enter {
         opacity: 0;
         transform: translateY(30px);
     }
-
     .lib-notification-list-leave-active:not(:last-child) {
         position: absolute;
     }

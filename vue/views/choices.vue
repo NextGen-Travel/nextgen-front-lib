@@ -4,21 +4,19 @@
             v-model="state.dialog"
             persistent
             max-width="360px">
-            <v-card style="position: relative;" light>
-                <v-card-title>
-                    <v-spacer></v-spacer>
+            <v-card style="position: relative;" theme="light">
+                <v-card-title class="pt-3 text-center">
                     {{ title }}
-                    <v-spacer></v-spacer>
                 </v-card-title>
                 <div class="text-center">
                     <v-icon v-if="icon" color="primary" style="font-size: 200px">{{ icon }}</v-icon>
-                    <img v-if="image" width="100%" :src="image">
+                    <img v-if="image" class="w-100" :src="image">
                 </div>
-                <v-card-text v-if="desc" class="mt-4">{{ desc }}</v-card-text>
+                <v-card-text v-if="desc" class="mb-3">{{ desc }}</v-card-text>
                 <div class="pa-4 pt-0">
                     <v-btn
                         v-for="btn of btns"
-                        text
+                        variant="text"
                         block
                         color="primary"
                         @click="commit(btn.handler)"
@@ -27,7 +25,7 @@
                         {{ btn.text }}
                     </v-btn>
                     <v-btn
-                        text
+                        variant="text"
                         name="ng-choices-close"
                         block
                         @click="close"
@@ -35,8 +33,10 @@
                         {{ $t('ng.confirmCancelText') }}
                     </v-btn>
                 </div>
-                <v-overlay absolute :value="state.loading">
+                <v-overlay contained v-model="state.loading" class="w-100 align-center">
                     <v-progress-circular
+                        class="mx-auto"
+                        color="white"
                         indeterminate
                         size="64"
                     ></v-progress-circular>

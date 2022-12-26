@@ -1,16 +1,15 @@
 <template>
     <div>
         <div :style="`height: ${state.contentHeight}px`"></div>
-        <v-app-bar
+        <v-toolbar
             ref="content"
             class="lib-component-fixed-bar"
             height="auto"
             :dark="dark"
             :color="color"
-            :class="appClass"
-            :style="position === 'top' ? 'top: 0' : 'bottom: 0'">
+            :class="appClass">
             <slot></slot>
-        </v-app-bar>
+        </v-toolbar>
     </div>
 </template>
 
@@ -110,13 +109,15 @@ const refresh = () => {
     position: fixed;
     left: 0;
     width: 100%;
-    z-index: 10;
+    z-index: 1100;
 }
 .lib-component-fixed-bar-app-top {
+    top: 0;
     padding-top: constant(safe-area-inset-top);
     padding-top: env(safe-area-inset-top);
 }
 .lib-component-fixed-bar-app-bottom {
+    bottom: 0;
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
 }

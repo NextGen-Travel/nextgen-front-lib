@@ -1,6 +1,6 @@
 <template>
     <div style="position: relative;">
-        <v-simple-table v-if="showTable">
+        <v-table v-if="showTable">
             <thead>
                 <tr>
                     <th
@@ -27,19 +27,19 @@
                                 :item="item"
                                 :value="getFieldValue(field, item, ti)">
                             </slot>
-                            <div v-if="hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
+                            <div v-if="self.hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
                                 {{ getFieldValue(field, item, ti) }}
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="hasSlot('details')" :key="ti + 'iddi'">
+                    <tr v-if="self.hasSlot('details')" :key="ti + 'iddi'">
                         <td colspan="100%" class="component-twr-detail">
                             <slot class="w-100" name="details" :item="item"></slot>
                         </td>
                     </tr>
                 </template>
             </tbody>
-        </v-simple-table>
+        </v-table>
         <div v-if="items.length === 0">
             <slot name="no-data"></slot>
         </div>
@@ -67,12 +67,12 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import NgDialog from './dialog.vue'
 import { VueSelf } from '../self'
 import { pick, Debounce } from 'power-helper'
 import { useLocalStorage } from '../../core/storage'
-import { PropType, onUnmounted, watch, reactive, computed, onMounted, getCurrentInstance } from 'vue'
+import { PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue'
 
 type Field = {
     key: string
@@ -82,222 +82,194 @@ type Field = {
     optionShow: boolean
 }
 
-export default {
-    name: 'ng-table',
-    components: {
-        NgDialog
+const self = VueSelf.use()
+const peel = pick.peel
+const localStorage = useLocalStorage()
+
+// =================
+//
+// props
+//
+
+const props = defineProps({
+    rowStyle: {
+        type: Function as PropType<(item: any, index: number) => string>,
+        required: false,
+        default: () => () => ''
     },
-    props: {
-        rowStyle: {
-            type: Function as PropType<(item: any, index: number) => string>,
-            required: false,
-            default: () => () => ''
-        },
-        filterMemory: {
-            type: String,
-            required: false,
-            default: () => ''
-        },
-        filterShow: {
-            type: Boolean,
-            required: false,
-            default: () => false
-        },
-        filterTitle: {
-            type: String,
-            required: false,
-            default: () => 'Filter'
-        },
-        fields: {
-            required: true,
-            type: Array as PropType<Array<Field>>
-        },
-        items: {
-            required: true,
-            type: Array as PropType<any[]>
-        },
-        loading: {
-            type: Boolean,
-            required: false,
-            default: () => false
-        }
+    filterMemory: {
+        type: String,
+        required: false,
+        default: () => ''
     },
-    emits: {
-        'click-item': (_item: any) => true
+    filterShow: {
+        type: Boolean,
+        required: false,
+        default: () => false
     },
-    setup(props, { emit }) {
-        const self = VueSelf.use()
-        const peel = pick.peel
-        const instance = getCurrentInstance()
-        const localStorage = useLocalStorage()
+    filterTitle: {
+        type: String,
+        required: false,
+        default: () => 'Filter'
+    },
+    fields: {
+        required: true,
+        type: Array as PropType<Array<Field>>
+    },
+    items: {
+        required: true,
+        type: Array as PropType<any[]>
+    },
+    loading: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    }
+})
 
-        // =================
-        //
-        // state
-        //
+const emit = defineEmits({
+    'click-item': (_item: any) => true
+})
 
-        const state = reactive({
-            reloaded: true,
-            modalShow: false,
-            showFields: [] as string[]
-        })
+// =================
+//
+// state
+//
 
-        // =================
-        //
-        // computed
-        //
+const state = reactive({
+    reloaded: true,
+    modalShow: false,
+    showFields: [] as string[]
+})
 
-        const hasClickItemListener = computed(() =>{
-            return self.hasListener('click-item')
-        })
+// =================
+//
+// computed
+//
 
-        const showFilter = computed(() => {
-            if (props.items.length === 0) {
-                return false
-            }
-            if (props.filterShow === false) {
-                return false
-            }
-            for (let field of props.fields) {
-                if (field.optionShow) {
-                    return true
-                }
-            }
-            return false
-        })
+const hasClickItemListener = computed(() =>{
+    return self.hasListener('click-item')
+})
 
-        const showFields = computed(() => {
-            return props.fields.filter(e => state.showFields.includes(e.key)).map(e => {
-                return {
-                    key: e.key,
-                    label: e.label,
-                    style: e.style,
-                    formatter: e.formatter,
-                    optionShow: e.optionShow
-                }
-            })
-        })
-
-        const showTable = computed(() => {
-            if (hasSlot('no-data') && props.items.length === 0) {
-                return false
-            }
+const showFilter = computed(() => {
+    if (props.items.length === 0) {
+        return false
+    }
+    if (props.filterShow === false) {
+        return false
+    }
+    for (let field of props.fields) {
+        if (field.optionShow) {
             return true
-        })
-
-        const filters = computed(() => {
-            let fields = props.fields.map(e => e.key)
-            return fields.filter(e => !state.showFields.includes(e))
-        })
-
-        // =================
-        //
-        // debounce
-        //
-
-        const debounce = new Debounce({
-            delay: 50
-        })
-
-        debounce.on('trigger', () => {
-            state.reloaded = false
-            setTimeout(() => {
-                state.reloaded = true
-            }, 10)
-        })
-
-        // =================
-        //
-        // watch
-        //
-
-        watch(() => state.showFields, () => {
-            syncFilterMemory()
-            debounce.input('')
-        }, { deep: true })
-
-        // =================
-        //
-        // mounted
-        //
-
-        onMounted(() => {
-            state.showFields = props.fields.map(e => e.key)
-            let filterName = props.filterMemory
-            if (filterName) {
-                let data = localStorage.get('tablefilterMemories')
-                if (data[filterName]) {
-                    state.showFields = state.showFields.filter(e => !data[filterName].includes(e))
-                }
-            }
-        })
-
-        onUnmounted(() => {
-            debounce.close()
-        })
-
-        // =================
-        //
-        // methods
-        //
-
-        const syncFilterMemory = () => {
-            let key = props.filterMemory
-            if (key) {
-                let data = localStorage.get('tablefilterMemories')
-                if (data[key]) {
-                    data[key] = filters.value
-                } else {
-                    data[key] = []
-                }
-                localStorage.set('tablefilterMemories', data)
-            }
-        }
-
-        const hasSlot = (name = 'default') => {
-            let proxy = instance?.proxy as any
-            if (proxy) {
-                return !!proxy.$slots[name] || !!proxy.$scopedSlots[name]
-            }
-            return false
-        }
-
-        const clickItme = (item: any) => {
-            emit('click-item', item)
-        }
-
-        const getFieldValue = (field: Field, item: any, index: number) => {
-            // @ts-ignore
-            let value = peel(item, field.key)
-            if (field.formatter == null) {
-                return value
-            } else {
-                return field.formatter(value, field.key, item, index)
-            }
-        }
-
-        const openFilter = () => {
-            state.modalShow = true
-        }
-
-        // =================
-        //
-        // done
-        //
-
-        return {
-            state,
-            filters,
-            hasSlot,
-            hasClickItemListener,
-            showFilter,
-            showFields,
-            showTable,
-            clickItme,
-            getFieldValue,
-            openFilter
         }
     }
+    return false
+})
+
+const showFields = computed(() => {
+    return props.fields.filter(e => state.showFields.includes(e.key)).map(e => {
+        return {
+            key: e.key,
+            label: e.label,
+            style: e.style,
+            formatter: e.formatter,
+            optionShow: e.optionShow
+        }
+    })
+})
+
+const showTable = computed(() => {
+    if (self.hasSlot('no-data') && props.items.length === 0) {
+        return false
+    }
+    return true
+})
+
+const filters = computed(() => {
+    let fields = props.fields.map(e => e.key)
+    return fields.filter(e => !state.showFields.includes(e))
+})
+
+// =================
+//
+// debounce
+//
+
+const debounce = new Debounce({
+    delay: 50
+})
+
+debounce.on('trigger', () => {
+    state.reloaded = false
+    setTimeout(() => {
+        state.reloaded = true
+    }, 10)
+})
+
+// =================
+//
+// watch
+//
+
+watch(() => state.showFields, () => {
+    syncFilterMemory()
+    debounce.input('')
+}, { deep: true })
+
+// =================
+//
+// mounted
+//
+
+onMounted(() => {
+    state.showFields = props.fields.map(e => e.key)
+    let filterName = props.filterMemory
+    if (filterName) {
+        let data = localStorage.get('tablefilterMemories')
+        if (data[filterName]) {
+            state.showFields = state.showFields.filter(e => !data[filterName].includes(e))
+        }
+    }
+})
+
+onUnmounted(() => {
+    debounce.close()
+})
+
+// =================
+//
+// methods
+//
+
+const syncFilterMemory = () => {
+    let key = props.filterMemory
+    if (key) {
+        let data = localStorage.get('tablefilterMemories')
+        if (data[key]) {
+            data[key] = filters.value
+        } else {
+            data[key] = []
+        }
+        localStorage.set('tablefilterMemories', data)
+    }
+}
+
+const clickItme = (item: any) => {
+    emit('click-item', item)
+}
+
+const getFieldValue = (field: Field, item: any, index: number) => {
+    // @ts-ignore
+    let value = peel(item, field.key)
+    if (field.formatter == null) {
+        return value
+    } else {
+        return field.formatter(value, field.key, item, index)
+    }
+}
+
+const openFilter = () => {
+    state.modalShow = true
 }
 </script>
 
