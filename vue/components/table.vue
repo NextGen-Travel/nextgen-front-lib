@@ -14,7 +14,6 @@
             <tbody>
                 <template v-for="(item, ti) in items">
                     <tr
-                        :key="ti + 'ii'"
                         :class="{ 'component-twr-is-btn': hasClickItemListener }"
                         :style="rowStyle(item, ti)"
                         @click="clickItme(item)">

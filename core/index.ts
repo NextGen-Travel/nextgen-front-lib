@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import { toHump } from '../utils/text'
 import Img from '../vue/components/img.vue'
 import Form from '../vue/components/form.vue'
+import NgApp from '../vue/views/app.vue'
 import Table from '../vue/components/table.vue'
 import Dialog from '../vue/components/dialog.vue'
 import Upload from '../vue/components/upload.vue'
@@ -49,6 +50,7 @@ export const NextgenLib = {
             vue.component(`ng-${name}`, component)
             vue.component(`Ng${toHump(name)}`, component)
         }
+        addComponent('app', NgApp)
         addComponent('img', Img)
         addComponent('form', Form)
         addComponent('table', Table)

@@ -1,5 +1,3 @@
-
-
 import { text } from 'power-helper'
 import { VarParameters } from 'power-helper/types/string'
 import { serviceException } from '../core/error'
