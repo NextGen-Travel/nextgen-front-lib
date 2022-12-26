@@ -96,17 +96,16 @@ export type ScrmDefinitions = {
                 jwt: string;
                 user: {
                     id: number;
+                    email: string;
                     displayName: string;
-                    avatar: {
-                        id: number;
-                        url: string;
-                    };
-                    company: {
-                        id: number;
-                    };
-                    role: {
-                        type: string;
-                    };
+                    username: string;
+                    confirmed: boolean;
+                    phone: string;
+                    notes: string;
+                    blocked: boolean;
+                    avatar: string;
+                    role: string;
+                    company: number;
                 };
             };
         };
