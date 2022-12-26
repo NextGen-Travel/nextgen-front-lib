@@ -99,6 +99,37 @@ export type MedicinePrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [新增藥房時跟 CAS 拿 accessKey] - no description
+     */
+    "post@stores/sync": {
+        body: null;
+        query: {
+            appId ? : string;
+        };
+        response: {
+            data: {
+                SSO: boolean;
+                accessKey: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [給 CAS 在那邊的 store 資料有變動時打的] - no description
+     */
+    "post@stores/sync/cas": {
+        body: {
+            /**
+             * 加密的資料
+             * @example 806df46463b15b09323a38ac032e016f:f7a943960b3d2a0be0e06ddb2a5b01f25dab5275ea2de22dcad727d8cef3039121f9162abd9a18d3a6ad8c54b6c85a623d8e90887cede8b0d462c9cfb56c2d0e687ab4cc3f268cdf1ecdfc0ac8fb25ab1a252879a7085f4b9b6ea1da11bc988581719a98bdbcf5fd05958ef921b36726742c3f12ced4f23bdaa11973c46984ada39670ee2a971f7c2e1f1e879c8938f54dbbfdf521a96a531e744be5becead3deb7b5cf080cf99f13449350c23a1afb42bc50095f6dbeec9024eaecc0a9a88c56b0b83211c42e2fcb1b3cb85146b669baca6b945afd47c41dc2baa4f9f514e56
+             */
+            code: string;
+        };
+        query: null;
+        response: boolean;
+        contentType: null;
+    };
+    /**
      * [修改 藥房] - no description
      * @param {integer} id - 藥房id
      */
@@ -854,30 +885,30 @@ export type MedicinePrivateDefinitions = {
              * 適應症狀
              * @example 頭痛、發燒
              */
-            indication: string;
+            indication ? : string;
             /**
              * 預防措施(注意事項)
              * @example 服用後建議不要開車
              */
-            precaution: string;
+            precaution ? : string;
             /**
              * 副作用
              * @example 注意力不集中
              */
-            side_effect: string;
+            side_effect ? : string;
             /**
              * 俗名
              * @example 退燒藥
              */
-            productName_zh: string;
-            images: number[];
-            sku: string[];
-            packageName: string[];
-            dosageForm: string[];
-            usage: string[];
-            dosage: number[];
-            unit: string[];
-            packageImages: number[][];
+            productName_zh ? : string;
+            images ? : number[];
+            sku ? : string[];
+            packageName ? : string[];
+            dosageForm ? : string[];
+            usage ? : string[];
+            dosage ? : number[];
+            unit ? : string[];
+            packageImages ? : number[][];
         };
         query: null;
         response: {

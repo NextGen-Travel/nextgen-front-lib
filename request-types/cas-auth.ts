@@ -42,7 +42,7 @@ export type CasAuthDefinitions = {
             password: string;
         };
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
         };
         response: {
@@ -112,7 +112,7 @@ export type CasAuthDefinitions = {
     "get@v1/private/auth/:appId": {
         body: null;
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
             expand ? : string;
         };
@@ -156,7 +156,7 @@ export type CasAuthDefinitions = {
     "post@v1/auth/:appId": {
         body: null;
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
             expand ? : string;
         };
@@ -235,7 +235,7 @@ export type CasAuthDefinitions = {
             accessToken: string;
         };
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
         };
         response: {

@@ -205,7 +205,7 @@ export type ScrmDefinitions = {
              * 員工權限（ Manager || Advanced-Staff || Staff )
              * @example Manager
              */
-            role ? : string;
+            roleName ? : string;
         };
         query: null;
         response: {
@@ -572,7 +572,7 @@ export type ScrmDefinitions = {
                  * 平台對應的ID
                  * @example 1
                  */
-                id: number;
+                id ? : number;
                 /**
                  * 開啟的社交平台名稱 (若有name則必須有account & channelId)
                  * @example whatsapp
@@ -592,7 +592,20 @@ export type ScrmDefinitions = {
                  */
                 enable: boolean;
             } [];
-            sso: {};
+            sso: {
+                /**
+                 * @example R546asd-+qwew
+                 */
+                appId: string;
+                /**
+                 * @example as4d123xcv-as46gg
+                 */
+                secretKey: string;
+                /**
+                 * @example true
+                 */
+                enable: boolean;
+            };
             /**
              * 建立客服的數量限制
              * @example 5
@@ -623,6 +636,7 @@ export type ScrmDefinitions = {
                 id: number;
                 username: string;
                 displayName: string;
+                email: string;
                 phone: string;
                 notes: string;
                 avatar: string;
@@ -630,6 +644,8 @@ export type ScrmDefinitions = {
                 enable: boolean;
             } [];
             total: number;
+            enableQty: number;
+            disableQty: number;
         };
         contentType: null;
     };
@@ -654,7 +670,7 @@ export type ScrmDefinitions = {
         contentType: null;
     };
     /**
-     * [創建公司時驗證appId取得secretKey及是否開啟sso(enable)] - 創建公司時驗證appId取得secretKey及是否開啟sso(enable)
+     * [創建公司時驗證appId取得secretKey及是否開啟sso(enable)client端] - 創建公司時驗證appId取得secretKey及是否開啟sso(enable)client端
      */
     "post@companies/sync": {
         body: {
@@ -670,6 +686,20 @@ export type ScrmDefinitions = {
                 secretKey: string;
             };
         };
+        contentType: null;
+    };
+    /**
+     * [供cas中控系統同步之api (server端)] - 供cas中控系統同步之api (server端)
+     */
+    "post@companies/sync/cas": {
+        body: {
+            /**
+             * 加密過後的資料
+             */
+            code: string;
+        };
+        query: null;
+        response: null;
         contentType: null;
     };
 }
