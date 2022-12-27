@@ -2,9 +2,7 @@
     <div v-if="skeleton === 'always' || state.loading" :style="skeletonStyle">
         <div
             v-if="skeleton !== 'hide'"
-            width="100%"
-            height="100%"
-            style="width: 100%; height: 100%; background-color: #eee;"
+            class="component-img-skeleton"
             :style="avatar ? 'border-radius: 100em' : 'border-radius: 8px'">
         </div>
     </div>
@@ -251,6 +249,26 @@ const getContentWidth = () => {
     ::v-deep .v-skeleton-loader.v-skeleton-loader--is-loading {
         .v-skeleton-loader__image {
             height: 100%;
+        }
+    }
+    .component-img-skeleton {
+        width: 100%;
+        height: 100%;
+        background-color: #ccc;
+        animation-name: component-img-skeleton-breath;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+    }
+    @keyframes component-img-skeleton-breath {
+        from {
+            opacity: 0.5;
+        }
+        50% {
+            opacity: 0.75;
+        }
+        to {
+            opacity: 0.5;
         }
     }
 </style>

@@ -1,12 +1,12 @@
 <template>
     <div style="position: relative;">
-        <v-table v-if="showTable">
+        <v-table v-if="showTable" class="elevation-1">
             <thead>
                 <tr>
                     <th
                         v-for="(field, index) in showFields"
                         :key="index + 'ff'"
-                        class="text-center secondary">
+                        class="text-center bg-secondary">
                         {{ field.label }}
                     </th>
                 </tr>
@@ -50,7 +50,7 @@
             <template v-for="field in fields">
                 <v-checkbox
                     v-if="field.optionShow"
-                    v-model:input-value="state.showFields"
+                    v-model="state.showFields"
                     hide-details
                     multiple
                     :value="field.key"
@@ -60,8 +60,8 @@
             </template>
         </NgDialog>
         <div v-if="showFilter" class="print-no-show component-twr-filter" @click="openFilter">
-            <v-badge color="primary" offset-x="5" offset-y="5" dot bordered :value="filters.length > 0">
-                <v-icon small>mdi-filter</v-icon>
+            <v-badge color="red" offset-x="0" offset-y="0" dot bordered :modelValue="filters.length > 0">
+                <v-icon size="small">mdi-filter</v-icon>
             </v-badge>
         </div>
     </div>
