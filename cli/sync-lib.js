@@ -17,15 +17,15 @@ module.exports = async(params = {}) => {
         'utils',
         'vue'
     ]
+    fsx.rmSync(output, {
+        force: true,
+        recursive: true
+    })
     for (let dir of dirs) {
-        fsx.rmSync(output, {
-            force: true,
-            recursive: true
-        })
         fsx.cpSync(`${__dirname}/../${dir}`, `${output}/${dir}`, {
             force: true,
             recursive: true
         })
-        fsx.writeFileSync(`${output}/${dir}/readme.md`, `# 注意！這個資料夾是透過指令 nextgen-front-lib sync-lib ${output} 產生的，請遵照流程感恩。`)
     }
+    fsx.writeFileSync(`${output}/readme.md`, `# 注意！這個資料夾是透過指令 nextgen-front-lib sync-lib ${output} 產生的，請遵照流程感恩。`)
 }
