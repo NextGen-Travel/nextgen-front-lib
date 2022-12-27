@@ -1,21 +1,22 @@
 <template>
     <div v-if="skeleton === 'always' || state.loading" :style="skeletonStyle">
-        <v-skeleton-loader
+        <div
             v-if="skeleton !== 'hide'"
             width="100%"
             height="100%"
-            :type="avatar ? 'avatar' : 'image'">
-        </v-skeleton-loader>
+            style="width: 100%; height: 100%; background-color: #eee;"
+            :style="avatar ? 'border-radius: 100em' : 'border-radius: 8px'">
+        </div>
     </div>
     <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
-        <v-overlay absolute :value="loading" :opacity="0.5">
+        <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
             <v-progress-circular indeterminate size="32"></v-progress-circular>
         </v-overlay>
     </div>
     <div ref="wrapper2" v-else class="component-img-basic" :style="state.style">
         <slot></slot>
-        <v-overlay absolute :value="loading" :opacity="0.5">
+        <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
             <v-progress-circular indeterminate size="32"></v-progress-circular>
         </v-overlay>
     </div>
@@ -28,6 +29,7 @@ import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-hel
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const { notFoundImage, staticUrl } = useLibOptions()
+
 const self = VueSelf.use()
 const debounce = new Debounce({
     delay: 100

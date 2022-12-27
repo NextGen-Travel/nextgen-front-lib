@@ -9,8 +9,8 @@
             :disabled="state.reading || loading"
             @change="pickFile"
         />
-        <v-overlay absolute :value="loading || state.reading" :opacity="0.35">
-            <v-progress-circular indeterminate size="32"></v-progress-circular>
+        <v-overlay contained :model-value="loading || state.reading" :opacity="0.35" class="w-100 align-center justify-center">
+            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
         </v-overlay>
     </div>
 </template>
@@ -45,7 +45,8 @@ defineProps({
     },
     fileType: {
         type: String as PropType<string>,
-        required: true
+        required: false,
+        default: () => '*/*'
     }
 })
 
