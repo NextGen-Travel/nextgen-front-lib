@@ -105,7 +105,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    click: () => true
+    onClick: () => true
 })
 
 // =================
@@ -180,7 +180,7 @@ onUnmounted(() => {
 //
 
 const click = () => {
-    emit('click')
+    emit('onClick')
 }
 
 const update = () => {
