@@ -6,6 +6,8 @@ export class VueSelf {
         return (new VueSelf()).use()
     }
     use() {
+        const slot = useSlots()
+        const attrs = useAttrs()
         const nowCurrentInstance = getCurrentInstance ? getCurrentInstance() : null
         return {
             ref<T>(data: T) {
@@ -17,11 +19,9 @@ export class VueSelf {
                 return reactive(data as any) as T
             },
             hasSlot(name = 'default') {
-                let slot = useSlots()
                 return !!slot[name]
             },
             hasListener(name: string) {
-                let attrs = useAttrs()
                 return !!attrs[`on${toHump(name)}`]
             },
             forceUpdate() {
