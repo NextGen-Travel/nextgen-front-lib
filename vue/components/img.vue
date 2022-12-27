@@ -11,13 +11,13 @@
     <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
         <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
-            <v-progress-circular indeterminate size="32"></v-progress-circular>
+            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
         </v-overlay>
     </div>
     <div ref="wrapper2" v-else class="component-img-basic" :style="state.style">
         <slot></slot>
         <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
-            <v-progress-circular indeterminate size="32"></v-progress-circular>
+            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
         </v-overlay>
     </div>
 </template>

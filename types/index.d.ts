@@ -15,5 +15,20 @@ declare module '@vue/runtime-core' {
         NgUpload: typeof import('../vue/components/upload.vue')['default']
     }
 }
+declare global {
+    interface Window {
+        __ng_config: {
+            libOptions: {
+                staticUrl: string
+                notFoundImage: string
+            },
+            libEnv: {
+                version: number
+                stage: string
+                service: string
+            }
+        }
+    }
+}
 
 export {}

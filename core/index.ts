@@ -13,38 +13,36 @@ import Pagination from '../vue/components/pagination.vue'
 import OutlineText from '../vue/components/outline-text.vue'
 import _Locales from './locales'
 
-const libOptions: {
-    staticUrl: string
-    notFoundImage: string
-} = {
-    staticUrl: '',
-    notFoundImage: ''
+window.__ng_config = {
+    libOptions: {
+        staticUrl: '',
+        notFoundImage: ''
+    },
+    libEnv: {
+        version: 1,
+        stage: '',
+        service: '',
+    }
 }
 
-const libEnv = {
-    version: 1,
-    stage: '',
-    service: '',
-}
-
-export const useLibOptions = () => libOptions
-export const useLibEnv = () => libEnv
+export const useLibOptions = () => window.__ng_config.libOptions
+export const useLibEnv = () => window.__ng_config.libEnv
 export const Locales = _Locales
 
 export const NextgenLib = {
     install(vue: App, params: {
-        env: typeof libEnv
-        options: typeof libOptions
+        env: typeof window.__ng_config.libEnv
+        options: typeof window.__ng_config.libOptions
     }) {
         for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            libOptions[key] = params.options[key]
+            window.__ng_config.libOptions[key] = params.options[key]
         }
         for (let key in params.env) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            libEnv[key] = params.env[key]
+            window.__ng_config.libEnv[key] = params.env[key]
         }
         const addComponent = (name: string, component: any) => {
             vue.component(`ng-${name}`, component)
