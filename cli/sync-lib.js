@@ -18,7 +18,10 @@ module.exports = async(params = {}) => {
         'vue'
     ]
     for (let dir of dirs) {
-        fsx.rmdirSync(output)
+        fsx.rmSync(output, {
+            force: true,
+            recursive: true
+        })
         fsx.cpSync(`${__dirname}/../${dir}`, `${output}/${dir}`, {
             force: true,
             recursive: true
