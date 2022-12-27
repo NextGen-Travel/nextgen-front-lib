@@ -6,7 +6,7 @@
   "types": "./types",
   "scripts": {
     "test": "eslint . --ext .ts && tsc && vue-tsc --noEmit",
-    "deploy": "ts-node ./deploy/index.ts",
+    "deploy": "tsc && ts-node ./deploy/index.ts",
     "sync:types": "nextgen-front-lib sync-request-types ./request-types"
   },
   "bin": {

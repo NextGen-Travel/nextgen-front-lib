@@ -6,7 +6,7 @@
     "moduleResolution": "Node",
     "strict": true,
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "js",
     "noEmit": false,
     "baseUrl": ".",
     "rootDir": ".",
