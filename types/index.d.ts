@@ -19,12 +19,9 @@ declare global {
     interface Window {
         __ng_config: {
             libOptions: {
+                lang: 'en' | 'zh'
                 staticUrl: string
                 notFoundImage: string
-                selfI18n: {
-                    lang: 'en' | 'zh'
-                    enabled: boolean
-                }
             },
             libEnv: {
                 version: number

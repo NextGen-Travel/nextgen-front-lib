@@ -1,11 +1,8 @@
 import type { App } from 'vue';
 export declare const useLibOptions: () => {
+    lang: "en" | "zh";
     staticUrl: string;
     notFoundImage: string;
-    selfI18n: {
-        lang: "en" | "zh";
-        enabled: boolean;
-    };
 };
 export declare const useLibEnv: () => {
     version: number;
@@ -24,6 +21,7 @@ export declare const Locales: {
         confirmConfirmText: string;
     };
 };
+export declare const t: (key: string) => string;
 export declare const NextgenLib: {
     install(vue: App, params: {
         env: typeof window.__ng_config.libEnv;

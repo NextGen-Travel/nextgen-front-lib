@@ -30,7 +30,7 @@
                         block
                         @click="close"
                         :disabled="state.loading">
-                        {{ libOptions.selfI18n.enabled ? i18n.t('confirmCancelText') : $t('ng.confirmCancelText') }}
+                        {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
                 </div>
                 <v-overlay contained v-model="state.loading" class="w-100 align-center">
@@ -47,12 +47,10 @@
 </template>
 
 <script lang="ts" setup>
-import { i18n } from '../../core/i18n'
-import { useLibOptions } from '../../core'
+import { t } from '../../core'
 import { useLibChoicesStore } from './store/choices'
 import { computed, watch, reactive } from 'vue'
 
-const libOptions = useLibOptions()
 const libChoicesStore = useLibChoicesStore()
 
 // =================

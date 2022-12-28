@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NextgenLib = exports.Locales = exports.useLibEnv = exports.useLibOptions = void 0;
+exports.NextgenLib = exports.t = exports.Locales = exports.useLibEnv = exports.useLibOptions = void 0;
 const i18n_1 = require("./i18n");
 const text_1 = require("../utils/text");
 const img_vue_1 = __importDefault(require("../vue/components/img.vue"));
@@ -20,12 +20,9 @@ const outline_text_vue_1 = __importDefault(require("../vue/components/outline-te
 const locales_1 = __importDefault(require("./locales"));
 window.__ng_config = {
     libOptions: {
+        lang: 'en',
         staticUrl: '',
-        notFoundImage: '',
-        selfI18n: {
-            lang: 'en',
-            enabled: false
-        }
+        notFoundImage: ''
     },
     libEnv: {
         version: 1,
@@ -38,6 +35,8 @@ exports.useLibOptions = useLibOptions;
 const useLibEnv = () => window.__ng_config.libEnv;
 exports.useLibEnv = useLibEnv;
 exports.Locales = locales_1.default;
+const t = (key) => i18n_1.i18n.key(key).get(window.__ng_config.libOptions.lang);
+exports.t = t;
 exports.NextgenLib = {
     install(vue, params) {
         for (let key in params.options) {
@@ -65,7 +64,6 @@ exports.NextgenLib = {
         addComponent('fixed-bar', fixed_bar_vue_1.default);
         addComponent('pagination', pagination_vue_1.default);
         addComponent('outline-text', outline_text_vue_1.default);
-        i18n_1.i18n.setLocale(window.__ng_config.libOptions.selfI18n.lang);
     }
 };
 exports.default = exports.NextgenLib;

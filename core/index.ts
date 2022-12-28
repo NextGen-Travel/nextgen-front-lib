@@ -16,12 +16,9 @@ import _Locales from './locales'
 
 window.__ng_config = {
     libOptions: {
+        lang: 'en',
         staticUrl: '',
-        notFoundImage: '',
-        selfI18n: {
-            lang: 'en',
-            enabled: false
-        }
+        notFoundImage: ''
     },
     libEnv: {
         version: 1,
@@ -33,6 +30,7 @@ window.__ng_config = {
 export const useLibOptions = () => window.__ng_config.libOptions
 export const useLibEnv = () => window.__ng_config.libEnv
 export const Locales = _Locales
+export const t = (key: string) => i18n.key(key as any).get(window.__ng_config.libOptions.lang)
 
 export const NextgenLib = {
     install(vue: App, params: {
@@ -64,7 +62,6 @@ export const NextgenLib = {
         addComponent('fixed-bar', FixedBar)
         addComponent('pagination', Pagination)
         addComponent('outline-text', OutlineText)
-        i18n.setLocale(window.__ng_config.libOptions.selfI18n.lang)
     }
 }
 
