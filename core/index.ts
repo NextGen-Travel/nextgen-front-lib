@@ -1,4 +1,5 @@
 import type { App } from 'vue'
+import { i18n } from './i18n'
 import { toHump } from '../utils/text'
 import Img from '../vue/components/img.vue'
 import Form from '../vue/components/form.vue'
@@ -16,7 +17,11 @@ import _Locales from './locales'
 window.__ng_config = {
     libOptions: {
         staticUrl: '',
-        notFoundImage: ''
+        notFoundImage: '',
+        selfI18n: {
+            lang: 'en',
+            enabled: false
+        }
     },
     libEnv: {
         version: 1,
@@ -59,6 +64,7 @@ export const NextgenLib = {
         addComponent('fixed-bar', FixedBar)
         addComponent('pagination', Pagination)
         addComponent('outline-text', OutlineText)
+        i18n.setLocale(window.__ng_config.libOptions.selfI18n.lang)
     }
 }
 

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NextgenLib = exports.Locales = exports.useLibEnv = exports.useLibOptions = void 0;
+const i18n_1 = require("./i18n");
 const text_1 = require("../utils/text");
 const img_vue_1 = __importDefault(require("../vue/components/img.vue"));
 const form_vue_1 = __importDefault(require("../vue/components/form.vue"));
@@ -20,7 +21,11 @@ const locales_1 = __importDefault(require("./locales"));
 window.__ng_config = {
     libOptions: {
         staticUrl: '',
-        notFoundImage: ''
+        notFoundImage: '',
+        selfI18n: {
+            lang: 'en',
+            enabled: false
+        }
     },
     libEnv: {
         version: 1,
@@ -60,6 +65,7 @@ exports.NextgenLib = {
         addComponent('fixed-bar', fixed_bar_vue_1.default);
         addComponent('pagination', pagination_vue_1.default);
         addComponent('outline-text', outline_text_vue_1.default);
+        i18n_1.i18n.setLocale(window.__ng_config.libOptions.selfI18n.lang);
     }
 };
 exports.default = exports.NextgenLib;

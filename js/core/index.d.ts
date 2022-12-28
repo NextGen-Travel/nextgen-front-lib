@@ -2,6 +2,10 @@ import type { App } from 'vue';
 export declare const useLibOptions: () => {
     staticUrl: string;
     notFoundImage: string;
+    selfI18n: {
+        lang: "en" | "zh";
+        enabled: boolean;
+    };
 };
 export declare const useLibEnv: () => {
     version: number;

@@ -21,6 +21,10 @@ declare global {
             libOptions: {
                 staticUrl: string
                 notFoundImage: string
+                selfI18n: {
+                    lang: 'en' | 'zh'
+                    enabled: boolean
+                }
             },
             libEnv: {
                 version: number
