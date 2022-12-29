@@ -4,7 +4,7 @@
         <v-overlay
             contained
             v-model="value"
-            style="z-index: 100; width: fit-content; height: fit-content;"
+            style="z-index: 100;"
             class="align-center justify-center"
             persistent
             :opacity="0.5"
@@ -50,5 +50,7 @@ const value = computed({
 <style lang="scss" scoped>
     .component-loading-wrapper {
         position: relative;
+        width: fit-content;
+        height: fit-content;
     }
 </style>
