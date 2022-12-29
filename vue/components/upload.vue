@@ -1,22 +1,22 @@
 <template>
-    <div @click="clickInput" style="width: fit-content; height: fit-content; position: relative;">
-        <slot></slot>
-        <input
-            hidden
-            ref="fileInput"
-            type="file"
-            :accept="fileType"
-            :disabled="state.reading || loading"
-            @change="pickFile"
-        />
-        <v-overlay contained :model-value="loading || state.reading" :opacity="0.35" class="w-100 align-center justify-center">
-            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
-        </v-overlay>
-    </div>
+    <Loading :model-value="loading || state.reading">
+        <div @click="clickInput" style="width: fit-content; height: fit-content;">
+            <slot></slot>
+                <input
+                    hidden
+                    ref="fileInput"
+                    type="file"
+                    :accept="fileType"
+                    :disabled="state.reading || loading"
+                    @change="pickFile"
+                />
+            </div>
+        </Loading>
 </template>
 
 <script name="ng-update" lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
+import Loading from './loading.vue'
 import { Loader } from 'power-helper'
 import { VueSelf } from '../self'
 import { PropType, ref, defineProps, defineEmits } from 'vue'

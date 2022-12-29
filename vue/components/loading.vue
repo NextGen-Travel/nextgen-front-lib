@@ -4,6 +4,7 @@
         <v-overlay
             contained
             v-model="value"
+            style="z-index: 100"
             class="w-100 align-center justify-center"
             persistent
             :opacity="0.5"
