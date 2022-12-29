@@ -4,8 +4,8 @@
         <v-overlay
             contained
             v-model="value"
-            style="z-index: 100"
-            class="w-100 align-center justify-center"
+            style="z-index: 100; width: fit-content; height: fit-content;"
+            class="align-center justify-center"
             persistent
             :opacity="0.5"
             :close-on-back="false">
