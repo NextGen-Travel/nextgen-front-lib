@@ -1,17 +1,16 @@
 <template>
-    <Loading :model-value="loading || state.reading">
-        <div @click="clickInput" style="width: fit-content; height: fit-content;">
-            <slot></slot>
-                <input
-                    hidden
-                    ref="fileInput"
-                    type="file"
-                    :accept="fileType"
-                    :disabled="state.reading || loading"
-                    @change="pickFile"
-                />
-            </div>
-        </Loading>
+    <div @click="clickInput" style="width: fit-content; height: fit-content;">
+        <slot></slot>
+        <input
+            hidden
+            ref="fileInput"
+            type="file"
+            :accept="fileType"
+            :disabled="state.reading || loading"
+            @change="pickFile"
+        />
+        <Loading :model-value="loading || state.reading"></Loading>
+    </div>
 </template>
 
 <script name="ng-update" lang="ts" setup>

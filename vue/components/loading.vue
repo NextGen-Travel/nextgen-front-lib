@@ -1,17 +1,14 @@
 <template>
-    <div class="component-loading-wrapper">
-        <slot></slot>
-        <v-overlay
-            contained
-            v-model="value"
-            style="z-index: 100;"
-            class="align-center justify-center"
-            persistent
-            :opacity="0.5"
-            :close-on-back="false">
-            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
-        </v-overlay>
-    </div>
+    <v-overlay
+        contained
+        v-model="value"
+        style="z-index: 100;"
+        class="align-center justify-center"
+        persistent
+        :opacity="0.5"
+        :close-on-back="false">
+        <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
+    </v-overlay>
 </template>
 
 <script lang="ts" setup>
@@ -45,12 +42,3 @@ const value = computed({
 })
 
 </script>
-
-
-<style lang="scss" scoped>
-    .component-loading-wrapper {
-        position: relative;
-        width: fit-content;
-        height: fit-content;
-    }
-</style>

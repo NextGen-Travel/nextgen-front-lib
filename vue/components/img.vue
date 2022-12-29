@@ -6,16 +6,14 @@
             :style="avatar ? 'border-radius: 100em' : 'border-radius: 8px'">
         </div>
     </div>
-    <Loading v-else-if="self.hasListener('click')" :model-value="loading">
-        <div ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
-            <slot></slot>
-        </div>
-    </Loading>
-    <Loading v-else :model-value="loading">
-        <div ref="wrapper2" class="component-img-basic" :style="state.style">
-                <slot></slot>
-        </div>
-    </Loading>
+    <div v-else-if="self.hasListener('click')" ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
+        <slot></slot>
+        <Loading :model-value="loading"></Loading>
+    </div>
+    <div v-else ref="wrapper2" class="component-img-basic" :style="state.style">
+        <slot></slot>
+        <Loading :model-value="loading"></Loading>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -239,7 +237,7 @@ const getContentWidth = () => {
 
 <style lang="scss" scoped>
     .component-img-basic {
-        display: block;
+        display: inline-block;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
