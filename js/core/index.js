@@ -27,7 +27,7 @@ window.__ng_config = {
         notFoundImage: ''
     },
     libEnv: {
-        version: 1,
+        version: 2,
         stage: '',
         service: '',
     }

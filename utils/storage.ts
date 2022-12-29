@@ -34,7 +34,6 @@ export const loaclStroageIntercept = (ns: string, options?: Options) => {
                 if (noPass()) {
                     const def = defaultValue()
                     storage.remove(key as any)
-                    storage.set(key, def)
                     return def
                 } else {
                     return value.data

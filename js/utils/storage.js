@@ -31,7 +31,6 @@ const loaclStroageIntercept = (ns, options) => {
                 if (noPass()) {
                     const def = defaultValue();
                     storage.remove(key);
-                    storage.set(key, def);
                     return def;
                 }
                 else {
