@@ -9,13 +9,13 @@
             :disabled="state.reading || loading"
             @change="pickFile"
         />
-        <Loading :model-value="loading || state.reading"></Loading>
+        <OverlayLoading :model-value="loading || state.reading"></OverlayLoading>
     </div>
 </template>
 
 <script name="ng-update" lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
-import Loading from './loading.vue'
+import OverlayLoading from './overlay-loading.vue'
 import { Loader } from 'power-helper'
 import { VueSelf } from '../self'
 import { PropType, ref, defineProps, defineEmits } from 'vue'

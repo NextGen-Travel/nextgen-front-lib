@@ -4,16 +4,16 @@
     </div>
     <div v-else-if="self.hasListener('click')" ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
-        <Loading :model-value="loading"></Loading>
+        <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
     <div v-else ref="wrapper2" class="component-img-basic" :style="state.style">
         <slot></slot>
-        <Loading :model-value="loading"></Loading>
+        <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
 </template>
 
 <script lang="ts" setup>
-import Loading from './loading.vue'
+import OverlayLoading from './overlay-loading.vue'
 import Skeleton from './skeleton.vue'
 import { VueSelf } from '../self'
 import { useLibOptions } from '../../core'

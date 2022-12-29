@@ -43,7 +43,7 @@
         <div v-if="items.length === 0">
             <slot name="no-data"></slot>
         </div>
-        <Loading :model-value="loading"></Loading>
+        <OverlayLoading :model-value="loading"></OverlayLoading>
         <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
@@ -66,8 +66,8 @@
 </template>
 
 <script lang="ts" setup>
-import Loading from './loading.vue'
 import NgDialog from './dialog.vue'
+import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
 import { pick, Debounce } from 'power-helper'
 import { useLocalStorage } from '../../core/storage'
