@@ -1,10 +1,6 @@
 <template>
     <div v-if="skeleton === 'always' || state.loading" :style="skeletonStyle">
-        <div
-            v-if="skeleton !== 'hide'"
-            class="component-img-skeleton"
-            :style="avatar ? 'border-radius: 100em' : 'border-radius: 8px'">
-        </div>
+        <Skeleton v-if="skeleton !== 'hide'" :avatar="avatar"></Skeleton>
     </div>
     <div v-else-if="self.hasListener('click')" ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
         <slot></slot>
@@ -18,6 +14,7 @@
 
 <script lang="ts" setup>
 import Loading from './loading.vue'
+import Skeleton from './skeleton.vue'
 import { VueSelf } from '../self'
 import { useLibOptions } from '../../core'
 import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-helper'
@@ -242,30 +239,5 @@ const getContentWidth = () => {
         background-repeat: no-repeat;
         background-position: center;
         position: relative;
-    }
-    ::v-deep .v-skeleton-loader.v-skeleton-loader--is-loading {
-        .v-skeleton-loader__image {
-            height: 100%;
-        }
-    }
-    .component-img-skeleton {
-        width: 100%;
-        height: 100%;
-        background-color: #ccc;
-        animation-name: component-img-skeleton-breath;
-        animation-duration: 1s;
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
-    }
-    @keyframes component-img-skeleton-breath {
-        from {
-            opacity: 0.5;
-        }
-        50% {
-            opacity: 0.75;
-        }
-        to {
-            opacity: 0.5;
-        }
     }
 </style>
