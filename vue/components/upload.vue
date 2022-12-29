@@ -1,5 +1,5 @@
 <template>
-    <div @click="clickInput" style="width: fit-content; height: fit-content;">
+    <div @click="clickInput" style="width: fit-content; height: fit-content; position: relative;">
         <slot></slot>
         <input
             hidden

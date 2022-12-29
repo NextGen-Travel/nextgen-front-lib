@@ -1,50 +1,49 @@
 <template>
     <div style="position: relative;">
-        <Loading :model-value="loading">
-            <v-table v-if="showTable" class="elevation-1">
-                <thead>
-                    <tr>
-                        <th
+        <v-table v-if="showTable" class="elevation-1">
+            <thead>
+                <tr>
+                    <th
+                        v-for="(field, index) in showFields"
+                        :key="index + 'ff'"
+                        class="text-center bg-secondary">
+                        {{ field.label }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-for="(item, ti) in items">
+                    <tr
+                        :class="{ 'component-twr-is-btn': hasClickItemListener }"
+                        :style="rowStyle(item, ti)"
+                        @click="clickItme(item)">
+                        <td
                             v-for="(field, index) in showFields"
-                            :key="index + 'ff'"
-                            class="text-center bg-secondary">
-                            {{ field.label }}
-                        </th>
+                            class="text-center"
+                            :key="field.key"
+                            :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
+                            <slot
+                                :name="'t-' + field.key.replace(/\./g, '-')"
+                                :item="item"
+                                :value="getFieldValue(field, item, ti)">
+                            </slot>
+                            <div v-if="self.hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
+                                {{ getFieldValue(field, item, ti) }}
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <template v-for="(item, ti) in items">
-                        <tr
-                            :class="{ 'component-twr-is-btn': hasClickItemListener }"
-                            :style="rowStyle(item, ti)"
-                            @click="clickItme(item)">
-                            <td
-                                v-for="(field, index) in showFields"
-                                class="text-center"
-                                :key="field.key"
-                                :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
-                                <slot
-                                    :name="'t-' + field.key.replace(/\./g, '-')"
-                                    :item="item"
-                                    :value="getFieldValue(field, item, ti)">
-                                </slot>
-                                <div v-if="self.hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                    {{ getFieldValue(field, item, ti) }}
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-if="self.hasSlot('details')" :key="ti + 'iddi'">
-                            <td colspan="100%" class="component-twr-detail">
-                                <slot class="w-100" name="details" :item="item"></slot>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </v-table>
-            <div v-if="items.length === 0">
-                <slot name="no-data"></slot>
-            </div>
-        </Loading>
+                    <tr v-if="self.hasSlot('details')" :key="ti + 'iddi'">
+                        <td colspan="100%" class="component-twr-detail">
+                            <slot class="w-100" name="details" :item="item"></slot>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </v-table>
+        <div v-if="items.length === 0">
+            <slot name="no-data"></slot>
+        </div>
+        <Loading :model-value="loading"></Loading>
         <NgDialog v-model="state.modalShow" :title="filterTitle">
             <template v-for="field in fields">
                 <v-checkbox
