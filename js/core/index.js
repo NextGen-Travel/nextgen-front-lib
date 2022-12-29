@@ -15,8 +15,10 @@ const upload_vue_1 = __importDefault(require("../vue/components/upload.vue"));
 const loaders_vue_1 = __importDefault(require("../vue/components/loaders.vue"));
 const toolbar_vue_1 = __importDefault(require("../vue/components/toolbar.vue"));
 const fixed_bar_vue_1 = __importDefault(require("../vue/components/fixed-bar.vue"));
+const skeleton_vue_1 = __importDefault(require("../vue/components/skeleton.vue"));
 const pagination_vue_1 = __importDefault(require("../vue/components/pagination.vue"));
 const outline_text_vue_1 = __importDefault(require("../vue/components/outline-text.vue"));
+const overlay_loading_vue_1 = __importDefault(require("../vue/components/overlay-loading.vue"));
 const locales_1 = __importDefault(require("./locales"));
 window.__ng_config = {
     libOptions: {
@@ -61,9 +63,11 @@ exports.NextgenLib = {
         addComponent('upload', upload_vue_1.default);
         addComponent('loaders', loaders_vue_1.default);
         addComponent('toolbar', toolbar_vue_1.default);
+        addComponent('skeleton', skeleton_vue_1.default);
         addComponent('fixed-bar', fixed_bar_vue_1.default);
         addComponent('pagination', pagination_vue_1.default);
         addComponent('outline-text', outline_text_vue_1.default);
+        addComponent('overlay-loading', overlay_loading_vue_1.default);
     }
 };
 exports.default = exports.NextgenLib;

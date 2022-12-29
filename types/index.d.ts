@@ -13,6 +13,8 @@ declare module '@vue/runtime-core' {
         NgTable: typeof import('../vue/components/table.vue')['default']
         NgToolbar: typeof import('../vue/components/toolbar.vue')['default']
         NgUpload: typeof import('../vue/components/upload.vue')['default']
+        NgSkeleton: typeof import('../vue/components/skeleton.vue')['default']
+        NgOverlayLoading: typeof import('../vue/components/overlay-loading.vue')['default']
     }
 }
 declare global {

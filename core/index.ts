@@ -10,8 +10,10 @@ import Upload from '../vue/components/upload.vue'
 import Loaders from '../vue/components/loaders.vue'
 import Toolbar from '../vue/components/toolbar.vue'
 import FixedBar from '../vue/components/fixed-bar.vue'
+import Skeleton from '../vue/components/skeleton.vue'
 import Pagination from '../vue/components/pagination.vue'
 import OutlineText from '../vue/components/outline-text.vue'
+import OverlayLoading from '../vue/components/overlay-loading.vue'
 import _Locales from './locales'
 
 window.__ng_config = {
@@ -59,9 +61,11 @@ export const NextgenLib = {
         addComponent('upload', Upload)
         addComponent('loaders', Loaders)
         addComponent('toolbar', Toolbar)
+        addComponent('skeleton', Skeleton)
         addComponent('fixed-bar', FixedBar)
         addComponent('pagination', Pagination)
         addComponent('outline-text', OutlineText)
+        addComponent('overlay-loading', OverlayLoading)
     }
 }
 
