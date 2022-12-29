@@ -7,12 +7,12 @@
         </div>
     </div>
     <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
-        <Loading v-model="loading">
+        <Loading :model-value="loading">
             <slot></slot>
         </Loading>
     </div>
     <div ref="wrapper2" v-else class="component-img-basic" :style="state.style">
-        <Loading v-model="loading">
+        <Loading :model-value="loading">
             <slot></slot>
         </Loading>
     </div>
