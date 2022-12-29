@@ -7,20 +7,19 @@
         </div>
     </div>
     <div ref="wrapper" v-else-if="self.hasListener('click')" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
-        <slot></slot>
-        <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
-            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
-        </v-overlay>
+        <Loading v-model="loading">
+            <slot></slot>
+        </Loading>
     </div>
     <div ref="wrapper2" v-else class="component-img-basic" :style="state.style">
-        <slot></slot>
-        <v-overlay contained :model-value="loading" :opacity="0.5" class="w-100 align-center justify-center">
-            <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
-        </v-overlay>
+        <Loading v-model="loading">
+            <slot></slot>
+        </Loading>
     </div>
 </template>
 
 <script lang="ts" setup>
+import Loading from './loading.vue'
 import { VueSelf } from '../self'
 import { useLibOptions } from '../../core'
 import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-helper'
