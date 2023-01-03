@@ -19,7 +19,7 @@ export const config: Record<Stages, {
                 url: 'https://cas-api-dev.cloudsatlas.com.hk/api',
                 scrmUrl: 'https://scrm-api-dev.cloudsatlas.com.hk/api',
                 dispensingUrl: 'https://medicine-api-dev.cloudsatlas.com.hk/api',
-                endpoint: 'https://login-dev.cloudsatlas.com.hk'
+                endpoint: 'https://login-dev.nextgen.com.hk'
             }
         }
     },
@@ -35,7 +35,7 @@ export const config: Record<Stages, {
                 url: 'https://cas-api-stage.cloudsatlas.com.hk/api',
                 scrmUrl: 'https://scrm-api-stage.cloudsatlas.com.hk/api',
                 dispensingUrl: 'https://medicine-api-stage.cloudsatlas.com.hk/api',
-                endpoint: 'https://login-stage.cloudsatlas.com.hk'
+                endpoint: 'https://login-stage.nextgen.com.hk'
             }
         }
     },
@@ -51,7 +51,7 @@ export const config: Record<Stages, {
                 url: 'https://cas-api.cloudsatlas.com.hk/api',
                 scrmUrl: 'https://scrm-api.cloudsatlas.com.hk/api',
                 dispensingUrl: 'https://medicine-api.cloudsatlas.com.hk/api',
-                endpoint: 'https://login.cloudsatlas.com.hk'
+                endpoint: 'https://login.nextgen.com.hk'
             }
         }
     }
