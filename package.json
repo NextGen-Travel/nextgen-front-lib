@@ -30,6 +30,8 @@
     "vuetify": "^3.0.6"
   },
   "dependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.2.0",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
     "@types/fs-extra": "^9.0.13",
@@ -37,8 +39,6 @@
     "@types/node": "^13.13.45",
     "@types/qs": "^6.9.7",
     "@types/yargs": "^17.0.13",
-    "@apidevtools/swagger-cli": "^4.0.4",
-    "@openapi-contrib/openapi-schema-to-json-schema": "^3.2.0",
     "axios": "^1.2.1",
     "crypto-js": "^4.1.1",
     "deep-object-diff": "^1.1.7",
@@ -54,6 +54,7 @@
     "react": "^18.2.0",
     "simple-git": "^3.14.1",
     "urql": "2.2.2",
+    "v-calendar": "^3.0.0-alpha.8",
     "yargs": "^17.6.2",
     "yup": "^0.32.11"
   }

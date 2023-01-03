@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
         NgToolbar: typeof import('../vue/components/toolbar.vue')['default']
         NgUpload: typeof import('../vue/components/upload.vue')['default']
         NgSkeleton: typeof import('../vue/components/skeleton.vue')['default']
+        NgDatePicker: typeof import('../vue/components/date-picker.vue')['default']
         NgOverlayLoading: typeof import('../vue/components/overlay-loading.vue')['default']
     }
 }

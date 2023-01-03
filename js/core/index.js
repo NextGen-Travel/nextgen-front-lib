@@ -4,8 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NextgenLib = exports.t = exports.Locales = exports.useLibEnv = exports.useLibOptions = void 0;
+require("v-calendar/dist/style.css");
 const i18n_1 = require("./i18n");
 const text_1 = require("../utils/text");
+const v_calendar_1 = __importDefault(require("v-calendar"));
 const img_vue_1 = __importDefault(require("../vue/components/img.vue"));
 const form_vue_1 = __importDefault(require("../vue/components/form.vue"));
 const app_vue_1 = __importDefault(require("../vue/views/app.vue"));
@@ -16,6 +18,7 @@ const loaders_vue_1 = __importDefault(require("../vue/components/loaders.vue"));
 const toolbar_vue_1 = __importDefault(require("../vue/components/toolbar.vue"));
 const fixed_bar_vue_1 = __importDefault(require("../vue/components/fixed-bar.vue"));
 const skeleton_vue_1 = __importDefault(require("../vue/components/skeleton.vue"));
+const date_picker_vue_1 = __importDefault(require("../vue/components/date-picker.vue"));
 const pagination_vue_1 = __importDefault(require("../vue/components/pagination.vue"));
 const outline_text_vue_1 = __importDefault(require("../vue/components/outline-text.vue"));
 const overlay_loading_vue_1 = __importDefault(require("../vue/components/overlay-loading.vue"));
@@ -55,6 +58,7 @@ exports.NextgenLib = {
             vue.component(`ng-${name}`, component);
             vue.component(`Ng${(0, text_1.toHump)(name)}`, component);
         };
+        vue.use(v_calendar_1.default);
         addComponent('app', app_vue_1.default);
         addComponent('img', img_vue_1.default);
         addComponent('form', form_vue_1.default);
@@ -66,6 +70,7 @@ exports.NextgenLib = {
         addComponent('skeleton', skeleton_vue_1.default);
         addComponent('fixed-bar', fixed_bar_vue_1.default);
         addComponent('pagination', pagination_vue_1.default);
+        addComponent('date-picker', date_picker_vue_1.default);
         addComponent('outline-text', outline_text_vue_1.default);
         addComponent('overlay-loading', overlay_loading_vue_1.default);
     }

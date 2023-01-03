@@ -1,3 +1,4 @@
+import 'v-calendar/dist/style.css';
 import type { App } from 'vue';
 export declare const useLibOptions: () => {
     lang: "en" | "zh";
