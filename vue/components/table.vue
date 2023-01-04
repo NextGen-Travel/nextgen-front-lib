@@ -6,7 +6,7 @@
                     <th
                         v-for="(field, index) in showFields"
                         :key="index + 'ff'"
-                        class="text-center secondary">
+                        class="text-center bg-secondary">
                         <slot :name="'h-' + field.key" :item="field" :value="field.label"></slot>
                         <div v-if="!self.hasSlot('h-' + field.key)">{{ field.label }}</div>
                     </th>
