@@ -2,9 +2,9 @@
 
 import { useVueHooks } from '../core/index'
 import { diff as _diff } from 'deep-object-diff'
-import { Event, record, json } from 'power-helper'
-import { createStateManager } from './state-manager'
 import { useListenerGroup } from './listener-group'
+import { createStateManager } from './state-manager'
+import { Event, record, json } from 'power-helper'
 
 type Context<S> = {
     data: S
@@ -69,7 +69,7 @@ export const createStrapiListResource = <T>() => {
 export const defineModelHook = <
     S extends Record<any, any>,
     R extends Record<any, any>,
-    T extends Record<any, (..._args: any[]) => any>,
+    T extends Record<any, (..._args: any[]) => any>
 >(params: {
     name: string
     schema: () => S
