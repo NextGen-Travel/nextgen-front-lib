@@ -7,8 +7,8 @@
                         v-for="(field, index) in showFields"
                         :key="index + 'ff'"
                         class="text-center bg-secondary">
-                        <slot :name="'h-' + field.key" :item="field" :value="field.label"></slot>
-                        <div v-if="!self.hasSlot('h-' + field.key)">{{ field.label }}</div>
+                        <slot :name="'h-' + field.key" :item="field" :value="field.label()"></slot>
+                        <div v-if="!self.hasSlot('h-' + field.key)">{{ field.label() }}</div>
                     </th>
                 </tr>
             </thead>
@@ -76,7 +76,7 @@ import { PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue
 
 type Field = {
     key: string
-    label: string
+    label: () => string
     style: (value: any, key: string, item: any, index: number) => string
     formatter: (...args: any[]) => any
     optionShow: boolean
