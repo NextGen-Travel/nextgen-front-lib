@@ -5,6 +5,7 @@
             hidden
             ref="fileInput"
             type="file"
+            :multiple="multiple"
             :accept="fileType"
             :disabled="state.reading || loading"
             @change="pickFile"
@@ -38,6 +39,11 @@ const self = VueSelf.use()
 
 defineProps({
     loading: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
+    },
+    multiple: {
         type: Boolean as PropType<boolean>,
         required: false,
         default: () => false
