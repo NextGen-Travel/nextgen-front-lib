@@ -2,10 +2,21 @@
     <div @click="clickInput" style="width: fit-content; height: fit-content; position: relative;">
         <slot></slot>
         <input
+            v-if="multiple"
             hidden
             ref="fileInput"
             type="file"
             :multiple="multiple"
+            :accept="fileType"
+            :disabled="state.reading || loading"
+            @change="pickFile"
+        />
+        <input
+            v-else
+            hidden
+            ref="fileInput"
+            type="file"
+            multiple
             :accept="fileType"
             :disabled="state.reading || loading"
             @change="pickFile"
