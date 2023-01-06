@@ -6,7 +6,7 @@
             hidden
             ref="fileInput"
             type="file"
-            :multiple="multiple"
+            multiple
             :accept="fileType"
             :disabled="state.reading || loading"
             @change="pickFile"
@@ -16,7 +16,6 @@
             hidden
             ref="fileInput"
             type="file"
-            multiple
             :accept="fileType"
             :disabled="state.reading || loading"
             @change="pickFile"
