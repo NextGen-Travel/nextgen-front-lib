@@ -91,6 +91,11 @@ const props = defineProps({
         required: false,
         default: () => false
     },
+    ratio: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
     square: {
         type: Boolean,
         required: false,
@@ -221,6 +226,16 @@ const loadStyle = (width?: number, height?: number) => {
             let width = getContentWidth()
             if (width) {
                 code.set('height', `${width}px`)
+                state.style = code.join()
+            }
+        })
+    }
+    if (props.ratio) {
+        self.nextTick(() => {
+            let contentWidth = getContentWidth()
+            if (height && width) {
+                let r = contentWidth / width
+                code.set('height', `${height * r}px`)
                 state.style = code.join()
             }
         })
