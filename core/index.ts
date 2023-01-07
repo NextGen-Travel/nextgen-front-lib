@@ -10,6 +10,7 @@ import NgApp from '../vue/views/app.vue'
 import Table from '../vue/components/table.vue'
 import Dialog from '../vue/components/dialog.vue'
 import Upload from '../vue/components/upload.vue'
+import VisibleLoad from '../vue/components/visible-load.vue'
 import Loaders from '../vue/components/loaders.vue'
 import Toolbar from '../vue/components/toolbar.vue'
 import FixedBar from '../vue/components/fixed-bar.vue'
@@ -71,6 +72,7 @@ export const NextgenLib = {
         addComponent('pagination', Pagination)
         addComponent('date-picker', DatePicker)
         addComponent('outline-text', OutlineText)
+        addComponent('visible-load', VisibleLoad)
         addComponent('overlay-loading', OverlayLoading)
     }
 }
