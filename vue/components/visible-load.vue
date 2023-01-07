@@ -1,30 +1,44 @@
 <template>
-    <div>
+    <div ref="target">
         <div v-if="state.loading">
             <slot v-if="self.hasSlot('loading')" name="loading"></slot>
-            <v-progress-circular
-                v-else
-                indeterminate
-                color="primary"
-            ></v-progress-circular>
+            <div v-else class="text-center">
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
+            </div>
         </div>
         <div v-if="state.error">
-            <slot v-if="self.hasSlot('error')" name="error" :error="state.error" :message="state.errorMessage"></slot>
+            <slot
+                v-if="self.hasSlot('error')"
+                name="error"
+                :error="state.error"
+                :message="state.errorMessage">
+            </slot>
             <div v-else class="text-error text-center py-2">{{ state.errorMessage }}</div>
         </div>
+        <div v-if="!self.hasSlot('default')" style="height: 64px"></div>
+        <slot :loading="state.loading" :error="state.error" :message="state.errorMessage"></slot>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { Hook } from 'power-helper'
 import { VueSelf } from '../self'
-import { watch, computed } from 'vue'
+import { Hook, Ticker } from 'power-helper'
 import { parseMessage } from '../../utils/message-parser'
-import { useDocumentVisibility } from '@vueuse/core'
+import { useIntersectionObserver } from '@vueuse/core'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 const self = VueSelf.use()
 const hook = new Hook<{ trigger: any }>()
-const visibility = useDocumentVisibility()
+
+// =================
+//
+// ref
+//
+
+const target = ref<HTMLDivElement>()
 
 // =================
 //
@@ -54,13 +68,26 @@ defineExpose({
 
 // =================
 //
+// hook
+//
+
+useIntersectionObserver(target, ([{ isIntersecting }]) => {
+    state.inited = true
+    state.isIntersecting = isIntersecting
+})
+
+// =================
+//
 // state
 //
 
 const state = self.data({
-    loading: false,
+    inited: false,
     error: null as any,
-    errorMessage: ''
+    ticker: new Ticker(500),
+    loading: false,
+    errorMessage: '',
+    isIntersecting: false
 })
 
 // =================
@@ -69,6 +96,9 @@ const state = self.data({
 //
 
 const canTirgger = computed(() => {
+    if (state.inited === false) {
+        return false
+    }
     if (props.disabled) {
         return false
     }
@@ -83,13 +113,19 @@ const canTirgger = computed(() => {
 
 // =================
 //
-// watch
+// mounted
 //
 
-watch(visibility, (current) => {
-    if (current === 'visible') {
-        trigger()
-    }
+onMounted(() => {
+    state.ticker.on('next', () => {
+        if (state.isIntersecting) {
+            trigger()
+        }
+    })
+})
+
+onUnmounted(() => {
+    state.ticker.close()
 })
 
 // =================
