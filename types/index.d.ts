@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
         NgSkeleton: typeof import('../vue/components/skeleton.vue')['default']
         NgDatePicker: typeof import('../vue/components/date-picker.vue')['default']
         NgOverlayLoading: typeof import('../vue/components/overlay-loading.vue')['default']
+        NgVisibleLoad: typeof import('../vue/components/visible-load.vue')['default']
     }
 }
 declare global {
