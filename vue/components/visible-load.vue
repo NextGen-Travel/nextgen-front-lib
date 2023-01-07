@@ -18,7 +18,7 @@
             </slot>
             <div v-else class="text-error text-center py-2">{{ state.errorMessage }}</div>
         </div>
-        <div v-if="!self.hasSlot('default')" style="height: 64px"></div>
+        <div v-if="!self.hasSlot('default') && !state.loading && !state.error" style="height: 32px"></div>
         <slot :loading="state.loading" :error="state.error" :message="state.errorMessage"></slot>
     </div>
 </template>
