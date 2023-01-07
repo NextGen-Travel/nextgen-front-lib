@@ -8,8 +8,11 @@
             :persistent="persistent"
             :fullscreen="fullscreen">
             <v-card v-if="state.show">
-                <template #title>
-                    <v-row no-gutters align="center">
+                <div v-for="i in 2" class="w-100 bg-white" :key="i" :class="{
+                    'ng-component-dialog': i === 1,
+                    'ng-component-dialog-fake': i === 2
+                }">
+                    <v-row class="px-3 py-1" no-gutters align="center">
                         <h3 v-if="title">{{ title }}</h3>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -20,9 +23,9 @@
                         </v-btn>
                         <slot name="actions" :switchShow="switchShow"></slot>
                     </v-row>
-                </template>
-                <v-divider class="mb-5 mt-3"></v-divider>
-                <div class="pa-5 pt-0">
+                    <v-divider></v-divider>
+                </div>
+                <div class="pa-3">
                     <slot :switchShow="switchShow"></slot>
                 </div>
             </v-card>
@@ -123,3 +126,13 @@ const switchShow = () => {
 }
 
 </script>
+
+<style>
+    .ng-component-dialog {
+        position: fixed;
+    }
+    .ng-component-dialog-fake {
+        visibility: hidden;
+        pointer-events: none;
+    }
+</style>
