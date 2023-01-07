@@ -130,6 +130,7 @@ const switchShow = () => {
 <style>
     .ng-component-dialog {
         position: fixed;
+        z-index: 500;
     }
     .ng-component-dialog-fake {
         visibility: hidden;
