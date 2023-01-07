@@ -28,10 +28,9 @@ import { VueSelf } from '../self'
 import { Hook, Ticker } from 'power-helper'
 import { parseMessage } from '../../utils/message-parser'
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const self = VueSelf.use()
-const hook = new Hook<{ trigger: any }>()
 
 // =================
 //
@@ -39,6 +38,17 @@ const hook = new Hook<{ trigger: any }>()
 //
 
 const target = ref<HTMLDivElement>()
+
+// =================
+//
+// hook
+//
+
+const hook = new Hook<{ trigger: any }>()
+
+const attachHook = (cb: () => Promise<any>) => {
+    hook.attach('trigger', cb)
+}
 
 // =================
 //
@@ -54,6 +64,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
+    inited: (_hook: typeof attachHook) => true,
     error: (_params: {
         error: any
         message: string
@@ -61,17 +72,18 @@ const emit = defineEmits({
 })
 
 defineExpose({
-    hook(cb: () => Promise<any>) {
-        hook.attach('trigger', cb)
-    }
+    hook: attachHook
 })
 
 // =================
 //
-// hook
+// observer
 //
 
 useIntersectionObserver(target, ([{ isIntersecting }]) => {
+    if (state.inited === false) {
+        emit('inited', attachHook)
+    }
     state.inited = true
     state.isIntersecting = isIntersecting
 })
