@@ -2,9 +2,9 @@
     <v-overlay
         contained
         v-model="value"
-        style="z-index: 100;"
         class="align-center justify-center"
         persistent
+        :style="`z-index: ${zIndex};`"
         :opacity="0.5"
         :close-on-back="false">
         <v-progress-circular color="white" indeterminate size="32"></v-progress-circular>
@@ -20,6 +20,11 @@ import { defineProps, computed } from 'vue'
 //
 
 const props = defineProps({
+    zIndex: {
+        type: Number,
+        required: false,
+        default: () => 100
+    },
     modelValue: {
         type: Boolean,
         required: false,

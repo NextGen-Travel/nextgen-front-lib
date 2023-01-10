@@ -8,11 +8,11 @@
             :persistent="loading || persistent"
             :fullscreen="fullscreen">
             <v-card v-if="state.show">
+                <OverlayLoading :z-index="502" :model-value="loading"></OverlayLoading>
                 <div v-for="i in 2" class="w-100 bg-white" :key="i" :class="{
                     'ng-component-dialog': i === 1,
                     'ng-component-dialog-fake': i === 2
                 }">
-                    <OverlayLoading :model-value="loading"></OverlayLoading>
                     <v-row class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
                         <h3 v-if="title">{{ title }}</h3>
                         <v-spacer></v-spacer>
@@ -20,6 +20,7 @@
                             v-if="!hideClose && !self.hasSlot('actions')"
                             variant="plain"
                             icon="mdi-close"
+                            :disabled="loading"
                             @click="state.show = false">
                         </v-btn>
                         <slot name="actions" :switchShow="switchShow"></slot>
