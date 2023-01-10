@@ -5,13 +5,14 @@
             v-model="state.show"
             :width="fullscreen ? undefined : '90vw'"
             :max-width="fullscreen ? undefined : maxWidth"
-            :persistent="persistent"
+            :persistent="loading || persistent"
             :fullscreen="fullscreen">
             <v-card v-if="state.show">
                 <div v-for="i in 2" class="w-100 bg-white" :key="i" :class="{
                     'ng-component-dialog': i === 1,
                     'ng-component-dialog-fake': i === 2
                 }">
+                    <OverlayLoading :model-value="loading"></OverlayLoading>
                     <v-row class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
                         <h3 v-if="title">{{ title }}</h3>
                         <v-spacer></v-spacer>
@@ -34,6 +35,7 @@
 </template>
 
 <script lang="ts" setup>
+import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
 import { PropType, reactive, watch, onMounted } from 'vue'
 
@@ -74,10 +76,17 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: () => false
+    },
+    loading: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
     }
 })
 
 const emit = defineEmits({
+    'open': (_value: boolean) => true,
+    'close': (_value: boolean) => true,
     'update:modelValue': (_value: boolean) => true
 })
 

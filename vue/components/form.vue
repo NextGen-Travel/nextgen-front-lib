@@ -2,19 +2,19 @@
     <div style="transition: .25s;" :style="`opacity: ${loading ? 0.5 : 1}`">
         <v-form
             ref="checkform"
-            @update:model-value="updateValid"
+            @update:model-value="update"
             @submit.stop.prevent="submit"
             :lazy-validation="lazyValidation"
             :readonly="readonly"
             :disabled="disabled || loading">
-            <slot :valid="state.valid" :validate="validate"></slot>
+            <slot :valid="valid" :validate="validate"></slot>
         </v-form>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
-import { reactive, watch, onMounted, ref } from 'vue'
+import { VForm } from 'vuetify/components'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 
 // =================
 //
@@ -22,23 +22,28 @@ import { reactive, watch, onMounted, ref } from 'vue'
 //
 
 const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     loading: {
-        type: Boolean as PropType<boolean>,
+        type: Boolean,
         required: false,
         default: false
     },
     readonly: {
-        type: Boolean as PropType<boolean>,
+        type: Boolean,
         required: false,
         default: false
     },
     disabled: {
-        type: Boolean as PropType<boolean>,
+        type: Boolean,
         required: false,
         default: false
     },
     lazyValidation: {
-        type: Boolean as PropType<boolean>,
+        type: Boolean,
         required: false,
         default: false
     }
@@ -49,12 +54,17 @@ const emit = defineEmits({
     submit: () => true
 })
 
+defineExpose({
+    valid: computed(() => state.valid),
+    validate: (...args: Parameters<typeof validate>) => validate(...args)
+})
+
 // =================
 //
 // ref
 //
 
-const checkform = ref()
+const checkform = ref<InstanceType<typeof VForm>>()
 
 // =================
 //
@@ -62,17 +72,7 @@ const checkform = ref()
 //
 
 const state = reactive({
-    valid: props.lazyValidation,
-    loaded: false
-})
-
-// =================
-//
-// watch
-//
-
-watch(() => state.valid, () => {
-    emitStatus()
+    valid: props.lazyValidation
 })
 
 // =================
@@ -81,8 +81,11 @@ watch(() => state.valid, () => {
 //
 
 onMounted(() => {
-    state.loaded = true
-    emitStatus()
+    nextTick(() => {
+        if (props.lazyValidation) {
+            checkform.value?.resetValidation()
+        }
+    })
 })
 
 // =================
@@ -90,30 +93,27 @@ onMounted(() => {
 // methods
 //
 
-const updateValid = (value: boolean | null) => {
-    state.valid = !!value
-    emitStatus()
+const update = (value: boolean | null) => {
+    state.valid = value !== false
+    emit('update:modelValue', state.valid)
 }
 
-const emitStatus = () => {
-    emit('update:modelValue', state.valid !== false)
-}
-
-const submit = () => {
-    let valid = checkform.value.validate()
-    if (valid) {
+const submit = async() => {
+    let result = await checkform.value?.validate()
+    if (result && result.valid) {
         emit('submit')
     }
 }
 
 const validate = async(cb: () => any, fail?: (_errors: any) => any) => {
-    let { valid, errors } = await checkform.value.validate()
-    if (valid) {
-        cb()
-    } else if (fail) {
-        fail(errors)
+    let result = await checkform.value?.validate()
+    if (result) {
+        if (result.valid) {
+            cb()
+        } else if (fail) {
+            fail(result.errors)
+        }
     }
-    emitStatus()
 }
 
 </script>
