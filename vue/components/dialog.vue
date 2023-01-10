@@ -85,8 +85,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    'open': (_value: boolean) => true,
-    'close': (_value: boolean) => true,
+    'open': () => true,
+    'close': () => true,
     'update:modelValue': (_value: boolean) => true
 })
 
@@ -113,6 +113,11 @@ watch(() => state.show, () => {
 watch(() => props.modelValue, () => {
     if (state.show !== props.modelValue) {
         state.show = !!props.modelValue
+        if (state.show) {
+            emit('open')
+        } else {
+            emit('close')
+        }
     }
 })
 
