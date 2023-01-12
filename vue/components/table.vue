@@ -221,9 +221,7 @@ useResizeObserver(table, () => {
         let child = el.getElementsByTagName('table')[0]
         if (child) {
             state.isOverflow = child.clientWidth > el.clientWidth
-            if (state.isOverflow) {
-                state.showShadow = true
-            }
+            state.showShadow = state.isOverflow
         }
     }
 })
