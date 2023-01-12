@@ -1,12 +1,21 @@
 <template>
     <div style="position: relative;">
-        <v-table v-if="showTable" class="elevation-1">
+        <v-table
+            ref="table"
+            class="elevation-1"
+            :class="{
+                'component-shadow-right': state.showShadow
+            }"
+            >
             <thead>
                 <tr>
                     <th
                         v-for="(field, index) in showFields"
                         :key="index + 'ff'"
-                        class="text-center bg-secondary">
+                        class="text-center bg-secondary"
+                        :class="{
+                            'component-text-nowrap': ['head', 'all'].includes(textNowrap)
+                        }">
                         <slot :name="'h-' + field.key" :item="field" :value="field.label()"></slot>
                         <div v-if="!self.hasSlot('h-' + field.key)">{{ field.label() }}</div>
                     </th>
@@ -21,6 +30,9 @@
                         <td
                             v-for="(field, index) in showFields"
                             class="text-center"
+                            :class="{
+                                'component-text-nowrap': ['body', 'all'].includes(textNowrap)
+                            }"
                             :key="field.key"
                             :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
                             <slot
@@ -70,10 +82,10 @@
 import NgDialog from './dialog.vue'
 import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
-import { pick, Debounce } from 'power-helper'
 import { useLocalStorage } from '../../core/storage'
-import { PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue'
-
+import { useResizeObserver } from '@vueuse/core'
+import { pick, Debounce, ElementListenerGroup } from 'power-helper'
+import { ref, PropType, onUnmounted, watch, reactive, computed, onMounted, nextTick } from 'vue'
 type Field = {
     key: string
     label: () => string
@@ -92,6 +104,11 @@ const localStorage = useLocalStorage()
 //
 
 const props = defineProps({
+    textNowrap: {
+        type: String as PropType<'all' | 'head' | 'body' | 'none'>,
+        required: false,
+        default: () => 'none'
+    },
     rowStyle: {
         type: Function as PropType<(item: any, index: number) => string>,
         required: false,
@@ -133,13 +150,23 @@ const emit = defineEmits({
 
 // =================
 //
+// ref
+//
+
+const table = ref()
+
+// =================
+//
 // state
 //
 
 const state = reactive({
     reloaded: true,
     modalShow: false,
-    showFields: [] as string[]
+    isOverflow: false,
+    showShadow: false,
+    showFields: [] as string[],
+    elementListenerGroup: null as null | ElementListenerGroup<HTMLDivElement>
 })
 
 // =================
@@ -178,16 +205,27 @@ const showFields = computed(() => {
     })
 })
 
-const showTable = computed(() => {
-    if (self.hasSlot('no-data') && props.items.length === 0) {
-        return false
-    }
-    return true
-})
-
 const filters = computed(() => {
     let fields = props.fields.map(e => e.key)
     return fields.filter(e => !state.showFields.includes(e))
+})
+
+// =================
+//
+// observer
+//
+
+useResizeObserver(table, () => {
+    let el: HTMLDivElement = table.value?.$el
+    if (el) {
+        let child = el.getElementsByTagName('table')[0]
+        if (child) {
+            state.isOverflow = child.clientWidth > el.clientWidth
+            if (state.isOverflow) {
+                state.showShadow = true
+            }
+        }
+    }
 })
 
 // =================
@@ -230,10 +268,20 @@ onMounted(() => {
             state.showFields = state.showFields.filter(e => !data[filterName].includes(e))
         }
     }
+    let el: HTMLDivElement = table.value.$el.getElementsByClassName('v-table__wrapper')[0]
+    if (el) {
+        state.elementListenerGroup = new ElementListenerGroup(el)
+        state.elementListenerGroup.add('scroll', (e) => {
+            if (state.isOverflow) {
+                state.showShadow = el.scrollLeft === 0
+            }
+        })
+    }
 })
 
 onUnmounted(() => {
     debounce.close()
+    state.elementListenerGroup?.clear()
 })
 
 // =================
@@ -274,6 +322,9 @@ const openFilter = () => {
 </script>
 
 <style lang="scss" scoped>
+    .component-text-nowrap {
+        white-space: nowrap;
+    }
     .component-twr-is-btn {
         transition: .25s;
         cursor: pointer;
@@ -290,5 +341,8 @@ const openFilter = () => {
     .component-twr-detail {
         height: auto !important;
         padding: 0 !important;
+    }
+    .component-shadow-right :deep(.v-table__wrapper) {
+        box-shadow: inset -15px 0px  10px -15px rgba(0, 0, 0, .4);
     }
 </style>

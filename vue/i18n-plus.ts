@@ -26,7 +26,7 @@ export class VueI18nPlus<Keys extends string> {
     tt<
         T extends Keys | `##${string}`,
         V extends VarParameters<'{', '}', T extends string ? T : ''>
-    >(key: T, ...vars: V extends Record<string, never> ? any[] : [V]) {
+    >(key: T, ...vars: T extends `${string}{${string}}${string}` ? [V] : any[]) {
         if (key.slice(0, 2) === '##') {
             return text.replaceVar({
                 end: '}',
@@ -46,11 +46,11 @@ export class VueI18nPlus<Keys extends string> {
         return `${this.namespace}.${key}`
     }
 
-    export(locale: string) {
-        return <
-            T extends Keys | `##${string}`,
-            V extends VarParameters<'{', '}', T extends string ? T : ''>
-        >(key: T, ...vars: V extends Record<string, never> ? any[] : [V]) => {
+    export<T extends Keys | `##${string}`>(locale: string): <K extends T>(
+        _key: K,
+        ..._vars: K extends `${string}{${string}}${string}` ? [VarParameters<'{', '}', K>] : any[]
+    ) => string {
+        return (key: string, ...vars: any[])=> {
             if (key.slice(0, 2) === '##') {
                 return text.replaceVar({
                     end: '}',
