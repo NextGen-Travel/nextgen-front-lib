@@ -13,7 +13,7 @@
                 </v-card-text>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
-                    <v-btn name="ng-confirm-close" @click="close" text :disabled="state.loading">
+                    <v-btn name="ng-confirm-close" @click="libConfirmStore.cancel" text :disabled="state.loading">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
                     <v-btn name="ng-confirm-confirm" color="primary" @click="commit" :loading="state.loading">
@@ -64,19 +64,17 @@ watch(() => open.value, () => {
 // methods
 //
 
-const close = () => {
-    libConfirmStore.cancel()
+const success = (success = true) => {
+    if (success) {
+        libConfirmStore.cancel()
+    }
     setTimeout(() => {
         state.loading = false
     }, 200)
 }
 
-const reset = () => {
-    state.loading = true
-}
-
 const commit = async() => {
     state.loading = true
-    libConfirmStore.state.handler(close, reset)
+    libConfirmStore.state.handler(success)
 }
 </script>
