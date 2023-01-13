@@ -71,8 +71,12 @@ const close = () => {
     }, 200)
 }
 
-const commit = () => {
+const reset = () => {
     state.loading = true
-    libConfirmStore.state.handler(close)
+}
+
+const commit = async() => {
+    state.loading = true
+    libConfirmStore.state.handler(close, reset)
 }
 </script>

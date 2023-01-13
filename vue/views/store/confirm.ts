@@ -1,10 +1,10 @@
 import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 
-type Handler = (_callback: () => void) => any
+type Handler = (_close: () => void, _reset: () => void) => any
 
 export const useLibConfirmStore = defineStore('lib-confirm', () => {
-        
+
     // =================
     //
     // state
