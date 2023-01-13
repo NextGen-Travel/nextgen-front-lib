@@ -2,7 +2,7 @@ import { useLibConfirmStore } from './store/confirm'
 import { useLibChoicesStore, ChoicesParams } from './store/choices'
 import { useLibNotificationStore, MessageType } from './store/notification'
 
-const openConfirm = (message: string, handler: (_done: () => void) => void): void => {
+const openConfirm = (message: string, handler: (_success: (_state?: boolean) => void) => void): void => {
     useLibConfirmStore().open({
         message,
         handler
