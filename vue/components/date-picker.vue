@@ -1,14 +1,12 @@
 <template>
-    <div class="d-table">
-        <v-date-picker
-            ref="picker"
-            v-model="value"
-            mode="dateTime"
-            is24hr
-            is-required
-            :model-config="state.modelConfig"
-        />
-    </div>
+    <v-date-picker
+        ref="picker"
+        v-model="value"
+        mode="dateTime"
+        is24hr
+        is-required
+        :model-config="state.modelConfig"
+    />
 </template>
 
 <script lang="ts" setup>
