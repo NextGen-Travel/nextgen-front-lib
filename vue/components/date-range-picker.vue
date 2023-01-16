@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-table">
         <v-date-picker
             ref="picker"
             v-model="value"
