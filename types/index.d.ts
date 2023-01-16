@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
         NgDatePicker: typeof import('../vue/components/date-picker.vue')['default']
         NgOverlayLoading: typeof import('../vue/components/overlay-loading.vue')['default']
         NgVisibleLoad: typeof import('../vue/components/visible-load.vue')['default']
+        NgDateRangePicker: typeof import('../vue/components/date-range-picker.vue')['default']
     }
 }
 declare global {

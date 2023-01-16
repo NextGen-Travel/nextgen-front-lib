@@ -16,6 +16,7 @@ import Toolbar from '../vue/components/toolbar.vue'
 import FixedBar from '../vue/components/fixed-bar.vue'
 import Skeleton from '../vue/components/skeleton.vue'
 import DatePicker from '../vue/components/date-picker.vue'
+import DateRangePicker from '../vue/components/date-range-picker.vue'
 import Pagination from '../vue/components/pagination.vue'
 import OutlineText from '../vue/components/outline-text.vue'
 import OverlayLoading from '../vue/components/overlay-loading.vue'
@@ -74,6 +75,7 @@ export const NextgenLib = {
         addComponent('outline-text', OutlineText)
         addComponent('visible-load', VisibleLoad)
         addComponent('overlay-loading', OverlayLoading)
+        addComponent('date-range-picker', DateRangePicker)
     }
 }
 
