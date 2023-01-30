@@ -83,7 +83,7 @@ const props = defineProps({
         default: () => true
     },
     src: {
-        type: String as PropType<string>,
+        type: null as unknown as PropType<string | File>,
         required: false
     },
     block: {
