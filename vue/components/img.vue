@@ -17,12 +17,17 @@ import OverlayLoading from './overlay-loading.vue'
 import Skeleton from './skeleton.vue'
 import { VueSelf } from '../self'
 import { useLibOptions } from '../../core'
-import { StyleString, Resource, ElementListenerGroup, Debounce } from 'power-helper'
+import { StyleString, Resource, JobQueues, ElementListenerGroup, Debounce } from 'power-helper'
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const { notFoundImage, staticUrl } = useLibOptions()
 
 const self = VueSelf.use()
+
+const jobQueues = new JobQueues({
+    concurrentExecutions: 1
+})
+
 const debounce = new Debounce({
     delay: 100
 })
@@ -183,19 +188,25 @@ const click = () => {
 }
 
 const update = () => {
-    state.image = new Image()
-    let target = props.src ? resource.url(props.src) : notFound
-    state.image.addEventListener('error', () => {
-        state.src = notFound
-        state.loading = false
-        loadStyle(300, 200)
+    jobQueues.push('update', () => {
+        return new Promise((resolve) => {
+            state.image = new Image()
+            let target = props.src ? resource.url(props.src) : notFound
+            state.image.addEventListener('error', () => {
+                state.src = notFound
+                state.loading = false
+                loadStyle(300, 200)
+                resolve(null)
+            })
+            state.image.addEventListener('load', () => {
+                state.src = target
+                state.loading = false
+                loadStyle(state.image?.width, state.image?.height)
+                resolve(null)
+            })
+            state.image.src = target
+        })
     })
-    state.image.addEventListener('load', () => {
-        state.src = target
-        state.loading = false
-        loadStyle(state.image?.width, state.image?.height)
-    })
-    state.image.src = target
 }
 
 const loadStyle = (width?: number, height?: number) => {

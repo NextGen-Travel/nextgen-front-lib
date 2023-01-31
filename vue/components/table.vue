@@ -85,7 +85,8 @@ import { VueSelf } from '../self'
 import { useLocalStorage } from '../../core/storage'
 import { useResizeObserver } from '@vueuse/core'
 import { pick, Debounce, ElementListenerGroup } from 'power-helper'
-import { ref, PropType, onUnmounted, watch, reactive, computed, onMounted, nextTick } from 'vue'
+import { ref, PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue'
+
 type Field = {
     key: string
     label: () => string
