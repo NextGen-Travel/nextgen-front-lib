@@ -13,6 +13,11 @@ import { Loader } from 'power-helper'
 import { PropType, reactive, onUnmounted, defineProps, onMounted } from 'vue'
 
 const props = defineProps({
+    autoStart: {
+        required: false,
+        type: Boolean,
+        default: () => true
+    },
     items: {
         required: true,
         type: Array as PropType<Loader<any>[]>
@@ -41,6 +46,9 @@ const state = reactive({
 onMounted(() => {
     setTimeout(() => handler(), 10)
     state.int = setInterval(() => handler(), 500)
+    if (props.autoStart) {
+        run()
+    }
 })
 
 onUnmounted(() => {
@@ -53,6 +61,14 @@ onUnmounted(() => {
 //
 // Methods
 //
+
+const run = async() => {
+    for (let item of props.items) {
+        if (item.called === false) {
+            await item.start({})
+        }
+    }
+}
 
 const handler = () => {
     let error

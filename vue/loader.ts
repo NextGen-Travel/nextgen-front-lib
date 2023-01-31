@@ -1,14 +1,10 @@
 import { Loader } from 'power-helper'
-import { onMounted, reactive, nextTick } from 'vue'
+import {  onUnmounted, reactive } from 'vue'
 
-export const useLoader = (options = {
-    autoStart: true
-}) => {
+export const useLoader = () => {
     const loader = reactive(new Loader())
-    onMounted(() => {
-        if (options.autoStart) {
-            nextTick(() => loader.start({}))
-        }
+    onUnmounted(() => {
+        loader.clear()
     })
     return loader as unknown as Loader<any>
 }
