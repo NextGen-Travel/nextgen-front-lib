@@ -202,7 +202,7 @@ export class Request<
         this.mocks[to] = response
     }
 
-    export() {
+    export(): Request<Config, ApisDefinition>['http'] {
         return this.http.bind(this)
     }
 
