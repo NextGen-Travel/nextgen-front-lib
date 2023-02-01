@@ -18,7 +18,7 @@
 import { VueSelf } from '../self'
 import { PropType } from 'vue'
 import { StyleString } from 'power-helper'
-import { reactive, defineProps, onMounted, computed } from 'vue'
+import { reactive, onMounted, computed } from 'vue'
 
 const self = VueSelf.use()
 

@@ -6,7 +6,7 @@ import { serviceException } from '../../core/error'
 type ToFormat = `${'get' | 'post' | 'put' | 'delete'}@${string}`
 
 // multipart/form-data#json : 要使用formdata格式 但header帶的是json
-type ContentTypes = 'json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
+type ContentTypes = 'application/json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
 
 const exception = serviceException.checkout('request')
 
@@ -52,7 +52,7 @@ export type RequestContext<C = any> = {
     config: C
     headers: Record<string, string>
     contentType: ContentTypes
-    responseType?: 'arraybuffer' | 'json'
+    responseType?: 'arraybuffer' | 'application/json'
 }
 
 type StringParams<
@@ -230,7 +230,7 @@ export class Request<
             query: (params.query || {}) as any,
             headers,
             config: this.config,
-            contentType: params.contentType || 'json',
+            contentType: params.contentType || 'application/json',
             responseType: params.responseType,
             method: parsed.method
         }

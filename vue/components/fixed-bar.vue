@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, defineProps, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, PropType, onMounted, onUnmounted, reactive, ref } from 'vue'
 
 const content = ref()
 const observer = new ResizeObserver(() => refresh())

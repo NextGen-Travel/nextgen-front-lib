@@ -36,7 +36,7 @@ const descBeautify = (content) => {
  *      query: null | Record<string, any>
  *      response: null | Record<string, any>
  *      parameters: ParameterObject[]
- *      contentType: null | 'json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
+ *      contentType: null | 'application/json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
  *  }} OutputObject 
  */
 
@@ -142,13 +142,13 @@ class OpenApiReader {
 
     /**
      * @param {*} data 
-     * @returns {OutputObject['contentType'] }
+     * @returns {OutputObject['contentType']}
      */
 
     getContentType(data) {
         if (data && data.content) {
             if (data.content['application/json']) {
-                return 'json'
+                return 'application/json'
             }
             if (data.content['application/x-www-form-urlencoded']) {
                 return 'x-www-form-urlencoded'
@@ -157,7 +157,20 @@ class OpenApiReader {
                 return 'multipart/form-data'
             }
         }
-        return 'json'
+        return 'application/json'
+    }
+
+    getContentTypeByKey(key) {
+        if (key === 'application/json') {
+            return 'application/json'
+        }
+        if (key === 'application/x-www-form-urlencoded') {
+            return 'x-www-form-urlencoded'
+        }
+        if (key === 'multipart/form-data') {
+            return 'multipart/form-data'
+        }
+        return 'application/json'
     }
 
     /**
@@ -180,11 +193,11 @@ class OpenApiReader {
         })
     }
 
-    pickJsonSchema(data) {
+    pickJsonSchema(data, selectType) {
         if (data) {
             let schema
-            let type = this.getContentType(data)
-            if (type === 'json') {
+            let type = selectType ? selectType : this.getContentType(data)
+            if (type === 'application/json') {
                 schema = data.content?.['application/json']?.schema
             }
             if (type === 'multipart/form-data') {
@@ -212,22 +225,25 @@ class OpenApiReader {
                 if (api) {
                     let data = api[method]
                     if (data) {
-                        /** @type {ParameterObject[]} */
-                        let parameters = data['parameters']
-                        let contentType = this.getContentType(data.requestBody)
-                        let body = this.pickJsonSchema(data.requestBody)
-                        let response = this.pickJsonSchema(data.responses['200'])
-                        outputs.push({
-                            summary: data.summary || 'no summary',
-                            description: data.description || 'no description',
-                            path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}`,
-                            parameters,
-                            method: method,
-                            body,
-                            contentType: contentType === 'json' ? null : contentType,
-                            query: this.pickParametersInQuery(data.parameters || []),
-                            response
-                        })
+                        let types = Object.keys(data.requestBody?.content || {})
+                        for (let i = 0; i < types.length; i++) {
+                            /** @type {ParameterObject[]} */
+                            let parameters = data['parameters']
+                            let contentType = this.getContentTypeByKey(types[i])
+                            let body = this.pickJsonSchema(data.requestBody, types[i])
+                            let response = this.pickJsonSchema(data.responses['200'])
+                            outputs.push({
+                                summary: data.summary || 'no summary',
+                                description: data.description || 'no description',
+                                path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}${i >= 1 ? `#${types[i]}` : ''}`,
+                                parameters,
+                                method: method,
+                                body,
+                                contentType: contentType === 'application/json' ? null : contentType,
+                                query: this.pickParametersInQuery(data.parameters || []),
+                                response
+                            })
+                        }
                     }
                 }
             }

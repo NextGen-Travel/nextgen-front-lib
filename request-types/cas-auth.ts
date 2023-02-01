@@ -42,7 +42,7 @@ export type CasAuthDefinitions = {
             password: string;
         };
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
         };
         response: {
@@ -81,6 +81,16 @@ export type CasAuthDefinitions = {
         contentType: null;
     };
     /**
+     * [忘記密碼] - no description
+     * @param {string} appId - appId(uuid)
+     */
+    "post@v1/auth/forgot-password/:appId#application/x-www-form-urlencoded": {
+        body: null;
+        query: null;
+        response: null;
+        contentType: "x-www-form-urlencoded";
+    };
+    /**
      * [修改密碼] - no description
      */
     "post@auth/reset-password": {
@@ -106,77 +116,13 @@ export type CasAuthDefinitions = {
         contentType: null;
     };
     /**
-     * [取得登入 Bearer jwt] - no description
-     * @param {string} appId - appId(uuid)
+     * [修改密碼] - no description
      */
-    "get@v1/private/auth/:appId": {
-        body: null;
-        query: {
-            channel : string;
-            service ? : string;
-            expand ? : string;
-        };
-        response: {
-            msg: string;
-            data: {
-                accessToken: string;
-                user: {
-                    id: number;
-                    username: string;
-                    email: string;
-                    provider: string;
-                    confirmed: boolean;
-                    blocked: boolean;
-                    createdAt: string;
-                    updatedAt: string;
-                };
-                jwt: string;
-            };
-        };
-        contentType: null;
-    };
-    /**
-     * [更新 Jwt] - no description
-     */
-    "get@v1/private/auth/renew": {
+    "post@auth/reset-password#application/x-www-form-urlencoded": {
         body: null;
         query: null;
-        response: {
-            msg: string;
-            data: {
-                jwt: string;
-            };
-        };
-        contentType: null;
-    };
-    /**
-     * [確定登入狀態 for client server] - no description
-     * @param {string} appId - appId(uuid)
-     */
-    "post@v1/auth/:appId": {
-        body: null;
-        query: {
-            channel : string;
-            service ? : string;
-            expand ? : string;
-        };
-        response: {
-            msg: string;
-            data: {
-                accessToken: string;
-                user: {
-                    id: number;
-                    username: string;
-                    email: string;
-                    provider: string;
-                    confirmed: boolean;
-                    blocked: boolean;
-                    createdAt: string;
-                    updatedAt: string;
-                };
-            };
-        };
-        contentType: null;
+        response: null;
+        contentType: "x-www-form-urlencoded";
     };
     /**
      * [建立帳號] - no description
@@ -235,7 +181,7 @@ export type CasAuthDefinitions = {
             accessToken: string;
         };
         query: {
-            channel : string;
+            channel ? : string;
             service ? : string;
         };
         response: {
@@ -251,26 +197,6 @@ export type CasAuthDefinitions = {
                     createdAt: string;
                     updatedAt: string;
                 };
-            };
-        };
-        contentType: null;
-    };
-    /**
-     * [取得 company 啟用的服務狀態] - no description
-     */
-    "get@v1/private/company/state": {
-        body: null;
-        query: null;
-        response: {
-            msg: string;
-            data: {
-                channel: string;
-                nss: boolean;
-                erp: boolean;
-                scrm: boolean;
-                dispensing: boolean;
-                nssCallback: string;
-                erpCallback: string;
             };
         };
         contentType: null;

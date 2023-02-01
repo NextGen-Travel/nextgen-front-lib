@@ -29,7 +29,7 @@
 import OverlayLoading from './overlay-loading.vue'
 import { Loader } from 'power-helper'
 import { VueSelf } from '../self'
-import { PropType, ref, defineProps, defineEmits } from 'vue'
+import { PropType, ref } from 'vue'
 
 export type OutputFile = {
     url: string | ArrayBuffer | null
