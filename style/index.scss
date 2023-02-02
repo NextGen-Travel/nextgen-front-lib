@@ -15,7 +15,7 @@ body {
 
 .required-primary::after {
     content: "*";
-    color: var(--v-theme-primary);
+    color: rgb(var(--v-theme-primary)) !important;
 }
 
 $box: (
