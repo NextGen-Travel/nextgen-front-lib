@@ -48,6 +48,7 @@ export type RequestContext = {
     form: HTMLFormElement
     body: Record<string, any>
     query: Record<string, any>
+    state: Record<string, any>
     method: string
     headers: Record<string, string>
     contentType: ContentTypes
@@ -220,6 +221,7 @@ export class Request<
             form: document.createElement('form'),
             body: (params.body || {}) as any,
             query: (params.query || {}) as any,
+            state: this.state,
             headers,
             contentType: params.contentType || 'application/json',
             responseType: params.responseType,
