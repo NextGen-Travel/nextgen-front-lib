@@ -87,6 +87,28 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [取得所有與登入者同company的客服資料] - 取得所有與登入者同company的客服資料
+     */
+    "get@users": {
+        body: null;
+        query: null;
+        response: {
+            msg: string;
+            data: {
+                id: number;
+                username: string;
+                displayName: string;
+                avatar: string;
+                /**
+                 * true表示啟用反之為停用
+                 */
+                confirmed: boolean;
+                role: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
      * [創建客服（管理者權限才可使用）] - 管理者創建新客服
      */
     "post@users": {
@@ -158,6 +180,61 @@ export type ScrmPrivateDefinitions = {
         contentType: "multipart/form-data";
     };
     /**
+     * [no summary] - 取得使用者個人資料
+     */
+    "get@users/me": {
+        body: null;
+        query: null;
+        response: {
+            msg: string;
+            data: {
+                user: {
+                    id: number;
+                    email: string;
+                    displayName: string;
+                    username: string;
+                    confirmed: boolean;
+                    phone: string;
+                    notes: string;
+                    blocked: boolean;
+                    avatar: string;
+                    role: string;
+                    company: number;
+                };
+                platform: {
+                    platform: string;
+                    account: {};
+                    enable: boolean;
+                } [];
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [查詢特定客服資料] - 查詢特定客服資料(僅superadmin及admin可使用該api)
+     * @param {number} id - undefined
+     */
+    "get@users/:id": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                id: number;
+                email: string;
+                displayName: string;
+                username: string;
+                confirmed: boolean;
+                phone: string;
+                notes: string;
+                blocked: boolean;
+                avatar: string;
+                role: string;
+                company: number;
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [更新客服資料（登入者自己）] - 更新客服資料（登入者自己）
      */
     "put@users/:id": {
@@ -209,6 +286,20 @@ export type ScrmPrivateDefinitions = {
         contentType: "multipart/form-data";
     };
     /**
+     * [查詢公司資料] - 查詢公司資料
+     */
+    "get@companies": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                id: number;
+                name: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
      * [創建公司（superadmin權限才可使用）] - 創建公司（superadmin權限才可使用）
      */
     "post@companies": {
@@ -258,6 +349,80 @@ export type ScrmPrivateDefinitions = {
              * @example 建立成功
              */
             msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [superadmin查詢所有公司資料] - superadmin查詢所有公司資料
+     */
+    "get@companies/list": {
+        body: null;
+        query: {
+            enable ? : boolean;
+            sso ? : boolean;
+            offset ? : number;
+            limit ? : number;
+            platform ? : string;
+            keyword ? : string;
+        };
+        response: {
+            data: {
+                /**
+                 * 公司ID
+                 */
+                id: number;
+                /**
+                 * 公司名稱
+                 */
+                name: string;
+                platform: string[];
+                /**
+                 * 當前已開啟的客服數量
+                 */
+                accountCount: number;
+                /**
+                 * 公司的客服開啟上限
+                 */
+                accountLimit: number;
+                /**
+                 * sso設定是否開啟
+                 */
+                sso: boolean;
+                /**
+                 * 公司狀態
+                 */
+                enable: boolean;
+            } [];
+            total: number;
+        };
+        contentType: null;
+    };
+    /**
+     * [查詢特定公司資料] - 查詢特定公司資料
+     * @param {number} id - undefined
+     */
+    "get@companies/:id": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                id: number;
+                enable: boolean;
+                name: string;
+                accountLimit: number;
+                sso: {
+                    appId: string;
+                    secretKey: string;
+                    enable: boolean;
+                };
+                keys: {
+                    id: number;
+                    account: string;
+                    platform: string;
+                    channelId: string;
+                    enable: boolean;
+                } [];
+            };
         };
         contentType: null;
     };
@@ -331,6 +496,34 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [查詢特定公司底下所有使用者資料] - 查詢特定公司底下所有使用者資料
+     * @param {number} id - undefined
+     */
+    "get@companies/:id/users": {
+        body: null;
+        query: {
+            offset ? : number;
+            limit ? : number;
+        };
+        response: {
+            data: {
+                id: number;
+                username: string;
+                displayName: string;
+                email: string;
+                phone: string;
+                notes: string;
+                avatar: string;
+                role: string;
+                enable: boolean;
+            } [];
+            total: number;
+            enableQty: number;
+            disableQty: number;
+        };
+        contentType: null;
+    };
+    /**
      * [刪除特定公司資料 （軟刪除）] - 刪除特定客服資料（superadmin權限才可使用）
      * @param {number} id - undefined
      */
@@ -381,6 +574,35 @@ export type ScrmPrivateDefinitions = {
         };
         query: null;
         response: null;
+        contentType: null;
+    };
+    /**
+     * [取得自動回覆整顆樹] - 取得自動回覆整顆樹
+     */
+    "get@auto-replies": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Suucess
+             */
+            msg: string;
+            data: {
+                id: number;
+                replyText: string;
+                keyword: string;
+                isEnd ? : boolean;
+                isActive: boolean;
+                children: {
+                    id: number;
+                    replyText: string;
+                    keyword: string;
+                    isEnd ? : boolean;
+                    isActive: boolean;
+                    children: {} [];
+                } [];
+            } [];
+        };
         contentType: null;
     };
     /**
@@ -450,6 +672,20 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [取得歡迎訊息] - 取得歡迎訊息
+     */
+    "get@auto-reply/welcome": {
+        body: null;
+        query: null;
+        response: {
+            msg: string;
+            data: {
+                replyText: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [更新歡迎訊息] - 取得歡迎訊息
      */
     "put@auto-reply/welcome": {
@@ -479,6 +715,59 @@ export type ScrmPrivateDefinitions = {
              * @example Success
              */
             msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [刪除該樹節點] - 刪除該樹節點
+     * @param {string} id - undefined
+     */
+    "delete@auto-replies/:id": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: number;
+                replyText: string;
+                keyword: string;
+                isEnd ? : boolean;
+                isActive: boolean;
+                children: {
+                    id: number;
+                    replyText: string;
+                    keyword: string;
+                    isEnd ? : boolean;
+                    isActive: boolean;
+                    children: {} [];
+                } [];
+            } [][];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得快捷回覆] - 取得快捷回覆
+     */
+    "get@quick-replies": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id ? : number;
+                group: string;
+                isActive: boolean;
+                children: {
+                    id ? : number;
+                    replyText: string;
+                } [];
+            } [];
         };
         contentType: null;
     };
@@ -557,6 +846,48 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [刪除群組名稱或快捷訊息] - 刪除該樹節點
+     * @param {number} id - undefined
+     */
+    "delete@quick-replies/:id": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [取得範本] - 取得範本
+     */
+    "get@messagebird/templates": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                count: number;
+                items: {
+                    category: "OTP" | "TRANSACTIONAL" | "MARKETING";
+                    name: string;
+                    namespace: string;
+                    wabaId: string;
+                    languages: unknown[];
+                } [];
+                limit: number;
+                offset: number;
+                totalCount: number;
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [新增範本] - 新增範本
      */
     "post@messagebird/templates": {
@@ -600,6 +931,500 @@ export type ScrmPrivateDefinitions = {
                         text: string;
                         url ? : string | null;
                         phone_number ? : string | null;
+                    } [];
+                } [];
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [取得特定範本] - 取得特定範本
+     * @param {string} templateName - undefined
+     */
+    "get@messagebird/templates/:templateName/": {
+        body: null;
+        query: {
+            wabaId ? : string;
+        };
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: string;
+                language: {};
+                rejectedReason: string;
+                status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
+                createdAt: string;
+                updatedAt: string;
+                components: unknown[];
+                namespace ? : string;
+                wabaId ? : string;
+                category ? : "OTP" | "TRANSACTIONAL" | "MARKETING";
+                name ? : string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [刪除範本] - 刪除範本
+     * @param {string} templateName - undefined
+     */
+    "delete@messagebird/templates/:templateName/": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [取得nss商品目錄] - 取得nss商品目錄
+     */
+    "get@category": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                type: string;
+                total: number;
+                title: number;
+                products: {
+                    name: string;
+                    currency: string;
+                    price: string;
+                    slug: string;
+                    stock: boolean;
+                    url: string;
+                    image: string;
+                } [];
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得nss特定類型的商品] - 取得nss特定類型的商品
+     * @param {string} type - undefined
+     */
+    "get@category/:type": {
+        body: null;
+        query: {
+            page ? : number;
+            search ? : string;
+        };
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                type: string;
+                total: number;
+                title: number;
+                products: {
+                    name: string;
+                    currency: string;
+                    price: string;
+                    slug: string;
+                    stock: boolean;
+                    url: string;
+                    image: string;
+                } [];
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得報表分析資料] - 取得報表分析資料
+     */
+    "get@report/overview": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                fields: string[];
+                data: {} [];
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [取得各客服人員處理狀況資料] - 取得各客服人員處理狀況資料
+     */
+    "get@report/user-process-status": {
+        body: null;
+        query: {
+            startDate ? : string;
+            endDate ? : string;
+            limit ? : number;
+            offset ? : number;
+            /**
+             * @example 1,2,3
+             */
+            selectedUsers ? : string;
+        };
+        response: {
+            data: {
+                table: {
+                    fullCount: number;
+                    fields: {
+                        key:
+                            |
+                            "averageProcessTime" |
+                            "averageWaitingTime" |
+                            "completed" |
+                            "processing" |
+                            "shoppingLinkEventCount" |
+                            "username" |
+                            "waiting" |
+                            "tbColor";
+                        label: string;
+                    } [];
+                    items: {
+                        averageProcessTime: number;
+                        averageWaitingTime: number;
+                        completed: number;
+                        processing: number;
+                        shoppingLinkEventCount: number;
+                        username: string;
+                        waiting: number;
+                        tbColor ? : string;
+                    } [];
+                };
+                total: {
+                    fields: {
+                        key:
+                            |
+                            "averageProcessTime" |
+                            "averageWaitingTime" |
+                            "completed" |
+                            "processing" |
+                            "shoppingLinkEventCount" |
+                            "username" |
+                            "waiting" |
+                            "tbColor";
+                        label: string;
+                    } [];
+                    items: {
+                        averageProcessTime: number;
+                        averageWaitingTime: number;
+                        completed: number;
+                        processing: number;
+                        shoppingLinkEventCount: number;
+                        username: string;
+                        waiting: number;
+                        tbColor ? : string;
+                    } [];
+                };
+            };
+            /**
+             * @example Success
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [取得客戶標籤歸類資料] - 取得客戶標籤歸類資料
+     */
+    "get@report/tags": {
+        body: null;
+        query: {
+            limit ? : number;
+            offset ? : number;
+            startDate ? : string;
+            endDate ? : string;
+            /**
+             * @example 1,2,3
+             */
+            selectedTags ? : string;
+            /**
+             * @example 1,2,3
+             */
+            selectedUsers ? : string;
+        };
+        response: {
+            data: {
+                table: {
+                    fields: {
+                        key: string;
+                        label: string;
+                    } [];
+                    fullCount: number;
+                    items: {
+                        customer: string;
+                        date: string;
+                        phone: string;
+                        tag: string;
+                        username: string;
+                    } [];
+                };
+                chartData: {
+                    name: string;
+                    value: number;
+                } [];
+            };
+            /**
+             * @example Success
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [取得客服的分析資料資料] - 取得客服的分析資料資料
+     */
+    "get@report/user-process-list": {
+        body: null;
+        query: {
+            limit ? : number;
+            offset ? : number;
+            startDate ? : string;
+            endDate ? : string;
+            /**
+             * @example 1,2,3
+             */
+            selectedUsers ? : string;
+        };
+        response: {
+            data: {
+                table: {
+                    fullCount: number;
+                    fields: {
+                        key:
+                            |
+                            "customer" |
+                            "date" |
+                            "startedAt" |
+                            "endedAt" |
+                            "tag" |
+                            "shoppingLinkCnt" |
+                            "phone" |
+                            "processTime" |
+                            "status" |
+                            "username" |
+                            "tbColor";
+                        label: string;
+                    } [];
+                    items: {
+                        customer: string;
+                        date: string;
+                        startedAt: string;
+                        endedAt ? : string;
+                        tag ? : string;
+                        shoppingLinkCnt ? : number;
+                        phone: string;
+                        processTime: number;
+                        status: string;
+                        username: string;
+                        tbColor ? : string;
+                    } [];
+                };
+                total: {
+                    fields: {
+                        key:
+                            |
+                            "customer" |
+                            "date" |
+                            "startedAt" |
+                            "endedAt" |
+                            "tag" |
+                            "shoppingLinkCnt" |
+                            "phone" |
+                            "processTime" |
+                            "status" |
+                            "username" |
+                            "tbColor";
+                        label: string;
+                    } [];
+                    items: {
+                        customer: string;
+                        date: string;
+                        startedAt: string;
+                        endedAt ? : string;
+                        tag ? : string;
+                        shoppingLinkCnt ? : number;
+                        phone: string;
+                        processTime: number;
+                        status: string;
+                        username: string;
+                        tbColor ? : string;
+                    } [];
+                };
+            };
+            /**
+             * @example Success
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [客服問題歸類-select框的選項] - 客服問題歸類-select框的選項
+     */
+    "get@question-types": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: number;
+                keyword: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得客服問題歸類資料] - 取得客服問題歸類資料
+     */
+    "get@report/question-type": {
+        body: null;
+        query: {
+            limit ? : number;
+            offset ? : number;
+            startDate ? : string;
+            endDate ? : string;
+            selectedQuestionTypes ? : string;
+        };
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                table: {
+                    fullCount: number;
+                    fields: {
+                        key: string;
+                        label: string;
+                    } [];
+                    items: {
+                        name: string;
+                        count: string;
+                        tbColor ? : string;
+                    } [];
+                };
+                chartData: {
+                    name: string;
+                    value: number;
+                } [];
+                total: {
+                    fields: {
+                        key: "totalCount";
+                        label: string;
+                    } [];
+                    items: {
+                        totalCount: string;
+                    } [];
+                };
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [取得客服問題歸類-其他類] - 取得客服問題歸類-其他類
+     */
+    "get@question-types/others": {
+        body: null;
+        query: {
+            startDate ? : string;
+            endDate ? : string;
+        };
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                fields: {
+                    key: string;
+                    label: string;
+                } [];
+                items: {
+                    count: string;
+                    name: string;
+                } [];
+                detailFields: {
+                    key: string;
+                    label: string;
+                } [];
+                detailItems: {
+                    date: string;
+                    note: string;
+                    username: string;
+                } [];
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [取得對話紀錄] - 取得對話紀錄
+     * @param {string} customerUuid - undefined
+     */
+    "get@customers/:customerUuid/messages": {
+        body: null;
+        query: {
+            start ? : number;
+            /**
+             * @example 100
+             */
+            limit ? : number;
+        };
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                /**
+                 * 用來判斷此次對話是否結束，以便分析報表資料用途
+                 */
+                isCaseOpened: boolean;
+                messages: {
+                    customerUuid: string;
+                    direction: "received" | "sent";
+                    id: number;
+                    status: "sent" | "read" | "delivered" | "failed";
+                    text: string;
+                    timestamp: string;
+                    type: "text" | "hsm" | "image" | "file" | "audio" | "video" | "whatsappSticker";
+                    user: {
+                        id: number;
+                        displayName: string;
+                        avatar: string;
+                    };
+                    file: {
+                        url: string | null;
+                        caption: string | null;
+                        size: string | null;
+                        extension: string | null;
+                    };
+                    components: {
+                        type: "HEADER" | "BODY" | "FOOTER" | "BUTTONS";
+                        text: string;
+                        format ? : "TEXT" | "IMAGE" | "DOCUMENT" | "VIDEO" | null;
+                        example ? : {};
+                        buttons ? : {
+                            type: "QUICK_REPLY" | "PHONE_NUMBER" | "URL";
+                            text: string;
+                            url ? : string | null;
+                            phone_number ? : string | null;
+                        } [];
                     } [];
                 } [];
             };
@@ -708,6 +1533,74 @@ export type ScrmPrivateDefinitions = {
         contentType: "multipart/form-data";
     };
     /**
+     * [取得左邊列表] - 取得左邊列表
+     */
+    "get@chats": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: number;
+                lastMsg: string;
+                status: "sent" | "read" | "delivered" | "failed";
+                timestamp: string;
+                unreadCount: number;
+                isPin: boolean;
+                customer: {
+                    customerUuid: string;
+                    id: number;
+                    phone: string;
+                    remark: string;
+                    active ? : string;
+                    colorCode ? : number;
+                    platform: "whatsapp" | "wechat" | "facebook" | "instagram" | "telegram";
+                    tags: number[];
+                };
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得頭像的顏色] - 用來設定客人頭像的顏色
+     */
+    "get@groups": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: number;
+                colorCode: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得所有標籤] - 用來mapping全域標籤
+     */
+    "get@tags": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
+            data: {
+                id: number;
+                tagName: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
      * [更新全域標籤] - 更新全域標籤
      */
     "post@tags": {
@@ -722,6 +1615,21 @@ export type ScrmPrivateDefinitions = {
             msg: string;
             id: number;
             tagName: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [刪除全域標籤] - 刪除全域標籤
+     * @param {number} id - undefined
+     */
+    "delete@tags/:id": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
         };
         contentType: null;
     };

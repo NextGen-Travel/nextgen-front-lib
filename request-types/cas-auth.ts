@@ -125,6 +125,79 @@ export type CasAuthDefinitions = {
         contentType: "x-www-form-urlencoded";
     };
     /**
+     * [取得登入 Bearer jwt] - no description
+     * @param {string} appId - appId(uuid)
+     */
+    "get@v1/private/auth/:appId": {
+        body: null;
+        query: {
+            channel ? : string;
+            service ? : string;
+            expand ? : string;
+        };
+        response: {
+            msg: string;
+            data: {
+                accessToken: string;
+                user: {
+                    id: number;
+                    username: string;
+                    email: string;
+                    provider: string;
+                    confirmed: boolean;
+                    blocked: boolean;
+                    createdAt: string;
+                    updatedAt: string;
+                };
+                jwt: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [更新 Jwt] - no description
+     */
+    "get@v1/private/auth/renew": {
+        body: null;
+        query: null;
+        response: {
+            msg: string;
+            data: {
+                jwt: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [確定登入狀態 for client server] - no description
+     * @param {string} appId - appId(uuid)
+     */
+    "post@v1/auth/:appId": {
+        body: null;
+        query: {
+            channel ? : string;
+            service ? : string;
+            expand ? : string;
+        };
+        response: {
+            msg: string;
+            data: {
+                accessToken: string;
+                user: {
+                    id: number;
+                    username: string;
+                    email: string;
+                    provider: string;
+                    confirmed: boolean;
+                    blocked: boolean;
+                    createdAt: string;
+                    updatedAt: string;
+                };
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [建立帳號] - no description
      * @param {string} appId - appId(uuid)
      */
@@ -197,6 +270,26 @@ export type CasAuthDefinitions = {
                     createdAt: string;
                     updatedAt: string;
                 };
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [取得 company 啟用的服務狀態] - no description
+     */
+    "get@v1/private/company/state": {
+        body: null;
+        query: null;
+        response: {
+            msg: string;
+            data: {
+                channel: string;
+                nss: boolean;
+                erp: boolean;
+                scrm: boolean;
+                dispensing: boolean;
+                nssCallback: string;
+                erpCallback: string;
             };
         };
         contentType: null;

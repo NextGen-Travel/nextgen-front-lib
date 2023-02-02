@@ -5,6 +5,359 @@
  */
 export type PosNewLayoutDefinitions = {
     /**
+     * [產品清單] - 取得產品清單
+     */
+    "get@api/products": {
+        body: null;
+        query: {
+            location_id ? : number;
+            term ? : string;
+            tag_id ? : number;
+        };
+        response: {
+            /**
+             * 產品衍生規格ID
+             */
+            variation_id: number;
+            /**
+             * 產品ID
+             */
+            product_id: number;
+            /**
+             * 產品名稱
+             */
+            name: string;
+            /**
+             * 產品類型
+             */
+            type: string;
+            /**
+             * 是否啟用庫存管理
+             */
+            enable_stock: boolean;
+            /**
+             * 圖片URL
+             */
+            product_image: string;
+            /**
+             * 衍生規格名稱
+             */
+            variation: string;
+            /**
+             * 售價
+             */
+            sell_price_inc_tax: string;
+            /**
+             * Sub SKU
+             */
+            sub_sku: string;
+            /**
+             * 庫存總數量
+             */
+            qty_available: number;
+            stock: {
+                /**
+                 * 採購單ID
+                 */
+                purchase_line_id: number;
+                /**
+                 * 批號
+                 */
+                lot_number: string;
+                /**
+                 * 到期日
+                 */
+                exp_date: string;
+                /**
+                 * 數量
+                 */
+                qty_available: number;
+            } [];
+        } [];
+        contentType: null;
+    };
+    /**
+     * [取得單一產品詳細資訊] - 取得單一產品詳細資訊
+     *
+     */
+    "get@api/products/:variation_id": {
+        body: null;
+        query: {
+            location_id ? : number;
+        };
+        response: {
+            /**
+             * 產品名稱
+             */
+            product_name: string;
+            /**
+             * 產品ID
+             */
+            product_id: number;
+            /**
+             * 品牌ID
+             */
+            brand_id: number;
+            /**
+             * 圖片URL
+             */
+            product_image: string;
+            /**
+             * Sub SKU
+             */
+            sub_sku: string;
+            /**
+             * 售價(含稅)
+             */
+            sell_price_inc_tax: string;
+            /**
+             * 產品衍生規格ID
+             */
+            variation_id: number;
+            /**
+             * 庫存總量
+             */
+            qty_available: number;
+            /**
+             * 單位
+             */
+            unit: string;
+            /**
+             * 單位ID
+             */
+            unit_id: number;
+            /**
+             * 品牌名稱
+             */
+            brand: string;
+            stock: {
+                /**
+                 * 採購單ID
+                 */
+                purchase_line_id: number;
+                /**
+                 * 批號
+                 */
+                lot_number: string;
+                /**
+                 * 過期日
+                 */
+                exp_date: string;
+                /**
+                 * 可用數量
+                 */
+                qty_available: number;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [客戶自訂產品標籤] - 取得客戶自訂產品標籤
+     */
+    "get@api/custom-tags": {
+        body: null;
+        query: null;
+        response: string[];
+        contentType: null;
+    };
+    /**
+     * [取得店家資訊] - 取得全部店家資訊以及預設店家及營業員
+     */
+    "get@api/location-info": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * 總店ID
+             */
+            business_id: number;
+            /**
+             * 預設分店ID
+             */
+            default_location_id: number;
+            location_list: {
+                /**
+                 * 分店ID
+                 */
+                location_id: number;
+                /**
+                 * 分店名稱
+                 */
+                location_name: string;
+            };
+            /**
+             * 店員ID
+             */
+            employee_id: number;
+            /**
+             * 店員名稱
+             */
+            employee_name: string;
+            /**
+             * 是否啟用積分(1=啟用, 0=關閉)
+             */
+            enable_rp: boolean;
+            /**
+             * 積分顯示名稱
+             */
+            rp_name: string;
+            /**
+             * 每一積分需要的消費金額
+             */
+            amount_for_unit_rp: number;
+            /**
+             * 可獲獎勵的最低消費金額
+             */
+            min_order_total_for_rp: number;
+            /**
+             * 每個訂單的最大積分額
+             */
+            max_rp_per_order: number;
+            /**
+             * 每一積分的兌換金額
+             */
+            redeem_amount_per_unit_rp: number;
+            /**
+             * 可兌換積分的最低消費額
+             */
+            min_order_total_for_redeem: number;
+            /**
+             * 最低兌換積分
+             */
+            min_redeem_point: number;
+            /**
+             * 每個訂單的最大兌換積分
+             */
+            max_redeem_point: number;
+            /**
+             * 獎勵積分有效期限
+             */
+            rp_expiry_period: number;
+            /**
+             * 獎勵積分有效期限單位(年/月)
+             */
+            rp_expiry_type: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [暫存訂單列表] - 取得暫存訂單列表
+     *
+     */
+    "get@api/sells": {
+        body: null;
+        query: {
+            suspended ? : boolean;
+            location_id ? : number;
+        };
+        response: {
+            id: number;
+            /**
+             * 交易日期
+             */
+            transaction_date: string;
+            /**
+             * 客戶姓名
+             */
+            name: string;
+            /**
+             * 總金額
+             */
+            final_total: string;
+            /**
+             * 額外註記
+             */
+            additional_notes: string;
+            /**
+             * 銷售日期
+             */
+            sale_date: string;
+            /**
+             * 分店名稱
+             */
+            business_location: string;
+            /**
+             * 商品項目總數
+             */
+            total_items: number;
+            /**
+             * 訂單編號
+             */
+            invoice_no: string;
+            sell_lines: {
+                id: number;
+                transaction_id: number;
+                product_id: number;
+                variation_id: number;
+                quantity: number;
+                mfg_waste_percent: string;
+                mfg_ingredient_group_id: number;
+                quantity_returned: string;
+                unit_price_before_discount: string;
+                unit_price: string;
+                line_discount_type: string;
+                line_discount_amount: string;
+                unit_price_inc_tax: string;
+                item_tax: string;
+                /**
+                 * 稅ID
+                 */
+                tax_id: number;
+                /**
+                 * 折扣ID
+                 */
+                discount_id: number;
+                lot_no_line_id: number;
+                sell_line_note: string;
+                so_line_id: number;
+                so_quantity_invoiced: string;
+                res_service_staff_id: number;
+                res_line_order_status: string;
+                parent_sell_line_id: string;
+                children_type: string;
+                /**
+                 * 子單位ID
+                 */
+                sub_unit_id: number;
+                created_at: string;
+                updated_at: string;
+            } [];
+        } [];
+        contentType: null;
+    };
+    /**
+     * [會員清單] - 取得會員清單
+     */
+    "get@api/contacts": {
+        body: null;
+        query: {
+            q ? : string;
+        };
+        response: {
+            /**
+             * 客戶ID
+             */
+            id: number;
+            /**
+             * 客戶名稱
+             */
+            name: string;
+            /**
+             * 客戶自訂ID
+             */
+            member_id: string;
+            /**
+             * 手機
+             */
+            mobile: string;
+            /**
+             * 客戶積分
+             */
+            total_rp: string;
+        } [];
+        contentType: null;
+    };
+    /**
      * [新增會員] - 新增會員
      *
      * Note: POS原生API
@@ -33,7 +386,7 @@ export type PosNewLayoutDefinitions = {
             /**
              * 名字
              */
-            first_name ? : string;
+            first_name: string;
             /**
              * 中間名
              */
@@ -45,7 +398,7 @@ export type PosNewLayoutDefinitions = {
             /**
              * 行動電話號碼
              */
-            mobile ? : string;
+            mobile: string;
             alternate_number ? : string;
             /**
              * 市話
@@ -576,5 +929,65 @@ export type PosNewLayoutDefinitions = {
             receipt: string;
         };
         contentType: "x-www-form-urlencoded";
+    };
+    /**
+     * [取得運輸狀態列表] - 取得運輸狀態列表
+     */
+    "get@api/transport-status": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * 翻譯後的顯示文字
+             */
+            name: string;
+            /**
+             * 下拉選單的value
+             */
+            value: string;
+        } [];
+        contentType: null;
+    };
+    /**
+     * [取得發票清單] - 取得發票清單
+     */
+    "get@api/invoices": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * 預設發票ID
+             */
+            default_invoice_id: number;
+            invoices: {
+                /**
+                 * 發票名稱
+                 */
+                name: string;
+                /**
+                 * 下拉選單的value
+                 */
+                value: string;
+            } [];
+        };
+        contentType: null;
+    };
+    /**
+     * [取得客戶群清單] - 取得客戶群清單
+     */
+    "get@api/contact-group": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * 客戶群顯示文字
+             */
+            name: string;
+            /**
+             * 下拉選單的value
+             */
+            value: string;
+        } [];
+        contentType: null;
     };
 }

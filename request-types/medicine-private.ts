@@ -5,6 +5,19 @@
  */
 export type MedicinePrivateDefinitions = {
     /**
+     * [更新jwt 有效間] - no description
+     */
+    "post@users-permissions/auth/renew": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                jwt: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [新增藥房] - no description
      */
     "post@stores": {
@@ -109,6 +122,22 @@ export type MedicinePrivateDefinitions = {
             };
         };
         contentType: "x-www-form-urlencoded";
+    };
+    /**
+     * [新增藥房時跟 CAS 拿 accessKey] - no description
+     */
+    "post@stores/sync": {
+        body: null;
+        query: {
+            appId ? : string;
+        };
+        response: {
+            data: {
+                SSO: boolean;
+                accessKey: string;
+            };
+        };
+        contentType: null;
     };
     /**
      * [給 CAS 在那邊的 store 資料有變動時打的] - no description
@@ -287,6 +316,102 @@ export type MedicinePrivateDefinitions = {
             };
         };
         contentType: "x-www-form-urlencoded";
+    };
+    /**
+     * [取得個人資訊] - no description
+     */
+    "get@users/me": {
+        body: null;
+        query: null;
+        response: {
+            id: number;
+            account: string;
+            username: string;
+            email: string;
+            provider: string;
+            confirmed: boolean;
+            blocked: boolean;
+            createdAt: string;
+            updatedAt: string;
+            isPharmacist: boolean;
+            level: string;
+            role: {
+                id: number;
+                name: string;
+                description: string;
+                type: string;
+            };
+        } & {
+            store: {
+                id: number;
+                nameEn: string;
+                nameCn: string;
+                rxNo: string;
+                tel: string;
+                district: string;
+                address: string;
+                enable: boolean;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [客人搜尋] - no description
+     */
+    "get@customers": {
+        body: null;
+        query: {
+            expand ? : string;
+            email ? : string;
+            mobile ? : string;
+            phoneNumber ? : string;
+            accountNo ? : string;
+        };
+        response: {
+            data: {
+                id: number;
+                uuid: string;
+                gender: string;
+                address: string;
+                email: string;
+                birthday: string;
+                name: string;
+                mobile: string;
+                accountNo: string;
+                drugTaboo: string;
+                store: {
+                    id: number;
+                    rxNo: string;
+                    nameCn: string;
+                    nameEn: string;
+                    district: string;
+                };
+                allergyDrugs: {
+                    id: number;
+                    note: string;
+                    drug: {
+                        id: number;
+                        permitNo: string;
+                        productName: string;
+                    };
+                } [];
+                allergyIngredients: {
+                    id: number;
+                    note: string;
+                    ingredient: {
+                        id: number;
+                        name: string;
+                    };
+                } [];
+            } [];
+            meta: {
+                page: number;
+                perPage: number;
+                pageCount: number;
+                totalCount: number;
+            };
+        };
+        contentType: null;
     };
     /**
      * [新建客人] - no description

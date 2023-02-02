@@ -226,23 +226,40 @@ class OpenApiReader {
                     let data = api[method]
                     if (data) {
                         let types = Object.keys(data.requestBody?.content || {})
-                        for (let i = 0; i < types.length; i++) {
+                        if (types.length === 0) {
                             /** @type {ParameterObject[]} */
                             let parameters = data['parameters']
-                            let contentType = this.getContentTypeByKey(types[i])
-                            let body = this.pickJsonSchema(data.requestBody, types[i])
                             let response = this.pickJsonSchema(data.responses['200'])
                             outputs.push({
                                 summary: data.summary || 'no summary',
                                 description: data.description || 'no description',
-                                path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}${i >= 1 ? `#${types[i]}` : ''}`,
+                                path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}`,
                                 parameters,
-                                method: method,
-                                body,
-                                contentType: contentType === 'application/json' ? null : contentType,
+                                method,
+                                body: null,
+                                contentType: null,
                                 query: this.pickParametersInQuery(data.parameters || []),
                                 response
                             })
+                        } else {
+                            for (let i = 0; i < types.length; i++) {
+                                /** @type {ParameterObject[]} */
+                                let parameters = data['parameters']
+                                let contentType = this.getContentTypeByKey(types[i])
+                                let body = this.pickJsonSchema(data.requestBody, types[i])
+                                let response = this.pickJsonSchema(data.responses['200'])
+                                outputs.push({
+                                    summary: data.summary || 'no summary',
+                                    description: data.description || 'no description',
+                                    path: `${method}@${path.replace(/\{/g, ':').replace(/\}/g, '').slice(1)}${i >= 1 ? `#${types[i]}` : ''}`,
+                                    parameters,
+                                    method,
+                                    body,
+                                    contentType: contentType === 'application/json' ? null : contentType,
+                                    query: this.pickParametersInQuery(data.parameters || []),
+                                    response
+                                })
+                            }
                         }
                     }
                 }
