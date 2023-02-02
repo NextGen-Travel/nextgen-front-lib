@@ -45,8 +45,11 @@ export const t = (key: string) => i18n.key(key as any).get(window.__ng_config.li
 
 export const NextgenLib = {
     install(vue: App, params: {
-        env: typeof window.__ng_config.libEnv
         options: typeof window.__ng_config.libOptions
+        env: {
+            stage: string
+            service: string
+        }
     }) {
         for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
