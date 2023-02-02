@@ -16,7 +16,7 @@
 import OverlayLoading from './overlay-loading.vue'
 import Skeleton from './skeleton.vue'
 import { VueSelf } from '../self'
-import { useLibOptions } from '../../core'
+import { useLibOptions } from '../../index'
 import { StyleString, Resource, JobQueues, ElementListenerGroup, Debounce } from 'power-helper'
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 
