@@ -1,4 +1,4 @@
-export default {
+export const Locales = {
     zh: {
         confirmTitleText: '提醒',
         confirmCancelText: '取消',
