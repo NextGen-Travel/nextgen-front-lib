@@ -30,6 +30,7 @@
                 <div class="pa-3">
                     <slot :switchShow="switchShow"></slot>
                 </div>
+                <slot name="footer"></slot>
             </v-card>
         </v-dialog>
     </div>

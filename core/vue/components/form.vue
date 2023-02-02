@@ -4,10 +4,9 @@
             ref="checkform"
             @update:model-value="update"
             @submit.stop.prevent="submit"
-            :lazy-validation="lazyValidation"
             :readonly="readonly"
             :disabled="disabled || loading">
-            <slot :valid="valid" :validate="validate"></slot>
+            <slot :valid="state.valid" :validate="validate"></slot>
         </v-form>
     </div>
 </template>
@@ -83,7 +82,7 @@ const state = reactive({
 onMounted(() => {
     nextTick(() => {
         if (props.lazyValidation) {
-            checkform.value?.resetValidation()
+            update(true)
         }
     })
 })
