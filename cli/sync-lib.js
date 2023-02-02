@@ -7,15 +7,11 @@ const fsx = require('fs-extra')
  */
 
 module.exports = async(params = {}) => {
-    const output = params.outputDir || './project'
+    const output = params.outputDir || './nextgen-lib'
     const dirs = [
         'core',
-        'libraries',
-        'modules',
         'request-types',
-        'style',
-        'utils',
-        'vue'
+        'style'
     ]
     fsx.rmSync(output, {
         force: true,
