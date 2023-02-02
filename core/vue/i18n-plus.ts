@@ -1,6 +1,6 @@
 import { text } from 'power-helper'
 import { VarParameters } from 'power-helper/types/string'
-import { serviceException } from '../core/error'
+import { serviceException } from '../error'
 import { I18n, I18nOptions, createI18n } from 'vue-i18n'
 
 const exception = serviceException.checkout('i18n-plus')

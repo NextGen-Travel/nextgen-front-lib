@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import {  } from 'power-helper'
 import { DoughnutChart } from 'vue-chart-3'
 import { reactive, PropType } from 'vue'
 import { ChartData, ChartOptions } from 'chart.js'

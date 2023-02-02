@@ -1,5 +1,5 @@
 import { onUnmounted } from 'vue'
-import { serviceException } from '../core/error'
+import { serviceException } from '../error'
 
 const exception = serviceException.checkout('listener-group')
 

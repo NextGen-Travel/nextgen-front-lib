@@ -1,6 +1,6 @@
 import { Event } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
-import { serviceException } from '../core/error'
+import { serviceException } from '../error'
 import { createRouter, Router, RouterOptions, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 
 export type RouteMixin<

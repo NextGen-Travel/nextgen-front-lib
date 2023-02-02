@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { t } from '../../core'
+import { t } from '../../index'
 import { useLibConfirmStore } from './store/confirm'
 import { computed, watch, reactive } from 'vue'
 

@@ -1,5 +1,5 @@
 import { enc, AES } from 'crypto-js'
-import { serviceException } from '../../core/error'
+import { serviceException } from '../../error'
 
 type Support = 'php-encryption' | 'crypto-js'
 

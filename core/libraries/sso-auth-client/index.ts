@@ -1,10 +1,11 @@
+import Axios from 'axios'
 import { casApi } from './request'
 import { config } from './config'
 import { scrmApi } from './request-scrm'
-import { useLibEnv } from '../../core'
+import { useLibEnv } from '../../index'
 import { dispensingApi } from './request-dispensing'
-import { ScrmDefinitions } from '../../request-types/scrm'
-import { MedicinePublicDefinitions } from '../../request-types/medicine-public'
+import { ScrmDefinitions } from '../../../request-types/scrm'
+import { MedicinePublicDefinitions } from '../../../request-types/medicine-public'
 import { text, ElementListenerGroup } from 'power-helper'
 
 export type Services = 'nss' | 'erp' | 'scrm' | 'dispensing'
@@ -108,17 +109,15 @@ export class SsoAuthClientConstructor {
 
     async install(params: InstallParams) {
         this.params = params
-        await Promise.all([
-            casApi.install({
-                baseUrl: this.organization.url
-            }),
-            scrmApi.install({
-                baseUrl: this.organization.scrmUrl
-            }),
-            dispensingApi.install({
-                baseUrl: this.organization.dispensingUrl
-            })
-        ])
+        casApi.state.axios = Axios.create({
+            baseURL: this.organization.url
+        })
+        scrmApi.state.axios = Axios.create({
+            baseURL: this.organization.scrmUrl
+        })
+        dispensingApi.state.axios = Axios.create({
+            baseURL: this.organization.dispensingUrl
+        })
     }
 
     /**

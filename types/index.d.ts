@@ -18,8 +18,11 @@ declare module '@vue/runtime-core' {
         NgOverlayLoading: typeof import('../vue/components/overlay-loading.vue')['default']
         NgVisibleLoad: typeof import('../vue/components/visible-load.vue')['default']
         NgDateRangePicker: typeof import('../vue/components/date-range-picker.vue')['default']
+        NgPieChart: typeof import('../vue/components/charts/pie.vue')['default']
+        NgDoughnutChart: typeof import('../vue/components/charts/doughnut.vue')['default']
     }
 }
+
 declare global {
     interface Window {
         __ng_config: {

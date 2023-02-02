@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import type { AnySchema } from 'yup'
-import { serviceException } from '../../core/error'
+import { serviceException } from '../../error'
 
 const exception = serviceException.checkout('validate')
 

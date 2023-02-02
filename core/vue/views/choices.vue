@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import { t } from '../../core'
+import { t } from '../../index'
 import { useLibChoicesStore } from './store/choices'
 import { computed, watch, reactive } from 'vue'
 
