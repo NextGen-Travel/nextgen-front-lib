@@ -1,5 +1,5 @@
-import Locales from './locales'
 import { I18n } from 'power-helper'
+import { Locales } from './locales'
 
 const flatObj = (data: Record<string, any>) => {
     let output: any = {}
