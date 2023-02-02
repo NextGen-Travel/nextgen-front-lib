@@ -23,7 +23,6 @@ import OutlineText from './vue/components/outline-text.vue'
 import OverlayLoading from './vue/components/overlay-loading.vue'
 import ChartPie from './vue/components/charts/pie.vue'
 import ChartDoughnut from './vue/components/charts/doughnut.vue'
-import _Locales from './locales'
 
 window.__ng_config = {
     libOptions: {
@@ -42,7 +41,6 @@ Chart.register(...registerables)
 
 export const useLibOptions = () => window.__ng_config.libOptions
 export const useLibEnv = () => window.__ng_config.libEnv
-export const Locales = _Locales
 export const t = (key: string) => i18n.key(key as any).get(window.__ng_config.libOptions.lang)
 
 export const NextgenLib = {
