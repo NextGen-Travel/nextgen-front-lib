@@ -3,6 +3,7 @@ import 'v-calendar/dist/style.css'
 import type { App } from 'vue'
 import { i18n } from './i18n'
 import { toHump } from '../utils/text'
+import { Chart, registerables } from 'chart.js'
 import VCalendar from 'v-calendar'
 import Img from '../vue/components/img.vue'
 import Form from '../vue/components/form.vue'
@@ -34,6 +35,8 @@ window.__ng_config = {
         service: '',
     }
 }
+
+Chart.register(...registerables)
 
 export const useLibOptions = () => window.__ng_config.libOptions
 export const useLibEnv = () => window.__ng_config.libEnv

@@ -43,13 +43,12 @@ export type LaravelResourcePaginate<T> = {
     }
 }
 
-export type RequestContext<C = any> = {
+export type RequestContext = {
     path: string
     form: HTMLFormElement
     body: Record<string, any>
     query: Record<string, any>
     method: string
-    config: C
     headers: Record<string, string>
     contentType: ContentTypes
     responseType?: 'arraybuffer' | 'application/json'
@@ -79,15 +78,15 @@ type QueryParams<To extends string, Api extends DefinedFormat> = StringParams<To
         headers?: Record<string, string>
     }
 
-type ModuleParams<R extends Request<any, any>, C> = {
+type ModuleParams<R extends Request<any>> = {
     name: string
-    http: (_context: RequestContext<C>) => Promise<any>
-    install?: (_request: R, _config: C) => Promise<any>
+    http: (_context: RequestContext) => Promise<any>
+    install?: (_request: R) => any
 }
 
 type Channels = {
     useMockAfter: {
-        context: RequestContext<any>
+        context: RequestContext
         response: any
     }
 }
@@ -95,14 +94,12 @@ type Channels = {
 export type ApisDefinition<T extends Record<ToFormat, DefinedFormat>> = T
 
 export class Request<
-    Config extends Record<string, string>,
     ApisDefinition extends Record<ToFormat, DefinedFormat>
 > extends Event<Channels> {
     private mocks: Partial<Record<keyof ApisDefinition, any>> = {}
-    private params: ModuleParams<this, Config>
+    private params: ModuleParams<this>
     private installed = false
-    private config: Config | null = null
-    constructor(params: ModuleParams<Request<Config, ApisDefinition>, Config>) {
+    constructor(params: ModuleParams<Request<ApisDefinition>>) {
         super()
         this.params = params
     }
@@ -155,7 +152,7 @@ export class Request<
 
     static async AxiosRequest(params: {
         axios: any
-        context: RequestContext<any>
+        context: RequestContext
     }) {
         let { axios, context } = params
         let { method, path, query, headers, responseType, body } = context
@@ -197,39 +194,31 @@ export class Request<
 
     mock<T extends keyof ApisDefinition>(
         to: T,
-        response: (_ctx: RequestContext<any>) => Extract<ApisDefinition[T], DefinedFormat>['response']
+        response: (_ctx: RequestContext) => Extract<ApisDefinition[T], DefinedFormat>['response']
     ) {
         this.mocks[to] = response
     }
 
-    export(): Request<Config, ApisDefinition>['http'] {
+    export(): Request<ApisDefinition>['http'] {
         return this.http.bind(this)
-    }
-
-    async install(config: Config) {
-        this.config = config
-        if (this.params.install) {
-            await this.params.install(this, config)
-        }
-        this.installed = true
     }
 
     async http<T extends keyof ApisDefinition>(
         to: T,
         params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>
     ): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']> {
-        if (this.installed === false) {
-            throw exception.create(`Request ${this.name} not installed.`)
+        if (this.installed === false && this.params.install) {
+            this.params.install(this)
         }
+        this.installed = true
         let parsed = this.parseUrl(to as string, params.params)
         let headers = params.headers || {}
-        let context: RequestContext<any> = {
+        let context: RequestContext = {
             path: parsed.path,
             form: document.createElement('form'),
             body: (params.body || {}) as any,
             query: (params.query || {}) as any,
             headers,
-            config: this.config,
             contentType: params.contentType || 'application/json',
             responseType: params.responseType,
             method: parsed.method
