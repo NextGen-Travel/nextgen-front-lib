@@ -94,12 +94,14 @@ type Channels = {
 export type ApisDefinition<T extends Record<ToFormat, DefinedFormat>> = T
 
 export class Request<
-    ApisDefinition extends Record<ToFormat, DefinedFormat>
+    ApisDefinition extends Record<ToFormat, DefinedFormat>,
+    State = unknown
 > extends Event<Channels> {
+    state: Record<string, any> = {}
     private mocks: Partial<Record<keyof ApisDefinition, any>> = {}
     private params: ModuleParams<this>
     private installed = false
-    constructor(params: ModuleParams<Request<ApisDefinition>>) {
+    constructor(params: ModuleParams<Request<ApisDefinition, State>>) {
         super()
         this.params = params
     }
