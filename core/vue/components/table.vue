@@ -65,7 +65,7 @@
                     hide-details
                     multiple
                     :value="field.key"
-                    :label="field.label"
+                    :label="field.label()"
                     :key="field.key + 'da'">
                 </v-checkbox>
             </template>
