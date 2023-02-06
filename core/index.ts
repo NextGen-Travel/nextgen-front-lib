@@ -2,7 +2,6 @@ import 'v-calendar/dist/style.css'
 
 import type { App } from 'vue'
 import { i18n } from './i18n'
-import { toHump } from './utils/text'
 import { Chart, registerables } from 'chart.js'
 import VCalendar from 'v-calendar'
 import Img from './vue/components/img.vue'
@@ -62,28 +61,27 @@ export const NextgenLib = {
             window.__ng_config.libEnv[key] = params.env[key]
         }
         const addComponent = (name: string, component: any) => {
-            vue.component(`ng-${name}`, component)
-            vue.component(`Ng${toHump(name)}`, component)
+            vue.component(`Ng${name}`, component)
         }
         vue.use(VCalendar)
-        addComponent('app', NgApp)
-        addComponent('img', Img)
-        addComponent('form', Form)
-        addComponent('table', Table)
-        addComponent('dialog', Dialog)
-        addComponent('upload', Upload)
-        addComponent('loaders', Loaders)
-        addComponent('toolbar', Toolbar)
-        addComponent('skeleton', Skeleton)
-        addComponent('fixed-bar', FixedBar)
-        addComponent('pagination', Pagination)
-        addComponent('date-picker', DatePicker)
-        addComponent('outline-text', OutlineText)
-        addComponent('visible-load', VisibleLoad)
-        addComponent('overlay-loading', OverlayLoading)
-        addComponent('date-range-picker', DateRangePicker)
-        addComponent('pie-chart', ChartPie)
-        addComponent('doughnut-chart', ChartDoughnut)
+        addComponent('App', NgApp)
+        addComponent('Img', Img)
+        addComponent('Form', Form)
+        addComponent('Table', Table)
+        addComponent('Dialog', Dialog)
+        addComponent('Upload', Upload)
+        addComponent('Loaders', Loaders)
+        addComponent('Toolbar', Toolbar)
+        addComponent('Skeleton', Skeleton)
+        addComponent('FixedBar', FixedBar)
+        addComponent('Pagination', Pagination)
+        addComponent('DatePicker', DatePicker)
+        addComponent('OutlineText', OutlineText)
+        addComponent('VisibleLoad', VisibleLoad)
+        addComponent('OverlayLoading', OverlayLoading)
+        addComponent('DateRangePicker', DateRangePicker)
+        addComponent('PieChart', ChartPie)
+        addComponent('DoughnutChart', ChartDoughnut)
     }
 }
 

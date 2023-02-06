@@ -109,17 +109,14 @@ const state = reactive({
 watch(() => state.show, () => {
     if (state.show !== props.modelValue) {
         emit('update:modelValue', state.show)
+        emitStatus()
     }
 })
 
 watch(() => props.modelValue, () => {
     if (state.show !== props.modelValue) {
         state.show = !!props.modelValue
-        if (state.show) {
-            emit('open')
-        } else {
-            emit('close')
-        }
+        emitStatus()
     }
 })
 
@@ -136,6 +133,14 @@ onMounted(() => {
 //
 // metohds
 //
+
+const emitStatus = () => {
+    if (state.show) {
+        emit('open')
+    } else {
+        emit('close')
+    }
+}
 
 const switchShow = () => {
     state.show = !state.show

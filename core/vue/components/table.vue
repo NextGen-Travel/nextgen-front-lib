@@ -1,36 +1,47 @@
 <template>
-    <div style="position: relative;">
+    <div
+        style="position: relative;"
+        :class="`elevation-${elevation}`">
         <v-table
             ref="table"
-            class="elevation-1"
+            :height="height"
+            :fixed-header="fixedHeader"
             :class="{
                 'component-shadow-right': state.showShadow
-            }"
-            >
+            }">
             <thead>
                 <tr>
                     <th
                         v-for="(field, index) in showFields"
+                        class="bg-secondary"
                         :key="index + 'ff'"
-                        class="text-center bg-secondary"
                         :class="{
+                            [`bg-${headerColor}`]: true,
+                            'text-start': field.textAlign === 'start',
+                            'text-center': field.textAlign === 'center',
+                            'text-end': field.textAlign === 'end',
                             'component-text-nowrap': ['head', 'all'].includes(textNowrap)
                         }">
-                        <slot :name="'h-' + field.key" :item="field" :value="field.label()"></slot>
-                        <div v-if="!self.hasSlot('h-' + field.key)">{{ field.label() }}</div>
+                        <slot :name="'h-' + field.key" :item="field" :value="field.label()">
+                            <div>{{ field.label() }}</div>
+                        </slot>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <template v-for="(item, ti) in items">
                     <tr
-                        :class="{ 'component-twr-is-btn': hasClickItemListener }"
                         :style="rowStyle(item, ti)"
+                        :class="{
+                            'component-twr-is-btn': hasClickItemListener
+                        }"
                         @click="clickItme(item)">
                         <td
                             v-for="(field, index) in showFields"
-                            class="text-center"
                             :class="{
+                                'text-start': field.textAlign === 'start',
+                                'text-center': field.textAlign === 'center',
+                                'text-end': field.textAlign === 'end',
                                 'component-text-nowrap': ['body', 'all'].includes(textNowrap)
                             }"
                             :key="field.key"
@@ -39,10 +50,10 @@
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
                                 :value="getFieldValue(field, item, ti)">
+                                <div>
+                                    {{ getFieldValue(field, item, ti) }}
+                                </div>
                             </slot>
-                            <div v-if="self.hasSlot('t-' + field.key.replace(/\./g, '-')) === false">
-                                {{ getFieldValue(field, item, ti) }}
-                            </div>
                         </td>
                     </tr>
                     <tr v-if="self.hasSlot('details')" :key="ti + 'iddi'">
@@ -91,6 +102,7 @@ type Field = {
     key: string
     label: () => string
     style: (value: any, key: string, item: any, index: number) => string
+    textAlign: 'start' | 'center' | 'end'
     formatter: (...args: any[]) => any
     optionShow: boolean
 }
@@ -105,6 +117,26 @@ const localStorage = useLocalStorage()
 //
 
 const props = defineProps({
+    height: {
+        type: String,
+        required: false,
+        default: () => undefined
+    },
+    elevation: {
+        type: Number,
+        required: false,
+        default: () => 1
+    },
+    fixedHeader: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
+    headerColor: {
+        type: String,
+        required: false,
+        default: () => 'secondary'
+    },
     textNowrap: {
         type: String as PropType<'all' | 'head' | 'body' | 'none'>,
         required: false,
@@ -195,15 +227,7 @@ const showFilter = computed(() => {
 })
 
 const showFields = computed(() => {
-    return props.fields.filter(e => state.showFields.includes(e.key)).map(e => {
-        return {
-            key: e.key,
-            label: e.label,
-            style: e.style,
-            formatter: e.formatter,
-            optionShow: e.optionShow
-        }
-    })
+    return props.fields.filter(e => state.showFields.includes(e.key))
 })
 
 const filters = computed(() => {
