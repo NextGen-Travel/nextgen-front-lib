@@ -27,13 +27,13 @@
                         <v-icon
                             v-if="field.sortBtn"
                             size="small"
-                            class="component-table-sort-btn"
+                            class="mx-1 component-table-sort-btn"
                             @click="sortKey(field.key)"
                             :color="sortStatus[field.key] ? 'primary' : undefined"
                             :class="{
                                 'component-table-sort-btn-actived': sortStatus[field.key]
                             }">
-                            mdi-sort-ascending
+                            mdi-arrow-down-thin
                         </v-icon>
                     </th>
                 </tr>
