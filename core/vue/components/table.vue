@@ -199,6 +199,7 @@ const props = defineProps({
 
 const emit = defineEmits({
     'click-item': (_item: any) => true,
+    'click-sort': (_key: string, _value: boolean) => true,
     'update:sorts': (_status: Record<string, boolean>) => true
 })
 
@@ -370,6 +371,7 @@ const openFilter = () => {
 
 const sortKey = (key: string) => {
     sortStatus.value[key] = !sortStatus.value[key]
+    emit('click-sort', key, sortStatus.value[key])
 }
 </script>
 
