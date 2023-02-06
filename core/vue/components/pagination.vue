@@ -11,7 +11,6 @@
             v-if="show && loading"
             color="primary"
             buffer-value="0"
-            class="mx-auto"
             indeterminate
             style="max-width: 200px"
         ></v-progress-linear>
