@@ -13,7 +13,6 @@
                 <tr>
                     <th
                         v-for="(field, index) in showFields"
-                        class="bg-secondary"
                         :key="index + 'ff'"
                         :class="{
                             [`bg-${headerColor}`]: true,
@@ -25,6 +24,17 @@
                         <slot :name="'h-' + field.key" :item="field" :value="field.label()">
                             <div>{{ field.label() }}</div>
                         </slot>
+                        <v-icon
+                            v-if="field.sortBtn"
+                            size="small"
+                            class="component-table-sort-btn"
+                            @click="sortKey(field.key)"
+                            :color="sortStatus[field.key] ? 'primary' : undefined"
+                            :class="{
+                                'component-table-sort-btn-actived': sortStatus[field.key]
+                            }">
+                            mdi-sort
+                        </v-icon>
                     </th>
                 </tr>
             </thead>
@@ -63,6 +73,7 @@
                     </tr>
                 </template>
             </tbody>
+            <slot name="end"></slot>
         </v-table>
         <div v-if="items.length === 0">
             <slot name="no-data"></slot>
@@ -95,13 +106,14 @@ import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
 import { useLocalStorage } from '../../storage'
 import { useResizeObserver } from '@vueuse/core'
-import { pick, Debounce, ElementListenerGroup } from 'power-helper'
+import { pick, Debounce, ElementListenerGroup, json } from 'power-helper'
 import { ref, PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue'
 
 type Field = {
     key: string
     label: () => string
     style: (value: any, key: string, item: any, index: number) => string
+    sortBtn: boolean
     textAlign: 'start' | 'center' | 'end'
     formatter: (...args: any[]) => any
     optionShow: boolean
@@ -110,6 +122,7 @@ type Field = {
 const self = VueSelf.use()
 const peel = pick.peel
 const localStorage = useLocalStorage()
+const elementListenerGroup = new ElementListenerGroup<HTMLDivElement>()
 
 // =================
 //
@@ -121,6 +134,13 @@ const props = defineProps({
         type: String,
         required: false,
         default: () => undefined
+    },
+    sorts: {
+        type: Object as PropType<Record<string, boolean>>,
+        required: false,
+        default: () => {
+            return {}
+        }
     },
     elevation: {
         type: Number,
@@ -178,7 +198,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    'click-item': (_item: any) => true
+    'click-item': (_item: any) => true,
+    'update:sorts': (_status: Record<string, boolean>) => true
 })
 
 // =================
@@ -198,14 +219,18 @@ const state = reactive({
     modalShow: false,
     isOverflow: false,
     showShadow: false,
-    showFields: [] as string[],
-    elementListenerGroup: null as null | ElementListenerGroup<HTMLDivElement>
+    showFields: [] as string[]
 })
 
 // =================
 //
 // computed
 //
+
+const sortStatus = computed({
+    get: () => props.sorts,
+    set: value => emit('update:sorts', value)
+})
 
 const hasClickItemListener = computed(() =>{
     return self.hasListener('click-item')
@@ -293,8 +318,8 @@ onMounted(() => {
     }
     let el: HTMLDivElement = table.value.$el.getElementsByClassName('v-table__wrapper')[0]
     if (el) {
-        state.elementListenerGroup = new ElementListenerGroup(el)
-        state.elementListenerGroup.add('scroll', (e) => {
+        elementListenerGroup.observe(el)
+        elementListenerGroup.add('scroll', (e) => {
             if (state.isOverflow) {
                 state.showShadow = el.scrollLeft === 0
             }
@@ -304,7 +329,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     debounce.close()
-    state.elementListenerGroup?.clear()
+    elementListenerGroup.clear()
 })
 
 // =================
@@ -342,6 +367,10 @@ const getFieldValue = (field: Field, item: any, index: number) => {
 const openFilter = () => {
     state.modalShow = true
 }
+
+const sortKey = (key: string) => {
+    sortStatus.value[key] = !sortStatus.value[key]
+}
 </script>
 
 <style lang="scss" scoped>
@@ -367,5 +396,11 @@ const openFilter = () => {
     }
     .component-shadow-right :deep(.v-table__wrapper) {
         box-shadow: inset -15px 0px  10px -15px rgba(0, 0, 0, .4);
+    }
+    .component-table-sort-btn {
+        cursor: pointer;
+    }
+    .component-table-sort-btn-actived {
+        transform: rotate(180deg);
     }
 </style>
