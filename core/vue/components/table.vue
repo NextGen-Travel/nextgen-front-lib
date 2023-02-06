@@ -29,7 +29,7 @@
                             size="small"
                             class="mx-1 component-table-sort-btn"
                             @click="sortKey(field.key)"
-                            :color="sortStatus[field.key] ? 'primary' : undefined"
+                            :color="sortStatus[field.key] ? 'primary' : 'grey'"
                             :class="{
                                 'component-table-sort-btn-actived': sortStatus[field.key]
                             }">
