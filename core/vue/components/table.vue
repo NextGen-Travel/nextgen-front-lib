@@ -22,7 +22,7 @@
                             'component-text-nowrap': ['head', 'all'].includes(textNowrap)
                         }">
                         <slot :name="'h-' + field.key" :item="field" :value="field.label()">
-                            <div>{{ field.label() }}</div>
+                            <span>{{ field.label() }}</span>
                         </slot>
                         <v-icon
                             v-if="field.sortBtn"
@@ -33,7 +33,7 @@
                             :class="{
                                 'component-table-sort-btn-actived': sortStatus[field.key]
                             }">
-                            mdi-sort
+                            mdi-sort-ascending
                         </v-icon>
                     </th>
                 </tr>
@@ -398,6 +398,7 @@ const sortKey = (key: string) => {
         box-shadow: inset -15px 0px  10px -15px rgba(0, 0, 0, .4);
     }
     .component-table-sort-btn {
+        transition: .25s;
         cursor: pointer;
     }
     .component-table-sort-btn-actived {
