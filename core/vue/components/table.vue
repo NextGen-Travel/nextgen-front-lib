@@ -209,7 +209,7 @@ const props = defineProps({
 
 const emit = defineEmits({
     'click-item': (_item: any) => true,
-    'click-sort': (_key: string, _value: boolean) => true,
+    'click-sort': (_key: string, _value: any) => true,
     'update:sorts': (_status: Record<string, any>) => true
 })
 
