@@ -29,9 +29,9 @@
                             size="small"
                             class="mx-1 component-table-sort-btn"
                             @click="sortKey(field.key)"
-                            :color="sortStatus[field.key] ? 'primary' : 'grey'"
+                            :color="sortStatus[field.key] === sortUpValue ? 'primary' : 'grey'"
                             :class="{
-                                'component-table-sort-btn-actived': sortStatus[field.key]
+                                'component-table-sort-btn-actived': sortStatus[field.key] === sortUpValue
                             }">
                             mdi-arrow-down-thin
                         </v-icon>
@@ -136,11 +136,21 @@ const props = defineProps({
         default: () => undefined
     },
     sorts: {
-        type: Object as PropType<Record<string, boolean>>,
+        type: Object as PropType<Record<string, any>>,
         required: false,
         default: () => {
             return {}
         }
+    },
+    sortUpValue: {
+        type: null as unknown as PropType<any>,
+        required: false,
+        default: () => true
+    },
+    sortDownValue: {
+        type: null as unknown as PropType<any>,
+        required: false,
+        default: () => false
     },
     elevation: {
         type: Number,
@@ -200,7 +210,7 @@ const props = defineProps({
 const emit = defineEmits({
     'click-item': (_item: any) => true,
     'click-sort': (_key: string, _value: boolean) => true,
-    'update:sorts': (_status: Record<string, boolean>) => true
+    'update:sorts': (_status: Record<string, any>) => true
 })
 
 // =================
@@ -370,7 +380,7 @@ const openFilter = () => {
 }
 
 const sortKey = (key: string) => {
-    sortStatus.value[key] = !sortStatus.value[key]
+    sortStatus.value[key] = sortStatus.value[key] === props.sortDownValue ? props.sortUpValue : props.sortDownValue
     emit('click-sort', key, sortStatus.value[key])
 }
 </script>
