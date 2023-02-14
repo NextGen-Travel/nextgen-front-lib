@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 // https://vcalendar.io
 import { VueSelf } from '../self'
-import { computed, onMounted, ref, nextTick, PropType } from 'vue'
+import { watch, computed, onMounted, ref, nextTick, PropType } from 'vue'
 
 const self = VueSelf.use()
 
@@ -29,7 +29,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    'update:modelValue': (_value: [number, number]) => true
+    'update:modelValue': (_value: [number, number]) => true,
+    'selected': () => true
 })
 
 // =================
@@ -75,5 +76,16 @@ const value = computed({
     },
     set: (value) => emit('update:modelValue', [value.start, value.end])
 })
+
+// =================
+//
+// watch
+//
+
+watch(() => value.value, () => {
+    if (value.value.end && value.value.start) {
+        emit('selected')
+    }
+}, { deep: true })
 
 </script>
