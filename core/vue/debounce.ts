@@ -1,9 +1,10 @@
 import { Debounce } from 'power-helper'
 import { onMounted, onUnmounted } from 'vue'
 
-export const useDebounce = (cb: () => void, delay = 100) => {
+export const useDebounce = (cb: () => void, delay = 100, maxValueLength = 100) => {
     const debounce = new Debounce({
-        delay
+        delay,
+        maxValueLength
     })
 
     onMounted(() => {
