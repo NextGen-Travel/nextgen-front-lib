@@ -19,10 +19,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         const url = new URL(location.href)
         const query: Partial<P[T]['query']> = {}
         // eslint-disable-next-line no-undef
-        const pattern = new URLPattern({
-            pathname: path,
-            baseURL: this.params.baseUrl()
-        })
+        const pattern = new URLPattern(`${this.params.baseUrl()}/${path}`)
         const result = pattern.exec(location.href)
         const params: VarParameters<'{', '}', T> = result?.pathname.groups || {} as any
         url.searchParams.forEach((v, k) => {
