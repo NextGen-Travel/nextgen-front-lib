@@ -19,7 +19,7 @@ export class PersistStateManager {
         return this.params.ns() + '/' + key
     }
 
-    create<T extends Record<string, unknown>>(key: string, data: () => T): T {
+    create<T extends Record<string, unknown>>(key: string, data: T): T {
         const storage = usePersistDataStorage()
         const _key=  this.toKey(key)
         if (this.aliveKeys.includes(_key)) {
@@ -32,10 +32,10 @@ export class PersistStateManager {
         try {
             origin = storage.get(_key)
         } catch (error) {
-            origin = data()
+            origin = data
         }
 
-        const state = reactive(record.setMapValue(data(), origin))
+        const state = reactive(record.setMapValue(data, origin))
         watch(() => state, () => storage.set(_key, state), {
             deep: true
         })
