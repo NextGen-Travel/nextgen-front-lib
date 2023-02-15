@@ -38,7 +38,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         }
     }
 
-    to<T extends Extract<keyof P, string>>(path: T, params: VarParameters<'{', '}', T>, query: any = {}) {
+    to<T extends Extract<keyof P, string>>(path: T, params: VarParameters<'{', '}', T>, query: Partial<P[T]['query']> = {}) {
         const page = text.replaceVar({
             text: path,
             end: '}',
@@ -47,7 +47,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         })
         const url = new URL(`${location.origin}/${this.params.baseUrl()}/${page}`)
         for (let key in query) {
-            url.searchParams.set(key, query[key])
+            url.searchParams.set(key, query[key] as any)
         }
         location.href = url.href
     }
