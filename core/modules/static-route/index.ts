@@ -17,7 +17,7 @@ export class StaticRoute<P extends Record<string, Route>> {
 
     getCurrent<T extends Extract<keyof P, string>>(path: T) {
         const url = new URL(location.href)
-        const query: P[T]['query'] = {}
+        const query: Partial<P[T]['query']> = {}
         // eslint-disable-next-line no-undef
         const pattern = new URLPattern({
             pathname: path,
@@ -26,6 +26,8 @@ export class StaticRoute<P extends Record<string, Route>> {
         const result = pattern.exec(location.href)
         const params: VarParameters<'{', '}', T> = result?.pathname.groups || {} as any
         url.searchParams.forEach((v, k) => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             query[k] = v
         })
         return {
