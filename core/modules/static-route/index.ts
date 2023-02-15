@@ -45,7 +45,7 @@ export class StaticRoute<P extends Record<string, Route>> {
             start: '{',
             vars: params as any
         })
-        const url = new URL(`${location.origin}/${this.params.baseUrl()}/${page}`)
+        const url = new URL(`${this.params.baseUrl()}/${page}`)
         for (let key in query) {
             url.searchParams.set(key, query[key] as any)
         }
