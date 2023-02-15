@@ -29,3 +29,30 @@ export const useLocalStorage = () => {
     })
     return storage
 }
+
+export const usePersistDataStorage = () => {
+    const { service, stage, version } = useLibEnv()
+    const storage = new LocalStorage(`lib-pd-${service}-${stage}`, {
+        intercept: {
+            get(key, value, { isDefault, defaultValue }) {
+                if (isDefault) {
+                    return value
+                }
+                if (value.version !== version) {
+                    storage.remove(key as any)
+                    return defaultValue()
+                }
+                return value.data
+            },
+            set(key, value) {
+                return {
+                    data: value,
+                    version,
+                    createdAt: Date.now()
+                }
+            }
+        },
+        defaultColumns: {}
+    })
+    return storage
+}

@@ -1,3 +1,4 @@
+import 'urlpattern-polyfill'
 import 'v-calendar/dist/style.css'
 
 import type { App } from 'vue'
