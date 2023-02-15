@@ -17,7 +17,7 @@ export class StaticRoute<P extends Record<string, Route>> {
 
     getCurrent<T extends Extract<keyof P, string>>(path: T) {
         const url = new URL(location.href)
-        const query: Record<string, number | string> = {}
+        const query: P[T]['query'] = {}
         // eslint-disable-next-line no-undef
         const pattern = new URLPattern({
             pathname: path,
