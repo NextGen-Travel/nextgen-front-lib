@@ -4,6 +4,7 @@
         v-model="value"
         is-range
         is-required
+        :mode="mode"
         :model-config="state.modelConfig"
     />
 </template>
@@ -21,6 +22,11 @@ const self = VueSelf.use()
 //
 
 const props = defineProps({
+    mode: {
+        type: String as PropType<'date' | 'dateTime'>,
+        required: false,
+        default: () => 'date'
+    },
     modelValue: {
         type: Array as unknown as PropType<[number, number]>,
         required: false,
