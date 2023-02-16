@@ -21,7 +21,7 @@ export class PersistStateManager {
 
     create<T extends Record<string, unknown>>(key: string, data: T): T {
         const storage = usePersistDataStorage()
-        const _key=  this.toKey(key)
+        const _key = this.toKey(key)
         if (this.aliveKeys.includes(_key)) {
             throw serviceException.create(`Persist state key "${key}" already used.`)
         } else {

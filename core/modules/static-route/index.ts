@@ -1,5 +1,4 @@
-import { text } from 'power-helper'
-import { VarParameters } from 'power-helper/types/string'
+import { RouteParameters } from 'power-helper/types/string'
 
 type Route = {
     query: any
@@ -21,7 +20,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         // eslint-disable-next-line no-undef
         const pattern = new URLPattern(`${this.params.baseUrl()}/${path}`)
         const result = pattern.exec(location.href)
-        const params: VarParameters<'{', '}', T> = result?.pathname.groups || {} as any
+        const params: RouteParameters<T> = result?.pathname.groups || {} as any
         url.searchParams.forEach((v, k) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -35,14 +34,12 @@ export class StaticRoute<P extends Record<string, Route>> {
         }
     }
 
-    to<T extends Extract<keyof P, string>>(path: T, params: VarParameters<'{', '}', T>, query: Partial<P[T]['query']> = {}) {
-        const page = text.replaceVar({
-            text: path,
-            end: '}',
-            start: '{',
-            vars: params as any
-        })
-        const url = new URL(`${this.params.baseUrl()}/${page}`)
+    to<T extends Extract<keyof P, string>>(path: T, params: RouteParameters<T>, query: Partial<P[T]['query']> = {}) {
+        let page = path as string
+        for (let key in params) {
+            page = page.replaceAll(`:${key}`, params[key] as any)
+        }
+        let url = new URL(`${this.params.baseUrl()}/${page}`)
         for (let key in query) {
             url.searchParams.set(key, query[key] as any)
         }
