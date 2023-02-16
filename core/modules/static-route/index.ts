@@ -6,6 +6,7 @@ type Route = {
 
 type Params = {
     baseUrl: () => string
+    readCurrentTarget?: () => string
 }
 
 export class StaticRoute<P extends Record<string, Route>> {
@@ -19,7 +20,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         const query: Partial<P[T]['query']> = {}
         // eslint-disable-next-line no-undef
         const pattern = new URLPattern(`${this.params.baseUrl()}/${path}`)
-        const result = pattern.exec(location.href)
+        const result = pattern.exec(this.params.readCurrentTarget ? this.params.readCurrentTarget() : location.href)
         const params: RouteParameters<T> = result?.pathname.groups || {} as any
         url.searchParams.forEach((v, k) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
