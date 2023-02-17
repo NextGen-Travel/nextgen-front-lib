@@ -1,7 +1,7 @@
 <template>
     <div v-if="disabled === false" class="component-outline-text py-2">
         <div class="w-100 component-outline-text-stroke" :style="`-webkit-text-stroke: ${outlineWeight}px ${outlineColorComputed}`">{{ text }}</div>
-        <div class="w-100 component-outline-text-no-stroke">{{ text }}</div>
+        <div class="w-100 component-outline-text-no-stroke" :style="{ color: fontColor }">{{ text }}</div>
         <div class="w-100 opacity-0">{{ text }}</div>
     </div>
     <div v-else>
@@ -27,6 +27,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: () => false
+    },
+    fontColor: {
+        type: String,
+        required: false,
+        default: () => 'white'
     },
     outlineColor: {
         type: String,
@@ -69,7 +74,6 @@ const outlineColorComputed = computed(() => {
         position: absolute;
     }
     .component-outline-text-no-stroke {
-        color: white;
         position: absolute;
     }
 </style>
