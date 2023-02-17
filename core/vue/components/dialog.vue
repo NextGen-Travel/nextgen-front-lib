@@ -9,7 +9,7 @@
             :fullscreen="fullscreen">
             <v-card v-if="state.show">
                 <OverlayLoading :z-index="502" :model-value="loading"></OverlayLoading>
-                <div v-for="i in 2" class="w-100 bg-white" :key="i" :class="{
+                <div v-for="i in 2" class="w-100" :key="i" style="background: rgb(var(--v-theme-surface))" :class="{
                     'ng-component-dialog': i === 1,
                     'ng-component-dialog-fake': i === 2
                 }">
