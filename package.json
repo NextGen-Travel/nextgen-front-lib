@@ -34,7 +34,6 @@
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.2.0",
-    "@shopify/polyfills": "^4.0.3",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
     "@types/fs-extra": "^9.0.13",
@@ -55,6 +54,7 @@
     "openapi-types": "^12.0.2",
     "qs": "^6.11.0",
     "react": "^18.2.0",
+    "requestidlecallback-polyfill": "^1.0.2",
     "simple-git": "^3.14.1",
     "urlpattern-polyfill": "^6.0.2",
     "urql": "2.2.2",
