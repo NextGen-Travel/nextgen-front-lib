@@ -1,4 +1,5 @@
 import 'urlpattern-polyfill'
+import 'requestidlecallback-polyfill';
 import 'v-calendar/dist/style.css'
 
 import type { App } from 'vue'
