@@ -1,5 +1,4 @@
 import 'urlpattern-polyfill'
-import '@shopify/polyfills/base'
 import '@shopify/polyfills/idle-callback.browser'
 import 'v-calendar/dist/style.css'
 
