@@ -4,12 +4,13 @@ module.exports = {
         node: true,
         browser: true
     },
-    plugins: ['@typescript-eslint'],
     extends: [
-        'plugin:@typescript-eslint/recommended',
-        'eslint:recommended'
+        'eslint:recommended',
+        '@vue/typescript/recommended',
+        'plugin:vue/vue3-recommended'
     ],
     parserOptions: {
+        parser: '@typescript-eslint/parser',
         sourceType: 'module',
         ecmaVersion: 2020
     },
@@ -17,6 +18,12 @@ module.exports = {
         quotes: ['error', 'single'],
         indent: ['error', 4],
         camelcase: 'off',
+        'vue/multi-word-component-names': 0,
+        'vue/html-indent': 'off',
+        'vue/html-self-closing': 'off',
+        'vue/html-closing-bracket-newline': 'off',
+        'vue/max-attributes-per-line': 'off',
+        'vue/singleline-html-element-content-newline': 'off',
         'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
