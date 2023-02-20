@@ -2,9 +2,8 @@
     <div class="lib-notification">
         <transition-group name="lib-notification-list">
             <div
-                v-for="message of messages"
-                class="lib-notification-block mt-2 mr-2"
-                :key="message.id">
+                v-for="message of messages" :key="message.id"
+                class="lib-notification-block mt-2 mr-2">
                 <v-card outlined @click="clickMessage(message)">
                     <v-progress-linear
                         v-if="message.clicked === false"
@@ -23,8 +22,8 @@
                         <v-btn
                             variant="plain"
                             icon="mdi-close"
-                            @click.stop="removeMessage(message)"
-                            :color="getColor(message.type)">
+                            :color="getColor(message.type)"
+                            @click.stop="removeMessage(message)">
                         </v-btn>
                     </v-row>
                 </v-card>

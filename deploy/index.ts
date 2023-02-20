@@ -7,9 +7,12 @@ const main = async() => {
     const print = log.print.bind(log)
     const { current } = await git.branch()
     print('正在檢查程式碼...')
-    await exec([
+    const testResult = await exec([
         'yarn test'
     ])
+    if (testResult.find(e => e.match('problem'))) {
+        return print('程式碼有需修正的地方。', { color: 'red' })
+    }
     print(`正在部署版本: ${current}`)
     const { mode, message } = await inquirer.prompt([
         {

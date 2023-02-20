@@ -89,7 +89,8 @@ const props = defineProps({
     },
     src: {
         type: null as unknown as PropType<string | File>,
-        required: false
+        required: false,
+        default: () => ''
     },
     block: {
         type: Boolean,

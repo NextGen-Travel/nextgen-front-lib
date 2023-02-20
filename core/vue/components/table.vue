@@ -28,18 +28,18 @@
                             v-if="field.sortBtn"
                             size="small"
                             class="mx-1 component-table-sort-btn"
-                            @click="sortKey(field.key)"
                             :color="sortStatus[field.key] === sortUpValue ? 'primary' : 'grey'"
                             :class="{
                                 'component-table-sort-btn-actived': sortStatus[field.key] === sortUpValue
-                            }">
+                            }"
+                            @click="sortKey(field.key)">
                             mdi-arrow-down-thin
                         </v-icon>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <template v-for="(item, ti) in items">
+                <template v-for="(item, ti) in items" :key="item.key">
                     <tr
                         :style="rowStyle(item, ti)"
                         :class="{
@@ -47,14 +47,13 @@
                         }"
                         @click="clickItme(item)">
                         <td
-                            v-for="(field, index) in showFields"
+                            v-for="field in showFields" :key="field.key"
                             :class="{
                                 'text-start': field.textAlign === 'start',
                                 'text-center': field.textAlign === 'center',
                                 'text-end': field.textAlign === 'end',
                                 'component-text-nowrap': ['body', 'all'].includes(textNowrap)
                             }"
-                            :key="field.key"
                             :style="field.style(getFieldValue(field, item, ti), field.key, item, ti)">
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
@@ -80,20 +79,19 @@
         </div>
         <OverlayLoading :model-value="loading"></OverlayLoading>
         <NgDialog v-model="state.modalShow" :title="filterTitle">
-            <template v-for="field in fields">
+            <template v-for="field in fields" :key="field.key + 'da'">
                 <v-checkbox
                     v-if="field.optionShow"
                     v-model="state.showFields"
                     hide-details
                     multiple
                     :value="field.key"
-                    :label="field.label()"
-                    :key="field.key + 'da'">
+                    :label="field.label()">
                 </v-checkbox>
             </template>
         </NgDialog>
         <div v-if="showFilter" class="print-no-show component-twr-filter" @click="openFilter">
-            <v-badge color="red" offset-x="0" offset-y="0" dot bordered :modelValue="filters.length > 0">
+            <v-badge color="red" offset-x="0" offset-y="0" dot bordered :model-value="filters.length > 0">
                 <v-icon size="small">mdi-filter</v-icon>
             </v-badge>
         </div>
@@ -106,16 +104,16 @@ import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
 import { useLocalStorage } from '../../storage'
 import { useResizeObserver } from '@vueuse/core'
-import { pick, Debounce, ElementListenerGroup, json } from 'power-helper'
+import { pick, Debounce, ElementListenerGroup } from 'power-helper'
 import { ref, PropType, onUnmounted, watch, reactive, computed, onMounted } from 'vue'
 
 type Field = {
     key: string
     label: () => string
-    style: (value: any, key: string, item: any, index: number) => string
+    style: (_value: any, _key: string, _item: any, _index: number) => string
     sortBtn: boolean
     textAlign: 'start' | 'center' | 'end'
-    formatter: (...args: any[]) => any
+    formatter: (..._args: any[]) => any
     optionShow: boolean
 }
 
@@ -173,7 +171,7 @@ const props = defineProps({
         default: () => 'none'
     },
     rowStyle: {
-        type: Function as PropType<(item: any, index: number) => string>,
+        type: Function as PropType<(_item: any, _index: number) => string>,
         required: false,
         default: () => () => ''
     },
@@ -330,7 +328,7 @@ onMounted(() => {
     let el: HTMLDivElement = table.value.$el.getElementsByClassName('v-table__wrapper')[0]
     if (el) {
         elementListenerGroup.observe(el)
-        elementListenerGroup.add('scroll', (e) => {
+        elementListenerGroup.add('scroll', () => {
             if (state.isOverflow) {
                 state.showShadow = el.scrollLeft === 0
             }
@@ -366,6 +364,7 @@ const clickItme = (item: any) => {
 }
 
 const getFieldValue = (field: Field, item: any, index: number) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     let value = peel(item, field.key)
     if (field.formatter == null) {

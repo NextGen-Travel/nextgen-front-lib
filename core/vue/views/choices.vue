@@ -15,25 +15,24 @@
                 <v-card-text v-if="desc" class="mb-3">{{ desc }}</v-card-text>
                 <div class="pa-4 pt-0">
                     <v-btn
-                        v-for="btn of btns"
+                        v-for="btn of btns" :key="btn.text"
                         variant="text"
                         block
                         color="primary"
-                        @click="commit(btn.handler)"
-                        :key="btn.text"
-                        :name="`ng-choices-${btn.text}`">
+                        :name="`ng-choices-${btn.text}`"
+                        @click="commit(btn.handler)">
                         {{ btn.text }}
                     </v-btn>
                     <v-btn
                         variant="text"
                         name="ng-choices-close"
                         block
-                        @click="close"
-                        :disabled="state.loading">
+                        :disabled="state.loading"
+                        @click="close">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
                 </div>
-                <v-overlay contained v-model="state.loading" class="w-100 align-center">
+                <v-overlay v-model="state.loading" contained class="w-100 align-center">
                     <v-progress-circular
                         class="mx-auto"
                         color="white"
@@ -96,7 +95,7 @@ const close = () => {
     }, 200)
 }
 
-const commit = (handler: (close: () => void) => any) => {
+const commit = (handler: (_close: () => void) => any) => {
     state.loading = true
     handler(close)
 }

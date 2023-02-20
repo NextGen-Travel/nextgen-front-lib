@@ -1,10 +1,10 @@
 <template>
-    <div @click="clickInput" style="width: fit-content; height: fit-content; position: relative;">
+    <div style="width: fit-content; height: fit-content; position: relative;" @click="clickInput">
         <slot></slot>
         <input
             v-if="multiple"
-            hidden
             ref="fileInput"
+            hidden
             type="file"
             multiple
             :accept="fileType"
@@ -13,8 +13,8 @@
         />
         <input
             v-else
-            hidden
             ref="fileInput"
+            hidden
             type="file"
             :accept="fileType"
             :disabled="state.reading || loading"

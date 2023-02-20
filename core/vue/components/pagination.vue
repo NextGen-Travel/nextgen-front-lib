@@ -53,7 +53,8 @@ const props = defineProps({
     },
     scrollTo: {
         type: null as unknown as PropType<HTMLElement | 'top'>,
-        required: false
+        required: false,
+        default: () => null
     }
 })
 

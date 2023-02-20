@@ -13,10 +13,10 @@
                 </v-card-text>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
-                    <v-btn name="ng-confirm-close" @click="libConfirmStore.cancel" text :disabled="state.loading">
+                    <v-btn name="ng-confirm-close" text :disabled="state.loading" @click="libConfirmStore.cancel">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
-                    <v-btn name="ng-confirm-confirm" color="primary" @click="commit" :loading="state.loading">
+                    <v-btn name="ng-confirm-confirm" color="primary" :loading="state.loading" @click="commit">
                         {{ t($t('ng.confirmConfirmText')) }}
                     </v-btn>
                 </v-card-actions>

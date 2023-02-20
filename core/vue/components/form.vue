@@ -2,10 +2,10 @@
     <div style="transition: .25s;" :style="`opacity: ${loading ? 0.5 : 1}`">
         <v-form
             ref="checkform"
-            @update:model-value="update"
-            @submit.stop.prevent="submit"
             :readonly="readonly"
-            :disabled="disabled || loading">
+            :disabled="disabled || loading"
+            @update:model-value="update"
+            @submit.stop.prevent="submit">
             <slot :valid="state.valid" :validate="validate"></slot>
         </v-form>
     </div>

@@ -3,8 +3,9 @@ import { Log, text } from 'power-helper'
 
 export const log = new Log('deploy')
 
-export const exec = (commands: string[]) => {
+export const exec = (commands: string[]): Promise<string[]> => {
     return new Promise((resolve, reject) => {
+        const outpus: string[] = []
         const command = commands.join(' && ')
         const exec = childProcess.exec(command, { encoding: 'buffer' })
         log.print(command, { color: 'yellow' })
@@ -22,9 +23,12 @@ export const exec = (commands: string[]) => {
                 log.print(message.toString())
             }
         })
-        exec.stdout?.on('data', message => console.log(message.toString()))
+        exec.stdout?.on('data', message => {
+            console.log(message.toString())
+            outpus.push(message.toString())
+        })
             .on('end', () => {
-                resolve(null)
+                resolve(outpus)
             })
     })
 }

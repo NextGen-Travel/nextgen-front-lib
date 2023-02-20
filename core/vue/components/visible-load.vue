@@ -64,7 +64,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    inited: (_hook: (cb: () => Promise<any>) => void) => true,
+    inited: (_hook: (_cb: () => Promise<any>) => void) => true,
     error: (_params: {
         error: any
         message: string

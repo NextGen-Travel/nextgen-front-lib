@@ -1,7 +1,7 @@
 <template>
     <v-overlay
-        contained
         v-model="value"
+        contained
         class="align-center justify-center"
         persistent
         :style="`z-index: ${zIndex};`"
