@@ -59,12 +59,22 @@ const props = defineProps({
         required: false,
         default: () => false
     },
+    minWidth: {
+        type: String as PropType<string>,
+        required: false,
+        default: () => null
+    },
     maxWidth: {
         type: String as PropType<string>,
         required: false,
         default: () => null
     },
     height: {
+        type: String as PropType<string>,
+        required: false,
+        default: () => null
+    },
+    minHeight: {
         type: String as PropType<string>,
         required: false,
         default: () => null
@@ -214,8 +224,10 @@ const loadStyle = (width?: number, height?: number) => {
     let code = new StyleString()
     code.set('width', props.width, `${width}px`)
     code.set('maxWidth', props.maxWidth)
+    code.set('minWidth', props.minWidth)
     code.set('height', props.height)
     code.set('maxHeight', props.maxHeight)
+    code.set('minHeight', props.minHeight)
     code.set('borderRadius', props.radius)
     if (props.cover) {
         code.set('backgroundSize', 'cover')
