@@ -23,7 +23,7 @@ const self = VueSelf.use()
 
 const props = defineProps({
     mode: {
-        type: String as PropType<'date' | 'dateTime'>,
+        type: String as PropType<'date' | 'datetime'>,
         required: false,
         default: () => 'date'
     },
