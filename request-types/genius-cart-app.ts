@@ -169,6 +169,18 @@ export type GeniusCartAppDefinitions = {
                  * 是否開啟訪客結帳
                  */
                 is_guest_checkout: number;
+                /**
+                 * 購物車是否顯示包裝方式
+                 */
+                is_packaging: number;
+                /**
+                 * 購物車是否顯示運送方式
+                 */
+                is_shipping: number;
+                /**
+                 * 購物車是否顯示稅項
+                 */
+                is_tax: number;
             };
         };
         contentType: null;
@@ -1179,6 +1191,42 @@ export type GeniusCartAppDefinitions = {
     /**
      * [no summary] - no description
      */
+    "post@client/confrimDelete": {
+        body: {
+            /**
+             * 確認是否刪除
+             * @example DELETE
+             */
+            confirm: string;
+        };
+        query: null;
+        response: {
+            data: {
+                msg: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [no summary] - no description
+     * @param {number} wishclientIdId - undefined
+     */
+    "delete@client/:clientId": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                /**
+                 * @example 成功刪除！!
+                 */
+                msg: string;
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [no summary] - no description
+     */
     "get@client/dashboard": {
         body: null;
         query: null;
@@ -1413,6 +1461,10 @@ export type GeniusCartAppDefinitions = {
                  * 用來轉換的獎勵點數
                  */
                 reward_point: number;
+                /**
+                 * Success
+                 */
+                msg: string;
             };
         };
         contentType: null;
@@ -1918,6 +1970,10 @@ export type GeniusCartAppDefinitions = {
              * @example 信義區大安路
              */
             address ? : string;
+            /**
+             * 信箱
+             */
+            email ? : string;
         };
         query: null;
         response: {
