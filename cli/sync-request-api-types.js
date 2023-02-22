@@ -107,7 +107,7 @@ class OpenApiReader {
         let output = {
             type: 'object',
             required: data.required || [],
-            additionalProperties: false,
+            additionalProperties: data.additionalProperties || false,
             properties: {}
         }
         for (let key in data.properties) {
