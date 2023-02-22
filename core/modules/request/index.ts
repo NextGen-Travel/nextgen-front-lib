@@ -65,10 +65,10 @@ type StringParams<
 }
 
 type DefinedFormat = {
-    body?: unknown
-    query?: unknown
+    body?: any
+    query?: any
     contentType?: ContentTypes | null
-    response: unknown
+    response: any
 }
 
 type QueryParams<To extends string, Api extends DefinedFormat> = StringParams<To> &
