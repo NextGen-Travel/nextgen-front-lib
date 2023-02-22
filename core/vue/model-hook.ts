@@ -87,8 +87,8 @@ export const defineModelHook = <
         //
 
         const event = new Event<{
-            update: Record<string, unknown>
-            rebuild: Record<string, unknown>
+            update: Record<string, any>
+            rebuild: Record<string, any>
         }>()
 
         watch(() => data, () => event.emit('update', {}), {
@@ -183,8 +183,8 @@ export const defineModelHook = <
     return {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         ...params.static!,
-        _ModelType: null as unknown as ReturnType<typeof use>,
-        _SchemaType: null as unknown as S,
+        _ModelType: null as any as ReturnType<typeof use>,
+        _SchemaType: null as any as S,
         use,
         from,
         /** 只獲取 schema */

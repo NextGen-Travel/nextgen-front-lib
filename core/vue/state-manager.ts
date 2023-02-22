@@ -8,7 +8,7 @@ type Store = {
 export const createStateManager = () => {
     const stateStore: Array<Store> = []
 
-    const create = <T extends Record<string, unknown>>(cb: () => T): T => {
+    const create = <T extends Record<string, any>>(cb: () => T): T => {
         const state: any = reactive(cb())
         stateStore.push({
             cb,

@@ -19,7 +19,7 @@ export class PersistStateManager {
         return this.params.ns() + '/' + key
     }
 
-    create<T extends Record<string, unknown>>(key: string, data: T): T {
+    create<T extends Record<string, any>>(key: string, data: T): T {
         const storage = usePersistDataStorage()
         const _key = this.toKey(key)
         if (this.aliveKeys.includes(_key)) {
