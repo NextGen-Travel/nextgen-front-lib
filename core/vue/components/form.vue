@@ -41,6 +41,7 @@ const props = defineProps({
         required: false,
         default: false
     },
+    // FIXME: 關掉有驗證失敗的bug
     lazyValidation: {
         type: Boolean,
         required: false,
