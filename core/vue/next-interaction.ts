@@ -34,9 +34,9 @@ export class NextInteraction extends Interaction {
 
     use(stepName = '') {
         const currentInstance = getCurrentInstance()
-        const name = stepName || 'x'
-        const routeName = currentInstance?.proxy?.$route.name?.toString() || 'rx'
-        const componentName = currentInstance?.proxy?.$options.name || 'cx'
+        const name = stepName || '-'
+        const routeName = currentInstance?.proxy?.$route?.name?.toString() || '-'
+        const componentName = currentInstance?.proxy?.$options?.name || '-'
         return this.checkout(`${componentName}.${routeName}.${name}`)
     }
 }
