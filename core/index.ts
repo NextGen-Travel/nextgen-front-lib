@@ -1,6 +1,6 @@
 import 'urlpattern-polyfill'
-import 'requestidlecallback-polyfill';
 import 'v-calendar/dist/style.css'
+import 'requestidlecallback-polyfill'
 
 import type { App } from 'vue'
 import { i18n } from './i18n'
