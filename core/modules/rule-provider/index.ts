@@ -31,7 +31,7 @@ class Validation<T extends Record<string, Rule>> {
         return this.properties[name].required
     }
 
-    verify(model: any) {
+    verify(model: any): true | string {
         for (let key in this.properties) {
             let result = this.get(key)(model[key])
             if (result !== true) {
@@ -41,7 +41,7 @@ class Validation<T extends Record<string, Rule>> {
         return true
     }
 
-    verifyBy<K extends keyof T>(name: K, value: any) {
+    verifyBy<K extends keyof T>(name: K, value: any): true | string {
         return this.get(name)(value)
     }
 }
