@@ -5,6 +5,7 @@
             ref="content"
             class="lib-component-fixed-bar"
             height="auto"
+            :elevation="elevation"
             :dark="dark"
             :color="color"
             :class="appClass">
@@ -37,6 +38,11 @@ const props = defineProps({
     },
     color: {
         type: String,
+        required: false,
+        default: () => undefined
+    },
+    elevation: {
+        type: Number,
         required: false,
         default: () => undefined
     },
