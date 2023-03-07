@@ -76,11 +76,7 @@ const debounce = useDebounce(() => change(), 100, 5)
 //
 
 watch(() => props.searchValue, () => {
-    if (props.searchValue.trim()) {
-        debounce.input('')
-    } else {
-        emit('closed')
-    }
+    debounce.input('')
 })
 
 // =================
@@ -88,8 +84,12 @@ watch(() => props.searchValue, () => {
 // methods
 //
 
-const change = async() => {
-    emit('changed')
+const change = () => {
+    if (props.searchValue.trim()) {
+        emit('changed')
+    } else {
+        emit('closed')
+    }
 }
 
 const select = (item: any) => {
