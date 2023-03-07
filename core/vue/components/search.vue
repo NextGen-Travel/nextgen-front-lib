@@ -1,5 +1,5 @@
 <template>
-    <div class="lib-component-search-bar">
+    <div v-click-outside="close" class="lib-component-search-bar">
         <slot></slot>
         <VList v-if="loading" class="lib-component-search-list text-center rounded elevation-3">
             <v-progress-circular
@@ -9,7 +9,6 @@
         </VList>
         <VList
             v-else-if="items.length"
-            v-click-outside="close"
             class="lib-component-search-list rounded elevation-3">
             <v-list-item
                 v-for="item in items"
@@ -78,7 +77,9 @@ watch(() => props.searchValue, () => debounce.input(''))
 //
 
 const close = () => {
-    emit('closed')
+    if (props.searchValue.trim()) {
+        emit('closed')
+    }
 }
 
 const search = async() => {
@@ -99,7 +100,7 @@ const select = (item: any) => {
     max-height: 40vh;
     width: 100%;
     z-index: 5;
-    bottom: -48px;
+    top: 0;
     position: absolute;
 }
 </style>
