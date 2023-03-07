@@ -50,8 +50,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    search: () => true,
-    select: (_item: any) => true
+    searched: () => true,
+    selected: (_item: any) => true
 })
 
 // =================
@@ -74,11 +74,11 @@ watch(() => props.searchValue, () => debounce.input(''))
 //
 
 const search = async() => {
-    emit('search')
+    emit('searched')
 }
 
 const select = (item: any) => {
-    emit('select', item)
+    emit('selected', item)
 }
 
 </script>

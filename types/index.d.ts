@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
         NgTable: typeof import('../core/vue/components/table.vue')['default']
         NgToolbar: typeof import('../core/vue/components/toolbar.vue')['default']
         NgUpload: typeof import('../core/vue/components/upload.vue')['default']
+        NgSearch: typeof import('../core/vue/components/search.vue')['default']
         NgSkeleton: typeof import('../core/vue/components/skeleton.vue')['default']
         NgDatePicker: typeof import('../core/vue/components/date-picker.vue')['default']
         NgOverlayLoading: typeof import('../core/vue/components/overlay-loading.vue')['default']

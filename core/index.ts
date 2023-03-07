@@ -13,6 +13,7 @@ import NgApp from './vue/views/app.vue'
 import Table from './vue/components/table.vue'
 import Dialog from './vue/components/dialog.vue'
 import Upload from './vue/components/upload.vue'
+import Search from './vue/components/search.vue'
 import VisibleLoad from './vue/components/visible-load.vue'
 import Loaders from './vue/components/loaders.vue'
 import Toolbar from './vue/components/toolbar.vue'
@@ -71,6 +72,7 @@ export const NextgenLib = {
         addComponent('Img', Img)
         addComponent('Form', Form)
         addComponent('Table', Table)
+        addComponent('Search', Search)
         addComponent('Dialog', Dialog)
         addComponent('Upload', Upload)
         addComponent('Loaders', Loaders)
