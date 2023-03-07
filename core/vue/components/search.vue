@@ -85,7 +85,7 @@ watch(() => props.searchValue, () => {
 //
 
 const change = () => {
-    if (props.searchValue.trim()) {
+    if (props.searchValue) {
         emit('changed')
     } else {
         emit('closed')
