@@ -14,14 +14,14 @@
         <VList
             v-else-if="items.length"
             class="lib-component-search-list rounded elevation-3">
-            <slot name="list-top"></slot>
-            <v-list-item
-                v-for="item in items"
-                :key="typeof item === 'string' ? item : item[itemTitle]"
-                :title="typeof item === 'string' ? item : item[itemTitle]"
-                @click="select(item)"
-            ></v-list-item>
-            <slot name="list-bottom"></slot>
+            <slot name="list">
+                <v-list-item
+                    v-for="item in items"
+                    :key="typeof item === 'string' ? item : item[itemTitle]"
+                    :title="typeof item === 'string' ? item : item[itemTitle]"
+                    @click="select(item)"
+                ></v-list-item>
+            </slot>
         </VList>
     </div>
 </template>
