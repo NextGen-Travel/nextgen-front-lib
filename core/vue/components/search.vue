@@ -1,7 +1,7 @@
 <template>
     <div class="lib-component-search-bar">
         <slot></slot>
-        <VList v-if="loading" class="lib-component-search-list rounded elevation-3">
+        <VList v-if="loading" class="lib-component-search-list text-center rounded elevation-3">
             <v-progress-circular
                 color="primary"
                 indeterminate>
@@ -91,6 +91,7 @@ const select = (item: any) => {
     max-height: 40vh;
     width: 100%;
     z-index: 5;
+    top: -14px;
     position: absolute;
 }
 </style>
