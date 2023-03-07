@@ -1,21 +1,27 @@
 <template>
     <div v-click-outside="close" class="lib-component-search-bar">
         <slot></slot>
-        <VList v-if="loading" class="lib-component-search-list text-center rounded elevation-3">
-            <v-progress-circular
-                color="primary"
-                indeterminate>
-            </v-progress-circular>
+        <VList v-if="loading" class="lib-component-search-list rounded elevation-3">
+            <slot name="loading">
+                <div class="text-center">
+                    <v-progress-circular
+                        color="primary"
+                        indeterminate>
+                    </v-progress-circular>
+                </div>
+            </slot>
         </VList>
         <VList
             v-else-if="items.length"
             class="lib-component-search-list rounded elevation-3">
+            <slot name="list-top"></slot>
             <v-list-item
                 v-for="item in items"
-                :key="item[itemTitle]"
-                :title="item[itemTitle]"
+                :key="typeof item === 'string' ? item : item[itemTitle]"
+                :title="typeof item === 'string' ? item : item[itemTitle]"
                 @click="select(item)"
             ></v-list-item>
+            <slot name="list-bottom"></slot>
         </VList>
     </div>
 </template>
@@ -35,7 +41,7 @@ const props = defineProps({
         required: true
     },
     items: {
-        type: Array as PropType<Array<any>>,
+        type: Array as PropType<Array<string | Record<string, any>>>,
         required: false,
         default: () => []
     },
@@ -88,6 +94,7 @@ const search = async() => {
 
 const select = (item: any) => {
     emit('selected', item)
+    emit('closed')
 }
 
 </script>
