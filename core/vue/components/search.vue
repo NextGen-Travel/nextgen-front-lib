@@ -1,6 +1,6 @@
 <template>
     <div class="lib-component-search-bar">
-        <slot name="input"></slot>
+        <slot></slot>
         <VList v-if="loading" class="lib-component-search-list rounded elevation-3">
             <v-progress-circular
                 color="primary"
