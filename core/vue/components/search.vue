@@ -59,7 +59,7 @@ const props = defineProps({
 
 const emit = defineEmits({
     closed: () => true,
-    searched: () => true,
+    changed: () => true,
     selected: (_item: any) => true
 })
 
@@ -68,7 +68,7 @@ const emit = defineEmits({
 // debounce
 //
 
-const debounce = useDebounce(() => search(), 100, 5)
+const debounce = useDebounce(() => change(), 100, 5)
 
 // =================
 //
@@ -88,8 +88,8 @@ const close = () => {
     }
 }
 
-const search = async() => {
-    emit('searched')
+const change = async() => {
+    emit('changed')
 }
 
 const select = (item: any) => {
