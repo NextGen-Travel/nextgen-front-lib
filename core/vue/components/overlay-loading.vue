@@ -1,9 +1,9 @@
 <template>
     <v-overlay
         v-model="value"
-        contained
         class="align-center justify-center"
         persistent
+        :contained="!full"
         :style="`z-index: ${zIndex};`"
         :opacity="0.5"
         :close-on-back="false">
@@ -20,6 +20,11 @@ import { computed } from 'vue'
 //
 
 const props = defineProps({
+    full: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
     zIndex: {
         type: Number,
         required: false,
