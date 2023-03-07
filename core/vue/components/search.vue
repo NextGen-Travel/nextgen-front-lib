@@ -100,7 +100,6 @@ const select = (item: any) => {
     max-height: 40vh;
     width: 100%;
     z-index: 5;
-    top: 0;
     position: absolute;
 }
 </style>
