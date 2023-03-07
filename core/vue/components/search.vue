@@ -7,7 +7,10 @@
                 indeterminate>
             </v-progress-circular>
         </VList>
-        <VList v-else-if="items.length" class="lib-component-search-list rounded elevation-3">
+        <VList
+            v-else-if="items.length"
+            v-click-outside="close"
+            class="lib-component-search-list rounded elevation-3">
             <v-list-item
                 v-for="item in items"
                 :key="item[itemTitle]"
@@ -50,6 +53,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
+    closed: () => true,
     searched: () => true,
     selected: (_item: any) => true
 })
@@ -73,6 +77,10 @@ watch(() => props.searchValue, () => debounce.input(''))
 // methods
 //
 
+const close = () => {
+    emit('closed')
+}
+
 const search = async() => {
     emit('searched')
 }
@@ -91,7 +99,7 @@ const select = (item: any) => {
     max-height: 40vh;
     width: 100%;
     z-index: 5;
-    top: -14px;
+    bottom: -48px;
     position: absolute;
 }
 </style>
