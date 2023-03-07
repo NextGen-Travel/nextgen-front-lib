@@ -1,5 +1,5 @@
 <template>
-    <div v-click-outside="close" class="lib-component-search-bar">
+    <div class="lib-component-search-bar">
         <slot></slot>
         <VList v-if="loading" class="lib-component-search-list rounded elevation-3">
             <slot name="loading">
@@ -75,18 +75,18 @@ const debounce = useDebounce(() => change(), 100, 5)
 // watch
 //
 
-watch(() => props.searchValue, () => debounce.input(''))
+watch(() => props.searchValue, () => {
+    if (props.searchValue.trim()) {
+        debounce.input('')
+    } else {
+        emit('closed')
+    }
+})
 
 // =================
 //
 // methods
 //
-
-const close = () => {
-    if (props.searchValue.trim()) {
-        emit('closed')
-    }
-}
 
 const change = async() => {
     emit('changed')
