@@ -371,7 +371,7 @@ export type GeniusCartAppDefinitions = {
         };
         response: {
             data: {
-                id: string;
+                id: number;
                 name: string;
             } [];
             links: {
@@ -1190,8 +1190,9 @@ export type GeniusCartAppDefinitions = {
     };
     /**
      * [no summary] - no description
+     * @param {number} clientId - undefined
      */
-    "post@client/confrimDelete": {
+    "post@client/:clientId/confirmDelete": {
         body: {
             /**
              * 確認是否刪除
@@ -1199,20 +1200,6 @@ export type GeniusCartAppDefinitions = {
              */
             confirm: string;
         };
-        query: null;
-        response: {
-            data: {
-                msg: string;
-            };
-        };
-        contentType: null;
-    };
-    /**
-     * [no summary] - no description
-     * @param {number} wishclientIdId - undefined
-     */
-    "delete@client/:clientId": {
-        body: null;
         query: null;
         response: {
             data: {
@@ -1970,10 +1957,6 @@ export type GeniusCartAppDefinitions = {
              * @example 信義區大安路
              */
             address ? : string;
-            /**
-             * 信箱
-             */
-            email ? : string;
         };
         query: null;
         response: {

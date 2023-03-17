@@ -140,7 +140,7 @@ export type ScrmPrivateDefinitions = {
             /**
              * 客服大頭貼
              */
-            avatar ? : File;
+            avatar ? : string;
             /**
              * 電話
              */
@@ -577,6 +577,20 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
+     * [拿新增廠商 signal 帳號時要掃描的 qrcode] - 會回傳 base64
+     */
+    "get@companies/signal/qrcode": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEEElEQVR42uyZP+7krhLECxE45AZwESSu5czOuBYSF4EbEBIg6qmZr2d3430m+S2abD5BC/pPVRv/zr/z5yHZTIO1jiwWenhNZvaD5L0JaEBjq8VaWKicdE4hJ5zHjWMbwNaAAonRkTknhKTZj8i4FTDWFeumVSkMnfPwOHcDhgVQK1ByhBHY9wJAa61OVclaJF9SGLjuP17zZUCStrX6c/LPiTH+ntUvAx9IMhZWFZ2T5gjp+vXnFoCEgZrWTUcmwPuQzit2nLsAooGtcroC2MAUUsgDF/vnrXYArYGGxVrrKqfOZNKZ8b7ife4CABjS1fppIMOHgTDO83uPGwDTQIlSFXmshEAOneN99etTvH8PsK0gJgDFKoDUxS3tYRsAsqHV4upUnGF8GuV5xRg7NgGGxhi6CVeLqikkICR/dFw3dgEwYDNuumlhLTwAD90v/rTqHQCbAQ1cUfJg3kPnoXO/YmTfBTQ2gtO6KneVM4fX8li8fypjAyARStKqCatq0gneexmc5/l0sdcBSpysEiULQs5rdsd+9H1Ak8dCcQXyy/JSXBcV+9NIXwdEtpg2VS1uqqKlboZOOC8+GfU+0IxBo3VTsXL61UFGuK/7ecwdgPTyBlWnq8X6MLwMTnacx6Pt3wfYDI2T14IrHt7rT/E+bWwH0ETMqeIoEoY5QTP583jeagtgloBgsWoljF+1G3kfj8DYAIisbj/6oebhA0XbXzH2R3j/LWBMQ0NxrEUka9KikvJ9fGPYAFCq00yoKaXB1ShDvo+vcN8AGMIYU6e1cHWGIcYagffF+5OTG4AlYkwRL1ksoAcg+RDXVe0C2GBYp5qOVbykeLlVE1fcBawVB6yTlJlW5xFkfssdnSc2AcYYgFMqZ1qXxNCGoeNvOut94JO0oh5ExuiclpYSLfcMtfeB1qSFuEppIFMnr3MK6TyP/mNrdwBmWTkA1ioBRNOGftzn8czu94Emebtql7VIo05aLG0/vgPlfcCQMjFVFUGZB7weq3iv70B5HVjFa6DKkjFr3ZSZGTu+DeZ1gI2tUTQ15bZWLx+47vPbRt8H1mg1EKPlikorY4R47OgOoImcNHYtH1lz0iInM288Y+3/ADTpUrXOn2WSX/kg2XB+tf0GQJISSrKhilod3usu/24D1tKdkg2KBfrj7EP/uocdwIepc2l3qYs8AN1Fsp4bgWXlKoui2CgPcQ/HfcR7F7A2vbRqLb1rTsvB5H782j+8D6wvIGbZyaLK2m8M4Lx+k+7vAxIjxTtQ9P0IEmeOIiB+fRrYABjyKV7vw9Ac5/oEshMAKM7e1QmJESFd9yM3twDLWRdXrBV7EfIIzLnju+rdAHw0rYxNydq1+g9JSyP/Q1e/Cvw7/53zvwAAAP//0ecnbHZ9JNkAAAAASUVORK5CYII=
+             */
+            data: string;
+        };
+        contentType: null;
+    };
+    /**
      * [取得自動回覆整顆樹] - 取得自動回覆整顆樹
      */
     "get@auto-replies": {
@@ -892,7 +906,9 @@ export type ScrmPrivateDefinitions = {
      */
     "post@messagebird/templates": {
         body: {
-            language: {};
+            language: {
+                [k: string]: string;
+            };
             name: string;
             category: "OTP" | "TRANSACTIONAL" | "MARKETING";
             components: {
@@ -917,7 +933,9 @@ export type ScrmPrivateDefinitions = {
             data: {
                 id: string;
                 name: string;
-                language: {};
+                language: {
+                    [k: string]: string;
+                };
                 status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
                 wabaId: string;
                 namespace: string;
@@ -953,7 +971,9 @@ export type ScrmPrivateDefinitions = {
             msg: string;
             data: {
                 id: string;
-                language: {};
+                language: {
+                    [k: string]: string;
+                };
                 rejectedReason: string;
                 status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
                 createdAt: string;
@@ -1055,7 +1075,9 @@ export type ScrmPrivateDefinitions = {
             msg: string;
             data: {
                 fields: string[];
-                data: {} [];
+                data: {
+                    [k: string]: number;
+                } [];
             };
         };
         contentType: null;
@@ -1402,7 +1424,7 @@ export type ScrmPrivateDefinitions = {
                     status: "sent" | "read" | "delivered" | "failed";
                     text: string;
                     timestamp: string;
-                    type: "text" | "hsm" | "image" | "file" | "audio" | "video" | "whatsappSticker";
+                    type: "text" | "hsm" | "image" | "file" | "audio" | "video" | "whatsappSticker" | "multimedia";
                     user: {
                         id: number;
                         displayName: string;
@@ -1413,7 +1435,7 @@ export type ScrmPrivateDefinitions = {
                         caption: string | null;
                         size: string | null;
                         extension: string | null;
-                    };
+                    } [];
                     components: {
                         type: "HEADER" | "BODY" | "FOOTER" | "BUTTONS";
                         text: string;
@@ -1613,8 +1635,10 @@ export type ScrmPrivateDefinitions = {
              * @example Success
              */
             msg: string;
-            id: number;
-            tagName: string;
+            data: {
+                id: number;
+                tagName: string;
+            };
         };
         contentType: null;
     };

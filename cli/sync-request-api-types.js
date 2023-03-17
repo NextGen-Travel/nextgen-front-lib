@@ -74,10 +74,6 @@ class OpenApiReader {
             return {
                 type: 'any'
             }
-        } else if (data.type === 'object') {
-            return this.schemaObjectToJsonSchema(data)
-        } else if (data.type === 'array') {
-            return this.schemaArrayToJsonSchema(data)
         } else {
             /** @type {JSONSchema} */
             let output = toJsonSchema(data)

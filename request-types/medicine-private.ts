@@ -44,6 +44,11 @@ export type MedicinePrivateDefinitions = {
                  */
                 address: string;
                 /**
+                 * 英文地址
+                 * @example rd. annho
+                 */
+                addressEn: string;
+                /**
                  * 區域
                  * @example 大安區
                  */
@@ -88,6 +93,7 @@ export type MedicinePrivateDefinitions = {
                     tel: string;
                     district: string;
                     address: string;
+                    addressEn: string;
                     createdAt: string;
                     updatedAt: string;
                     publishedAt: string;
@@ -113,6 +119,7 @@ export type MedicinePrivateDefinitions = {
                     tel: string;
                     district: string;
                     address: string;
+                    addressEn: string;
                     createdAt: string;
                     updatedAt: string;
                     publishedAt: string;
@@ -182,6 +189,11 @@ export type MedicinePrivateDefinitions = {
                  */
                 address: string;
                 /**
+                 * 英文地址
+                 * @example rd. annho
+                 */
+                addressEn: string;
+                /**
                  * 區域
                  * @example 大安區
                  */
@@ -226,6 +238,7 @@ export type MedicinePrivateDefinitions = {
                     tel: string;
                     district: string;
                     address: string;
+                    addressEn: string;
                     createdAt: string;
                     updatedAt: string;
                     publishedAt: string;
@@ -252,6 +265,7 @@ export type MedicinePrivateDefinitions = {
                     tel: string;
                     district: string;
                     address: string;
+                    addressEn: string;
                     createdAt: string;
                     updatedAt: string;
                     publishedAt: string;
