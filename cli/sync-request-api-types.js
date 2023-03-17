@@ -74,6 +74,10 @@ class OpenApiReader {
             return {
                 type: 'any'
             }
+        } else if (data.type === 'object') {
+            return this.schemaObjectToJsonSchema(data)
+        } else if (data.type === 'array') {
+            return this.schemaArrayToJsonSchema(data)
         } else {
             /** @type {JSONSchema} */
             let output = toJsonSchema(data)
@@ -282,8 +286,21 @@ class OpenApiReader {
             if (tsData.properties) {
                 if (item.body) {
                     for (let key in item.body.properties) {
-                        if (item.body.properties[key].format === 'binary') {
-                            item.body.properties[key].tsType = 'File'
+                        let target = item.body.properties[key]
+                        /**
+                         * 將 binary 格式調整成 File
+                         * @type Array
+                         */
+                        let union = target.oneOf || target.anyOf || target.allOf
+                        if (union) {
+                            union.forEach(e => {
+                                if (e.format === 'binary') {
+                                    e.tsType = 'File'
+                                }
+                            })
+                        }
+                        if (target.format === 'binary') {
+                            target.tsType = 'File'
                         }
                     }
                 }
@@ -330,8 +347,9 @@ module.exports = async(params) => {
     }
     for (let { name, value } of docUrl.data.links) {
         if (value !== 'main') {
-            console.log(`正在下載： ${name}`)
-            const result = await bundle(`${baseUrl}/docs/${value}.yaml`, {
+            const link = `${baseUrl}/docs/${value}.yaml`
+            console.log(`正在下載： ${name}: ${link}`)
+            const result = await bundle(link, {
                 dereference: true
             })
             const reader = new OpenApiReader(path.basename(value), JSON.parse(result))

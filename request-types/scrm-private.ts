@@ -140,7 +140,7 @@ export type ScrmPrivateDefinitions = {
             /**
              * 客服大頭貼
              */
-            avatar ? : string;
+            avatar ? : File | string;
             /**
              * 電話
              */
