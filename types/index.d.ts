@@ -39,6 +39,7 @@ declare global {
                 service: string
             }
         }
+        __ng_glob_state: any
     }
 }
 

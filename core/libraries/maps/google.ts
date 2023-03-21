@@ -15,12 +15,13 @@ type Channels = {
 }
 
 const exception = serviceException.checkout('GoogleMap')
-const state = {
+
+window.__ng_glob_state.gmap = {
     installed: false
 }
 
 function checkInstalled() {
-    if (state.installed === false) {
+    if (window.__ng_glob_state.gmap.installed === false) {
         throw exception.create('gsi not installed.')
     }
 }
@@ -30,12 +31,12 @@ export class GoogleMap extends Event<Channels> {
     markers: MapMarker[] = []
 
     static isInstalled() {
-        return state.installed
+        return window.__ng_glob_state.gmap.installed
     }
 
     static install(config: GoogleMapConfig) {
-        if (state.installed === false) {
-            state.installed = true
+        if (window.__ng_glob_state.gmap.installed === false) {
+            window.__ng_glob_state.gmap.installed = true
             return new Promise((resolve, reject) => {
                 window.initGoogleMap = () => resolve(null)
                 element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)

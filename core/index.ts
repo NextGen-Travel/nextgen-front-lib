@@ -3,6 +3,20 @@ import 'v-calendar/dist/style.css'
 // TODO: 這是修復 vuetify 某些狀況的 bug, 現在 vuetify 已經修正，可刪除
 import 'requestidlecallback-polyfill'
 
+window.__ng_glob_state = {}
+window.__ng_config = {
+    libOptions: {
+        lang: 'en',
+        staticUrl: '',
+        notFoundImage: ''
+    },
+    libEnv: {
+        version: 2,
+        stage: '',
+        service: '',
+    }
+}
+
 import type { App } from 'vue'
 import { i18n } from './i18n'
 import { Chart, registerables } from 'chart.js'
@@ -27,19 +41,6 @@ import OutlineText from './vue/components/outline-text.vue'
 import OverlayLoading from './vue/components/overlay-loading.vue'
 import ChartPie from './vue/components/charts/pie.vue'
 import ChartDoughnut from './vue/components/charts/doughnut.vue'
-
-window.__ng_config = {
-    libOptions: {
-        lang: 'en',
-        staticUrl: '',
-        notFoundImage: ''
-    },
-    libEnv: {
-        version: 2,
-        stage: '',
-        service: '',
-    }
-}
 
 Chart.register(...registerables)
 
