@@ -9,9 +9,7 @@ type GoogleMapConfig = {
 
 type Channels = {
     click: LatLng
-    clickMarker: LatLng & {
-        marker: MapMarker
-    }
+    clickMarker: MapMarker
 }
 
 const exception = serviceException.checkout('GoogleMap')
@@ -82,12 +80,8 @@ export class GoogleMap extends Event<Channels> {
     addMarker(params: MarkerAttr) {
         const marker = new MapMarker(this, params)
         this.markers.push(marker)
-        marker.on('click', ({ lat, lng }) => {
-            this.emit('clickMarker', {
-                lat,
-                lng,
-                marker
-            })
+        marker.on('click', () => {
+            this.emit('clickMarker', marker)
         })
         return marker
     }
@@ -98,7 +92,7 @@ export class GoogleMap extends Event<Channels> {
     }
 
     /** 刪除並重新繪製 marker */
-    loadMarkers(items: MarkerAttr[]) {
+    reloadMarkers(items: MarkerAttr[]) {
         this.removeAllMarker()
         items.forEach(e => this.addMarker(e))
     }

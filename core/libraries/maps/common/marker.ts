@@ -1,12 +1,9 @@
 import { Event } from 'power-helper'
-import { LatLng, MarkerAttr } from '../types'
 import { GoogleMap } from '../google'
+import { LatLng, MarkerAttr } from '../types'
 
 type Channels = {
-    click: {
-        lat: number
-        lng: number
-    }
+    click: any
 }
 
 export class MapMarker extends Event<Channels> {
@@ -25,17 +22,17 @@ export class MapMarker extends Event<Channels> {
             })
             this.googleMarker = new google.maps.Marker({
                 map: this.googleMap.map,
-                position: params.position
+                position: params.position,
             })
             this.googleMarker.addListener('click', () => {
                 this.emit('click', this.getPosition())
-                if (params.content) {
-                    this.googleInfowindow?.open({
-                        map: this.googleMap?.map,
-                        anchor: this.googleMarker
-                    })
-                }
             })
+            if (params.content) {
+                this.googleInfowindow?.open({
+                    map: this.googleMap?.map,
+                    anchor: this.googleMarker
+                })
+            }
         }
         params.onLoaded?.(this)
     }

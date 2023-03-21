@@ -11,11 +11,9 @@
 <script lang="ts" setup>
 import { LatLng } from '../../libraries/maps/types'
 import { GoogleMap } from '../../libraries/maps/google'
+import { MapMarker } from '../../libraries/maps/common/marker'
 import { MarkerAttr } from '../../libraries/maps/types'
 import { PropType, watch, ref, onMounted, onUnmounted } from 'vue'
-
-// TODO: 這裡要確認如果沒有安裝 google 地圖應該採用高德地圖
-const map = GoogleMap.isInstalled() ? new GoogleMap() : null
 
 // =================
 //
@@ -27,6 +25,12 @@ const props = defineProps({
         type: String,
         required: false,
         default: '400px'
+    },
+    /** 可以指定使用哪個地圖，如果不指定系統會從環境判定 */
+    mode: {
+        type: String as PropType<'google' | 'amap'>,
+        required: false,
+        default: () => GoogleMap.isInstalled() ? 'google' : 'amap'
     },
     zoom: {
         type: Number,
@@ -45,8 +49,17 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-    click: (_latlng: LatLng) => true
+    click: (_latlng: LatLng) => true,
+    clickMarker: (_marker: MapMarker) => true
 })
+
+// =================
+//
+// map
+//
+
+// TODO: 這裡要確認如果沒有安裝 google 地圖應該採用高德地圖
+const map = props.mode === 'google' ? new GoogleMap() : null
 
 // =================
 //
@@ -63,10 +76,11 @@ const main = ref<HTMLDivElement>()
 onMounted(() => {
     if (map && main.value) {
         map.start(main.value)
-        map.on('click', (latlng) => emit('click', latlng))
         map.zoomTo(props.zoom)
         map.moveTo(props.position)
-        map.loadMarkers(props.markers)
+        map.reloadMarkers(props.markers)
+        map.on('click', (latlng) => emit('click', latlng))
+        map.on('clickMarker', (marker) => emit('clickMarker', marker))
     }
 })
 
@@ -83,11 +97,11 @@ onUnmounted(() => {
 
 watch(() => props.zoom, () => map?.zoomTo(props.zoom))
 
-watch(() => props.position, () => map?.moveTo(props.position), {
+watch(() => props.markers, () => map?.reloadMarkers(props.markers), {
     deep: true
 })
 
-watch(() => props.markers, () => map?.loadMarkers(props.markers), {
+watch(() => props.position, () => map?.moveTo(props.position), {
     deep: true
 })
 
