@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "types": [
-      "vuetify"
+      "vuetify",
+      "apple-signin-api",
+      "facebook-js-sdk",
+      "google.maps",
+      "google.accounts"
     ],
     "lib": [
       "esnext",
