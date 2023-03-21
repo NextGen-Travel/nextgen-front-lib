@@ -42,7 +42,7 @@ function checkInstalled() {
     }
 }
 
-export class GoogleOAuth {
+export class GoogleAuth {
     static async install(config: GoogleConfig) {
         if (window.__ng_state.agoogle == null) {
             window.__ng_state.agoogle = {
