@@ -3,6 +3,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
+        NgMap: typeof import('../core/vue/components/map.vue')['default']
         NgDialog: typeof import('../core/vue/components/dialog.vue')['default']
         NgFixedBar: typeof import('../core/vue/components/fixed-bar.vue')['default']
         NgForm: typeof import('../core/vue/components/form.vue')['default']

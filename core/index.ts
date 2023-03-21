@@ -7,6 +7,7 @@ import type { App } from 'vue'
 import { i18n } from './i18n'
 import { Chart, registerables } from 'chart.js'
 import VCalendar from 'v-calendar'
+import Map from './vue/components/map.vue'
 import Img from './vue/components/img.vue'
 import Form from './vue/components/form.vue'
 import NgApp from './vue/views/app.vue'
@@ -87,6 +88,7 @@ export const NextgenLib = {
         addComponent('DateRangePicker', DateRangePicker)
         addComponent('PieChart', ChartPie)
         addComponent('DoughnutChart', ChartDoughnut)
+        addComponent('Map', Map)
     }
 }
 
