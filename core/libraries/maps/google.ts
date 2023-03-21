@@ -58,10 +58,10 @@ export class GoogleMap extends Event<Channels> {
             this.map.setOptions({
                 disableDefaultUI: true
             })
-            this.map.addListener('click', (event: { latLng: LatLng }) => {
+            this.map.addListener('click', (event: google.maps.KmlMouseEvent) => {
                 this.emit('click', {
-                    lat: event.latLng.lat,
-                    lng: event.latLng.lng
+                    lat: event.latLng?.lat() || 0,
+                    lng: event.latLng?.lng() || 0
                 })
             })
         }
