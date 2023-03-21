@@ -37,7 +37,7 @@ const props = defineProps({
         required: false,
         default: 8
     },
-    position: {
+    center: {
         type: Object as PropType<LatLng>,
         required: true
     },
@@ -77,7 +77,7 @@ onMounted(() => {
     if (map && main.value) {
         map.start(main.value)
         map.zoomTo(props.zoom)
-        map.moveTo(props.position)
+        map.moveTo(props.center)
         map.reloadMarkers(props.markers)
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
@@ -97,11 +97,11 @@ onUnmounted(() => {
 
 watch(() => props.zoom, () => map?.zoomTo(props.zoom))
 
-watch(() => props.markers, () => map?.reloadMarkers(props.markers), {
+watch(() => props.center, () => map?.moveTo(props.center), {
     deep: true
 })
 
-watch(() => props.position, () => map?.moveTo(props.position), {
+watch(() => props.markers, () => map?.reloadMarkers(props.markers), {
     deep: true
 })
 
