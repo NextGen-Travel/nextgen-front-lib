@@ -30,7 +30,7 @@ import ChartDoughnut from './vue/components/charts/doughnut.vue'
 
 Chart.register(...registerables)
 
-window.__ng_glob_state = {}
+window.__ng_state = {}
 window.__ng_config = {
     libOptions: {
         lang: 'en',

@@ -22,21 +22,23 @@ type Channels = {
 const exception = serviceException.checkout('AppleAuth')
 const scope = 'name email'
 const event = new Event<Channels>()
-const state = {
-    installed: false
-}
 
 function checkInstalled() {
-    if (state.installed === false) {
+    if (!window.__ng_state.aapple?.installed) {
         throw exception.create('apple login not installed.')
     }
 }
 
 export class AppleAuth {
     static async install(config: AppleConfig) {
-        if (state.installed === false) {
-            state.installed = true
-            // TODO: en_us
+        if (window.__ng_state.aapple == null) {
+            window.__ng_state.aapple = {
+                installed: false
+            }
+        }
+        if (window.__ng_state.aapple.installed === false) {
+            window.__ng_state.aapple.installed = true
+            // TODO: en_us ?
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
             window.AppleID.auth.init({
                 clientId: config.clientId,

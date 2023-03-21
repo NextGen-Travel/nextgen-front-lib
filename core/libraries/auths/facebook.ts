@@ -10,15 +10,6 @@ type FacebookConfig = {
 const scope = 'public_profile,email'
 const exception = serviceException.checkout('FacebookAuth')
 const event = new Event<Channels>()
-const state = {
-    installed: false
-}
-
-const facebookConfig: FacebookConfig = {
-    clientId: '',
-    postBackUri: '',
-    redirectUri: ''
-}
 
 type Channels = {
     login: {
@@ -27,18 +18,26 @@ type Channels = {
 }
 
 function checkInstalled() {
-    if (state.installed === false) {
+    if (!window.__ng_state.afb?.installed) {
         throw exception.create('facebook sdk not installed.')
     }
 }
 
 export class FacebookAuth {
     static async install(config: FacebookConfig) {
-        if (state.installed === false) {
-            state.installed = true
-            facebookConfig.clientId = config.clientId
-            facebookConfig.postBackUri = config.postBackUri
-            facebookConfig.redirectUri = config.redirectUri
+        if (window.__ng_state.afb == null) {
+            window.__ng_state.afb = {
+                installed: false,
+                clientId: '',
+                postBackUri: '',
+                redirectUri: ''
+            }
+        }
+        if (window.__ng_state.afb.installed === false) {
+            window.__ng_state.afb.installed = true
+            window.__ng_state.clientId = config.clientId
+            window.__ng_state.postBackUri = config.postBackUri
+            window.__ng_state.redirectUri = config.redirectUri
             window.fbAsyncInit = () => {
                 FB.init({
                     appId: config.clientId,
@@ -92,10 +91,10 @@ export class FacebookAuth {
         checkInstalled()
         let url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
         url.searchParams.set('scope', scope)
-        url.searchParams.set('client_id', facebookConfig.clientId)
-        url.searchParams.set('redirect_uri', facebookConfig.postBackUri)
+        url.searchParams.set('client_id', window.__ng_state.clientId)
+        url.searchParams.set('redirect_uri', window.__ng_state.postBackUri)
         url.searchParams.set('state', JSON.stringify({
-            urlScheme: facebookConfig.redirectUri
+            urlScheme: window.__ng_state.redirectUri
         }))
         return url.href
     }

@@ -1,5 +1,10 @@
 import '@vue/runtime-core'
-
+import 'apple-signin-api'
+import 'facebook-js-sdk'
+import 'google.maps'
+import 'google.accounts'
+import '../shims'
+import '../shims-file'
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
@@ -27,6 +32,7 @@ declare module '@vue/runtime-core' {
 
 declare global {
     interface Window {
+        __ng_state: any
         __ng_config: {
             libOptions: {
                 lang: 'en' | 'zh'
@@ -39,7 +45,6 @@ declare global {
                 service: string
             }
         }
-        __ng_glob_state: any
     }
 }
 

@@ -35,20 +35,22 @@ type Channels = {
 
 const exception = serviceException.checkout('GoogleAuth')
 const event = new Event<Channels>()
-const state = {
-    installed: false
-}
 
 function checkInstalled() {
-    if (state.installed === false) {
+    if (!window.__ng_state.agoogle?.installed) {
         throw exception.create('gsi not installed.')
     }
 }
 
 export class GoogleOAuth {
     static async install(config: GoogleConfig) {
-        if (state.installed === false) {
-            state.installed = true
+        if (window.__ng_state.agoogle == null) {
+            window.__ng_state.agoogle = {
+                installed: false
+            }
+        }
+        if (window.__ng_state.agoogle.installed === false) {
+            window.__ng_state.agoogle.installed = true
             await element.importScript('https://accounts.google.com/gsi/client')
             google.accounts.id.initialize({
                 ux_mode: config.uxMode,
