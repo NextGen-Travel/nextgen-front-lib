@@ -1,7 +1,7 @@
-import { LatLng } from './types'
+import { LatLng, MarkerAttr } from './types'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
-import { MapMarker, MarkerParams } from './common/marker'
+import { MapMarker } from './common/marker'
 
 type GoogleMapConfig = {
     apiKey: string
@@ -55,6 +55,9 @@ export class GoogleMap extends Event<Channels> {
             this.map = new google.maps.Map(el, {
                 zoom: 10
             })
+            this.map.setOptions({
+                disableDefaultUI: true
+            })
             this.map.addListener('click', (event: { latLng: LatLng }) => {
                 this.emit('click', {
                     lat: event.latLng.lat,
@@ -76,7 +79,7 @@ export class GoogleMap extends Event<Channels> {
         })
     }
 
-    addMarker(params: MarkerParams) {
+    addMarker(params: MarkerAttr) {
         const marker = new MapMarker(this, params)
         this.markers.push(marker)
         marker.on('click', ({ lat, lng }) => {
@@ -95,7 +98,7 @@ export class GoogleMap extends Event<Channels> {
     }
 
     /** 刪除並重新繪製 marker */
-    loadMarkers(items: MarkerParams[]) {
+    loadMarkers(items: MarkerAttr[]) {
         this.removeAllMarker()
         items.forEach(e => this.addMarker(e))
     }

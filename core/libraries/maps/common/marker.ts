@@ -1,5 +1,5 @@
 import { Event } from 'power-helper'
-import { LatLng } from '../types'
+import { LatLng, MarkerAttr } from '../types'
 import { GoogleMap } from '../google'
 
 type Channels = {
@@ -9,19 +9,12 @@ type Channels = {
     }
 }
 
-export type MarkerParams = {
-    id?: string
-    content?: string
-    position: LatLng
-    onLoaded?: (_marker: MapMarker) => void
-}
-
 export class MapMarker extends Event<Channels> {
     id?: string
     googleMap?: GoogleMap
     googleMarker?: google.maps.Marker
     googleInfowindow?: google.maps.InfoWindow
-    constructor(map: GoogleMap, params: MarkerParams) {
+    constructor(map: GoogleMap, params: MarkerAttr) {
         super()
         this.id = params.id
         // 如果是 google map

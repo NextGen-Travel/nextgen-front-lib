@@ -1,10 +1,5 @@
 import '@vue/runtime-core'
-import 'apple-signin-api'
-import 'facebook-js-sdk'
-import 'google.maps'
-import 'google.accounts'
-import '../shims'
-import '../shims-file'
+
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
