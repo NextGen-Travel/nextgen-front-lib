@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import { LatLng } from '../../libraries/maps/types'
 import { GoogleMap } from '../../libraries/maps/google'
-import { MarkerParams } from '../../libraries/maps/common/marker'
+import { MarkerAttr } from '../../libraries/maps/types'
 import { PropType, watch, ref, onMounted, onUnmounted } from 'vue'
 
 // TODO: 這裡要確認如果沒有安裝 google 地圖應該採用高德地圖
@@ -38,7 +38,7 @@ const props = defineProps({
         required: true
     },
     markers: {
-        type: Array as PropType<MarkerParams[]>,
+        type: Array as PropType<MarkerAttr[]>,
         required: false,
         default: () => []
     }
