@@ -61,6 +61,7 @@ const main = ref<HTMLDivElement>()
 //
 
 onMounted(() => {
+    console.log(map)
     if (map && main.value) {
         map.start(main.value)
         map.on('click', (latlng) => emit('click', latlng))
