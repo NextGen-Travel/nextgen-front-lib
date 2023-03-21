@@ -1,17 +1,17 @@
+import { LatLng } from './types'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
-
-type LatLng = {
-    lat: number
-    lng: number
-}
+import { MapMarker, MarkerParams } from './common/marker'
 
 type GoogleMapConfig = {
     apiKey: string
 }
 
 type Channels = {
-    click: () => void
+    click: LatLng
+    clickMarker: LatLng & {
+        marker: MapMarker
+    }
 }
 
 const exception = serviceException.checkout('GoogleMap')
@@ -27,6 +27,11 @@ function checkInstalled() {
 
 export class GoogleMap extends Event<Channels> {
     map?: google.maps.Map
+    markers: MapMarker[] = []
+
+    static isInstalled() {
+        return state.installed
+    }
 
     static install(config: GoogleMapConfig) {
         if (state.installed === false) {
@@ -46,30 +51,51 @@ export class GoogleMap extends Event<Channels> {
     start(el: HTMLElement) {
         if (this.map == null) {
             this.map = new google.maps.Map(el, {
-                zoom: 10,
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                }
+                zoom: 10
+            })
+            this.map.addListener('click', (event: { latLng: LatLng }) => {
+                this.emit('click', {
+                    lat: event.latLng.lat,
+                    lng: event.latLng.lng
+                })
             })
         }
     }
 
-    addMarker(params: {
-        title?: string
-        position: LatLng
-    }) {
-        let marker = new google.maps.Marker({
-            map: this.map,
-            title: params.title,
-            position: params.position
+    moveTo(position: LatLng) {
+        this.map?.moveCamera({
+            center: position
         })
-        return {
-            remove: () => marker.setMap(null),
-            moveTo: (position: LatLng) => {
-                marker.setPosition(position)
-            }
-        }
+    }
+
+    zoomTo(zoom: number) {
+        this.map?.moveCamera({
+            zoom
+        })
+    }
+
+    addMarker(params: MarkerParams) {
+        const marker = new MapMarker(this, params)
+        this.markers.push(marker)
+        marker.on('click', ({ lat, lng }) => {
+            this.emit('clickMarker', {
+                lat,
+                lng,
+                marker
+            })
+        })
+        return marker
+    }
+
+    removeAllMarker() {
+        this.markers.forEach(e => e.remove())
+        this.markers = []
+    }
+
+    /** 刪除並重新繪製 marker */
+    loadMarkers(items: MarkerParams[]) {
+        this.removeAllMarker()
+        items.forEach(e => this.addMarker(e))
     }
 
     close() {
