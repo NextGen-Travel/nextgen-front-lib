@@ -5,8 +5,6 @@ import 'google.maps'
 import 'google.accounts'
 import '../shims'
 
-declare module 'js-cookie' {}
-
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
