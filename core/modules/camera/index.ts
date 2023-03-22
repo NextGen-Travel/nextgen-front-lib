@@ -6,11 +6,17 @@ type Channels = {
     }
 }
 
+type InstallOptions = {
+    record?: boolean
+    useRearLens?: boolean
+}
+
 export class Camera extends Event<Channels> {
     private canvas = document.createElement('canvas')
     private video?: HTMLVideoElement
     private stream?: MediaStream
     private mediaRecorder?: MediaRecorder
+    private options?: InstallOptions
     static stopAndRemoveTracks(stream: MediaStream): void {
         stream.getTracks().forEach(track => track.stop())
         stream.getAudioTracks().forEach(track => stream.removeTrack(track))
@@ -34,11 +40,8 @@ export class Camera extends Event<Channels> {
         }
     }
 
-    install(video: HTMLVideoElement, options?: {
-        record?: boolean
-        useRearLens?: boolean
-    }) {
-        const o: Required<typeof options> = {
+    install(video: HTMLVideoElement, options?: InstallOptions) {
+        this.options = {
             record: pick.ifEmpty(options?.record, false),
             useRearLens: pick.ifEmpty(options?.useRearLens, false)
         }
@@ -50,14 +53,12 @@ export class Camera extends Event<Channels> {
             }
             try {
                 this.video = video
-                this.video.controls = true
-                this.video.playsInline = true
                 this.stream = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                     video: {
                         width: video.width,
                         height: video.height,
-                        facingMode: o.useRearLens === false ? undefined : {
+                        facingMode: this.options?.useRearLens === false ? undefined : {
                             exact: 'environment'
                         }
                     }
@@ -65,7 +66,7 @@ export class Camera extends Event<Channels> {
                 this.video.srcObject = this.stream as any
                 this.video.addEventListener('loadedmetadata', onload)
                 // 查詢支援類型
-                if (o.record) {
+                if (this.options?.record) {
                     let mimeTypes = [
                         'video/webm',
                         'video/mp4,',
@@ -97,7 +98,7 @@ export class Camera extends Event<Channels> {
     async reload() {
         this.close()
         if (this.video) {
-            await this.install(this.video)
+            await this.install(this.video, this.options)
         }
     }
 
@@ -131,6 +132,9 @@ export class Camera extends Event<Channels> {
         }
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
             this.mediaRecorder.stop()
+        }
+        if (this.video) {
+            this.video.pause()
         }
     }
 }
