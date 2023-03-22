@@ -3,7 +3,9 @@ import 'apple-signin-api'
 import 'facebook-js-sdk'
 import 'google.maps'
 import 'google.accounts'
-declare module 'js-cookie'
+import '../shims'
+
+declare module 'js-cookie' {}
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
