@@ -83,20 +83,13 @@ export class Camera extends Event<Channels> {
     }
 
     play() {
-        return new Promise(resolve => {
-            if (this.mediaRecorder) {
-                this.mediaRecorder.start(1000 / 24)
-            }
-            if (this.video) {
-                this.video.srcObject = this.stream as any
-                this.video.onloadedmetadata = () => {
-                    if (this.mediaRecorder && this.video) {
-                        this.video.play()
-                        resolve(null)
-                    }
-                }
-            }
-        })
+        if (this.mediaRecorder) {
+            this.mediaRecorder.start(1000 / 24)
+        }
+        if (this.video) {
+            this.video.srcObject = this.stream as any
+            this.video.play()
+        }
     }
 
     /** 獲得一個 base64 截圖 */
