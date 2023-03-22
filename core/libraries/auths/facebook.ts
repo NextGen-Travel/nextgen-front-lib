@@ -40,7 +40,6 @@ export class FacebookAuth {
             window.__ng_state.redirectUri = config.redirectUri
             window.fbAsyncInit = () => {
                 FB.init({
-                    
                     appId: config.clientId,
                     version: 'v15.0'
                 })
