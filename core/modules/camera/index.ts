@@ -51,7 +51,9 @@ export class Camera extends Event<Channels> {
                 }
             }
         })
-        this.mediaRecorder = new MediaRecorder(this.stream, {})
+        this.mediaRecorder = new MediaRecorder(this.stream, {
+            mimeType: 'video/mp4;codecs=avc1'
+        })
         this.mediaRecorder.addEventListener('dataavailable', event => {
             this.emit('dataavailable', { event })
         })
