@@ -50,6 +50,7 @@ export class Camera extends Event<Channels> {
             }
             try {
                 this.video = video
+                this.video.controls = true
                 this.video.playsInline = true
                 this.stream = await navigator.mediaDevices.getUserMedia({
                     audio: true,
