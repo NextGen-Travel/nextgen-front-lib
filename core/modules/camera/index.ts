@@ -51,8 +51,24 @@ export class Camera extends Event<Channels> {
                 }
             }
         })
+        // 查詢支援類型
+        let mimeTypes = [
+            'video/webm',
+            'video/mp4,',
+            'video/quicktime',
+            'video/x-m4v',
+            'video/3gpp',
+            'video/3gpp2'
+        ]
+        let mimeType = undefined
+        for (let type of mimeTypes) {
+            if (MediaRecorder.isTypeSupported(type)) {
+                mimeType = type
+                break
+            }
+        }
         this.mediaRecorder = new MediaRecorder(this.stream, {
-            mimeType: 'video/mp4;codecs=avc1'
+            mimeType
         })
         this.mediaRecorder.addEventListener('dataavailable', event => {
             this.emit('dataavailable', { event })
