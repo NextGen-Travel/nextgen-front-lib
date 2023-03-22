@@ -7,10 +7,10 @@ type Channels = {
 }
 
 export class Camera extends Event<Channels> {
-    canvas = document.createElement('canvas')
-    video?: HTMLVideoElement
-    stream?: MediaStream
-    mediaRecorder?: MediaRecorder
+    private canvas = document.createElement('canvas')
+    private video?: HTMLVideoElement
+    private stream?: MediaStream
+    private mediaRecorder?: MediaRecorder
     static stopAndRemoveTracks(stream: MediaStream): void {
         stream.getTracks().forEach(track => track.stop())
         stream.getAudioTracks().forEach(track => stream.removeTrack(track))
@@ -52,7 +52,7 @@ export class Camera extends Event<Channels> {
             }
         })
         this.mediaRecorder = new MediaRecorder(this.stream, {
-            mimeType: 'video/webm; codecs="vp8,opus"'
+            mimeType: 'video/webm;'
         })
         this.mediaRecorder.addEventListener('dataavailable', event => {
             this.emit('dataavailable', { event })
@@ -68,12 +68,14 @@ export class Camera extends Event<Channels> {
 
     play() {
         return new Promise(resolve => {
+            if (this.mediaRecorder) {
+                this.mediaRecorder.start(1000 / 24)
+            }
             if (this.video) {
                 this.video.srcObject = this.stream as any
                 this.video.onloadedmetadata = () => {
                     if (this.mediaRecorder && this.video) {
                         this.video.play()
-                        this.mediaRecorder.start()
                         resolve(null)
                     }
                 }
@@ -100,7 +102,7 @@ export class Camera extends Event<Channels> {
         if (this.stream) {
             Camera.stopAndRemoveTracks(this.stream)
         }
-        if (this.mediaRecorder) {
+        if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
             this.mediaRecorder.stop()
         }
     }
