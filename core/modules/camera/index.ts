@@ -35,9 +35,11 @@ export class Camera extends Event<Channels> {
     }
 
     async install(video: HTMLVideoElement, options?: {
+        record?: boolean
         useRearLens?: boolean
     }) {
         const o: Required<typeof options> = {
+            record: pick.ifEmpty(options?.record, false),
             useRearLens: pick.ifEmpty(options?.useRearLens, false)
         }
         this.video = video
@@ -52,33 +54,35 @@ export class Camera extends Event<Channels> {
             }
         })
         // 查詢支援類型
-        let mimeTypes = [
-            'video/webm',
-            'video/mp4,',
-            'video/quicktime',
-            'video/x-m4v',
-            'video/3gpp',
-            'video/3gpp2'
-        ]
-        let mimeType = undefined
-        for (let type of mimeTypes) {
-            if (MediaRecorder.isTypeSupported(type)) {
-                mimeType = type
-                break
+        if (o.record) {
+            let mimeTypes = [
+                'video/webm',
+                'video/mp4,',
+                'video/quicktime',
+                'video/x-m4v',
+                'video/3gpp',
+                'video/3gpp2'
+            ]
+            let mimeType: any = undefined
+            for (let type of mimeTypes) {
+                if (MediaRecorder.isTypeSupported(type)) {
+                    mimeType = type
+                    break
+                }
             }
+            this.mediaRecorder = new MediaRecorder(this.stream, {
+                mimeType
+            })
+            this.mediaRecorder.addEventListener('dataavailable', event => {
+                this.emit('dataavailable', { event })
+            })
         }
-        this.mediaRecorder = new MediaRecorder(this.stream, {
-            mimeType
-        })
-        this.mediaRecorder.addEventListener('dataavailable', event => {
-            this.emit('dataavailable', { event })
-        })
     }
 
-    reload() {
+    async reload() {
         this.close()
         if (this.video) {
-            this.install(this.video)
+            await this.install(this.video)
         }
     }
 
