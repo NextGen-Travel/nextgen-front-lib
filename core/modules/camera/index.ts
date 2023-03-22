@@ -34,7 +34,7 @@ export class Camera extends Event<Channels> {
         }
     }
 
-    async install(video: HTMLVideoElement, options?: {
+    install(video: HTMLVideoElement, options?: {
         record?: boolean
         useRearLens?: boolean
     }) {
@@ -42,41 +42,54 @@ export class Camera extends Event<Channels> {
             record: pick.ifEmpty(options?.record, false),
             useRearLens: pick.ifEmpty(options?.useRearLens, false)
         }
-        this.video = video
-        this.stream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: {
-                width: video.width,
-                height: video.height,
-                facingMode: o.useRearLens === false ? undefined : {
-                    exact: 'environment'
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise(async(resolve, reject) => {
+            const onload = () => {
+                resolve(null)
+                this.video?.removeEventListener('loadedmetadata', onload)
+            }
+            try {
+                this.video = video
+                this.stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                    video: {
+                        width: video.width,
+                        height: video.height,
+                        facingMode: o.useRearLens === false ? undefined : {
+                            exact: 'environment'
+                        }
+                    }
+                })
+                this.video.srcObject = this.stream as any
+                this.video.addEventListener('loadedmetadata', onload)
+                // 查詢支援類型
+                if (o.record) {
+                    let mimeTypes = [
+                        'video/webm',
+                        'video/mp4,',
+                        'video/quicktime',
+                        'video/x-m4v',
+                        'video/3gpp',
+                        'video/3gpp2'
+                    ]
+                    let mimeType: any = undefined
+                    for (let type of mimeTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            mimeType = type
+                            break
+                        }
+                    }
+                    this.mediaRecorder = new MediaRecorder(this.stream, {
+                        mimeType
+                    })
+                    this.mediaRecorder.addEventListener('dataavailable', event => {
+                        this.emit('dataavailable', { event })
+                    })
                 }
+            } catch (error) {
+                reject(error)
             }
         })
-        // 查詢支援類型
-        if (o.record) {
-            let mimeTypes = [
-                'video/webm',
-                'video/mp4,',
-                'video/quicktime',
-                'video/x-m4v',
-                'video/3gpp',
-                'video/3gpp2'
-            ]
-            let mimeType: any = undefined
-            for (let type of mimeTypes) {
-                if (MediaRecorder.isTypeSupported(type)) {
-                    mimeType = type
-                    break
-                }
-            }
-            this.mediaRecorder = new MediaRecorder(this.stream, {
-                mimeType
-            })
-            this.mediaRecorder.addEventListener('dataavailable', event => {
-                this.emit('dataavailable', { event })
-            })
-        }
     }
 
     async reload() {
@@ -91,7 +104,6 @@ export class Camera extends Event<Channels> {
             this.mediaRecorder.start(1000 / 24)
         }
         if (this.video) {
-            this.video.srcObject = this.stream as any
             this.video.play()
         }
     }
