@@ -1,10 +1,15 @@
 export const Locales = {
-    zh: {
+    'zh-TW': {
         confirmTitleText: '提醒',
         confirmCancelText: '取消',
         confirmConfirmText: '確定'
     },
-    en: {
+    'zh-CN': {
+        confirmTitleText: '提醒',
+        confirmCancelText: '取消',
+        confirmConfirmText: '确定'
+    },
+    'en-US': {
         confirmTitleText: 'Warning',
         confirmCancelText: 'Cancel',
         confirmConfirmText: 'Confirm'

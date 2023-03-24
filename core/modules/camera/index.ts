@@ -133,8 +133,5 @@ export class Camera extends Event<Channels> {
         if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
             this.mediaRecorder.stop()
         }
-        if (this.video) {
-            this.video.pause()
-        }
     }
 }
