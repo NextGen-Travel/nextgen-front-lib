@@ -33,7 +33,7 @@ Chart.register(...registerables)
 window.__ng_state = {}
 window.__ng_config = {
     libOptions: {
-        lang: 'en',
+        lang: 'en-US',
         staticUrl: '',
         notFoundImage: ''
     },
