@@ -9,7 +9,22 @@ const { pick, text } = require('power-helper')
 function extractFirstParam(content) {
     const regex = /t\(['"]##([^'"]+)['"]/g
     const matchs = content.match(regex)
-    return (matchs || []).map(e => (text.lastMatch(e, '\'') ? e.slice(0, -1) : e).trim())
+    return (matchs || [])
+        .map(e => {
+            if (text.lastMatch(e, '\'') || text.lastMatch(e, '`') || text.lastMatch(e, '"')) {
+                return e.slice(0, -1)
+            } else {
+                return e
+            }
+        })
+        .map(e => {
+            if (text.headMatch(e, 't(\'##') || text.headMatch(e, 't("##') || text.headMatch(e, 't(`##')) {
+                return e.slice(0, -1)
+            } else {
+                return e
+            }
+        })
+        .map(e => e.trim())
 }
 
 /**
