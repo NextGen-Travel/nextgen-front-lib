@@ -2,7 +2,7 @@
 
 const fsx = require('fs-extra')
 const { glob } = require('glob')
-const { pick, text } = require('power-helper')
+const { text } = require('power-helper')
 
 /** 好猛這段是 ai 生成的 */
 
@@ -32,7 +32,7 @@ function extractFirstParam(content) {
  */
 
 module.exports = async(params = {
-    path: '.'
+    path: './src'
 }) => {
     const files = await glob(`${params.path}/**/*.{js,ts,vue}`, { ignore: 'node_modules/**' })
     const outputs = {}

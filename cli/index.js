@@ -48,10 +48,22 @@ const main = async() => {
         await setup()
     }
     if (mode === 'find-not-defined-text') {
-        const output = await findNotDefinedText({
+        const output = process.argv[4] || './.no-defined-text.json'
+        const keys = await findNotDefinedText({
             path: process.argv[3] || './src'
         })
-        fsx.writeFileSync('./.locales', JSON.stringify(output, null, 4))
+        fsx.writeFileSync(output, JSON.stringify(keys, null, 4))
+        console.log(`解讀完畢，已輸出至 ${output }。`)
+        console.log('建議你透過 chat gpt 翻譯，以下是建議咒語：')
+        console.log(`
+            「
+                幫我把下列 json 語系檔的值翻譯成英文和簡體版本，
+                我提供的是台灣用語，
+                簡體請將用語轉成中國用語，
+                例如影片轉成視屏等，
+                而且變數名稱改用單引號包起來:
+            」
+        `)
     }
 }
 
