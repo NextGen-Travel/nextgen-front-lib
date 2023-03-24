@@ -28,7 +28,7 @@ module.exports = async(params = {
             let key = (text.lastMatch(v, '\'') ? v.slice(0, -1) : v).trim()
             outputs['zh-TW'][key] = key
             outputs['zh-CN'][key] = key
-            outputs['zh-US'][key] = key
+            outputs['en-US'][key] = key
         }
     }
     return outputs
