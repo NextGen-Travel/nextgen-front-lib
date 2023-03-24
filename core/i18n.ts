@@ -9,10 +9,11 @@ const flatObj = (data: Record<string, any>) => {
     return output
 }
 
-export const i18n = new I18n<'en' | 'zh', `ng.${keyof typeof Locales['zh']}`>({
-    def: 'en',
+export const i18n = new I18n<'en-US' | 'zh-TW' | 'zh-CN', `ng.${keyof typeof Locales['zh-TW']}`>({
+    def: 'en-US',
     locales: {
-        en: flatObj(Locales['en']),
-        zh: flatObj(Locales['zh'])
+        'en-US': flatObj(Locales['en-US']),
+        'zh-TW': flatObj(Locales['zh-TW']),
+        'zh-CN': flatObj(Locales['zh-CN'])
     }
 })

@@ -27,10 +27,11 @@ module.exports = async(params = {
         //     text: content
         // })
         const vars = extractFirstParam(content)
-        for (let v of vars) {
-            let key = (text.lastMatch(v, '\'') ? v.slice(0, -1) : v).trim()
-            outputs[key] = key
-        }
+        console.log(vars)
+        // for (let v of vars) {
+        //     let key = (text.lastMatch(v, '\'') ? v.slice(0, -1) : v).trim()
+        //     outputs[key] = key
+        // }
     }
     return outputs
 }
