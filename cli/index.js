@@ -51,7 +51,7 @@ const main = async() => {
         const output = await findNotDefinedText({
             path: process.argv[3] || './src'
         })
-        fsx.writeFileSync('./.locales', output)
+        fsx.writeFileSync('./.locales', JSON.stringify(output, null, 4))
     }
 }
 

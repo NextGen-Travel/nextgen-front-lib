@@ -14,6 +14,7 @@ module.exports = async(params = {
     const files = await glob(`${params.path}/**/*.{js,ts,vue}`, { ignore: 'node_modules/**' })
     const outputs = {}
     for (let file of files) {
+        console.log(file)
         const text = fsx.readFileSync(file, 'utf8')
         const vars = pick.vars({
             start: 't(\'##',
