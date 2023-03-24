@@ -5,7 +5,7 @@ const { glob } = require('glob')
 const { pick, text } = require('power-helper')
 
 function extractFirstParam(text) {
-    const regex = /t\(['"]([^'"]+)['"]/
+    const regex = /t\(['"]([^'"]+)['"]/g
     const matchs = text.match(regex)
     return matchs
 }
