@@ -19,7 +19,7 @@ function extractFirstParam(content) {
         })
         .map(e => {
             if (text.headMatch(e, 't(\'##') || text.headMatch(e, 't("##') || text.headMatch(e, 't(`##')) {
-                return e.slice(0, -1)
+                return e.slice(5)
             } else {
                 return e
             }
@@ -39,9 +39,9 @@ module.exports = async(params = {
     for (let file of files) {
         const content = fsx.readFileSync(file, 'utf8')
         const vars = extractFirstParam(content)
-        console.log(vars)
-        // for (let v of vars) {
-        // }
+        for (let v of vars) {
+            outputs[v] = v
+        }
     }
     return outputs
 }
