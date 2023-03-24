@@ -4,10 +4,12 @@ const fsx = require('fs-extra')
 const { glob } = require('glob')
 const { pick, text } = require('power-helper')
 
+/** 好猛這段是 ai 生成的 */
+
 function extractFirstParam(text) {
-    const regex = /t\(['"]([^'"]+)['"]/g
+    const regex = /t\(['"]##([^'"]+)['"]/g
     const matchs = text.match(regex)
-    return matchs
+    return (matchs || []).map(e => (text.lastMatch(e, '\'') ? e.slice(0, -1) : e).trim())
 }
 
 /**
@@ -21,16 +23,9 @@ module.exports = async(params = {
     const outputs = {}
     for (let file of files) {
         const content = fsx.readFileSync(file, 'utf8')
-        // const vars = pick.vars({
-        //     start: 't(\'##',
-        //     end: ')',
-        //     text: content
-        // })
         const vars = extractFirstParam(content)
         console.log(vars)
         // for (let v of vars) {
-        //     let key = (text.lastMatch(v, '\'') ? v.slice(0, -1) : v).trim()
-        //     outputs[key] = key
         // }
     }
     return outputs
