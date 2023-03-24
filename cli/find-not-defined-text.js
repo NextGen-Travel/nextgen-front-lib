@@ -6,9 +6,9 @@ const { pick, text } = require('power-helper')
 
 /** 好猛這段是 ai 生成的 */
 
-function extractFirstParam(text) {
+function extractFirstParam(content) {
     const regex = /t\(['"]##([^'"]+)['"]/g
-    const matchs = text.match(regex)
+    const matchs = content.match(regex)
     return (matchs || []).map(e => (text.lastMatch(e, '\'') ? e.slice(0, -1) : e).trim())
 }
 
