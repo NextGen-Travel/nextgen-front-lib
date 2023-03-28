@@ -118,16 +118,18 @@ export class GoogleMap extends Event<Channels> {
             destination: end,
             travelMode: google.maps.TravelMode[mode],
         }
+        if (this.map) {
+            console.log('DDDAA')
+            directionsRenderer.setMap(this.map)
+        }
         directionsService.route(request, (result, status) => {
+            console.log('DDDAABBB', google.maps.DirectionsStatus)
             if (status == google.maps.DirectionsStatus.OK) {
                 directionsRenderer.setDirections(result)
             } else {
                 console.error(`Directions request failed: ${status}`)
             }
         })
-        if (this.map) {
-            directionsRenderer.setMap(this.map)
-        }
         return directionsRenderer
     }
 }
