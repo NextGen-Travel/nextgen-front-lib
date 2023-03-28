@@ -118,6 +118,7 @@ export class GoogleMap extends Event<Channels> {
             destination: end,
             travelMode: google.maps.TravelMode[mode],
         }
+        console.log('CCC')
         if (this.map) {
             console.log('DDDAA')
             directionsRenderer.setMap(this.map)
