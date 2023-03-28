@@ -1,3 +1,4 @@
+import 'core-js'
 import 'urlpattern-polyfill'
 import 'v-calendar/dist/style.css'
 // TODO: 這是修復 vuetify 某些狀況的 bug, 現在 vuetify 已經修正，可刪除

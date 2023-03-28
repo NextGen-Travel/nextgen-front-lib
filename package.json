@@ -51,6 +51,7 @@
     "@types/yargs": "^17.0.13",
     "axios": "^1.2.1",
     "chart.js": "^4.2.0",
+    "core-js": "^3.29.1",
     "crypto-js": "^4.1.1",
     "deep-object-diff": "^1.1.7",
     "fs-extra": "^10.1.0",
