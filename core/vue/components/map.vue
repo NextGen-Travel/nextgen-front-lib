@@ -84,9 +84,11 @@ onMounted(() => {
         map.zoomTo(props.zoom)
         map.moveTo(props.center)
         map.reloadMarkers(props.markers)
-        map.addRoute(props.routes[0].origin, props.routes[0].destination, 'BICYCLING')
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
+        for (let route of props.routes) {
+            map.addRoute(route.origin, route.destination, route.travelMode)
+        }
     }
 })
 

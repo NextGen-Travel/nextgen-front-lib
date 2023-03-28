@@ -118,7 +118,7 @@ export class GoogleMap extends Event<Channels> {
             destination: end,
             travelMode: google.maps.TravelMode[mode],
         }
-        directionsService.route(request, function (result, status) {
+        directionsService.route(request, (result, status) => {
             if (status == google.maps.DirectionsStatus.OK) {
                 directionsRenderer.setDirections(result)
             } else {

@@ -21,6 +21,6 @@ export type MarkerAttr = {
 export type DirectionsAttr = {
     id?: string
     origin: LatLng
+    travelMode:  'DRIVING'| 'WALKING'
     destination: LatLng
 }
-
