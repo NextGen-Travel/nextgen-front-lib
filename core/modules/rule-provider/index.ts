@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import type { AnySchema } from 'yup'
+import { BasicRules } from './basic'
 import { serviceException } from '../../error'
 
 const exception = serviceException.checkout('validate')
@@ -18,6 +19,7 @@ type GetParams = {
 class Validation<T extends Record<string, Rule>> {
     private provider: RuleProvider<any>
     private properties: T
+
     constructor(provider: RuleProvider<any>, properties: T) {
         this.provider = provider
         this.properties = properties
@@ -53,7 +55,7 @@ type ProviderOptions = {
     requireMessage: () => string
 }
 
-type DefineRule = {
+export type DefineRule = {
     requireMessage?: () => string,
     handler: (_yup: typeof Yup, _options: any) => AnySchema
 }
@@ -99,6 +101,11 @@ export class RuleProvider<T extends ProviderOptions> {
         rules: {},
         requireMessage: () => 'required'
     }
+
+    get getBasicRules() {
+        return BasicRules
+    }
+
     constructor(options: T) {
         if (options) {
             Object.assign(this.options, options)
