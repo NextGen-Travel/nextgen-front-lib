@@ -102,4 +102,30 @@ export class GoogleMap extends Event<Channels> {
             this.map = undefined
         }
     }
+
+    /**
+        This function takes in the start and end coordinates of a route and displays the route on the map.
+        The route is displayed using the Google Maps Directions API.
+        @zh 這個函式接受路線的起點和終點座標，並在地圖上顯示路線。
+    */
+
+    displayRoute(start: LatLng, end: LatLng, mode: 'BICYCLING' | 'DRIVING'| 'TRANSIT' | 'WALKING') {
+        if (this.map) {
+            const directionsService = new google.maps.DirectionsService()
+            const directionsRenderer = new google.maps.DirectionsRenderer()
+            directionsRenderer.setMap(this.map)
+            const request = {
+                origin: start,
+                destination: end,
+                travelMode: google.maps.TravelMode[mode],
+            }
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(result)
+                } else {
+                    console.error(`Directions request failed: ${status}`)
+                }
+            })
+        }
+    }
 }
