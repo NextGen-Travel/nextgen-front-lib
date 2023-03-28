@@ -23,6 +23,7 @@ function checkInstalled() {
 export class GoogleMap extends Event<Channels> {
     map?: google.maps.Map
     markers: MapMarker[] = []
+    directions: google.maps.DirectionsRenderer[] = []
 
     static isInstalled() {
         return !!window.__ng_state.gmap?.installed
@@ -109,23 +110,24 @@ export class GoogleMap extends Event<Channels> {
         @zh 這個函式接受路線的起點和終點座標，並在地圖上顯示路線。
     */
 
-    displayRoute(start: LatLng, end: LatLng, mode: 'BICYCLING' | 'DRIVING'| 'TRANSIT' | 'WALKING') {
-        if (this.map) {
-            const directionsService = new google.maps.DirectionsService()
-            const directionsRenderer = new google.maps.DirectionsRenderer()
-            directionsRenderer.setMap(this.map)
-            const request = {
-                origin: start,
-                destination: end,
-                travelMode: google.maps.TravelMode[mode],
-            }
-            directionsService.route(request, function (result, status) {
-                if (status == google.maps.DirectionsStatus.OK) {
-                    directionsRenderer.setDirections(result)
-                } else {
-                    console.error(`Directions request failed: ${status}`)
-                }
-            })
+    addRoute(start: LatLng, end: LatLng, mode: 'BICYCLING' | 'DRIVING'| 'TRANSIT' | 'WALKING') {
+        const directionsService = new google.maps.DirectionsService()
+        const directionsRenderer = new google.maps.DirectionsRenderer()
+        const request = {
+            origin: start,
+            destination: end,
+            travelMode: google.maps.TravelMode[mode],
         }
+        directionsService.route(request, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsRenderer.setDirections(result)
+            } else {
+                console.error(`Directions request failed: ${status}`)
+            }
+        })
+        if (this.map) {
+            directionsRenderer.setMap(this.map)
+        }
+        return directionsRenderer
     }
 }

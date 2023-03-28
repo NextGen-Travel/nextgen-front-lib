@@ -12,7 +12,7 @@
 import { LatLng } from '../../libraries/maps/types'
 import { GoogleMap } from '../../libraries/maps/google'
 import { MapMarker } from '../../libraries/maps/common/marker'
-import { MarkerAttr } from '../../libraries/maps/types'
+import { MarkerAttr, DirectionsAttr } from '../../libraries/maps/types'
 import { PropType, watch, ref, onMounted, onUnmounted } from 'vue'
 
 // =================
@@ -43,6 +43,11 @@ const props = defineProps({
     },
     markers: {
         type: Array as PropType<MarkerAttr[]>,
+        required: false,
+        default: () => []
+    },
+    routes: {
+        type: Array as PropType<DirectionsAttr[]>,
         required: false,
         default: () => []
     }
@@ -79,6 +84,7 @@ onMounted(() => {
         map.zoomTo(props.zoom)
         map.moveTo(props.center)
         map.reloadMarkers(props.markers)
+        map.addRoute(props.routes[0].origin, props.routes[0].destination)
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
     }
