@@ -102,7 +102,7 @@ export class RuleProvider<T extends ProviderOptions> {
         requireMessage: () => 'required'
     }
 
-    static get getBasicRules() {
+    static getBasicRules() {
         return BasicRules
     }
 

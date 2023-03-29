@@ -45,6 +45,10 @@ export class MapRoute extends Event<Channels> {
             }
         }
     }
+    /**
+     * @zh 刪除路線
+     * @en Remove route
+     */
 
     remove() {
         if (this.googleDirectionsRenderer) {

@@ -38,7 +38,6 @@ export class AppleAuth {
         }
         if (window.__ng_state.aapple.installed === false) {
             window.__ng_state.aapple.installed = true
-            // TODO: en_us ?
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
             window.AppleID.auth.init({
                 clientId: config.clientId,

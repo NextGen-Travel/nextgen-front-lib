@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import { LatLng } from '../../libraries/maps/types'
-import { AMap } from '../../libraries/maps/amap'
+import { NgAMap } from '../../libraries/maps/amap'
 import { GoogleMap } from '../../libraries/maps/google'
 import { MapMarker } from '../../libraries/maps/common/marker'
 import { MarkerAttr, RouteAttr } from '../../libraries/maps/types'
@@ -65,7 +65,7 @@ const emit = defineEmits({
 // map
 //
 
-const map = props.mode === 'google' ? new GoogleMap() : new AMap()
+const map = props.mode === 'google' ? new GoogleMap() : new NgAMap()
 
 // =================
 //
