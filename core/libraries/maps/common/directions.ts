@@ -28,6 +28,9 @@ export class MapDirections extends Event<Channels> {
     remove() {
         if (this.googleDirectionsRenderer) {
             this.googleDirectionsRenderer.setMap(null)
+            if (this.googleMap) {
+                this.googleMap.directions = this.googleMap.directions.filter(direction => direction.id !== this.id)
+            }
         }
     }
 
