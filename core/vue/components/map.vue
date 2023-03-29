@@ -58,6 +58,10 @@ const emit = defineEmits({
     clickMarker: (_marker: MapMarker) => true
 })
 
+defineExpose({
+
+})
+
 // =================
 //
 // map
@@ -86,10 +90,6 @@ onMounted(() => {
         map.reloadMarkers(props.markers)
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
-        console.log('CCC', props.routes)
-        for (let route of props.routes) {
-            map.addRoute(route.origin, route.destination, route.travelMode)
-        }
     }
 })
 

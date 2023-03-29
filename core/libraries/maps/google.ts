@@ -1,7 +1,8 @@
-import { LatLng, MarkerAttr } from './types'
+import { LatLng, MarkerAttr, DirectionsAttr } from './types'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
 import { MapMarker } from './common/marker'
+import { MapDirections } from './common/directions'
 
 type GoogleMapConfig = {
     apiKey: string
@@ -23,11 +24,7 @@ function checkInstalled() {
 export class GoogleMap extends Event<Channels> {
     map?: google.maps.Map
     markers: MapMarker[] = []
-    directions: google.maps.DirectionsRenderer[] = []
-
-    static isInstalled() {
-        return !!window.__ng_state.gmap?.installed
-    }
+    directions: MapDirections[] = []
 
     static install(config: GoogleMapConfig) {
         if (window.__ng_state.gmap == null) {
@@ -42,6 +39,10 @@ export class GoogleMap extends Event<Channels> {
                 element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
             })
         }
+    }
+
+    static isInstalled() {
+        return !!window.__ng_state.gmap?.installed
     }
 
     constructor() {
@@ -78,6 +79,17 @@ export class GoogleMap extends Event<Channels> {
         })
     }
 
+    close() {
+        if (this.map) {
+            this.map = undefined
+        }
+    }
+
+    // =================
+    //
+    // Marker
+    //
+
     addMarker(params: MarkerAttr) {
         const marker = new MapMarker(this, params)
         this.markers.push(marker)
@@ -97,40 +109,25 @@ export class GoogleMap extends Event<Channels> {
         this.removeAllMarker()
         items.forEach(e => this.addMarker(e))
     }
+    
+    // =================
+    //
+    // Route
+    //
 
-    close() {
-        if (this.map) {
-            this.map = undefined
-        }
+    addRoute(params: DirectionsAttr) {
+        const directions = new MapDirections(this, params)
+        this.directions.push(directions)
+        return directions
     }
 
-    /**
-        This function takes in the start and end coordinates of a route and displays the route on the map.
-        The route is displayed using the Google Maps Directions API.
-        @zh 這個函式接受路線的起點和終點座標，並在地圖上顯示路線。
-    */
+    removeAllRoute() {
+        this.directions.forEach(e => e.remove())
+        this.directions = []
+    }
 
-    addRoute(start: LatLng, end: LatLng, mode: 'BICYCLING' | 'DRIVING'| 'TRANSIT' | 'WALKING') {
-        const directionsService = new google.maps.DirectionsService()
-        const directionsRenderer = new google.maps.DirectionsRenderer()
-        const request = {
-            origin: start,
-            destination: end,
-            travelMode: google.maps.TravelMode[mode],
-        }
-        console.log('CCC')
-        if (this.map) {
-            console.log('DDDAA')
-            directionsRenderer.setMap(this.map)
-        }
-        directionsService.route(request, (result, status) => {
-            console.log('DDDAABBB', google.maps.DirectionsStatus)
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(result)
-            } else {
-                console.error(`Directions request failed: ${status}`)
-            }
-        })
-        return directionsRenderer
+    reloadRoutes(items: DirectionsAttr[]) {
+        this.removeAllRoute()
+        items.forEach(e => this.addRoute(e))
     }
 }
