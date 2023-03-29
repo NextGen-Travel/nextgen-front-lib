@@ -54,12 +54,9 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
+    move: (_latlng: LatLng) => true,
     click: (_latlng: LatLng) => true,
     clickMarker: (_marker: MapMarker) => true
-})
-
-defineExpose({
-
 })
 
 // =================
@@ -87,6 +84,7 @@ onMounted(() => {
         map.start(main.value)
         map.zoomTo(props.zoom)
         map.moveTo(props.center)
+        map.reloadRoutes(props.routes)
         map.reloadMarkers(props.markers)
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
@@ -107,6 +105,10 @@ onUnmounted(() => {
 watch(() => props.zoom, () => map?.zoomTo(props.zoom))
 
 watch(() => props.center, () => map?.moveTo(props.center), {
+    deep: true
+})
+
+watch(() => props.routes, () => map?.reloadRoutes(props.routes), {
     deep: true
 })
 

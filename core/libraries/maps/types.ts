@@ -7,11 +7,11 @@ export type  LatLng = {
 
 export type MarkerAttr = {
     id?: string
+    icon?: string
     content?: string
     position: LatLng
     onLoaded?: (_marker: MapMarker) => void
 }
-
 
 /**
  * DirectionsAttr is a type that contains an id, an origin, and a destination. It is used to define the parameters of a directions request.

@@ -8,12 +8,14 @@ type Channels = {
 
 export class MapMarker extends Event<Channels> {
     id?: string
+    icon?: string
     googleMap?: GoogleMap
     googleMarker?: google.maps.Marker
     googleInfowindow?: google.maps.InfoWindow
     constructor(map: GoogleMap, params: MarkerAttr) {
         super()
         this.id = params.id
+        this.icon = params.icon
         // 如果是 google map
         if (map instanceof GoogleMap) {
             this.googleMap = map
@@ -22,6 +24,8 @@ export class MapMarker extends Event<Channels> {
             })
             this.googleMarker = new google.maps.Marker({
                 map: this.googleMap.map,
+                icon: this.icon,
+                animation: google.maps.Animation.BOUNCE,
                 position: params.position,
             })
             this.googleMarker.addListener('click', () => {

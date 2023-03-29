@@ -9,6 +9,7 @@ type GoogleMapConfig = {
 }
 
 type Channels = {
+    move: LatLng
     click: LatLng
     clickMarker: MapMarker
 }
@@ -64,6 +65,14 @@ export class GoogleMap extends Event<Channels> {
                     lng: event.latLng?.lng() || 0
                 })
             })
+            this.map.addListener('center_changed', () => {
+                if (this.map) {
+                    this.emit('move', {
+                        lat: this.map.getCenter()?.lat() || 0,
+                        lng: this.map.getCenter()?.lng() || 0
+                    })
+                }
+            })
         }
     }
 
@@ -104,12 +113,18 @@ export class GoogleMap extends Event<Channels> {
         this.markers = []
     }
 
-    /** 刪除並重新繪製 marker */
     reloadMarkers(items: MarkerAttr[]) {
-        this.removeAllMarker()
-        items.forEach(e => this.addMarker(e))
+        this.markers.filter(e => !items.find(i => i.id === e.id)).forEach(e => e.remove())
+        items.forEach(e => {
+            const marker = this.markers.find(m => m.id === e.id)
+            if (marker) {
+                marker.moveTo(e.position)
+            } else {
+                this.addMarker(e)
+            }
+        })
     }
-    
+
     // =================
     //
     // Route
@@ -127,7 +142,14 @@ export class GoogleMap extends Event<Channels> {
     }
 
     reloadRoutes(items: DirectionsAttr[]) {
-        this.removeAllRoute()
-        items.forEach(e => this.addRoute(e))
+        this.directions.filter(e => !items.find(i => i.id === e.id)).forEach(e => e.remove())
+        items.forEach(e => {
+            let directions = this.directions.find(m => m.id === e.id)
+            if (directions) {
+                directions.update(e)
+            } else {
+                this.addRoute(e)
+            }
+        })
     }
 }

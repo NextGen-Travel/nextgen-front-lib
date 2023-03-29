@@ -1,8 +1,12 @@
 import { Event } from 'power-helper'
 import { GoogleMap } from '../google'
-import { LatLng, DirectionsAttr } from '../types'
+import { DirectionsAttr } from '../types'
 
-type Channels = any
+type Channels = {
+    failed: {
+        status: any
+    }
+}
 
 export class MapDirections extends Event<Channels> {
     id?: string
@@ -17,10 +21,7 @@ export class MapDirections extends Event<Channels> {
         if (map instanceof GoogleMap) {
             this.googleMap = map
             this.googleDirectionsService = new google.maps.DirectionsService()
-            this.googleDirectionsRenderer = new google.maps.DirectionsRenderer()
-            if (this.googleMap.map) {
-                this.googleDirectionsRenderer.setMap(this.googleMap.map)
-            }
+            this.update(params)
         }
     }
 
@@ -30,21 +31,25 @@ export class MapDirections extends Event<Channels> {
         }
     }
 
-    update(start: LatLng, end: LatLng, mode: 'BICYCLING' | 'DRIVING'| 'TRANSIT' | 'WALKING') {
-        if (this.googleDirectionsService) {
+    update(params: Omit<DirectionsAttr, 'id'>) {
+        this.remove()
+        if (this.googleMap && this.googleMap.map && this.googleDirectionsService) {
             const request = {
-                origin: start,
-                destination: end,
-                travelMode: google.maps.TravelMode[mode],
+                origin: params.origin,
+                destination: params.destination,
+                travelMode: google.maps.TravelMode[params.travelMode],
             }
+            this.googleDirectionsRenderer = new google.maps.DirectionsRenderer()
+            this.googleDirectionsRenderer.setMap(this.googleMap.map)
             this.googleDirectionsService.route(request, (result, status) => {
                 if (status == google.maps.DirectionsStatus.OK) {
                     if (this.googleDirectionsRenderer) {
-                        this.googleDirectionsRenderer
                         this.googleDirectionsRenderer.setDirections(result)
                     }
                 } else {
-                    console.error(`Directions request failed: ${status}`)
+                    this.emit('failed', {
+                        status
+                    })
                 }
             })
         }
