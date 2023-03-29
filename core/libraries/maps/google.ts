@@ -1,8 +1,8 @@
-import { LatLng, MarkerAttr, DirectionsAttr } from './types'
+import { MapRoute } from './common/route'
+import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
-import { MapMarker } from './common/marker'
-import { MapDirections } from './common/directions'
+import { LatLng, MarkerAttr, RouteAttr } from './types'
 
 type GoogleMapConfig = {
     apiKey: string
@@ -24,8 +24,8 @@ function checkInstalled() {
 
 export class GoogleMap extends Event<Channels> {
     map?: google.maps.Map
+    routes: MapRoute[] = []
     markers: MapMarker[] = []
-    directions: MapDirections[] = []
 
     static install(config: GoogleMapConfig) {
         if (window.__ng_state.gmap == null) {
@@ -130,23 +130,23 @@ export class GoogleMap extends Event<Channels> {
     // Route
     //
 
-    addRoute(params: DirectionsAttr) {
-        const directions = new MapDirections(this, params)
-        this.directions.push(directions)
-        return directions
+    addRoute(params: RouteAttr) {
+        const route = new MapRoute(this, params)
+        this.routes.push(route)
+        return route
     }
 
     removeAllRoute() {
-        this.directions.forEach(e => e.remove())
-        this.directions = []
+        this.routes.forEach(e => e.remove())
+        this.routes = []
     }
 
-    reloadRoutes(items: DirectionsAttr[]) {
-        this.directions.filter(e => !items.find(i => i.id === e.id)).forEach(e => e.remove())
+    reloadRoutes(items: RouteAttr[]) {
+        this.routes.filter(e => !items.find(i => i.id === e.id)).forEach(e => e.remove())
         items.forEach(e => {
-            let directions = this.directions.find(m => m.id === e.id)
-            if (directions) {
-                directions.update(e)
+            let route = this.routes.find(m => m.id === e.id)
+            if (route) {
+                route.update(e)
             } else {
                 this.addRoute(e)
             }

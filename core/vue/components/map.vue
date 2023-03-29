@@ -12,7 +12,7 @@
 import { LatLng } from '../../libraries/maps/types'
 import { GoogleMap } from '../../libraries/maps/google'
 import { MapMarker } from '../../libraries/maps/common/marker'
-import { MarkerAttr, DirectionsAttr } from '../../libraries/maps/types'
+import { MarkerAttr, RouteAttr } from '../../libraries/maps/types'
 import { PropType, watch, ref, onMounted, onUnmounted } from 'vue'
 
 // =================
@@ -47,7 +47,7 @@ const props = defineProps({
         default: () => []
     },
     routes: {
-        type: Array as PropType<DirectionsAttr[]>,
+        type: Array as PropType<RouteAttr[]>,
         required: false,
         default: () => []
     }

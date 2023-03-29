@@ -1,6 +1,6 @@
 import { Event } from 'power-helper'
+import { RouteAttr } from '../types'
 import { GoogleMap } from '../google'
-import { DirectionsAttr } from '../types'
 
 type Channels = {
     failed: {
@@ -8,13 +8,13 @@ type Channels = {
     }
 }
 
-export class MapDirections extends Event<Channels> {
+export class MapRoute extends Event<Channels> {
     id?: string
     googleMap?: GoogleMap
     googleDirectionsService?: google.maps.DirectionsService
     googleDirectionsRenderer?: google.maps.DirectionsRenderer
 
-    constructor(map: GoogleMap, params: DirectionsAttr) {
+    constructor(map: GoogleMap, params: RouteAttr) {
         super()
         this.id = params.id
         // 如果是 google map
@@ -29,12 +29,12 @@ export class MapDirections extends Event<Channels> {
         if (this.googleDirectionsRenderer) {
             this.googleDirectionsRenderer.setMap(null)
             if (this.googleMap) {
-                this.googleMap.directions = this.googleMap.directions.filter(direction => direction.id !== this.id)
+                this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
             }
         }
     }
 
-    update(params: Omit<DirectionsAttr, 'id'>) {
+    update(params: Omit<RouteAttr, 'id'>) {
         this.remove()
         if (this.googleMap && this.googleMap.map && this.googleDirectionsService) {
             const request = {
