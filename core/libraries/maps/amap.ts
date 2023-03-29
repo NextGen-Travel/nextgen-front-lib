@@ -4,8 +4,9 @@ import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
 import { LatLng, MarkerAttr, RouteAttr } from './types'
 
-type GoogleMapConfig = {
+type AMapConfig = {
     apiKey: string
+    serviceHost: string
 }
 
 type Channels = {
@@ -14,36 +15,38 @@ type Channels = {
     clickMarker: MapMarker
 }
 
-const exception = serviceException.checkout('GoogleMap')
+const exception = serviceException.checkout('AMap')
 
 function checkInstalled() {
-    if (!window.__ng_state.gmap?.installed) {
-        throw exception.create('google map not installed.')
+    if (!window.__ng_state.amap?.installed) {
+        throw exception.create('amap not installed.')
     }
 }
 
-export class GoogleMap extends Event<Channels> {
-    map?: google.maps.Map
+export class NgAMap extends Event<Channels> {
+    map?: AMap.Map
     routes: MapRoute[] = []
     markers: MapMarker[] = []
 
-    static install(config: GoogleMapConfig) {
-        if (window.__ng_state.gmap == null) {
-            window.__ng_state.gmap = {
+    static async install(config: AMapConfig) {
+        if (window.__ng_state.amap == null) {
+            window.__ng_state.amap = {
                 installed: false
             }
         }
-        if (window.__ng_state.gmap.installed === false) {
-            window.__ng_state.gmap.installed = true
-            return new Promise((resolve, reject) => {
-                window.initGoogleMap = () => resolve(null)
-                element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
-            })
+        if (window.__ng_state.amap.installed === false) {
+            window.__ng_state.amap.installed = true
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window._AMapSecurityConfig = {
+                serviceHost: config.serviceHost
+            }
+            await element.importScript(`https://webapi.amap.com/maps?v=2.0&key=${config.apiKey}`)
         }
     }
 
     static isInstalled() {
-        return !!window.__ng_state.gmap?.installed
+        return !!window.__ng_state.amap?.installed
     }
 
     constructor() {
@@ -53,23 +56,20 @@ export class GoogleMap extends Event<Channels> {
 
     start(el: HTMLDivElement) {
         if (this.map == null) {
-            this.map = new google.maps.Map(el, {
+            this.map = new window.AMap.Map(el, {
                 zoom: 10
             })
-            this.map.setOptions({
-                disableDefaultUI: true
-            })
-            this.map.addListener('click', (event: google.maps.KmlMouseEvent) => {
+            this.map.on('click', (event) => {
                 this.emit('click', {
-                    lat: event.latLng?.lat() || 0,
-                    lng: event.latLng?.lng() || 0
+                    lat: event.lnglat.lat,
+                    lng: event.lnglat.lng
                 })
             })
-            this.map.addListener('center_changed', () => {
+            this.map.on('mapmove', () => {
                 if (this.map) {
                     this.emit('move', {
-                        lat: this.map.getCenter()?.lat() || 0,
-                        lng: this.map.getCenter()?.lng() || 0
+                        lat: this.map.getCenter().lat,
+                        lng: this.map.getCenter().lng
                     })
                 }
             })
@@ -77,15 +77,11 @@ export class GoogleMap extends Event<Channels> {
     }
 
     moveTo(position: LatLng) {
-        this.map?.moveCamera({
-            center: position
-        })
+        this.map?.setCenter([position.lat, position.lng])
     }
 
     zoomTo(zoom: number) {
-        this.map?.moveCamera({
-            zoom
-        })
+        this.map?.setZoom(zoom)
     }
 
     close() {
@@ -133,7 +129,7 @@ export class GoogleMap extends Event<Channels> {
     //
 
     addRoute(params: RouteAttr) {
-        const route = new MapRoute(this, params)
+        const route = new MapRoute(this as any, params)
         this.routes.push(route)
         return route
     }

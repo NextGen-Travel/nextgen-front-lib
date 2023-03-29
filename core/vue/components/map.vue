@@ -10,6 +10,7 @@
 
 <script lang="ts" setup>
 import { LatLng } from '../../libraries/maps/types'
+import { AMap } from '../../libraries/maps/amap'
 import { GoogleMap } from '../../libraries/maps/google'
 import { MapMarker } from '../../libraries/maps/common/marker'
 import { MarkerAttr, RouteAttr } from '../../libraries/maps/types'
@@ -64,8 +65,7 @@ const emit = defineEmits({
 // map
 //
 
-// TODO: 這裡要確認如果沒有安裝 google 地圖應該採用高德地圖
-const map = props.mode === 'google' ? new GoogleMap() : null
+const map = props.mode === 'google' ? new GoogleMap() : new AMap()
 
 // =================
 //

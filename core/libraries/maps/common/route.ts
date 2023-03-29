@@ -1,3 +1,4 @@
+import { NgAMap } from '../amap'
 import { Event } from 'power-helper'
 import { RouteAttr } from '../types'
 import { GoogleMap } from '../google'
@@ -10,6 +11,8 @@ type Channels = {
 
 export class MapRoute extends Event<Channels> {
     id?: string
+    aMap?: NgAMap
+    aMapRoute?: AMap.Polyline
     googleMap?: GoogleMap
     googleDirectionsService?: google.maps.DirectionsService
     googleDirectionsRenderer?: google.maps.DirectionsRenderer
@@ -23,6 +26,24 @@ export class MapRoute extends Event<Channels> {
             this.googleDirectionsService = new google.maps.DirectionsService()
             this.update(params)
         }
+        // 如果是高德地图
+        if (map instanceof NgAMap) {
+            this.aMap = map
+            if (this.aMap.map) {
+                this.aMapRoute = new AMap.Polyline({
+                    path: [
+                        [params.origin.lat, params.origin.lng],
+                        [params.destination.lat, params.destination.lng]
+                    ],
+                    strokeColor: '#FF33FF',
+                    strokeOpacity: 1,
+                    strokeWeight: 3,
+                    strokeStyle: 'solid',
+                    strokeDasharray: [10, 5]
+                })
+                this.aMapRoute.setMap(this.aMap.map)
+            }
+        }
     }
 
     remove() {
@@ -30,6 +51,12 @@ export class MapRoute extends Event<Channels> {
             this.googleDirectionsRenderer.setMap(null)
             if (this.googleMap) {
                 this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
+            }
+        }
+        if (this.aMapRoute) {
+            this.aMapRoute.setMap(null)
+            if (this.aMap) {
+                this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
             }
         }
     }
@@ -55,6 +82,20 @@ export class MapRoute extends Event<Channels> {
                     })
                 }
             })
+        }
+        if (this.aMap && this.aMap.map) {
+            this.aMapRoute = new AMap.Polyline({
+                path: [
+                    [params.origin.lat, params.origin.lng],
+                    [params.destination.lat, params.destination.lng]
+                ],
+                strokeColor: '#FF33FF',
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                strokeStyle: 'solid',
+                strokeDasharray: [10, 5]
+            })
+            this.aMapRoute.setMap(this.aMap.map)
         }
     }
 }

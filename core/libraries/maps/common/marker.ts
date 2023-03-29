@@ -1,3 +1,4 @@
+import { NgAMap } from '../amap'
 import { Event } from 'power-helper'
 import { GoogleMap } from '../google'
 import { LatLng, MarkerAttr } from '../types'
@@ -9,10 +10,12 @@ type Channels = {
 export class MapMarker extends Event<Channels> {
     id?: string
     icon?: string
+    aMap?: NgAMap
+    aMapMarker?: AMap.Marker
     googleMap?: GoogleMap
     googleMarker?: google.maps.Marker
     googleInfowindow?: google.maps.InfoWindow
-    constructor(map: GoogleMap, params: MarkerAttr) {
+    constructor(map: GoogleMap | NgAMap, params: MarkerAttr) {
         super()
         this.id = params.id
         this.icon = params.icon
@@ -38,6 +41,24 @@ export class MapMarker extends Event<Channels> {
                 })
             }
         }
+        // 如果是高德地图
+        if (map instanceof NgAMap) {
+            this.aMap = map
+            if (this.aMap.map) {
+                this.aMapMarker = new AMap.Marker({
+                    icon: this.icon,
+                    content: params.content,
+                    position: [
+                        params.position.lat,
+                        params.position.lng
+                    ]
+                })
+                this.aMapMarker.setMap(this.aMap.map)
+                this.aMapMarker.on('click', () => {
+                    this.emit('click', this.getPosition())
+                })
+            }
+        }
         params.onLoaded?.(this)
     }
 
@@ -48,11 +69,23 @@ export class MapMarker extends Event<Channels> {
                 this.googleMap.markers = this.googleMap.markers.filter(marker => marker.id !== this.id)
             }
         }
+        if (this.aMapMarker) {
+            this.aMapMarker.setMap(null)
+            if (this.aMap) {
+                this.aMap.markers = this.aMap.markers.filter(marker => marker.id !== this.id)
+            }
+        }
     }
 
     moveTo(position: LatLng) {
         if (this.googleMarker) {
             this.googleMarker.setPosition(position)
+        }
+        if (this.aMapMarker) {
+            this.aMapMarker.setPosition([
+                position.lat,
+                position.lng
+            ])
         }
     }
 
@@ -66,6 +99,13 @@ export class MapMarker extends Event<Channels> {
             if (position) {
                 output.lat = position.lat()
                 output.lng = position.lng()
+            }
+        }
+        if (this.aMapMarker) {
+            let position = this.aMapMarker.getPosition()
+            if (position) {
+                output.lat = position.getLat()
+                output.lng = position.getLng()
             }
         }
         return output

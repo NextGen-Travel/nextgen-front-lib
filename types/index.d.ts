@@ -1,4 +1,5 @@
 import '@vue/runtime-core'
+import '@amap/amap-jsapi-types'
 import 'apple-signin-api'
 import 'facebook-js-sdk'
 import 'google.maps'
