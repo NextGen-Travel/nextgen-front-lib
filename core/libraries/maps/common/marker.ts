@@ -25,7 +25,7 @@ export class MapMarker extends Event<Channels> {
             this.googleMarker = new google.maps.Marker({
                 map: this.googleMap.map,
                 icon: this.icon,
-                animation: google.maps.Animation.BOUNCE,
+                animation: google.maps.Animation.DROP,
                 position: params.position,
             })
             this.googleMarker.addListener('click', () => {
@@ -44,6 +44,9 @@ export class MapMarker extends Event<Channels> {
     remove() {
         if (this.googleMarker) {
             this.googleMarker.setMap(null)
+            if (this.googleMap) {
+                this.googleMap.markers = this.googleMap.markers.filter(marker => marker.id !== this.id)
+            }
         }
     }
 
