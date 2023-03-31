@@ -216,10 +216,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@openapi-contrib/openapi-schema-to-json-schema@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@openapi-contrib/openapi-schema-to-json-schema/-/openapi-schema-to-json-schema-4.0.0.tgz#1530fecebef7b6c46196ab54dbbb237001704820"
-  integrity sha512-HRLG6NCHbdjCv3hacJKhZe5Al3QCig90SCvcXAS+JLb85ypuwFqcVSDnGzBqaithlUibq9UyPwQH0ATitvBBTw==
+"@openapi-contrib/openapi-schema-to-json-schema@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@openapi-contrib/openapi-schema-to-json-schema/-/openapi-schema-to-json-schema-3.2.0.tgz#c4c92edd4478b5ecb3d99c29ecb355118259dccc"
+  integrity sha512-Gj6C0JwCr8arj0sYuslWXUBSP/KnUlEGnPW4qxlXvAl543oaNQgMgIgkQUA6vs5BCCvwTEiL8m/wdWzfl4UvSw==
   dependencies:
     fast-deep-equal "^3.1.3"
 

@@ -30,9 +30,6 @@ export type ScrmPrivateDefinitions = {
              * @example 1
              */
             confirmed ? : boolean;
-            /**
-             * 客服大頭貼
-             */
             avatar ? : File;
             /**
              * 電話
@@ -45,10 +42,10 @@ export type ScrmPrivateDefinitions = {
              */
             notes ? : string;
             /**
-             * 員工權限（ Manager || Advanced-Staff || Staff )
-             * @example Manager
+             * 員工權限（ admin-> 管理員 | supervisor-> 主管 | seniorStaff-> seniorStaff | staff-> 一般員工 )
+             * @example supervisor
              */
-            roleName ? : string;
+            role ? : string;
         };
         query: null;
         response: {
@@ -140,7 +137,7 @@ export type ScrmPrivateDefinitions = {
             /**
              * 客服大頭貼
              */
-            avatar ? : File | string;
+            avatar ? : File;
             /**
              * 電話
              */
@@ -200,6 +197,7 @@ export type ScrmPrivateDefinitions = {
                     avatar: string;
                     role: string;
                     company: number;
+                    productLink: string;
                 };
                 platform: {
                     platform: string;
@@ -236,6 +234,7 @@ export type ScrmPrivateDefinitions = {
     };
     /**
      * [更新客服資料（登入者自己）] - 更新客服資料（登入者自己）
+     * @param {number} id - undefined
      */
     "put@users/:id": {
         body: {
@@ -243,31 +242,31 @@ export type ScrmPrivateDefinitions = {
              * 客服密碼
              * @example 123456789
              */
-            password: string;
+            password ? : string;
             /**
              * 客服密碼
              * @example 123456789
              */
-            confirmPassword: string;
+            confirmPassword ? : string;
             /**
              * 客服前台顯示名稱
              * @example TJ
              */
-            displayName: string;
+            displayName ? : string;
             /**
              * 客服大頭貼
              */
-            avatar: File;
+            avatar ? : File;
             /**
              * 電話
              * @example 123456789
              */
-            phone: string;
+            phone ? : string;
             /**
              * 備註
              * @example test
              */
-            notes: string;
+            notes ? : string;
         };
         query: null;
         response: {
@@ -339,6 +338,16 @@ export type ScrmPrivateDefinitions = {
              * @example 5
              */
             accountLimit ? : number;
+            /**
+             * 提供是哪一個channel
+             * @example cas
+             */
+            channel: string;
+            /**
+             * 商品導購連結
+             * @example www.nss.com
+             */
+            productLink ? : string;
         };
         query: null;
         response: {
@@ -362,7 +371,7 @@ export type ScrmPrivateDefinitions = {
             sso ? : boolean;
             offset ? : number;
             limit ? : number;
-            platform ? : string;
+            platform ? : "facebook" | "whatsapp" | "signal" | "telegram" | "wechat" | "instagram";
             keyword ? : string;
         };
         response: {
@@ -409,6 +418,7 @@ export type ScrmPrivateDefinitions = {
                 id: number;
                 enable: boolean;
                 name: string;
+                productLink: string;
                 accountLimit: number;
                 sso: {
                     appId: string;
@@ -421,6 +431,14 @@ export type ScrmPrivateDefinitions = {
                     platform: string;
                     channelId: string;
                     enable: boolean;
+                    /**
+                     * 只有whatsapp才有
+                     */
+                    wabaId: string;
+                    /**
+                     * 只有whatsapp才有
+                     */
+                    templateNamespace: string;
                 } [];
             };
         };
@@ -462,6 +480,16 @@ export type ScrmPrivateDefinitions = {
                  */
                 channelId: string;
                 /**
+                 * 只有whatsapp平台必填
+                 * @example 1066553231322
+                 */
+                wabaId ? : string;
+                /**
+                 * 只有whatsapp平台必填
+                 * @example 12dea546c123asd456
+                 */
+                templateNamespace ? : string;
+                /**
                  * @example true
                  */
                 enable: boolean;
@@ -485,6 +513,10 @@ export type ScrmPrivateDefinitions = {
              * @example 5
              */
             accountLimit: number;
+            /**
+             * @example www.nss.girlssecrets.com
+             */
+            productLink: string;
         };
         query: null;
         response: {
@@ -638,26 +670,18 @@ export type ScrmPrivateDefinitions = {
                 id: number;
                 replyText: string;
                 keyword: string;
-                isEnd ? : boolean;
                 isActive: boolean;
-                children: {
-                    id: number;
-                    replyText: string;
-                    keyword: string;
-                    isEnd ? : boolean;
-                    isActive: boolean;
-                    children: {} [];
-                } [];
-            } [];
+                children: {} [];
+            };
         };
         contentType: null;
     };
     /**
      * [編輯樹根或樹葉用的] - 編輯樹根或樹葉用的
+     * @param {string} id - undefined
      */
-    "put@auto-replies/all": {
+    "put@auto-replies/:id": {
         body: {
-            id: number;
             replyText: string;
             keyword: string;
         };
@@ -671,17 +695,23 @@ export type ScrmPrivateDefinitions = {
                 id: number;
                 replyText: string;
                 keyword: string;
-                isEnd ? : boolean;
                 isActive: boolean;
-                children: {
-                    id: number;
-                    replyText: string;
-                    keyword: string;
-                    isEnd ? : boolean;
-                    isActive: boolean;
-                    children: {} [];
-                } [];
-            } [][];
+            };
+        };
+        contentType: null;
+    };
+    /**
+     * [刪除該樹節點] - 刪除該樹節點
+     * @param {string} id - undefined
+     */
+    "delete@auto-replies/:id": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * @example Success
+             */
+            msg: string;
         };
         contentType: null;
     };
@@ -716,10 +746,10 @@ export type ScrmPrivateDefinitions = {
         contentType: null;
     };
     /**
-     * [更新該樹節點是否啟用] - 更新該樹節點是否啟用
+     * [更新該樹節點是否啟用] - 更新該樹節點是否啟用。如果 isActive 改 false 的話，後端也會把 children 改成 false；但是 isActive 改 true 的話，後端不會把 children 改成 true。
      * @param {string} id - undefined
      */
-    "put@auto-replies/:id": {
+    "put@auto-replies/active/:id": {
         body: {
             isActive: boolean;
         };
@@ -729,36 +759,6 @@ export type ScrmPrivateDefinitions = {
              * @example Success
              */
             msg: string;
-        };
-        contentType: null;
-    };
-    /**
-     * [刪除該樹節點] - 刪除該樹節點
-     * @param {string} id - undefined
-     */
-    "delete@auto-replies/:id": {
-        body: null;
-        query: null;
-        response: {
-            /**
-             * @example Success
-             */
-            msg: string;
-            data: {
-                id: number;
-                replyText: string;
-                keyword: string;
-                isEnd ? : boolean;
-                isActive: boolean;
-                children: {
-                    id: number;
-                    replyText: string;
-                    keyword: string;
-                    isEnd ? : boolean;
-                    isActive: boolean;
-                    children: {} [];
-                } [];
-            } [][];
         };
         contentType: null;
     };
@@ -892,7 +892,19 @@ export type ScrmPrivateDefinitions = {
                     name: string;
                     namespace: string;
                     wabaId: string;
-                    languages: unknown[];
+                    languages: {
+                        id: string;
+                        language: string;
+                        rejectedReason: string;
+                        status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
+                        createdAt: string;
+                        updatedAt: string;
+                        components: unknown[];
+                        namespace ? : string;
+                        wabaId ? : string;
+                        category ? : "OTP" | "TRANSACTIONAL" | "MARKETING";
+                        name ? : string;
+                    } [];
                 } [];
                 limit: number;
                 offset: number;
@@ -906,9 +918,7 @@ export type ScrmPrivateDefinitions = {
      */
     "post@messagebird/templates": {
         body: {
-            language: {
-                [k: string]: string;
-            };
+            language: string;
             name: string;
             category: "OTP" | "TRANSACTIONAL" | "MARKETING";
             components: {
@@ -933,9 +943,7 @@ export type ScrmPrivateDefinitions = {
             data: {
                 id: string;
                 name: string;
-                language: {
-                    [k: string]: string;
-                };
+                language: string;
                 status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
                 wabaId: string;
                 namespace: string;
@@ -959,7 +967,7 @@ export type ScrmPrivateDefinitions = {
      * [取得特定範本] - 取得特定範本
      * @param {string} templateName - undefined
      */
-    "get@messagebird/templates/:templateName/": {
+    "get@messagebird/templates/:templateName": {
         body: null;
         query: {
             wabaId ? : string;
@@ -971,9 +979,7 @@ export type ScrmPrivateDefinitions = {
             msg: string;
             data: {
                 id: string;
-                language: {
-                    [k: string]: string;
-                };
+                language: string;
                 rejectedReason: string;
                 status: "NEW" | "APPROVED" | "PENDING" | "REJECTED" | "PENDING_DELETION" | "DELETED";
                 createdAt: string;
@@ -983,7 +989,7 @@ export type ScrmPrivateDefinitions = {
                 wabaId ? : string;
                 category ? : "OTP" | "TRANSACTIONAL" | "MARKETING";
                 name ? : string;
-            };
+            } [];
         };
         contentType: null;
     };
@@ -991,7 +997,7 @@ export type ScrmPrivateDefinitions = {
      * [刪除範本] - 刪除範本
      * @param {string} templateName - undefined
      */
-    "delete@messagebird/templates/:templateName/": {
+    "delete@messagebird/templates/:templateName": {
         body: null;
         query: null;
         response: {
@@ -1421,7 +1427,10 @@ export type ScrmPrivateDefinitions = {
                     customerUuid: string;
                     direction: "received" | "sent";
                     id: number;
-                    status: "sent" | "read" | "delivered" | "failed";
+                    /**
+                     * sent:訊息送出了 ,delivered: 接收的人有收到了（sent, delivered 想像一下 whatsapp 不是會有 2 個勾勾，一個勾勾代表發的人有發出去，2 個勾勾代表收的人的手機有網路所以收到了） ,read:訊息已讀 failed:通常是因為超過可以發給客人的時間限制了，either 24hr or 7 days ,pending:發出去了但是 messagebird 還沒回報狀態 ,transmitted:運送中 ,rejected:被拒，目前發生過的時候是因為使用的電話被 messagebird bang 掉不能用。總的來說 msg 的狀態: pending -> transmitted -> sent -> delivered -> read. 或失敗: failed, rejected
+                     */
+                    status: "sent" | "read" | "delivered" | "failed" | "pending" | "transmitted" | "rejected";
                     text: string;
                     timestamp: string;
                     type: "text" | "hsm" | "image" | "file" | "audio" | "video" | "whatsappSticker" | "multimedia";
@@ -1568,7 +1577,10 @@ export type ScrmPrivateDefinitions = {
             data: {
                 id: number;
                 lastMsg: string;
-                status: "sent" | "read" | "delivered" | "failed";
+                /**
+                 * sent:訊息送出了 ,delivered: 接收的人有收到了（sent, delivered 想像一下 whatsapp 不是會有 2 個勾勾，一個勾勾代表發的人有發出去，2 個勾勾代表收的人的手機有網路所以收到了） ,read:訊息已讀 failed:通常是因為超過可以發給客人的時間限制了，either 24hr or 7 days ,pending:發出去了但是 messagebird 還沒回報狀態 ,transmitted:運送中 ,rejected:被拒，目前發生過的時候是因為使用的電話被 messagebird bang 掉不能用。總的來說 msg 的狀態: pending -> transmitted -> sent -> delivered -> read. 或失敗: failed, rejected
+                 */
+                status: "sent" | "read" | "delivered" | "failed" | "pending" | "transmitted" | "rejected";
                 timestamp: string;
                 unreadCount: number;
                 isPin: boolean;
@@ -1579,7 +1591,7 @@ export type ScrmPrivateDefinitions = {
                     remark: string;
                     active ? : string;
                     colorCode ? : number;
-                    platform: "whatsapp" | "wechat" | "facebook" | "instagram" | "telegram";
+                    platform: "whatsapp" | "wechat" | "facebook" | "instagram" | "telegram" | "signal";
                     tags: number[];
                 };
             } [];

@@ -73,6 +73,74 @@ export type MedicinePosDefinitions = {
         contentType: null;
     };
     /**
+     * [取得分店列表] - 取得分店列表
+     */
+    "get@business-locations": {
+        body: null;
+        query: null;
+        response: {
+            data: {
+                /**
+                 * 下拉選單的value
+                 */
+                value: number;
+                /**
+                 * 分店名稱
+                 */
+                name: string;
+            } [];
+            links: {
+                /**
+                 * 最初頁網址
+                 */
+                first: string;
+                /**
+                 * 最末頁網址
+                 */
+                last: string;
+                /**
+                 * 上一頁網址
+                 */
+                prev: string;
+                /**
+                 * 下一頁網址
+                 */
+                next: string;
+            };
+            meta: {
+                /**
+                 * 當前頁碼
+                 */
+                current_page: number;
+                /**
+                 * 最末頁碼
+                 */
+                last_page: number;
+                /**
+                 * API網址
+                 */
+                path: string;
+                /**
+                 * 每頁筆數
+                 */
+                per_page: number;
+                /**
+                 * 本次資料開始筆數
+                 */
+                from: number;
+                /**
+                 * 本次資料結束筆數
+                 */
+                to: number;
+                /**
+                 * 總筆數
+                 */
+                total: number;
+            };
+        };
+        contentType: null;
+    };
+    /**
      * [交易清單] - 取得交易清單
      */
     "get@transactions": {
@@ -212,9 +280,13 @@ export type MedicinePosDefinitions = {
                 unit: string;
                 usage: number;
                 /**
-                 * 用藥說明
+                 * 用藥說明第一欄
                  */
                 sell_line_note: string;
+                /**
+                 * 用藥說明第二欄
+                 */
+                medicine_note: string;
             } [];
             links: {
                 first: string;
@@ -524,6 +596,10 @@ export type MedicinePosDefinitions = {
                  * 建立日期
                  */
                 created_at: string;
+                /**
+                 * 慣用語
+                 */
+                language: string;
             };
         };
         contentType: null;

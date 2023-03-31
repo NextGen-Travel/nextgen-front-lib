@@ -3321,6 +3321,10 @@ export type PosNewLayoutDefinitions = {
                  * 狀態是否啟用
                  */
                 status: boolean;
+                /**
+                 * 預付款結餘
+                 */
+                balance: number;
             } [];
             links: {
                 first: string;

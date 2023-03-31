@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@apidevtools/swagger-cli": "^4.0.4",
-    "@openapi-contrib/openapi-schema-to-json-schema": "^4.0.0",
+    "@openapi-contrib/openapi-schema-to-json-schema": "3.2.0",
     "@types/apple-signin-api": "^1.5.1",
     "@types/chai": "^4.2.22",
     "@types/crypto-js": "^4.1.1",
