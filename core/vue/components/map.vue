@@ -86,6 +86,7 @@ onMounted(() => {
         map.moveTo(props.center)
         map.reloadRoutes(props.routes)
         map.reloadMarkers(props.markers)
+        map.on('move', (latlng) => emit('move', latlng))
         map.on('click', (latlng) => emit('click', latlng))
         map.on('clickMarker', (marker) => emit('clickMarker', marker))
     }
