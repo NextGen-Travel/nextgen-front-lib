@@ -1,6 +1,6 @@
+import * as Yup from 'yup'
 import { I18n } from 'power-helper'
 import { Locales } from '../../i18n'
-import { DefineRule } from './index'
 
 const zhTW = {
     '只能為英文': '只能為英文',
@@ -35,7 +35,7 @@ const t = (key: keyof typeof zhTW) => i18n.key(key).get(window.__ng_config.libOp
 
 export const BasicRules = {
     text: {
-        handler: (yup, meta?: { min?: number, max?: number }) => {
+        handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
             let schema = yup.string()
             if (meta && meta.min != null) {
                 schema = schema.min(meta.min)
@@ -45,9 +45,9 @@ export const BasicRules = {
             }
             return schema
         }
-    } as DefineRule,
+    },
     number: {
-        handler: (yup, meta?: { min?: number, max?: number }) => {
+        handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
             let schema = yup.number()
             if (meta && meta.min != null) {
                 schema = schema.min(meta.min)
@@ -57,30 +57,30 @@ export const BasicRules = {
             }
             return schema.typeError(t('必須為數字'))
         }
-    } as DefineRule,
+    },
     enum: {
-        handler: (yup, meta?: { keys: string[] }) => {
+        handler: (yup: typeof Yup, meta?: { keys: string[] }) => {
             return yup.string().oneOf(meta?.keys || [])
         }
-    } as DefineRule,
+    },
     email: {
-        handler: (yup) => {
+        handler: (yup: typeof Yup) => {
             return yup.string().trim().email(t('必須為電子郵件'))
         }
-    } as DefineRule,
+    },
     url: {
-        handler: (yup) => {
+        handler: (yup: typeof Yup) => {
             return yup.string().trim().url(t('必須為網址'))
         }
-    } as DefineRule,
+    },
     english: {
-        handler: (yup) => {
+        handler: (yup: typeof Yup) => {
             return yup.string().trim().matches(/^[^\u4e00-\u9eff]+$/, t('只能為英文'))
         }
-    } as DefineRule,
+    },
     excludeSpecialChars: {
-        handler: (yup) => {
+        handler: (yup: typeof Yup) => {
             return yup.string().matches(/^[^()[\]{}<>+*/?"_\\|~`!@#$%^&=]*$/, t('不能含特殊字元'))
         }
-    } as DefineRule
+    }
 } as const
