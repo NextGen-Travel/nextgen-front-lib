@@ -51,27 +51,6 @@ export class GoogleMap extends Event<Channels> {
         checkInstalled()
     }
 
-    private getZoomByBounds(bounds: google.maps.LatLngBounds) {
-        if (this.map) {
-            let maxZoom = 21
-            let minZoom = 1
-            let ne = this.map.getProjection()?.fromLatLngToPoint(bounds.getNorthEast())
-            let sw = this.map.getProjection()?.fromLatLngToPoint(bounds.getSouthWest()) 
-            if (ne && sw) {
-                let worldCoordWidth = Math.abs(ne.x - sw.x)
-                let worldCoordHeight = Math.abs(ne.y - sw.y)
-                let fitPadding = 40
-                for (let zoom = maxZoom; zoom >= minZoom; --zoom) { 
-                    if (worldCoordWidth * (1 << zoom) + 2 * fitPadding < this.map.getDiv().clientWidth && 
-                        worldCoordHeight * (1 << zoom) + 2 * fitPadding < this.map.getDiv().clientHeight) {
-                        return zoom
-                    }
-                }
-            }
-        }
-        return 10
-    }
-
     start(el: HTMLDivElement) {
         if (this.map == null) {
             this.map = new google.maps.Map(el, {
@@ -123,10 +102,7 @@ export class GoogleMap extends Event<Channels> {
             for (let marker of this.markers) {
                 bounds.extend(marker.getPosition())
             }
-            // const zoomToFit = this.getZoomByBounds(bounds)
-            // console.log(zoomToFit)
             this.map.fitBounds(bounds)
-            // this.zoomTo(zoomToFit)
         }
     }
 
