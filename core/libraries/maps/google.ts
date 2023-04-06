@@ -123,10 +123,10 @@ export class GoogleMap extends Event<Channels> {
             for (let marker of this.markers) {
                 bounds.extend(marker.getPosition())
             }
-            const zoomToFit = this.getZoomByBounds(bounds)
-            console.log(zoomToFit)
+            // const zoomToFit = this.getZoomByBounds(bounds)
+            // console.log(zoomToFit)
             this.map.fitBounds(bounds)
-            this.zoomTo(zoomToFit)
+            // this.zoomTo(zoomToFit)
         }
     }
 
