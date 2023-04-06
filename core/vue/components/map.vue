@@ -61,7 +61,7 @@ const emit = defineEmits({
 })
 
 defineExpose({
-    fitBounds: () => map?.fitBounds()
+    fitView: () => map?.fitView()
 })
 
 // =================

@@ -92,7 +92,7 @@ export class NgAMap extends Event<Channels> {
         }
     }
 
-    fitBounds() {
+    fitView() {
         if (this.map) {
             this.map.setFitView()
         }
