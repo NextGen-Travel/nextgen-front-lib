@@ -60,6 +60,10 @@ const emit = defineEmits({
     clickMarker: (_marker: MapMarker) => true
 })
 
+defineExpose({
+    fitBounds: () => map?.fitBounds()
+})
+
 // =================
 //
 // map

@@ -92,6 +92,12 @@ export class NgAMap extends Event<Channels> {
         }
     }
 
+    fitBounds() {
+        if (this.map) {
+            this.map.setFitView()
+        }
+    }
+
     // =================
     //
     // Marker

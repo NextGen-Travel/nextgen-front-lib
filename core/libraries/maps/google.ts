@@ -96,6 +96,16 @@ export class GoogleMap extends Event<Channels> {
         }
     }
 
+    fitBounds() {
+        if (this.map) {
+            const bounds = new google.maps.LatLngBounds()
+            for (let marker of this.markers) {
+                bounds.extend(marker.getPosition())
+            }
+            this.map.fitBounds(bounds)
+        }
+    }
+
     // =================
     //
     // Marker
