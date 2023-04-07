@@ -2,7 +2,7 @@ import { MapRoute } from './common/route'
 import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
-import { LatLng, MarkerAttr, RouteAttr } from './types'
+import { LatLng, MarkerAttr, RouteAttr, NavigationParams } from './types'
 
 type GoogleMapConfig = {
     apiKey: string
@@ -26,6 +26,18 @@ export class GoogleMap extends Event<Channels> {
     map?: google.maps.Map
     routes: MapRoute[] = []
     markers: MapMarker[] = []
+
+    static getGoogleMapNavigationUrl(params: NavigationParams) {
+        let { startName, startLng, startLat, endName, endLng, endLat } = params;
+        let url = `https://www.google.com/maps/dir/?api=1&origin=${startLat},${startLng}&destination=${endLat},${endLng}&travelmode=driving`
+        if (startName) {
+            url += `&origin_place_id=${encodeURIComponent(startName)}`
+        }
+        if (endName) {
+            url += `&destination_place_id=${encodeURIComponent(endName)}`
+        }
+        return url
+    }
 
     static install(config: GoogleMapConfig) {
         if (window.__ng_state.gmap == null) {

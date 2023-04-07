@@ -2,7 +2,7 @@ import { MapRoute } from './common/route'
 import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../../core/error'
-import { LatLng, MarkerAttr, RouteAttr } from './types'
+import { NavigationParams, LatLng, MarkerAttr, RouteAttr } from './types'
 
 type AMapConfig = {
     apiKey: string
@@ -27,6 +27,19 @@ export class NgAMap extends Event<Channels> {
     map?: AMap.Map
     routes: MapRoute[] = []
     markers: MapMarker[] = []
+
+    static async getAmapNavigationUrl(params: NavigationParams) {
+        const { startName, startLng, startLat, endName, endLng, endLat } = params;
+        const url = new URL('https://uri.amap.com/navigation')
+        url.searchParams.set('from', `${startLng},${startLat},${startName}`)
+        url.searchParams.set('to', `${endLng},${endLat},${endName}`)
+        url.searchParams.set('mode', 'car')
+        url.searchParams.set('policy', '1')
+        url.searchParams.set('src', 'mypage')
+        url.searchParams.set('coordinate', 'gaode')
+        url.searchParams.set('callnative', '1')
+        return url.href
+    }
 
     static async install(config: AMapConfig) {
         if (window.__ng_state.amap == null) {

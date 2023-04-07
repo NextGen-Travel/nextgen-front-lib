@@ -19,3 +19,12 @@ export type RouteAttr = {
     destination: LatLng
     travelMode:  'DRIVING'| 'WALKING'
 }
+
+export type NavigationParams = {
+    startName: string
+    startLng: number
+    startLat: number
+    endName: string
+    endLng: number
+    endLat: number
+}
