@@ -6,6 +6,10 @@ const { text } = require('power-helper')
 
 /** 好猛這段是 ai 生成的 */
 
+function removeSpecialChars(str) {
+    return str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').replace(/\s+/g, '')
+}
+
 function extractFirstParam(content) {
     const regex = /t\(['"]##([^'"]+)['"]/g
     const matchs = content.match(regex)
@@ -24,7 +28,6 @@ function extractFirstParam(content) {
                 return e
             }
         })
-        .map(e => e.trim())
 }
 
 /**
@@ -40,7 +43,7 @@ module.exports = async(params = {
         const content = fsx.readFileSync(file, 'utf8')
         const vars = extractFirstParam(content)
         for (let v of vars) {
-            outputs[v] = v
+            outputs[removeSpecialChars(v).trim()] = v.trim()
         }
     }
     return outputs
