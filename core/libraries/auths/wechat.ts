@@ -1,4 +1,4 @@
-import { Event, element } from 'power-helper'
+import { element } from 'power-helper'
 import { serviceException } from '../../../core/error'
 
 type WechatConfig = {
@@ -6,14 +6,7 @@ type WechatConfig = {
     redirectUri: string
 }
 
-type Channels = {
-    login: {
-        token: string
-    }
-}
-
 const exception = serviceException.checkout('WechatAuth')
-const event = new Event<Channels>()
 
 function checkInstalled() {
     if (!window.__ng_state.awechat?.installed) {
@@ -35,11 +28,7 @@ export class WechatAuth {
         }
     }
 
-    static get on() {
-        return event.on.bind(event)
-    }
-
-    static signIn(params: {
+    static renderQrcode(params: {
         containerId: string
     }) {
         checkInstalled()
