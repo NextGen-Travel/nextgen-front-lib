@@ -27,7 +27,7 @@ export class GoogleMap extends Event<Channels> {
     routes: MapRoute[] = []
     markers: MapMarker[] = []
 
-    static getGoogleMapNavigationUrl(params: NavigationParams) {
+    static getNavigationUrl(params: NavigationParams) {
         let { startName, startLng, startLat, endName, endLng, endLat } = params;
         let url = `https://www.google.com/maps/dir/?api=1&origin=${startLat},${startLng}&destination=${endLat},${endLng}&travelmode=driving`
         if (startName) {

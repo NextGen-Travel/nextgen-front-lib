@@ -28,7 +28,7 @@ export class NgAMap extends Event<Channels> {
     routes: MapRoute[] = []
     markers: MapMarker[] = []
 
-    static async getAmapNavigationUrl(params: NavigationParams) {
+    static async getNavigationUrl(params: NavigationParams) {
         const { startName, startLng, startLat, endName, endLng, endLat } = params;
         const url = new URL('https://uri.amap.com/navigation')
         url.searchParams.set('from', `${startLng},${startLat},${startName}`)
