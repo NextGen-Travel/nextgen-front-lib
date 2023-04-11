@@ -51,19 +51,24 @@ export class GoogleAuth {
         }
         if (window.__ng_state.agoogle.installed === false) {
             window.__ng_state.agoogle.installed = true
-            await element.importScript('https://accounts.google.com/gsi/client')
-            google.accounts.id.initialize({
-                ux_mode: config.uxMode,
-                client_id: config.clientId,
-                login_uri: config.loginUri,
-                auto_select: false,
-                callback: (credentialResponse) => {
-                    event.emit('login', {
-                        token: credentialResponse.credential,
-                        payload: jwtDecode(credentialResponse.credential)
-                    })
-                }
-            })
+            try {
+                await element.importScript('https://accounts.google.com/gsi/client')
+                google.accounts.id.initialize({
+                    ux_mode: config.uxMode,
+                    client_id: config.clientId,
+                    login_uri: config.loginUri,
+                    auto_select: false,
+                    callback: (credentialResponse) => {
+                        event.emit('login', {
+                            token: credentialResponse.credential,
+                            payload: jwtDecode(credentialResponse.credential)
+                        })
+                    }
+                })
+            } catch (error) {
+                window.__ng_state.agoogle.installed = false
+                throw error
+            }
         }
     }
 
