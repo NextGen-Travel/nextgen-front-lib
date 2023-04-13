@@ -3,16 +3,17 @@
         <v-pagination
             v-if="show"
             v-model="page"
+            :color="color"
             :length="length"
             :disabled="loading"
             :total-visible="7">
         </v-pagination>
         <v-progress-linear
             v-if="show && loading"
-            color="primary"
             buffer-value="0"
             indeterminate
             style="max-width: 200px"
+            :color="color"
         ></v-progress-linear>
     </div>
 </template>
@@ -30,6 +31,11 @@ const props = defineProps({
         type: Boolean as PropType<boolean>,
         required: false,
         default: () => false
+    },
+    color: {
+        type: String as PropType<string>,
+        required: false,
+        default: () => 'primary'
     },
     total: {
         type: Number as PropType<number>,
