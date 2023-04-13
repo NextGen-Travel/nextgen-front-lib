@@ -10,6 +10,11 @@ function removeSpecialChars(str) {
     return str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').replace(/\s+/g, '')
 }
 
+function validateSpecialText(str) {
+    const regex = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/
+    return regex.test(str)
+}
+
 function extractFirstParam(content) {
     const regex = /t\(['"]##([^'"]+)['"]/g
     const matchs = content.match(regex)
@@ -38,12 +43,18 @@ module.exports = async(params = {
     path: './src'
 }) => {
     const files = await glob(`${params.path}/**/*.{js,ts,vue}`, { ignore: 'node_modules/**' })
-    const outputs = {}
+    const outputs = {
+        keys: {},
+        changes: []
+    }
     for (let file of files) {
         const content = fsx.readFileSync(file, 'utf8')
         const vars = extractFirstParam(content)
         for (let v of vars) {
-            outputs[removeSpecialChars(v).trim()] = v.trim()
+            outputs.keys[removeSpecialChars(v).trim()] = v.trim()
+            if (validateSpecialText(v.trim())) {
+                outputs.changes.push(v)
+            }
         }
     }
     return outputs
