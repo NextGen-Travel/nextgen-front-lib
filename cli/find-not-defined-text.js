@@ -7,11 +7,11 @@ const { text } = require('power-helper')
 /** 好猛這段是 ai 生成的 */
 
 function removeSpecialChars(str) {
-    return str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').replace(/\s+/g, '')
+    return str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef]/g, '').replace(/\s+/g, '')
 }
 
 function validateSpecialText(str) {
-    const regex = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/
+    const regex = /^[\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef]+$/
     return regex.test(str)
 }
 
