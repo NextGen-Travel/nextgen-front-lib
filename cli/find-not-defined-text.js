@@ -45,7 +45,7 @@ module.exports = async(params = {
     const files = await glob(`${params.path}/**/*.{js,ts,vue}`, { ignore: 'node_modules/**' })
     const outputs = {
         keys: {},
-        changes: []
+        changes: {}
     }
     for (let file of files) {
         const content = fsx.readFileSync(file, 'utf8')
@@ -53,7 +53,7 @@ module.exports = async(params = {
         for (let v of vars) {
             outputs.keys[removeSpecialChars(v).trim()] = v.trim()
             if (validateSpecialText(v.trim())) {
-                outputs.changes.push(v)
+                outputs.changes[removeSpecialChars(v).trim()] = v.trim()
             }
         }
     }

@@ -22,7 +22,9 @@ const main = async() => {
                 choices: [
                     'build',
                     'setup',
-                    'sync-request-types'
+                    'sync-lib',
+                    'sync-request-types',
+                    'find-not-defined-text'
                 ]
             }
         ])
