@@ -52,7 +52,7 @@ module.exports = async(params = {
         const vars = extractFirstParam(content)
         for (let v of vars) {
             outputs.keys[removeSpecialChars(v).trim()] = v.trim()
-            if (validateSpecialText(v.trim())) {
+            if (!validateSpecialText(v.trim())) {
                 outputs.changes[removeSpecialChars(v).trim()] = v.trim()
             }
         }
