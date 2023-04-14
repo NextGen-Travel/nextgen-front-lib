@@ -153,7 +153,7 @@ export class NgAMap extends Event<Channels> {
     //
 
     addRoute(params: RouteAttr) {
-        const route = new MapRoute(this as any, params)
+        const route = new MapRoute(this, params)
         this.routes.push(route)
         return route
     }

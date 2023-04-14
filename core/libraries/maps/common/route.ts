@@ -17,7 +17,7 @@ export class MapRoute extends Event<Channels> {
     googleDirectionsService?: google.maps.DirectionsService
     googleDirectionsRenderer?: google.maps.DirectionsRenderer
 
-    constructor(map: GoogleMap, params: RouteAttr) {
+    constructor(map: GoogleMap | NgAMap, params: RouteAttr) {
         super()
 
         this.id = params.id
@@ -29,18 +29,17 @@ export class MapRoute extends Event<Channels> {
         }
         // 如果是高德地图
         if (map instanceof NgAMap) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const Driving = AMap.Driving
+            const Driving = (AMap as any).Driving
             this.aMap = map
             if (this.aMap.map) {
                 this.aMapDriving = new Driving({
-                    map: map,
+                    map: this.aMap.map,
                     panel: 'panel'
                 })
             }
         }
     }
+    
     /**
      * @zh 刪除路線
      * @en Remove route
@@ -54,7 +53,12 @@ export class MapRoute extends Event<Channels> {
             }
         }
         if (this.aMapDriving) {
+            const Driving = (AMap as any).Driving
             this.aMapDriving.clear()
+            this.aMapDriving = new Driving({
+                map: this.aMap?.map,
+                panel: 'panel'
+            })
             if (this.aMap) {
                 this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
             }
@@ -86,7 +90,6 @@ export class MapRoute extends Event<Channels> {
         if (this.aMap && this.aMap.map) {
             const origin = new AMap.LngLat(params.origin.lng, params.origin.lat)
             const destination = new AMap.LngLat(params.destination.lng, params.destination.lat)
-            console.log(this)
             this.aMapDriving.search(origin, destination,  function(status: any, result: any) {
                 if (status === 'complete') {
                     console.log('绘制驾车路线完成')
