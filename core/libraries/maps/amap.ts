@@ -6,7 +6,8 @@ import { NavigationParams, LatLng, MarkerAttr, RouteAttr } from './types'
 
 type AMapConfig = {
     apiKey: string
-    serviceHost: string
+    serviceHost?: string
+    securityJsCode?: string
 }
 
 type Channels = {
@@ -52,7 +53,8 @@ export class NgAMap extends Event<Channels> {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             window._AMapSecurityConfig = {
-                serviceHost: config.serviceHost
+                serviceHost: config.serviceHost,
+                securityJsCode: config.securityJsCode
             }
             await element.importScript(`https://webapi.amap.com/maps?v=2.0&key=${config.apiKey}`)
         }
