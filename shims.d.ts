@@ -6,6 +6,10 @@ declare global {
         WxLogin: any
         initGoogleMap: any
     }
+    interface AMap {
+        Driving: any
+    }
 }
+
 
 export {}

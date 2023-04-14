@@ -9,16 +9,21 @@ type Channels = {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const Driving = AMap.Driving
+
 export class MapRoute extends Event<Channels> {
     id?: string
     aMap?: NgAMap
-    aMapRoute?: AMap.Polyline
+    aMapDriving?: typeof Driving
     googleMap?: GoogleMap
     googleDirectionsService?: google.maps.DirectionsService
     googleDirectionsRenderer?: google.maps.DirectionsRenderer
 
     constructor(map: GoogleMap, params: RouteAttr) {
         super()
+
         this.id = params.id
         // 如果是 google map
         if (map instanceof GoogleMap) {
@@ -30,18 +35,10 @@ export class MapRoute extends Event<Channels> {
         if (map instanceof NgAMap) {
             this.aMap = map
             if (this.aMap.map) {
-                this.aMapRoute = new AMap.Polyline({
-                    path: [
-                        [params.origin.lng, params.origin.lat],
-                        [params.destination.lng, params.destination.lat]
-                    ],
-                    strokeColor: '#FF33FF',
-                    strokeOpacity: 1,
-                    strokeWeight: 3,
-                    strokeStyle: 'solid',
-                    strokeDasharray: [10, 5]
+                this.aMapDriving = new Driving({
+                    map: map,
+                    panel: 'panel'
                 })
-                this.aMapRoute.setMap(this.aMap.map)
             }
         }
     }
@@ -57,8 +54,8 @@ export class MapRoute extends Event<Channels> {
                 this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
             }
         }
-        if (this.aMapRoute) {
-            this.aMapRoute.setMap(null)
+        if (this.aMapDriving) {
+            this.aMapDriving.clear()
             if (this.aMap) {
                 this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
             }
@@ -88,18 +85,9 @@ export class MapRoute extends Event<Channels> {
             })
         }
         if (this.aMap && this.aMap.map) {
-            this.aMapRoute = new AMap.Polyline({
-                path: [
-                    [params.origin.lng, params.origin.lat],
-                    [params.destination.lng, params.destination.lat]
-                ],
-                strokeColor: '#FF33FF',
-                strokeOpacity: 1,
-                strokeWeight: 3,
-                strokeStyle: 'solid',
-                strokeDasharray: [10, 5]
-            })
-            this.aMapRoute.setMap(this.aMap.map)
+            const origin = new AMap.LngLat(params.origin.lng, params.origin.lat)
+            const destination = new AMap.LngLat(params.destination.lng, params.destination.lat)
+            this.aMapDriving.search(origin, destination)
         }
     }
 }
