@@ -9,20 +9,20 @@ type Channels = {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const Driving = AMap.Driving
-
 export class MapRoute extends Event<Channels> {
     id?: string
     aMap?: NgAMap
-    aMapDriving?: typeof Driving
+    aMapDriving?: any
     googleMap?: GoogleMap
     googleDirectionsService?: google.maps.DirectionsService
     googleDirectionsRenderer?: google.maps.DirectionsRenderer
 
     constructor(map: GoogleMap, params: RouteAttr) {
         super()
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const Driving = AMap.Driving
 
         this.id = params.id
         // 如果是 google map
