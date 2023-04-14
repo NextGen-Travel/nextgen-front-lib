@@ -92,7 +92,10 @@ export class NgAMap extends Event<Channels> {
     }
 
     moveTo(position: LatLng) {
-        this.map?.setCenter([position.lat, position.lng])
+        this.map?.setCenter([
+            position.lng,
+            position.lat
+        ])
     }
 
     zoomTo(zoom: number) {
