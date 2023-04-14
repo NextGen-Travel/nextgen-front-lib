@@ -86,6 +86,7 @@ export class MapRoute extends Event<Channels> {
         if (this.aMap && this.aMap.map) {
             const origin = new AMap.LngLat(params.origin.lng, params.origin.lat)
             const destination = new AMap.LngLat(params.destination.lng, params.destination.lat)
+            console.log(this)
             this.aMapDriving.search(origin, destination,  function(status: any, result: any) {
                 if (status === 'complete') {
                     console.log('绘制驾车路线完成')
