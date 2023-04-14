@@ -72,7 +72,7 @@ export class NgAMap extends Event<Channels> {
     start(el: HTMLDivElement) {
         if (this.map == null) {
             this.map = new window.AMap.Map(el, {
-                zoom: 10
+                zoom: 5
             })
             this.map.on('click', (event) => {
                 this.emit('click', {
