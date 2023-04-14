@@ -46,8 +46,9 @@ export class MapMarker extends Event<Channels> {
             this.aMap = map
             if (this.aMap.map) {
                 this.aMapMarker = new AMap.Marker({
-                    icon: this.icon,
+                    icon: this.icon || 'https//vdata.amap.com/icons/b18/1/2.png',
                     content: params.content,
+                    offset: new AMap.Pixel(-10, -10),
                     position: new AMap.LngLat(params.position.lng, params.position.lat)
                 })
                 this.aMapMarker.setMap(this.aMap.map)
@@ -80,9 +81,10 @@ export class MapMarker extends Event<Channels> {
         }
         if (this.aMapMarker) {
             this.aMapMarker.setPosition([
-                position.lat,
-                position.lng
+                position.lng,
+                position.lat
             ])
+            
         }
     }
 
