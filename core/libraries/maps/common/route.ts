@@ -32,8 +32,8 @@ export class MapRoute extends Event<Channels> {
             if (this.aMap.map) {
                 this.aMapRoute = new AMap.Polyline({
                     path: [
-                        [params.origin.lat, params.origin.lng],
-                        [params.destination.lat, params.destination.lng]
+                        [params.origin.lng, params.origin.lat],
+                        [params.destination.lng, params.destination.lat]
                     ],
                     strokeColor: '#FF33FF',
                     strokeOpacity: 1,
@@ -90,8 +90,8 @@ export class MapRoute extends Event<Channels> {
         if (this.aMap && this.aMap.map) {
             this.aMapRoute = new AMap.Polyline({
                 path: [
-                    [params.origin.lat, params.origin.lng],
-                    [params.destination.lat, params.destination.lng]
+                    [params.origin.lng, params.origin.lat],
+                    [params.destination.lng, params.destination.lat]
                 ],
                 strokeColor: '#FF33FF',
                 strokeOpacity: 1,
