@@ -48,10 +48,7 @@ export class MapMarker extends Event<Channels> {
                 this.aMapMarker = new AMap.Marker({
                     icon: this.icon,
                     content: params.content,
-                    position: [
-                        params.position.lat,
-                        params.position.lng
-                    ]
+                    position: new AMap.LngLat(params.position.lng, params.position.lat)
                 })
                 this.aMapMarker.setMap(this.aMap.map)
                 this.aMapMarker.on('click', () => {
