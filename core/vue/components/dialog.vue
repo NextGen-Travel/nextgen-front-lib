@@ -17,7 +17,7 @@
                         'ng-component-dialog': i === 1,
                         'ng-component-dialog-fake': i === 2
                     }">
-                    <v-row class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
+                    <v-row v-if="hideHeader" class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
                         <h3 v-if="title">{{ title }}</h3>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -67,6 +67,11 @@ const props = defineProps({
         type: String as PropType<string>,
         required: false,
         default: () => '480px'
+    },
+    hideHeader: {
+        type: Boolean,
+        required: false,
+        default: () => false
     },
     title: {
         type: String as PropType<string>,

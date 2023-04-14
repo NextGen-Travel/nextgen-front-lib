@@ -46,8 +46,8 @@ export class MapMarker extends Event<Channels> {
             this.aMap = map
             if (this.aMap.map) {
                 this.aMapMarker = new AMap.Marker({
-                    icon: this.icon || 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-                    content: params.content,
+                    icon: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
+                    // content: params.content,
                     anchor: 'bottom-center',
                     position: new AMap.LngLat(params.position.lng, params.position.lat)
                 })
