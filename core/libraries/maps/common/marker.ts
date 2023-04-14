@@ -51,7 +51,6 @@ export class MapMarker extends Event<Channels> {
                     position: new AMap.LngLat(params.position.lng, params.position.lat)
                 })
                 if (params.content) {
-                    console.log('q_q')
                     this.aMapMarker.setLabel({
                         content: params.content,
                         offset: new AMap.Pixel(0, 42),
