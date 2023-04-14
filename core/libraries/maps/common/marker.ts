@@ -46,11 +46,18 @@ export class MapMarker extends Event<Channels> {
             this.aMap = map
             if (this.aMap.map) {
                 this.aMapMarker = new AMap.Marker({
-                    icon: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
-                    // content: params.content,
+                    icon: this.icon || 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
                     anchor: 'bottom-center',
                     position: new AMap.LngLat(params.position.lng, params.position.lat)
                 })
+                if (params.content) {
+                    console.log('q_q')
+                    this.aMapMarker.setLabel({
+                        content: params.content,
+                        offset: new AMap.Pixel(0, 42),
+                        direction: 'center'
+                    })
+                }
                 this.aMapMarker.setMap(this.aMap.map)
                 this.aMapMarker.on('click', () => {
                     this.emit('click', this.getPosition())
