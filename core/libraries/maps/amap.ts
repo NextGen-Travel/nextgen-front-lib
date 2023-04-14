@@ -56,7 +56,7 @@ export class NgAMap extends Event<Channels> {
                 serviceHost: config.serviceHost,
                 securityJsCode: config.securityJsCode
             }
-            await element.importScript(`https://webapi.amap.com/maps?v=2.0&key=${config.apiKey}&plugin=AMap.Driving`)
+            await element.importScript(`https://webapi.amap.com/maps?v=1.4.15&key=${config.apiKey}&plugin=AMap.Driving`)
         }
     }
 

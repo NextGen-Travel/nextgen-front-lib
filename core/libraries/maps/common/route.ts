@@ -20,10 +20,6 @@ export class MapRoute extends Event<Channels> {
     constructor(map: GoogleMap, params: RouteAttr) {
         super()
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const Driving = AMap.Driving
-
         this.id = params.id
         // 如果是 google map
         if (map instanceof GoogleMap) {
@@ -33,6 +29,9 @@ export class MapRoute extends Event<Channels> {
         }
         // 如果是高德地图
         if (map instanceof NgAMap) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const Driving = AMap.Driving
             this.aMap = map
             if (this.aMap.map) {
                 this.aMapDriving = new Driving({
