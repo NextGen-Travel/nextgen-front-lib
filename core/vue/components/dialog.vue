@@ -17,7 +17,7 @@
                         'ng-component-dialog': i === 1,
                         'ng-component-dialog-fake': i === 2
                     }">
-                    <v-row v-if="hideHeader" class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
+                    <v-row v-if="!hideHeader" class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
                         <h3 v-if="title">{{ title }}</h3>
                         <v-spacer></v-spacer>
                         <v-btn
