@@ -24,15 +24,19 @@
                         )">
                     </v-text-field>
                 </v-card-text>
-                <v-card-actions class="pb-4">
+                <v-card-actions class="pb-4 px-4">
                     <v-spacer></v-spacer>
-                    <v-btn name="ng-confirm-close" text :disabled="state.loading" @click="libConfirmStore.cancel">
+                    <v-btn
+                        name="ng-confirm-close"
+                        text
+                        rounded="pill"
+                        :disabled="state.loading"
+                        @click="libConfirmStore.cancel">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
                     <v-btn
                         name="ng-confirm-confirm"
                         color="primary"
-                        variant="outlined"
                         rounded="pill"
                         :loading="state.loading"
                         :disabled="state.doubleCheckText !== doubleCheckText"
