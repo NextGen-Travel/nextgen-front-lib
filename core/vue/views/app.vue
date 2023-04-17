@@ -4,7 +4,9 @@
             <Choices></Choices>
             <Confirm></Confirm>
             <Notification>
-                <slot name="notification"></slot>
+                <template #default="props">
+                    <slot name="notification" v-bind="props"></slot>
+                </template>
             </Notification>
             <slot></slot>
         </div>
