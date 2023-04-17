@@ -10,11 +10,15 @@
                 </v-card-title>
                 <v-card-text>
                     {{ message }}
+                    <!-- 驗證輸入 -->
                     <v-text-field
                         v-if="doubleCheckText"
                         v-model="state.doubleCheckText"
                         variant="outlined"
-                        :placeholder="t(
+                        class="mt-2"
+                        hide-details
+                        :placeholder="doubleCheckText"
+                        :label="t(
                             $t('ng.confirmDoubleCheckText{N}', { N: doubleCheckText }),
                             { N: doubleCheckText }
                         )">
