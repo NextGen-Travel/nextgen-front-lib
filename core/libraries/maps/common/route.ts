@@ -53,6 +53,7 @@ export class MapRoute extends Event<Channels> {
             }
         }
         if (this.aMapDriving) {
+            console.log('EEE')
             const Driving = (AMap as any).Driving
             this.aMapDriving.clear()
             this.aMapDriving = new Driving({
