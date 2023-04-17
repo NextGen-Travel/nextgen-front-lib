@@ -10,16 +10,16 @@
                 </v-card-title>
                 <v-card-text>
                     {{ message }}
+                    <v-text-field
+                        v-if="doubleCheckText"
+                        v-model="state.doubleCheckText"
+                        variant="outlined"
+                        :placeholder="t(
+                            $t('ng.confirmDoubleCheckText{N}', { N: doubleCheckText }),
+                            { N: doubleCheckText }
+                        )">
+                    </v-text-field>
                 </v-card-text>
-                <v-text-field
-                    v-if="doubleCheckText"
-                    v-model="state.doubleCheckText"
-                    variant="outlined"
-                    :placeholder="t(
-                        $t('ng.confirmDoubleCheckText{N}', { N: state.doubleCheckText }),
-                        { N: state.doubleCheckText }
-                    )">
-                </v-text-field>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
                     <v-btn name="ng-confirm-close" text :disabled="state.loading" @click="libConfirmStore.cancel">
