@@ -9,13 +9,13 @@
                     {{ t($t('ng.confirmTitleText')) }}
                 </v-card-title>
                 <v-card-text>
-                    {{ message }}
+                    <div>{{ message }}</div>
                     <!-- 驗證輸入 -->
                     <v-text-field
                         v-if="doubleCheckText"
                         v-model="state.doubleCheckText"
                         variant="outlined"
-                        class="mt-2"
+                        class="mt-4"
                         hide-details
                         :placeholder="doubleCheckText"
                         :label="t(
@@ -32,6 +32,8 @@
                     <v-btn
                         name="ng-confirm-confirm"
                         color="primary"
+                        variant="outlined"
+                        rounded="pill"
                         :loading="state.loading"
                         :disabled="state.doubleCheckText !== doubleCheckText"
                         @click="commit">
