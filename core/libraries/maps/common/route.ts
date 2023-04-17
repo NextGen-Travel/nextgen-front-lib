@@ -29,13 +29,9 @@ export class MapRoute extends Event<Channels> {
         }
         // 如果是高德地图
         if (map instanceof NgAMap) {
-            const Driving = (AMap as any).Driving
             this.aMap = map
             if (this.aMap.map) {
-                this.aMapDriving = new Driving({
-                    map: this.aMap.map,
-                    panel: 'panel'
-                })
+                this.update(params)
             }
         }
     }
@@ -53,16 +49,15 @@ export class MapRoute extends Event<Channels> {
             }
         }
         if (this.aMapDriving) {
-            console.log('EEE')
-            const Driving = (AMap as any).Driving
             this.aMapDriving.clear()
+        }
+        if (this.aMap) {
+            const A = window.AMap as any
+            const Driving = A.Driving
+            this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
             this.aMapDriving = new Driving({
-                map: this.aMap?.map,
-                panel: 'panel'
+                policy: A.DrivingPolicy.LEAST_TIME
             })
-            if (this.aMap) {
-                this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
-            }
         }
     }
 
@@ -89,8 +84,8 @@ export class MapRoute extends Event<Channels> {
             })
         }
         if (this.aMap && this.aMap.map) {
-            const origin = new AMap.LngLat(params.origin.lng, params.origin.lat)
-            const destination = new AMap.LngLat(params.destination.lng, params.destination.lat)
+            const origin = [params.origin.lng, params.origin.lat]
+            const destination = [params.destination.lng, params.destination.lat]
             this.aMapDriving.search(origin, destination,  function(status: any, result: any) {
                 if (status === 'complete') {
                     console.log('绘制驾车路线完成')
