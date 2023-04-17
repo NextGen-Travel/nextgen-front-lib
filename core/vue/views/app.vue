@@ -5,7 +5,7 @@
             <Confirm></Confirm>
             <Notification>
                 <template #default="props">
-                    <slot name="notification" v-bind="props"></slot>
+                    <slot name="toasts" v-bind="props"></slot>
                 </template>
             </Notification>
             <slot></slot>
