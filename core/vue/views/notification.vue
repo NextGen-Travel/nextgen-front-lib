@@ -4,29 +4,35 @@
             <div
                 v-for="message of messages" :key="message.id"
                 class="lib-notification-block mt-2 mr-2">
-                <v-card outlined @click="clickMessage(message)">
-                    <v-progress-linear
-                        v-if="message.clicked === false"
-                        height="2"
-                        :color="getColor(message.type)"
-                        :model-value="100 - message.duration">
-                    </v-progress-linear>
-                    <v-row class="pa-3 flex-nowrap" no-gutters align="center" :class="`${getColor(message.type)}--text`">
-                        <v-icon :color="getColor(message.type)">
-                            {{ getIcon(message.type) }}
-                        </v-icon>
-                        <div class="ml-3" style="overflow: auto;">
-                            {{ message.content }}
-                        </div>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            variant="plain"
-                            icon="mdi-close"
+                <slot
+                    :message="message"
+                    :color="getColor(message.type)"
+                    :close="() => removeMessage(message)"
+                    :stop="() => stopMessage(message)">
+                    <v-card outlined @click="stopMessage(message)">
+                        <v-progress-linear
+                            v-if="message.stopped === false"
+                            height="2"
                             :color="getColor(message.type)"
-                            @click.stop="removeMessage(message)">
-                        </v-btn>
-                    </v-row>
-                </v-card>
+                            :model-value="100 - message.duration">
+                        </v-progress-linear>
+                        <v-row class="pa-3 flex-nowrap" no-gutters align="center" :class="`${getColor(message.type)}--text`">
+                            <v-icon :color="getColor(message.type)">
+                                {{ getIcon(message.type) }}
+                            </v-icon>
+                            <div class="ml-3" style="overflow: auto;">
+                                {{ message.content }}
+                            </div>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                variant="plain"
+                                icon="mdi-close"
+                                :color="getColor(message.type)"
+                                @click.stop="removeMessage(message)">
+                            </v-btn>
+                        </v-row>
+                    </v-card>
+                </slot>
             </div>
         </transition-group>
     </div>
@@ -71,8 +77,8 @@ const messages = computed(() => {
 onMounted(() => {
     state.ticker.on('next', () => {
         let needClear = false
-        messages.value.forEach((message: any) => {
-            if (message.clicked === false) {
+        messages.value.forEach(message => {
+            if (message.stopped === false) {
                 message.duration += 5
                 if (message.duration >= 100) {
                     needClear = true
@@ -124,8 +130,8 @@ const getIcon = (type: MessageType) => {
     }
 }
 
-const clickMessage = (message: Message) => {
-    message.clicked = true
+const stopMessage = (message: Message) => {
+    message.stopped = true
 }
 
 const removeMessage = (message: Message) => {

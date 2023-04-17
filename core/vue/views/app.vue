@@ -3,7 +3,9 @@
         <div>
             <Choices></Choices>
             <Confirm></Confirm>
-            <Notification></Notification>
+            <Notification>
+                <slot name="notification"></slot>
+            </Notification>
             <slot></slot>
         </div>
     </v-app>

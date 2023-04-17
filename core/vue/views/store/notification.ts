@@ -7,7 +7,7 @@ export type MessageType = 'info' | 'warning' | 'danger' | 'success'
 export type Message = {
     id: string
     type: MessageType
-    clicked: boolean
+    stopped: boolean
     content: string
     duration: number
 }
@@ -35,7 +35,7 @@ export const useLibNotificationStore = defineStore('lib-notification', () => {
             ...params,
             id: flow.createUuid(),
             duration: 0,
-            clicked: params.type === 'danger'
+            stopped: params.type === 'danger'
         })
     }
 
