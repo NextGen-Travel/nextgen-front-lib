@@ -56,6 +56,7 @@ export class MapRoute extends Event<Channels> {
             const Driving = A.Driving
             this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
             this.aMapDriving = new Driving({
+                map: this.aMap.map,
                 policy: A.DrivingPolicy.LEAST_TIME
             })
         }
