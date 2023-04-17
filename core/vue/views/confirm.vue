@@ -11,12 +11,26 @@
                 <v-card-text>
                     {{ message }}
                 </v-card-text>
+                <v-text-field
+                    v-if="doubleCheckText"
+                    v-model="state.doubleCheckText"
+                    variant="outlined"
+                    :placeholder="t(
+                        $t('ng.confirmDoubleCheckText{N}', { N: state.doubleCheckText }),
+                        { N: state.doubleCheckText }
+                    )">
+                </v-text-field>
                 <v-card-actions class="pb-4">
                     <v-spacer></v-spacer>
                     <v-btn name="ng-confirm-close" text :disabled="state.loading" @click="libConfirmStore.cancel">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
-                    <v-btn name="ng-confirm-confirm" color="primary" :loading="state.loading" @click="commit">
+                    <v-btn
+                        name="ng-confirm-confirm"
+                        color="primary"
+                        :loading="state.loading"
+                        :disabled="state.doubleCheckText !== doubleCheckText"
+                        @click="commit">
                         {{ t($t('ng.confirmConfirmText')) }}
                     </v-btn>
                 </v-card-actions>
@@ -39,7 +53,8 @@ const libConfirmStore = useLibConfirmStore()
 
 const state = reactive({
     dialog: false,
-    loading: false
+    loading: false,
+    doubleCheckText: ''
 })
 
 // =================
@@ -49,6 +64,7 @@ const state = reactive({
 
 const open = computed(() => libConfirmStore.state.isOpen)
 const message = computed(() => libConfirmStore.state.message)
+const doubleCheckText = computed(() => libConfirmStore.state.doubleCheckText)
 
 // =================
 //
@@ -57,6 +73,7 @@ const message = computed(() => libConfirmStore.state.message)
 
 watch(() => open.value, () => {
     state.dialog = open.value
+    state.doubleCheckText = ''
 })
 
 // =================

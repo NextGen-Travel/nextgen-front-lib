@@ -2,6 +2,11 @@ import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 
 type Handler = (_success: (_state?: boolean) => void) => any
+export type OpenParams = {
+    message: string
+    handler: Handler
+    doubleCheckText?: string
+}
 
 export const useLibConfirmStore = defineStore('lib-confirm', () => {
 
@@ -13,6 +18,7 @@ export const useLibConfirmStore = defineStore('lib-confirm', () => {
     const state = reactive({
         isOpen: false,
         message: '',
+        doubleCheckText: '',
         handler: null as unknown as Handler
     })
 
@@ -21,9 +27,10 @@ export const useLibConfirmStore = defineStore('lib-confirm', () => {
     // actions
     //
 
-    const open = ({ message, handler }: { handler: Handler, message: string }) => {
+    const open = ({ doubleCheckText, message, handler }: OpenParams) => {
         state.isOpen = true
         state.message = message
+        state.doubleCheckText = doubleCheckText || ''
         state.handler = handler
     }
 

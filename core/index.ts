@@ -46,7 +46,7 @@ window.__ng_config = {
 
 export const useLibOptions = () => window.__ng_config.libOptions
 export const useLibEnv = () => window.__ng_config.libEnv
-export const t = (key: string) => i18n.key(key as any).get(window.__ng_config.libOptions.lang)
+export const t = (key: string, params = {}) => i18n.key(key as any, params).get(window.__ng_config.libOptions.lang)
 
 export const NextgenLib = {
     install(vue: App, params: {

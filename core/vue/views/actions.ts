@@ -1,12 +1,16 @@
-import { useLibConfirmStore } from './store/confirm'
+import { useLibConfirmStore, OpenParams } from './store/confirm'
 import { useLibChoicesStore, ChoicesParams } from './store/choices'
 import { useLibNotificationStore, MessageType } from './store/notification'
 
-const openConfirm = (message: string, handler: (_success: (_state?: boolean) => void) => void): void => {
+const openConfirm = (message: string, handler: OpenParams['handler']): void => {
     useLibConfirmStore().open({
         message,
         handler
     })
+}
+
+const openConfirmPlus = (params: OpenParams): void => {
+    useLibConfirmStore().open(params)
 }
 
 const openChoices = (params: ChoicesParams): void => {
@@ -23,5 +27,6 @@ const showToast = (type: MessageType, content: string) => {
 export const actions = {
     showToast,
     openChoices,
-    openConfirm
+    openConfirm,
+    openConfirmPlus
 }
