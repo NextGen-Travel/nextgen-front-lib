@@ -7,12 +7,37 @@ const { text } = require('power-helper')
 /** 好猛這段是 ai 生成的 */
 
 function removeSpecialChars(str) {
-    return str.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef]/g, '').replace(/\s+/g, '')
+    const regex = /[^\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef{}]/g
+    let result = ''
+    let insideVariable = false;
+    let variable = ''
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charAt(i);
+        if (char === '{') {
+            insideVariable = true;
+        } else if (char === '}') {
+            insideVariable = false;
+            result += '{' + variable + '}';
+            variable = '';
+        } else if (!insideVariable) {
+            if (char.match(regex)) {
+                continue
+            }
+            result += char
+        } else {
+            variable += char
+        }
+    }
+    if (insideVariable) {
+        result += '{' + variable
+    }
+    return result.replace(/\s+/g, '')
 }
 
 function validateSpecialText(str) {
-    const regex = /^[\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef]+$/
-    return regex.test(str)
+    const regex = /^[\u4e00-\u9fa5a-zA-Z0-9\uff00-\uffef{}]+$/
+    const cleanStr = str.replace(/[{}]/g, '')
+    return regex.test(cleanStr)
 }
 
 function extractFirstParam(content) {
