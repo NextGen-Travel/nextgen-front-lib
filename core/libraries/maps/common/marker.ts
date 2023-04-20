@@ -77,10 +77,10 @@ export class MapMarker extends Event<Channels> {
 
     hasLabel() {
         if (this.googleInfowindow) {
-            return this.googleInfowindow.getContent() !== ''
+            return !!this.googleInfowindow.getPosition()
         }
         if (this.aMapMarker) {
-            return this.aMapMarker.getLabel() !== null
+            return !!this.aMapMarker.getLabel()
         }
         return false
     }
