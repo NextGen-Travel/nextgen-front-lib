@@ -71,7 +71,11 @@ export class MapMarker extends Event<Channels> {
             this.googleInfowindow.close()
         }
         if (this.aMapMarker) {
-            this.aMapMarker.setLabel(null as any)
+            this.aMapMarker.setLabel({
+                content: '',
+                offset: new AMap.Pixel(0, 0),
+                direction: 'center'
+            })
         }
     }
 
@@ -82,7 +86,7 @@ export class MapMarker extends Event<Channels> {
             return !!this.googleInfowindow.getAnchor()
         }
         if (this.aMapMarker) {
-            return !!this.aMapMarker.getLabel()
+            return !!this.aMapMarker.getLabel().content
         }
         return false
     }
