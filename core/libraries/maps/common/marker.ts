@@ -77,7 +77,9 @@ export class MapMarker extends Event<Channels> {
 
     hasLabel() {
         if (this.googleInfowindow) {
-            return !!this.googleInfowindow.getPosition()
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            return !!this.googleInfowindow.getAnchor()
         }
         if (this.aMapMarker) {
             return !!this.aMapMarker.getLabel()
