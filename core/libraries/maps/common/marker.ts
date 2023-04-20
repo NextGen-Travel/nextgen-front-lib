@@ -1,6 +1,6 @@
 import { NgAMap } from '../amap'
-import { Event } from 'power-helper'
 import { GoogleMap } from '../google'
+import { flow, Event } from 'power-helper'
 import { LatLng, MarkerAttr } from '../types'
 
 type Channels = {
@@ -17,7 +17,7 @@ export class MapMarker extends Event<Channels> {
     googleInfowindow?: google.maps.InfoWindow
     constructor(map: GoogleMap | NgAMap, params: MarkerAttr) {
         super()
-        this.id = params.id
+        this.id = params.id || flow.createUuid()
         this.icon = params.icon
         // 如果是 google map
         if (map instanceof GoogleMap) {
