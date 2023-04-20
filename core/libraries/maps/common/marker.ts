@@ -68,6 +68,7 @@ export class MapMarker extends Event<Channels> {
 
     setLabel(label: string) {
         if (this.googleMarker) {
+            this.googleInfowindow?.open()
             this.googleInfowindow?.setContent(label)
         }
         if (this.aMapMarker) {
