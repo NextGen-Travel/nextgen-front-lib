@@ -66,9 +66,28 @@ export class MapMarker extends Event<Channels> {
         params.onLoaded?.(this)
     }
 
+    hideLabel() {
+        if (this.googleInfowindow) {
+            this.googleInfowindow.close()
+        }
+        if (this.aMapMarker) {
+            this.aMapMarker.setLabel(null as any)
+        }
+    }
+
+    hasLabel() {
+        if (this.googleInfowindow) {
+            return this.googleInfowindow.getContent() !== ''
+        }
+        if (this.aMapMarker) {
+            return this.aMapMarker.getLabel() !== null
+        }
+        return false
+    }
+
     setLabel(label: string) {
         if (this.googleMarker) {
-            this.googleInfowindow?.open()
+            this.googleInfowindow?.open(this.googleMap?.map, this.googleMarker)
             this.googleInfowindow?.setContent(label)
         }
         if (this.aMapMarker) {
