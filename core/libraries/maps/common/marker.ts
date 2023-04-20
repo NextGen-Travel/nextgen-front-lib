@@ -66,6 +66,19 @@ export class MapMarker extends Event<Channels> {
         params.onLoaded?.(this)
     }
 
+    setLabel(label: string) {
+        if (this.googleMarker) {
+            this.googleInfowindow?.setContent(label)
+        }
+        if (this.aMapMarker) {
+            this.aMapMarker.setLabel({
+                content: label,
+                offset: new AMap.Pixel(0, 42),
+                direction: 'center'
+            })
+        }
+    }
+
     remove() {
         if (this.googleMarker) {
             this.googleMarker.setMap(null)

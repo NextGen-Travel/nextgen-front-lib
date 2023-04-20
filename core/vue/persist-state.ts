@@ -1,6 +1,5 @@
 import { record } from 'power-helper'
 import { reactive, watch } from 'vue'
-import { serviceException } from '../error'
 import { usePersistDataStorage } from '../storage'
 
 type Params = {
@@ -9,7 +8,7 @@ type Params = {
 
 export class PersistStateManager {
     private params: Params
-    private aliveKeys: string[] = []
+    private aliveMap = new Map<string, any>()
 
     constructor(params: Params) {
         this.params = params
@@ -22,24 +21,20 @@ export class PersistStateManager {
     create<T extends Record<string, any>>(key: string, data: T): T {
         const storage = usePersistDataStorage()
         const _key = this.toKey(key)
-        if (this.aliveKeys.includes(_key)) {
-            throw serviceException.create(`Persist state key "${key}" already used.`)
-        } else {
-            this.aliveKeys.push(_key)
+        if (this.aliveMap.has(_key)) {
+            return this.aliveMap.get(_key)
         }
-    
         let origin: any
         try {
             origin = storage.get(_key)
         } catch (error) {
             origin = data
         }
-
         const state = reactive(record.setMapValue(data, origin))
         watch(() => state, () => storage.set(_key, state), {
             deep: true
         })
-
+        this.aliveMap.set(_key, state)
         return state as T
     }
 
