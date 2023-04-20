@@ -1,7 +1,7 @@
 import { NgAMap } from '../amap'
-import { Event } from 'power-helper'
 import { RouteAttr } from '../types'
 import { GoogleMap } from '../google'
+import { flow, Event } from 'power-helper'
 
 type Channels = {
     failed: {
@@ -20,7 +20,7 @@ export class MapRoute extends Event<Channels> {
     constructor(map: GoogleMap | NgAMap, params: RouteAttr) {
         super()
 
-        this.id = params.id
+        this.id = params.id || flow.createUuid()
         // 如果是 google map
         if (map instanceof GoogleMap) {
             this.googleMap = map

@@ -85,9 +85,10 @@ const main = ref<HTMLDivElement>()
 
 onMounted(() => {
     if (map && main.value) {
-        map.start(main.value)
-        map.zoomTo(props.zoom)
-        map.moveTo(props.center)
+        map.start(main.value, {
+            zoom: props.zoom,
+            center: props.center
+        })
         map.reloadRoutes(props.routes)
         map.reloadMarkers(props.markers)
         map.on('move', (latlng) => emit('move', latlng))

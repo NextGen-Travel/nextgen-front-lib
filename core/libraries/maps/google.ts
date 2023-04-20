@@ -63,10 +63,14 @@ export class GoogleMap extends Event<Channels> {
         checkInstalled()
     }
 
-    start(el: HTMLDivElement) {
+    start(el: HTMLDivElement, options: {
+        zoom?: number
+        center?: LatLng
+    }) {
         if (this.map == null) {
             this.map = new google.maps.Map(el, {
-                zoom: 10
+                zoom: options.zoom || 15,
+                center: options.center || { lat: 0, lng: 0 }
             })
             this.map.setOptions({
                 disableDefaultUI: true

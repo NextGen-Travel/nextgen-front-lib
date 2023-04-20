@@ -69,10 +69,14 @@ export class NgAMap extends Event<Channels> {
         checkInstalled()
     }
 
-    start(el: HTMLDivElement) {
+    start(el: HTMLDivElement, options: {
+        zoom?: number
+        center?: LatLng
+    }) {
         if (this.map == null) {
             this.map = new window.AMap.Map(el, {
-                zoom: 13
+                zoom: options.zoom ?? 10,
+                center: options.center ? [options.center.lng, options.center.lat] : undefined
             })
             this.map.on('click', (event) => {
                 this.emit('click', {
