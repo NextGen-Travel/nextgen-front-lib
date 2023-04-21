@@ -158,7 +158,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    async mixQuery(params: Record<string, string>) {
+    async pushQuery(params: Record<string, string>) {
         if (this.vueRouter) {
             const route = this.getCurrentRoute()
             await this.vueRouter.push({
