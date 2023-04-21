@@ -5,8 +5,7 @@ import { serviceException } from '../../../core/error'
 import { LatLng, MarkerAttr, RouteAttr, NavigationParams } from './types'
 
 type GoogleMapConfig = {
-    apiKey?: string
-    serviceHost?: string
+    apiKey: string
 }
 
 type Channels = {
@@ -50,11 +49,7 @@ export class GoogleMap extends Event<Channels> {
             window.__ng_state.gmap.installed = true
             return new Promise((resolve, reject) => {
                 window.initGoogleMap = () => resolve(null)
-                if (config.serviceHost) {
-                    element.importScript(config.serviceHost).catch(reject)
-                } else {
-                    element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
-                }
+                element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
             })
         }
     }
