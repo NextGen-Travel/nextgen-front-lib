@@ -87,9 +87,9 @@ export class MapRoute extends Event<Channels> {
         if (this.aMap && this.aMap.map) {
             const origin = [params.origin.lng, params.origin.lat]
             const destination = [params.destination.lng, params.destination.lat]
-            this.aMapDriving.search(origin, destination,  function(status: any, result: any) {
+            this.aMapDriving.search(origin, destination, (status: any, result: any) => {
                 if (status === 'complete') {
-                    console.log('绘制驾车路线完成')
+                    // console.log('绘制驾车路线完成')
                 } else {
                     console.log('获取驾车数据失败：' + result)
                 }
