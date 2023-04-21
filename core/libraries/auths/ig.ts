@@ -26,7 +26,7 @@ export class IgAuth {
         }
     }
 
-    static login() {
+    static signIn() {
         checkInstalled()
         const url = new URL('https://api.instagram.com/oauth/authorize')
         url.searchParams.set('client_id', window.__ng_state.igAuth.config.clientId)
