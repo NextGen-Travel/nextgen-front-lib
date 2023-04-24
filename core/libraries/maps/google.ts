@@ -39,7 +39,7 @@ export class GoogleMap extends Event<Channels> {
         return url
     }
 
-    static install(config: GoogleMapConfig) {
+    static async install(config: GoogleMapConfig) {
         if (window.__ng_state.gmap == null) {
             window.__ng_state.gmap = {
                 installed: false
@@ -47,7 +47,7 @@ export class GoogleMap extends Event<Channels> {
         }
         if (window.__ng_state.gmap.installed === false) {
             window.__ng_state.gmap.installed = true
-            return new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 window.initGoogleMap = () => resolve(null)
                 element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
             })
