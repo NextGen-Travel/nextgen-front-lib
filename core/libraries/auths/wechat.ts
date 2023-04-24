@@ -57,7 +57,7 @@ export class WechatAuth {
         url.searchParams.set('appid', config.appId)
         url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
         url.searchParams.set('response_type', 'code')
-        url.searchParams.set('scope', 'snsapi_userinfo')
+        url.searchParams.set('scope', 'snsapi_base')
         url.searchParams.set('state', params?.state ?? '')
         return url.toString()
     }
