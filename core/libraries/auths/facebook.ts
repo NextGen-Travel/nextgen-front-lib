@@ -34,7 +34,6 @@ export class FacebookAuth {
             }
         }
         if (window.__ng_state.afb.installed === false) {
-            window.__ng_state.afb.installed = true
             window.__ng_state.clientId = config.clientId
             window.__ng_state.postBackUri = config.postBackUri
             window.__ng_state.redirectUri = config.redirectUri
@@ -45,6 +44,7 @@ export class FacebookAuth {
                 })
             }
             await element.importScript('https://connect.facebook.net/en_US/sdk.js')
+            window.__ng_state.afb.installed = true
         }
     }
 

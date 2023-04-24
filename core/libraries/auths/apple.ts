@@ -37,7 +37,6 @@ export class AppleAuth {
             }
         }
         if (window.__ng_state.aapple.installed === false) {
-            window.__ng_state.aapple.installed = true
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
             window.AppleID.auth.init({
                 clientId: config.clientId,
@@ -47,6 +46,7 @@ export class AppleAuth {
                 state: 'ng login',
                 usePopup: true
             })
+            window.__ng_state.aapple.installed = true
         }
     }
 

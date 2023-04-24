@@ -23,8 +23,8 @@ export class WechatAuth {
             }
         }
         if (window.__ng_state.awechat.installed === false) {
-            window.__ng_state.awechat.installed = true
             await element.importScript('https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js')
+            window.__ng_state.awechat.installed = true
         }
     }
 
