@@ -58,7 +58,7 @@ export const inChina = async() => {
 export const getGeoLocation = async() => {
     const data = await cache.get('')
     return {
-        country: data.countryCode,
+        countryCode: data.countryCode,
         lat: data.lat,
         lng: data.lng
     }
