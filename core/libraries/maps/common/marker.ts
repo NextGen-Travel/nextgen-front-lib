@@ -63,7 +63,17 @@ export class MapMarker extends Event<Channels> {
                 })
             }
         }
-        params.onLoaded?.(this)
+        params.onload?.(this)
+    }
+
+    getInMapMarkers() {
+        if (this.googleMap) {
+            return this.googleMap.markers.slice()
+        }
+        if (this.aMap) {
+            return this.aMap.markers.slice()
+        }
+        return []
     }
 
     hideLabel() {

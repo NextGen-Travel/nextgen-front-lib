@@ -10,7 +10,7 @@ export type MarkerAttr = {
     icon?: string
     content?: string
     position: LatLng
-    onLoaded?: (_marker: MapMarker) => void
+    onload?: (_marker: MapMarker) => void
 }
 
 export type RouteAttr = {
