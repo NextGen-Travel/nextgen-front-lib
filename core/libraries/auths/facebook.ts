@@ -91,15 +91,16 @@ export class FacebookAuth {
         })
     }
 
-    static getLoginUrl() {
+    static getLoginUrl(params?: {
+        state?: string
+        redirectUri?: string
+    }) {
         checkInstalled()
         let url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
         url.searchParams.set('scope', scope)
         url.searchParams.set('client_id', window.__ng_state.clientId)
-        url.searchParams.set('redirect_uri', window.__ng_state.postBackUri)
-        url.searchParams.set('state', JSON.stringify({
-            urlScheme: window.__ng_state.redirectUri
-        }))
+        url.searchParams.set('redirect_uri', params?.redirectUri ?? window.__ng_state.postBackUri)
+        url.searchParams.set('state', params?.state ?? '')
         return url.href
     }
 }

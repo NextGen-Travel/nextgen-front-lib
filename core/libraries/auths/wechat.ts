@@ -50,11 +50,12 @@ export class WechatAuth {
 
     static getLoginUrl(params?: {
         state?: string
+        redirectUri?: string
     }) {
         const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
         const config = window.__ng_state.awechat.config
         url.searchParams.set('appid', config.appId)
-        url.searchParams.set('redirect_uri', config.redirectUri)
+        url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
         url.searchParams.set('response_type', 'code')
         url.searchParams.set('scope', 'snsapi_userinfo')
         url.searchParams.set('state', params?.state ?? '')
