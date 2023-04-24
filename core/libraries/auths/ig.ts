@@ -30,7 +30,7 @@ export class IgAuth {
         return window.__ng_state.igAuth?.installed ?? false
     }
 
-    static signIn(params?: {
+    static getLoginUrl(params?: {
         state?: string
         redirectUri?: string
     }) {
@@ -43,6 +43,6 @@ export class IgAuth {
         if (params?.state) {
             url.searchParams.set('state', params.state)
         }
-        location.href = url.toString()
+        return url.toString()
     }
 }
