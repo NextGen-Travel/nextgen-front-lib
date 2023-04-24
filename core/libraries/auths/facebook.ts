@@ -48,6 +48,10 @@ export class FacebookAuth {
         }
     }
 
+    static installed() {
+        return window.__ng_state.afb?.installed ?? false
+    }
+
     static get on() {
         return event.on.bind(event)
     }

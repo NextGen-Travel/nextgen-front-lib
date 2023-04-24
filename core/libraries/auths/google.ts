@@ -67,6 +67,10 @@ export class GoogleAuth {
         }
     }
 
+    static installed() {
+        return window.__ng_state.agoogle?.installed ?? false
+    }
+
     static get on() {
         return event.on.bind(event)
     }

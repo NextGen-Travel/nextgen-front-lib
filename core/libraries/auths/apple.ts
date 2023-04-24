@@ -50,6 +50,10 @@ export class AppleAuth {
         }
     }
 
+    static installed() {
+        return window.__ng_state.aapple?.installed ?? false
+    }
+
     static get on() {
         return event.on.bind(event)
     }

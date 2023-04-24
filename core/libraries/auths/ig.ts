@@ -26,6 +26,10 @@ export class IgAuth {
         }
     }
 
+    static installed() {
+        return window.__ng_state.igAuth?.installed ?? false
+    }
+
     static signIn(params?: {
         state?: string
         redirectUri?: string

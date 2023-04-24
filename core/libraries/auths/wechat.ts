@@ -28,6 +28,10 @@ export class WechatAuth {
         }
     }
 
+    static installed() {
+        return window.__ng_state.awechat?.installed ?? false
+    }
+
     static renderQrcode(params: {
         containerId: string
     }) {
