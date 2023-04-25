@@ -52,13 +52,21 @@ export class WechatAuth {
         state?: string
         redirectUri?: string
     }) {
-        const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
+        const url = new URL('https://open.weixin.qq.com/connect/qrconnect')
         const config = window.__ng_state.awechat.config
         url.searchParams.set('appid', config.appId)
         url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
         url.searchParams.set('response_type', 'code')
-        url.searchParams.set('scope', 'snsapi_base')
+        url.searchParams.set('scope', 'snsapi_login')
         url.searchParams.set('state', params?.state ?? '')
-        return url.toString()
+        return url.toString() + '#wechat_redirect'
+        // const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
+        // const config = window.__ng_state.awechat.config
+        // url.searchParams.set('appid', config.appId)
+        // url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
+        // url.searchParams.set('response_type', 'code')
+        // url.searchParams.set('scope', 'snsapi_base')
+        // url.searchParams.set('state', params?.state ?? '')
+        // return url.toString()
     }
 }
