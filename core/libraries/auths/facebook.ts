@@ -4,7 +4,6 @@ import { serviceException } from '../../../core/error'
 type FacebookConfig = {
     clientId: string
     postBackUri: string
-    redirectUri: string
 }
 
 const scope = 'public_profile,email'
@@ -30,13 +29,11 @@ export class FacebookAuth {
                 installed: false,
                 clientId: '',
                 postBackUri: '',
-                redirectUri: ''
             }
         }
         if (window.__ng_state.afb.installed === false) {
             window.__ng_state.clientId = config.clientId
             window.__ng_state.postBackUri = config.postBackUri
-            window.__ng_state.redirectUri = config.redirectUri
             window.fbAsyncInit = () => {
                 FB.init({
                     appId: config.clientId,
