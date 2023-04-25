@@ -8,7 +8,7 @@ type GoogleConfig = {
     uxMode: 'popup' | 'redirect'
     /** 應用程式 ID */
     clientId: string
-    /** 倒轉網址，當 ux mode 為 redirect 需要填寫 */
+    /** 導轉網址，當 ux mode 為 redirect 需要填寫 */
     loginUri?: string
 }
 
