@@ -3,7 +3,6 @@ import { serviceException } from '../../../core/error'
 
 type FacebookConfig = {
     clientId: string
-    redirectUri: string
 }
 
 const scope = 'public_profile,email'
@@ -27,13 +26,11 @@ export class FacebookAuth {
         if (window.__ng_state.afb == null) {
             window.__ng_state.afb = {
                 installed: false,
-                clientId: '',
-                redirectUri: '',
+                clientId: ''
             }
         }
         if (window.__ng_state.afb.installed === false) {
             window.__ng_state.clientId = config.clientId
-            window.__ng_state.redirectUri = config.redirectUri
             window.fbAsyncInit = () => {
                 FB.init({
                     appId: config.clientId,
@@ -88,15 +85,15 @@ export class FacebookAuth {
         })
     }
 
-    static getLoginUrl(params?: {
+    static getLoginUrl(params: {
         state?: string
-        redirectUri?: string
+        redirectUri: string
     }) {
         checkInstalled()
         let url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
         url.searchParams.set('scope', scope)
         url.searchParams.set('client_id', window.__ng_state.clientId)
-        url.searchParams.set('redirect_uri', params?.redirectUri ?? window.__ng_state.postBackUri)
+        url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('state', params?.state ?? '')
         return url.href
     }

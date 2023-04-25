@@ -2,7 +2,6 @@ import { serviceException } from '../../../core/error'
 
 type IgConfig = {
     clientId: string
-    redirectUri: string
 }
 
 const exception = serviceException.checkout('IG')
@@ -30,14 +29,14 @@ export class IgAuth {
         return window.__ng_state.igAuth?.installed ?? false
     }
 
-    static getLoginUrl(params?: {
+    static getLoginUrl(params: {
         state?: string
-        redirectUri?: string
+        redirectUri: string
     }) {
         checkInstalled()
         const url = new URL('https://api.instagram.com/oauth/authorize')
         url.searchParams.set('client_id', window.__ng_state.igAuth.config.clientId)
-        url.searchParams.set('redirect_uri', params?.redirectUri ?? window.__ng_state.igAuth.config.redirectUri)
+        url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('scope', 'user_profile,user_media')
         url.searchParams.set('response_type', 'code')
         if (params?.state) {

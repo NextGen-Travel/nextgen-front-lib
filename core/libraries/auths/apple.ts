@@ -3,7 +3,6 @@ import { serviceException } from '../../../core/error'
 
 type AppleConfig = {
     clientId: string
-    redirectUri: string
 }
 
 type Channels = {
@@ -40,7 +39,7 @@ export class AppleAuth {
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
             window.AppleID.auth.init({
                 clientId: config.clientId,
-                redirectURI: config.redirectUri,
+                redirectURI: '',
                 scope,
                 state: '',
                 usePopup: false
@@ -61,10 +60,10 @@ export class AppleAuth {
      * 如果是使用者自己關閉，則回傳 no-action
      */
 
-    static async signIn(params?: {
+    static async signIn(params: {
         state?: string
         popup?: boolean
-        redirectURI?: string
+        redirectURI: string
     }): Promise<{
         status: 'pass' | 'no-action'
         response: null | AppleSignInAPI.SignInResponseI
@@ -73,7 +72,7 @@ export class AppleAuth {
         let result = await AppleID.auth.signIn({
             state: params?.state ?? '',
             usePopup: params?.popup ?? true,
-            redirectURI: params?.redirectURI ?? ''
+            redirectURI: params.redirectURI
         })
         if (result.authorization.code && result.authorization.id_token) {
             event.emit('login', {

@@ -4,7 +4,6 @@ import { serviceException } from '../../../core/error'
 type WechatConfig = {
     appId: string
     webAppId: string
-    redirectUri: string
 }
 
 const exception = serviceException.checkout('WechatAuth')
@@ -40,6 +39,7 @@ export class WechatAuth {
     static renderQrcode(params: {
         state?: string
         containerId: string
+        redirectUri: string
     }) {
         checkInstalled()
         const config = window.__ng_state.awechat.config
@@ -47,7 +47,7 @@ export class WechatAuth {
             id: params.containerId,
             appid: config.webAppId,
             scope: 'snsapi_login',
-            redirect_uri: encodeURIComponent(config.redirectUri),
+            redirect_uri: encodeURIComponent(params.redirectUri),
             state: params.state ?? '',
             response_type: 'code'
         })
@@ -57,14 +57,14 @@ export class WechatAuth {
      * 獲取登入網址，這只能在微信 app 裡面使用，且要加入申請的微信公眾號
      */
 
-    static getLoginUrl(params?: {
+    static getLoginUrl(params: {
         state?: string
-        redirectUri?: string
+        redirectUri: string
     }) {
         const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
         const config = window.__ng_state.awechat.config
         url.searchParams.set('appid', config.appId)
-        url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
+        url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('response_type', 'code')
         url.searchParams.set('scope', 'snsapi_base')
         url.searchParams.set('state', params?.state ?? '')
