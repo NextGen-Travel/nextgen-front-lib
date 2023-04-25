@@ -43,7 +43,7 @@ export class AppleAuth {
                 redirectURI: config.redirectUri,
                 scope,
                 state: '',
-                usePopup: true
+                usePopup: false
             })
             window.__ng_state.aapple.installed = true
         }
