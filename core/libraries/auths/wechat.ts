@@ -3,6 +3,7 @@ import { serviceException } from '../../../core/error'
 
 type WechatConfig = {
     appId: string
+    webAppId: string
     redirectUri: string
 }
 
@@ -32,6 +33,10 @@ export class WechatAuth {
         return window.__ng_state.awechat?.installed ?? false
     }
 
+    /**
+     * 網頁應用要用 qrcode 登入
+     */
+
     static renderQrcode(params: {
         state?: string
         containerId: string
@@ -40,7 +45,7 @@ export class WechatAuth {
         const config = window.__ng_state.awechat.config
         new window.WxLogin({
             id: params.containerId,
-            appid: config.appId,
+            appid: config.webAppId,
             scope: 'snsapi_login',
             redirect_uri: encodeURIComponent(config.redirectUri),
             state: params.state ?? '',
@@ -48,13 +53,17 @@ export class WechatAuth {
         })
     }
 
+    /**
+     * 獲取登入網址，這只能在微信 app 裡面使用，且要加入申請的微信公眾號
+     */
+
     static getLoginUrl(params?: {
         state?: string
         redirectUri?: string
     }) {
         const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
         const config = window.__ng_state.awechat.config
-        url.searchParams.set('appid', 'wx6dc007a071127519')
+        url.searchParams.set('appid', config.appId)
         url.searchParams.set('redirect_uri', params?.redirectUri ?? config.redirectUri)
         url.searchParams.set('response_type', 'code')
         url.searchParams.set('scope', 'snsapi_base')
