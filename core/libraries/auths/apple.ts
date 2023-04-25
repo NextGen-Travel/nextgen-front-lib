@@ -39,7 +39,7 @@ export class AppleAuth {
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
             window.AppleID.auth.init({
                 clientId: config.clientId,
-                redirectURI: '',
+                redirectURI: 'https//demo.com',
                 scope,
                 state: '',
                 usePopup: false
