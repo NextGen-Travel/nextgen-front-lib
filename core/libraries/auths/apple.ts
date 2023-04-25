@@ -42,8 +42,7 @@ export class AppleAuth {
                 clientId: config.clientId,
                 redirectURI: config.redirectUri,
                 scope,
-                // TODO: ？
-                state: 'ng login',
+                state: '',
                 usePopup: true
             })
             window.__ng_state.aapple.installed = true
@@ -62,12 +61,20 @@ export class AppleAuth {
      * 如果是使用者自己關閉，則回傳 no-action
      */
 
-    static async signIn(): Promise<{
+    static async signIn(params?: {
+        state?: string
+        popup?: boolean
+        redirectURI?: string
+    }): Promise<{
         status: 'pass' | 'no-action'
         response: null | AppleSignInAPI.SignInResponseI
     }> {
         checkInstalled()
-        let result = await AppleID.auth.signIn()
+        let result = await AppleID.auth.signIn({
+            state: params?.state ?? '',
+            usePopup: params?.popup ?? true,
+            redirectURI: params?.redirectURI ?? ''
+        })
         if (result.authorization.code && result.authorization.id_token) {
             event.emit('login', {
                 token: result.authorization.id_token,
