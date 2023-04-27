@@ -23,6 +23,7 @@ export const defineQuerySync = <T extends Query>(params: {
     const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : params.defs()
     return () => {
         const router = params.router()
+        const getKey = (key: string) => `l-${ns}-${key}`
         const debounce = useDebounce(() => {
             let route = router.getCurrentRoute()
             if (route.query) {
@@ -38,21 +39,26 @@ export const defineQuerySync = <T extends Query>(params: {
         const syncQuery = (query: Query) => {
             const defs = params.defs()
             for (let key in defs) {
-                let item: any = query[`${ns}-${key}`]
+                let item: any = query[getKey(key)]
                 if (item) {
                     if (Array.isArray(defs[key])) {
-                        state[key] = item.split(',')
+                        let value = item.split(',')
+                        if (value !== state[key]) {
+                            state[key] = value
+                        }
                         continue
                     }
                     if (typeof defs[key] === 'number') {
                         item = Number(item)
-                        if (isNaN(item) === false) {
+                        if (isNaN(item) === false && item !== state[key]) {
                             state[key] = item
-                            continue
                         }
+                        continue
                     }
                     if (typeof defs[key] === 'string') {
-                        state[key] = item
+                        if (item !== state[key]) {
+                            state[key] = item
+                        }
                         continue
                     }
                 }
@@ -81,7 +87,7 @@ export const defineQuerySync = <T extends Query>(params: {
             const defs = params.defs()
             const query: Record<string, undefined | number | string> = {}
             for (let key in defs) {
-                query[`${ns}-${key}`] = undefined
+                query[getKey(key)] = undefined
                 let item = state[key]
                 if (item == null) {
                     continue
@@ -90,10 +96,10 @@ export const defineQuerySync = <T extends Query>(params: {
                     continue
                 }
                 if (Array.isArray(item)) {
-                    query[`${ns}-${key}`] = item.join(',')
+                    query[getKey(key)] = item.join(',')
                     continue
                 }
-                query[`${ns}-${key}`] = item
+                query[getKey(key)] = item
             }
             router.pushQuery(query)
         }, {
