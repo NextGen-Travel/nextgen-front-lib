@@ -41,10 +41,12 @@ export const defineQuerySync = <T extends Query>(params: {
             for (let key in defs) {
                 let item: any = query[getKey(key)]
                 if (item) {
-                    if (Array.isArray(defs[key])) {
-                        console.log('DDD', item)
-                        let value = item.split(',')
-                        if (value !== state[key]) {
+                    if (Array.isArray(defs[key]) && Array.isArray(item)) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        if (state[key] && item.toString() !== state[key].toString()) {
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
                             state[key] = item
                         }
                         continue
