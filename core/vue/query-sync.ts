@@ -55,9 +55,6 @@ export const defineQuerySync = <T extends Query>(params: {
                         continue
                     }
                 }
-                if (state[key] != defs[key]) {
-                    state[key] = defs[key]
-                }
             }
         }
 
