@@ -1,3 +1,4 @@
+import { Event } from 'power-helper'
 import { useLibEnv } from '../index'
 import { useDebounce } from './debounce'
 import { VueRouterPlus } from './router-plus'
@@ -24,11 +25,24 @@ export const defineQuerySync = <T extends Query>(params: {
     return () => {
         const router = params.router()
         const getKey = (key: string) => `l-${ns}-${key}`
+        const event = new Event<{
+            change: any
+        }>()
+
+        // =================
+        //
+        // debounce
+        //
+
         const debounce = useDebounce(() => {
             let route = router.getCurrentRoute()
             if (route.query) {
                 syncQuery(route.query)
             }
+        })
+
+        const changeDebounce = useDebounce(() => {
+            event.emit('change', {})
         })
 
         // =================
@@ -106,6 +120,7 @@ export const defineQuerySync = <T extends Query>(params: {
                 query[getKey(key)] = item as any
             }
             router.pushQuery(query)
+            changeDebounce.input('')
         }, {
             deep: true
         })
@@ -126,7 +141,8 @@ export const defineQuerySync = <T extends Query>(params: {
 
         return {
             state,
-            reset
+            reset,
+            event
         }
     }
 }
