@@ -1,8 +1,8 @@
-import { watch, onUnmounted } from 'vue'
 import { useLibEnv } from '../index'
-import { VueRouterPlus } from './router-plus'
-import { PersistStateManager } from './persist-state'
 import { useDebounce } from './debounce'
+import { VueRouterPlus } from './router-plus'
+import { watch, onUnmounted } from 'vue'
+import { PersistStateManager } from './persist-state'
 
 type Query = Record<string, undefined | string | number | string[]>
 
@@ -16,10 +16,11 @@ const querySyncStateManager = new PersistStateManager({
 export const defineQuerySync = <T extends Query>(params: {
     ns: () => string
     defs: () => T
+    persist: boolean
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
-    const state = querySyncStateManager.create(ns, params.defs())
+    const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : params.defs()
     return () => {
         const router = params.router()
         const debounce = useDebounce(() => {
