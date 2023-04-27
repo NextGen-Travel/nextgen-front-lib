@@ -42,6 +42,7 @@ export const defineQuerySync = <T extends Query>(params: {
                 let item: any = query[getKey(key)]
                 if (item) {
                     if (Array.isArray(defs[key])) {
+                        console.log('DDD', item)
                         let value = item.split(',')
                         if (value !== state[key]) {
                             state[key] = item
