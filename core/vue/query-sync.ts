@@ -20,7 +20,7 @@ export const defineQuerySync = <T extends Query>(params: {
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
-    const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
+    const state: Record<string, any> = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
     return () => {
         const router = params.router()
         const getKey = (key: string) => `l-${ns}-${key}`
@@ -41,13 +41,13 @@ export const defineQuerySync = <T extends Query>(params: {
             for (let key in defs) {
                 let item: any = query[getKey(key)]
                 if (item) {
-                    if (Array.isArray(defs[key]) && Array.isArray(item)) {
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        if (state[key] && item.toString() !== state[key].toString()) {
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            state[key] = item
+                    if (Array.isArray(defs[key])) {
+                        if (Array.isArray(item)) {
+                            if (state[key] && item.toString() !== state[key].toString()) {
+                                state[key] = item
+                            }
+                        } else if (state[key] && item.toString() !== state[key].toString()) {
+                            state[key] = [item]
                         }
                         continue
                     }
