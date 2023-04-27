@@ -1,8 +1,8 @@
 import { useLibEnv } from '../index'
 import { useDebounce } from './debounce'
 import { VueRouterPlus } from './router-plus'
-import { watch, onUnmounted } from 'vue'
 import { PersistStateManager } from './persist-state'
+import { watch, onUnmounted, reactive } from 'vue'
 
 type Query = Record<string, undefined | string | number | string[]>
 
@@ -20,7 +20,7 @@ export const defineQuerySync = <T extends Query>(params: {
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
-    const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : params.defs()
+    const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
     return () => {
         const router = params.router()
         const getKey = (key: string) => `l-${ns}-${key}`
@@ -95,11 +95,12 @@ export const defineQuerySync = <T extends Query>(params: {
                 if (item === defs[key]) {
                     continue
                 }
-                if (Array.isArray(item)) {
-                    query[getKey(key)] = item.join(',')
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
                     continue
                 }
-                query[getKey(key)] = item
+                query[getKey(key)] = item as any
             }
             router.pushQuery(query)
         }, {
