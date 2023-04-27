@@ -21,7 +21,7 @@ export const defineQuerySync = <T extends Query>(params: {
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
-    const state: Record<string, any> = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
+    const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
     return () => {
         const router = params.router()
         const getKey = (key: string) => `l-${ns}-${key}`
@@ -57,10 +57,18 @@ export const defineQuerySync = <T extends Query>(params: {
                 if (item) {
                     if (Array.isArray(defs[key])) {
                         if (Array.isArray(item)) {
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
                             if (state[key] && item.toString() !== state[key].toString()) {
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
                                 state[key] = item
                             }
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         } else if (state[key] && item.toString() !== state[key].toString()) {
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
                             state[key] = [item]
                         }
                         continue
