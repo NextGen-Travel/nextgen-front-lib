@@ -44,7 +44,7 @@ export const defineQuerySync = <T extends Query>(params: {
                     if (Array.isArray(defs[key])) {
                         let value = item.split(',')
                         if (value !== state[key]) {
-                            state[key] = value
+                            state[key] = item
                         }
                         continue
                     }
