@@ -1,4 +1,4 @@
-import { Event } from 'power-helper'
+import { Event, json } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../error'
 import { createRouter, Router, RouterOptions, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
@@ -158,14 +158,22 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    async pushQuery(params: Record<string, string>) {
+    async pushQuery(params: Record<string, undefined | string | number>) {
         if (this.vueRouter) {
             const route = this.getCurrentRoute()
-            await this.vueRouter.push({
-                query: {
-                    ...route.query,
-                    ...params
+            const query = {
+                ...json.jpjs(route.query),
+                ...params
+            }
+            for (let key in query) {
+                let data = query[key]
+                if (data == null) {
+                    delete query[key]
+                    continue
                 }
+            }
+            await this.vueRouter.push({
+                query
             })
         }
     }
