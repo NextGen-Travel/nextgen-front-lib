@@ -1,12 +1,12 @@
 <template>
-    <div class="mt-4">
+    <div ref="wrapper" class="mt-4">
         <v-pagination
             v-if="show"
             v-model="page"
             :color="color"
             :length="length"
             :disabled="loading"
-            :total-visible="7">
+            :total-visible="breakpoint.in('sm-and-down') ? 5 : 7">
         </v-pagination>
         <v-progress-linear
             v-if="show && loading"
@@ -19,7 +19,20 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, watch, computed } from 'vue'
+import { ref, PropType, watch, computed } from 'vue'
+import { Breakpoint } from 'power-helper'
+
+const breakpoint = new Breakpoint({
+    defCheckValue: () => wrapper.value?.clientWidth || 0,
+    points: Breakpoint.bootstrapBreakpoints
+})
+
+// =================
+//
+// ref
+//
+
+const wrapper = ref<HTMLElement>()
 
 // =================
 //
