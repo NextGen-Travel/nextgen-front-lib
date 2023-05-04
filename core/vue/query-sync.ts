@@ -39,7 +39,7 @@ export const defineQuerySync = <T extends Query>(params: {
         const debounce = useDebounce(() => {
             let route = router.getCurrentRoute()
             if (route.query) {
-                syncQuery(route.query)
+                queryToState(route.query)
             }
         })
 
@@ -49,10 +49,32 @@ export const defineQuerySync = <T extends Query>(params: {
 
         // =================
         //
-        // sync query
+        // sync
         //
 
-        const syncQuery = (query: Query) => {
+        const stateToQuery = () => {
+            const defs = params.defs()
+            const query: Record<string, undefined | number | string> = {}
+            for (let key in defs) {
+                query[getKey(key)] = undefined
+                let item = state[key]
+                if (item == null) {
+                    continue
+                }
+                if (item === defs[key]) {
+                    continue
+                }
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
+                    continue
+                }
+                query[getKey(key)] = item as any
+            }
+            router.pushQuery(query)
+        }
+
+        const queryToState = (query: Query) => {
             const defs = params.defs()
             for (let key in defs) {
                 let item: any = query[getKey(key)]
@@ -92,7 +114,8 @@ export const defineQuerySync = <T extends Query>(params: {
             }
         }
 
-        syncQuery(router.getCurrentRoute().query)
+        queryToState(router.getCurrentRoute().query)
+        stateToQuery()
 
         // =================
         //
@@ -111,25 +134,7 @@ export const defineQuerySync = <T extends Query>(params: {
         //
     
         watch(() => state, () => {
-            const defs = params.defs()
-            const query: Record<string, undefined | number | string> = {}
-            for (let key in defs) {
-                query[getKey(key)] = undefined
-                let item = state[key]
-                if (item == null) {
-                    continue
-                }
-                if (item === defs[key]) {
-                    continue
-                }
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
-                    continue
-                }
-                query[getKey(key)] = item as any
-            }
-            router.pushQuery(query)
+            stateToQuery()
             changeDebounce.input('')
         }, {
             deep: true
