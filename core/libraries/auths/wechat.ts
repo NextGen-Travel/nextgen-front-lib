@@ -32,6 +32,11 @@ export class WechatAuth {
         return window.__ng_state.awechat?.installed ?? false
     }
 
+    static isWeixinBrowser() {
+        const ua = navigator.userAgent.toLowerCase()
+        return (/micromessenger/.test(ua)) ? true : false
+    }
+
     /**
      * 網頁應用要用 qrcode 登入
      */
