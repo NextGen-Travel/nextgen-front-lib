@@ -6,7 +6,8 @@
             :color="color"
             :length="length"
             :disabled="loading"
-            :total-visible="breakpoint.in('sm-and-down') ? 5 : 7">
+            :size="breakpoint.in('sm-and-down') ? 'small' : 'default'"
+            :total-visible="breakpoint.in('sm-and-down') ? 4 : 7">
         </v-pagination>
         <v-progress-linear
             v-if="show && loading"
