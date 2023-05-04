@@ -28,14 +28,14 @@ const props = defineProps({
         default: () => 'date'
     },
     modelValue: {
-        type: Array as unknown as PropType<[number, number]>,
+        type: Array as unknown as PropType<[number | null, number | null]>,
         required: false,
         default: () => [Date.now(), Date.now()]
     }
 })
 
 const emit = defineEmits({
-    'update:modelValue': (_value: [number, number]) => true,
+    'update:modelValue': (_value: [number | null, number | null]) => true,
     'selected': () => true
 })
 
