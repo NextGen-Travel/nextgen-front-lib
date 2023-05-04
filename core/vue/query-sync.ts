@@ -4,6 +4,7 @@ import { useDebounce } from './debounce'
 import { VueRouterPlus } from './router-plus'
 import { PersistStateManager } from './persist-state'
 import { watch, onUnmounted, reactive } from 'vue'
+import { diff as _diff } from 'deep-object-diff'
 
 type Query = Record<string, undefined | string | number | string[]>
 
@@ -21,6 +22,7 @@ export const defineQuerySync = <T extends Query>(params: {
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
+    const def = params.defs()
     const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
     return () => {
         const router = params.router()
@@ -135,11 +137,15 @@ export const defineQuerySync = <T extends Query>(params: {
 
         // =================
         //
-        // reset
+        // methods
         //
 
         const reset = () => {
             Object.assign(state, params.defs())
+        }
+
+        const isChange = () => {
+            return Object.keys(_diff(def, state)).length !== 0
         }
 
         // =================
@@ -150,7 +156,8 @@ export const defineQuerySync = <T extends Query>(params: {
         return {
             state,
             reset,
-            event
+            event,
+            isChange
         }
     }
 }
