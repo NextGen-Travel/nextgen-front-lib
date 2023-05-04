@@ -115,7 +115,6 @@ export const defineQuerySync = <T extends Query>(params: {
         }
 
         queryToState(router.getCurrentRoute().query)
-        stateToQuery()
 
         // =================
         //
@@ -162,7 +161,8 @@ export const defineQuerySync = <T extends Query>(params: {
             state,
             reset,
             event,
-            isChange
+            isChange,
+            stateToQuery
         }
     }
 }
