@@ -6,7 +6,7 @@ import { PersistStateManager } from './persist-state'
 import { watch, onUnmounted, reactive } from 'vue'
 import { diff as _diff } from 'deep-object-diff'
 
-type Query = Record<string, undefined | string | number | string[]>
+type Query = Record<string, undefined | null | string | number | string[]>
 
 const querySyncStateManager = new PersistStateManager({
     ns: () => {
