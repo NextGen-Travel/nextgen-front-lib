@@ -124,7 +124,10 @@ watch(() => page.value, () => {
                 behavior: 'smooth'
             })
         } else {
-            props.scrollTo.scrollIntoView({
+            const yOffset = -56
+            const y = props.scrollTo.getBoundingClientRect().top + window.pageYOffset + yOffset
+            window.scrollTo({
+                top: y,
                 behavior: 'smooth'
             })
         }
