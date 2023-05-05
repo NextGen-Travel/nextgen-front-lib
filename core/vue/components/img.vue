@@ -152,7 +152,7 @@ const state = reactive({
 const skeletonStyle = computed(() => {
     let style = new StyleString()
     style.set('width', props.width, '100%')
-    style.set('height', props.height, '200px')
+    style.set('height', props.square ? props.width : props.height, '200px')
     style.set('maxWidth', props.maxWidth)
     style.set('maxHeight', props.maxHeight)
     style.set('overflow', 'hidden')
