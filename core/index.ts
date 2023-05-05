@@ -20,6 +20,7 @@ import Loaders from './vue/components/loaders.vue'
 import Toolbar from './vue/components/toolbar.vue'
 import FixedBar from './vue/components/fixed-bar.vue'
 import Skeleton from './vue/components/skeleton.vue'
+import SkeletonGroup from './vue/components/skeleton-group.vue'
 import DatePicker from './vue/components/date-picker.vue'
 import DateRangePicker from './vue/components/date-range-picker.vue'
 import Pagination from './vue/components/pagination.vue'
@@ -80,6 +81,7 @@ export const NextgenLib = {
         addComponent('Loaders', Loaders)
         addComponent('Toolbar', Toolbar)
         addComponent('Skeleton', Skeleton)
+        addComponent('SkeletonGroup', SkeletonGroup)
         addComponent('FixedBar', FixedBar)
         addComponent('Pagination', Pagination)
         addComponent('DatePicker', DatePicker)

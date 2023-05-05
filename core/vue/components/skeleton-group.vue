@@ -2,7 +2,7 @@
     <div ref="wrapper" :style="{ height: `${height}px` }">
         <v-row class="w-100 h-100 flex-nowrap">
             <v-col v-for="col of cols" :key="col" :style="{ width: `${100 / cols.length}%` }">
-                <Skeleton v-for="i in col" :key="i" :height="`${height / col}px`"></Skeleton>
+                <Skeleton v-for="i of col" :key="i" :height="`${height / col}px`"></Skeleton>
             </v-col>
         </v-row>
     </div>
