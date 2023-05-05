@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
         NgDateRangePicker: typeof import('../core/vue/components/date-range-picker.vue')['default']
         NgPieChart: typeof import('../core/vue/components/charts/pie.vue')['default']
         NgDoughnutChart: typeof import('../core/vue/components/charts/doughnut.vue')['default']
+        NgSkeletonGroup: typeof import('../core/vue/components/skeleton-group.vue')['default']
     }
 }
 
