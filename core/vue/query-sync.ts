@@ -6,7 +6,7 @@ import { PersistStateManager } from './persist-state'
 import { watch, onUnmounted, reactive } from 'vue'
 import { diff as _diff } from 'deep-object-diff'
 
-type Query = Record<string, undefined | null | string | number | string[]>
+type Query = Record<string, undefined | null | string | string[]>
 
 const querySyncStateManager = new PersistStateManager({
     ns: () => {
@@ -54,7 +54,7 @@ export const defineQuerySync = <T extends Query>(params: {
 
         const stateToQuery = () => {
             const defs = params.defs()
-            const query: Record<string, undefined | number | string> = {}
+            const query: Record<string, undefined | string> = {}
             for (let key in defs) {
                 query[getKey(key)] = undefined
                 let item = state[key]
@@ -94,13 +94,6 @@ export const defineQuerySync = <T extends Query>(params: {
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             state[key] = [item]
-                        }
-                        continue
-                    }
-                    if (typeof defs[key] === 'number') {
-                        item = Number(item)
-                        if (isNaN(item) === false && item !== state[key]) {
-                            state[key] = item
                         }
                         continue
                     }
