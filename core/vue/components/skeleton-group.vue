@@ -1,8 +1,16 @@
 <template>
     <div ref="wrapper" :style="{ height: `${height}px` }">
-        <v-row class="w-100 h-100 flex-nowrap">
-            <v-col v-for="col of cols" :key="col" :style="{ width: `${100 / cols.length}%` }">
-                <Skeleton v-for="i of col" :key="i" :height="`${height / col}px`"></Skeleton>
+        <v-row no-gutters class="my-n2 w-100 h-100 flex-nowrap">
+            <v-col v-for="col, ci of cols" :key="ci" :cols="col[0]">
+                <div
+                    v-for="i of col[1]"
+                    :key="i"
+                    :style="{
+                        height: `${height / col[1]}px`
+                    }"
+                    class="pa-2">
+                    <Skeleton></Skeleton>
+                </div>
             </v-col>
         </v-row>
     </div>
@@ -33,12 +41,12 @@ const wrapper = ref<HTMLElement>()
 
 const props = defineProps({
     mobile: {
-        type: Array as PropType<number[]>,
+        type: Array as PropType<number[][]>,
         required: false,
         default: () => null
     },
     desktop: {
-        type: Array as PropType<number[]>,
+        type: Array as PropType<number[][]>,
         required: true,
         default: () => []
     },
