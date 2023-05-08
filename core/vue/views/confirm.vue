@@ -28,7 +28,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         name="ng-confirm-close"
-                        text
+                        variant="text"
                         rounded="pill"
                         :disabled="state.loading"
                         @click="libConfirmStore.cancel">

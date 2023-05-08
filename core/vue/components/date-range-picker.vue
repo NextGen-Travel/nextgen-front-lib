@@ -1,20 +1,16 @@
 <template>
     <v-date-picker
         ref="picker"
-        v-model="value"
+        v-model.number="value"
         is-range
         is-required
         :mode="mode"
-        :model-config="state.modelConfig"
     />
 </template>
 
 <script lang="ts" setup>
 // https://vcalendar.io
-import { VueSelf } from '../self'
 import { watch, computed, onMounted, ref, nextTick, PropType } from 'vue'
-
-const self = VueSelf.use()
 
 // =================
 //
@@ -45,17 +41,6 @@ const emit = defineEmits({
 //
 
 const picker = ref()
-
-// =================
-//
-// state
-//
-
-const state = self.data({
-    modelConfig: {
-        type: 'number'
-    }
-})
 
 // =================
 //

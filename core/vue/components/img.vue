@@ -17,14 +17,14 @@ import OverlayLoading from './overlay-loading.vue'
 import Skeleton from './skeleton.vue'
 import { VueSelf } from '../self'
 import { useLibOptions } from '../../index'
-import { StyleString, Resource, JobQueues, ElementListenerGroup, Debounce } from 'power-helper'
+import { StyleString, Resource, JobsQueue, ElementListenerGroup, Debounce } from 'power-helper'
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const { notFoundImage, staticUrl } = useLibOptions()
 
 const self = VueSelf.use()
 
-const jobQueues = new JobQueues({
+const jobsQueue = new JobsQueue({
     concurrentExecutions: 1
 })
 
@@ -199,7 +199,7 @@ const click = () => {
 }
 
 const update = () => {
-    jobQueues.push('update', () => {
+    jobsQueue.push('update', () => {
         return new Promise((resolve) => {
             state.image = new Image()
             let target = props.src ? resource.url(props.src) : notFound

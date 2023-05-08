@@ -68,7 +68,7 @@
     "simple-git": "^3.14.1",
     "urlpattern-polyfill": "^6.0.2",
     "urql": "2.2.2",
-    "v-calendar": "3.0.0-alpha.8",
+    "v-calendar": "3.0.3",
     "vue-chart-3": "^3.1.8",
     "yargs": "^17.6.2",
     "yup": "^0.32.11"
