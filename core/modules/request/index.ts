@@ -43,7 +43,8 @@ export type LaravelResourcePaginate<T> = {
     }
 }
 
-export type RequestContext = {
+export type RequestContext<T extends string = string> = {
+    name: T
     path: string
     form: HTMLFormElement
     body: Record<string, any>
@@ -81,7 +82,7 @@ type QueryParams<To extends string, Api extends DefinedFormat> = StringParams<To
 
 type ModuleParams<R extends Request<any>> = {
     name: string
-    http: (_context: RequestContext) => Promise<any>
+    http: (_context: RequestContext<R['__names']>) => Promise<any>
     install?: (_request: R) => any
 }
 
@@ -98,6 +99,7 @@ export class Request<
     ApisDefinition extends Record<ToFormat, DefinedFormat>,
     State = unknown
 > extends Event<Channels> {
+    __names: Extract<keyof ApisDefinition, string> = null as any
     state: Record<string, any> = {}
     private mocks: Partial<Record<keyof ApisDefinition, any>> = {}
     private params: ModuleParams<this>
@@ -216,7 +218,8 @@ export class Request<
         this.installed = true
         let parsed = this.parseUrl(to as string, params.params)
         let headers = params.headers || {}
-        let context: RequestContext = {
+        let context: RequestContext<any> = {
+            name: to,
             path: parsed.path,
             form: document.createElement('form'),
             body: (params.body || {}) as any,

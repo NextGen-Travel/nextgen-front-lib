@@ -9,6 +9,10 @@ export type RouteMixin<
 > = {
     path: `${P['path']}/${T['path']}`
     query: RouteQuery<P['query']> & RouteQuery<T['query']>
+    prerender?: () => Promise<{
+        head: string
+        body: string
+    }>
 }
 
 export type RouteMap<T extends Record<string, Route>> = {
