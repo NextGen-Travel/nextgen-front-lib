@@ -29,10 +29,6 @@ export type Routes<Names extends string> = RouteRecordRaw & {
     children?: Array<Routes<Names>>
     name?: Names | '*' | '/'
     meta?: Record<string, any>
-    prerender?: () => Promise<{
-        head: string
-        body: string
-    }>
 }
 
 type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>

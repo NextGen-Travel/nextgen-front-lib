@@ -7,6 +7,17 @@ import { watch, onUnmounted, reactive } from 'vue'
 import { diff as _diff } from 'deep-object-diff'
 
 type Query = Record<string, undefined | null | string | string[]>
+type Events = {
+    change: any
+}
+
+type Filter<T> = {
+    state: T
+    reset: () => void
+    event: Event<Events>
+    isChange: () => void
+    stateToQuery: () => void
+}
 
 const querySyncStateManager = new PersistStateManager({
     ns: () => {
@@ -19,17 +30,19 @@ export const defineQuerySync = <T extends Query>(params: {
     ns: () => string
     defs: () => T
     persist: boolean
+    install?: (_filter: Filter<T>) => void
     router: () => VueRouterPlus<any>
 }) => {
     const ns = params.ns()
     const def = params.defs()
     const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
+    const globState = {
+        installed: false
+    }
     return () => {
         const router = params.router()
         const getKey = (key: string) => `l-${ns}-${key}`
-        const event = new Event<{
-            change: any
-        }>()
+        const event = new Event<Events>()
 
         // =================
         //
@@ -150,12 +163,21 @@ export const defineQuerySync = <T extends Query>(params: {
         // done
         //
 
-        return {
+        const output = {
             state,
             reset,
             event,
             isChange,
             stateToQuery
         }
+
+        if (globState.installed === false) {
+            globState.installed = true
+            if (params.install) {
+                params.install(output as any)
+            }
+        }
+
+        return output
     }
 }
