@@ -9,10 +9,6 @@ export type RouteMixin<
 > = {
     path: `${P['path']}/${T['path']}`
     query: RouteQuery<P['query']> & RouteQuery<T['query']>
-    prerender?: () => Promise<{
-        head: string
-        body: string
-    }>
 }
 
 export type RouteMap<T extends Record<string, Route>> = {
@@ -33,6 +29,10 @@ export type Routes<Names extends string> = RouteRecordRaw & {
     children?: Array<Routes<Names>>
     name?: Names | '*' | '/'
     meta?: Record<string, any>
+    prerender?: () => Promise<{
+        head: string
+        body: string
+    }>
 }
 
 type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>
