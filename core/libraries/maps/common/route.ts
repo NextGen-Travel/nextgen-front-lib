@@ -42,21 +42,27 @@ export class MapRoute extends Event<Channels> {
      */
 
     remove() {
-        if (this.googleDirectionsRenderer) {
-            this.googleDirectionsRenderer.setDirections({ routes: [] })
-            this.googleDirectionsRenderer.setMap(null)
-            this.googleDirectionsRenderer = undefined
-            if (this.googleMap) {
-                this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
-            }
-        }
-        if (this.aMapDriving) {
-            this.aMapDriving.clear()
+        this.clearRenderer()
+        if (this.googleMap) {
+            this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
         }
         if (this.aMap) {
+            this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
+        }
+    }
+
+    clearRenderer() {
+        if (this.googleDirectionsRenderer) {
+            this.googleDirectionsRenderer.setDirections({
+                routes: []
+            })
+            this.googleDirectionsRenderer.setMap(null)
+            this.googleDirectionsRenderer = undefined
+        }
+        if (this.aMapDriving && this.aMap) {
             const A = window.AMap as any
             const Driving = A.Driving
-            this.aMap.routes = this.aMap.routes.filter(route => route.id !== this.id)
+            this.aMapDriving.clear()
             this.aMapDriving = new Driving({
                 map: this.aMap.map,
                 policy: A.DrivingPolicy.LEAST_TIME
@@ -65,7 +71,7 @@ export class MapRoute extends Event<Channels> {
     }
 
     update(params: Omit<RouteAttr, 'id'>) {
-        this.remove()
+        this.clearRenderer()
         if (this.googleMap && this.googleMap.map && this.googleDirectionsService) {
             const request = {
                 origin: params.origin,
