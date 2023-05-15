@@ -17,8 +17,8 @@ type GetParams = {
 // Validation
 
 class Validation<T extends Record<string, Rule>> {
-    private provider: RuleProvider<any>
-    private properties: T
+    provider: RuleProvider<any>
+    properties: T
 
     constructor(provider: RuleProvider<any>, properties: T) {
         this.provider = provider
@@ -97,7 +97,7 @@ const ruleToVerifyData = ({ rule, required, requireMessage, meta }: {
 }
 
 export class RuleProvider<T extends ProviderOptions> {
-    readonly options: ProviderOptions = {
+    options: ProviderOptions = {
         rules: {},
         requireMessage: () => 'required'
     }
