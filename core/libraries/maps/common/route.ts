@@ -59,10 +59,12 @@ export class MapRoute extends Event<Channels> {
             this.googleDirectionsRenderer.setMap(null)
             this.googleDirectionsRenderer = undefined
         }
-        if (this.aMapDriving && this.aMap) {
+        if (this.aMap) {
             const A = window.AMap as any
             const Driving = A.Driving
-            this.aMapDriving.clear()
+            if (this.aMapDriving ) {
+                this.aMapDriving.clear()
+            }
             this.aMapDriving = new Driving({
                 map: this.aMap.map,
                 policy: A.DrivingPolicy.LEAST_TIME
