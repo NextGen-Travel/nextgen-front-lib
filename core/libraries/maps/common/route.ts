@@ -43,7 +43,9 @@ export class MapRoute extends Event<Channels> {
 
     remove() {
         if (this.googleDirectionsRenderer) {
+            this.googleDirectionsRenderer.setDirections({ routes: [] })
             this.googleDirectionsRenderer.setMap(null)
+            this.googleDirectionsRenderer = undefined
             if (this.googleMap) {
                 this.googleMap.routes = this.googleMap.routes.filter(route => route.id !== this.id)
             }
@@ -70,7 +72,11 @@ export class MapRoute extends Event<Channels> {
                 destination: params.destination,
                 travelMode: google.maps.TravelMode[params.travelMode],
             }
-            this.googleDirectionsRenderer = new google.maps.DirectionsRenderer()
+            this.googleDirectionsRenderer = new google.maps.DirectionsRenderer({
+                markerOptions: {
+                    visible: false
+                }
+            })
             this.googleDirectionsRenderer.setMap(this.googleMap.map)
             this.googleDirectionsService.route(request, (result, status) => {
                 if (status == google.maps.DirectionsStatus.OK) {

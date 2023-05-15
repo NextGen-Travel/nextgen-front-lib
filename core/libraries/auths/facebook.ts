@@ -34,6 +34,7 @@ export class FacebookAuth {
             window.fbAsyncInit = () => {
                 FB.init({
                     appId: config.clientId,
+                    xfbml: true,
                     version: 'v15.0'
                 })
             }
@@ -95,6 +96,7 @@ export class FacebookAuth {
         url.searchParams.set('client_id', window.__ng_state.clientId)
         url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('state', params?.state ?? '')
+        FB.api
         return url.href
     }
 }
