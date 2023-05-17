@@ -6,7 +6,7 @@ import 'google.maps'
 import 'google.accounts'
 import '../shims'
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
         NgMap: typeof import('../core/vue/components/map.vue')['default']
