@@ -14,7 +14,8 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "types": [
-      "vuetify"
+      "vuetify",
+      "apple-signin-api"
     ],
     "lib": [
       "esnext",
