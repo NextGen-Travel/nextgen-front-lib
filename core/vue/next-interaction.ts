@@ -1,7 +1,6 @@
 import { useLibEnv } from '../index'
 import { Interaction } from 'power-helper'
 import { parseMessage } from '../utils/message-parser'
-import { getCurrentInstance } from 'vue'
 
 export class NextInteraction extends Interaction {
     constructor() {
@@ -33,10 +32,6 @@ export class NextInteraction extends Interaction {
     }
 
     use(stepName = '') {
-        const currentInstance = getCurrentInstance()
-        const name = stepName || '-'
-        const routeName = currentInstance?.proxy?.$route?.name?.toString() || '-'
-        const componentName = currentInstance?.proxy?.$options?.name || '-'
-        return this.checkout(`${componentName}.${routeName}.${name}`)
+        return this.checkout(stepName)
     }
 }

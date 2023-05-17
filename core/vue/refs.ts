@@ -1,6 +1,4 @@
-import { ref } from 'vue'
-// eslint-disable-next-line vue/prefer-import-from-vue
-import type { GlobalComponents } from '@vue/runtime-core'
+import { GlobalComponents, ref } from 'vue'
 
 export const refComponents = <K extends keyof GlobalComponents>(_key: K) => ref<InstanceType<GlobalComponents[K]>>()
 

@@ -7,6 +7,9 @@ import 'google.accounts'
 import '../shims'
 
 declare module '@vue/runtime-core' {
+    export interface ComponentCustomProperties {
+        $t: (_key: string, ..._args: any[]) => string
+    }
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
         NgMap: typeof import('../core/vue/components/map.vue')['default']
