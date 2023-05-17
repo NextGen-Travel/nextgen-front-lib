@@ -1,6 +1,7 @@
 import { Event } from 'power-helper'
 import { useLibEnv } from '../index'
 import { useDebounce } from './debounce'
+import { Debounce } from 'power-helper'
 import { VueRouterPlus } from './router-plus'
 import { PersistStateManager } from './persist-state'
 import { watch, onUnmounted, reactive } from 'vue'
@@ -8,7 +9,9 @@ import { diff as _diff } from 'deep-object-diff'
 
 type Query = Record<string, undefined | null | string | string[]>
 type Events = {
-    change: any
+    change: {
+        keys: string[]
+    }
 }
 
 type Filter<T> = {
@@ -56,8 +59,15 @@ export const defineQuerySync = <T extends Query>(params: {
             }
         })
 
-        const changeDebounce = useDebounce(() => {
-            event.emit('change', {})
+        const changeDebounce = new Debounce<string>({
+            delay: 100,
+            maxValueLength: 100
+        })
+
+        changeDebounce.on('trigger', ({ values }) => {
+            event.emit('change', {
+                keys: values
+            })
         })
 
         // =================
@@ -131,6 +141,7 @@ export const defineQuerySync = <T extends Query>(params: {
 
         onUnmounted(() => {
             routerEvent.off()
+            changeDebounce.close()
         })
 
         // =================
@@ -138,12 +149,14 @@ export const defineQuerySync = <T extends Query>(params: {
         // watch
         //
     
-        watch(() => state, () => {
-            stateToQuery()
-            changeDebounce.input('')
-        }, {
-            deep: true
-        })
+        for (let key in state) {
+            watch(() => state[key], () => {
+                stateToQuery()
+                changeDebounce.input(key)
+            }, {
+                deep: true
+            })
+        }
 
         // =================
         //
