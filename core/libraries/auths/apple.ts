@@ -69,7 +69,7 @@ export class AppleAuth {
         response: null | AppleSignInAPI.SignInResponseI
     }> {
         checkInstalled()
-        let result = await AppleID.auth.signIn({
+        let result = await window.AppleID.auth.signIn({
             state: params?.state ?? '',
             usePopup: params?.popup ?? true,
             redirectURI: params.redirectURI

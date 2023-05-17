@@ -1,5 +1,6 @@
 import '@vue/runtime-core'
 import '@amap/amap-jsapi-types'
+import 'apple-signin-api'
 import 'facebook-js-sdk'
 import 'google.maps'
 import 'google.accounts'
@@ -33,7 +34,6 @@ declare module 'vue' {
 
 declare global {
     interface Window {
-        AppleID: any
         __ng_state: any
         __ng_config: {
             libOptions: {
