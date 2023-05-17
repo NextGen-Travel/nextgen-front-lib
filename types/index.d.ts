@@ -33,6 +33,7 @@ declare module 'vue' {
 
 declare global {
     interface Window {
+        AppleID: any
         __ng_state: any
         __ng_config: {
             libOptions: {
