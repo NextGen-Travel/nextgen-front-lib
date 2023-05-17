@@ -117,6 +117,26 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
+    /** 導向指定位置但是透過刷新頁面處理 */
+    hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+        query?: T[K]['query']
+    }) {
+        if (this.vueRouter) {
+            if (this.routeMap.has(name as string)) {
+                const result = this.vueRouter.resolve({
+                    name: name as any,
+                    params: params as any,
+                    query: options?.query
+                })
+                location.href = result.href
+            } else {
+                throw serviceException.create(`Router ${name as string} not found.`)
+            }
+        } else {
+            throw serviceException.create('Router Plus not installed.')
+        }
+    }
+
     back(step = 1) {
         if (this.vueRouter) {
             this.vueRouter.go(step * -1)
