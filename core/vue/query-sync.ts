@@ -1,4 +1,4 @@
-import { Event } from 'power-helper'
+import { Event, array } from 'power-helper'
 import { useLibEnv } from '../index'
 import { useDebounce } from './debounce'
 import { Debounce } from 'power-helper'
@@ -66,7 +66,7 @@ export const defineQuerySync = <T extends Query>(params: {
 
         changeDebounce.on('trigger', ({ values }) => {
             event.emit('change', {
-                keys: values
+                keys: array.unique(values)
             })
         })
 
