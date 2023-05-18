@@ -117,8 +117,6 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    /** 導向指定位置但是透過刷新頁面處理 */
-    // TODO: 沒文件
     hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {

@@ -14,7 +14,7 @@ function checkInstalled() {
     }
 }
 
-export class WechatAuth {
+export class WechatService {
     static async install(config: WechatConfig) {
         if (window.__ng_state.awechat == null) {
             window.__ng_state.awechat = {

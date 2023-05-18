@@ -21,7 +21,7 @@ function checkInstalled() {
     }
 }
 
-export class FacebookAuth {
+export class FacebookService {
     static async install(config: FacebookConfig) {
         if (window.__ng_state.afb == null) {
             window.__ng_state.afb = {
@@ -96,7 +96,25 @@ export class FacebookAuth {
         url.searchParams.set('client_id', window.__ng_state.clientId)
         url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('state', params?.state ?? '')
-        FB.api
         return url.href
+    }
+
+    // TODO: app 內實作
+    static async share(params: {
+        href: string
+    }): Promise<fb.ShareDialogResponse> {
+        return new Promise((resolve, reject) => {
+            FB.ui({
+                display: 'popup',
+                method: 'share',
+                href: params.href
+            }, res => {
+                if (res.error_message) {
+                    reject(res.error_message)
+                } else {
+                    resolve(res)
+                }
+            })
+        })
     }
 }
