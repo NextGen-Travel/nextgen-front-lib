@@ -9,6 +9,9 @@ import { diff as _diff } from 'deep-object-diff'
 
 type Query = Record<string, undefined | null | string | string[]>
 type Events = {
+    input: {
+        key: string
+    }
     change: {
         keys: string[]
     }
@@ -152,6 +155,7 @@ export const defineQuerySync = <T extends Query>(params: {
         for (let key in state) {
             watch(() => state[key], () => {
                 stateToQuery()
+                event.emit('input', { key })
                 changeDebounce.input(key)
             }, {
                 deep: true
