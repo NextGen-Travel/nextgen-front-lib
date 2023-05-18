@@ -8,7 +8,7 @@ import '../shims'
 
 declare module 'vue' {
     export interface ComponentCustomProperties {
-        $t: any
+        $t: (_key: string, ..._args: any[]) => string
     }
     export interface GlobalComponents {
         NgApp: typeof import('../core/vue/views/app.vue')['default']
