@@ -132,11 +132,6 @@ const props = defineProps({
         type: String as PropType<'1' | '2' | '3' | 'infinite'>,
         required: false,
         default: () => undefined
-    },
-    classExtends: {
-        type: String,
-        required: false,
-        default: () => ''
     }
 })
 
@@ -158,9 +153,6 @@ const styleString = computed(() => {
 
 const classString = computed(() => {
     let outputs = ['animate__animated', `animate__${props.mode}`]
-    if (props.classExtends) {
-        outputs.push(props.classExtends)
-    }
     if (props.duration && props.duration !== 'super-faster') {
         outputs.push(`animate__${props.duration}`)
     }
