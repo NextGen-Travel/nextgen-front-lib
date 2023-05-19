@@ -10,7 +10,7 @@ export class VueI18nPlus<Keys extends string> {
     namespace!: string
     rawParams!: I18nOptions
 
-    async setup(namespace: string, params: I18nOptions) {
+    setup(namespace: string, params: I18nOptions) {
         this.vueI18n = createI18n(params)
         this.rawParams = params
         this.namespace = namespace

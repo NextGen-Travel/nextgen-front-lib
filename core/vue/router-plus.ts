@@ -72,7 +72,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         this.params = params || {}
     }
 
-    async setup(options: RouterOptions) {
+    setup(options: RouterOptions) {
         this.routeMap = new Set(getRouteNames(options.routes))
         this.vueRouter = createRouter(options)
         this.vueRouter.afterEach((to, from) => {
