@@ -8,6 +8,7 @@ import { i18n } from './i18n'
 import { Chart, registerables } from 'chart.js'
 import VCalendar from 'v-calendar'
 import Map from './vue/components/map.vue'
+import Ani from './vue/components/ani.vue'
 import Img from './vue/components/img.vue'
 import Form from './vue/components/form.vue'
 import NgApp from './vue/views/app.vue'
@@ -73,6 +74,7 @@ export const NextgenLib = {
         vue.use(VCalendar)
         addComponent('App', NgApp)
         addComponent('Img', Img)
+        addComponent('Ani', Ani)
         addComponent('Form', Form)
         addComponent('Table', Table)
         addComponent('Search', Search)
