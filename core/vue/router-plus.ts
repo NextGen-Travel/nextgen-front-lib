@@ -21,7 +21,7 @@ export type RouteMap<T extends Record<string, Route>> = {
 type Route = {
     path: string
     name?: string
-    query?: Record<string, string>
+    query?: Record<string, string | string[]>
     parent?: string
 }
 
