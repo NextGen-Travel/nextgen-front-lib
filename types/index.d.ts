@@ -32,6 +32,7 @@ declare module 'vue' {
         NgPieChart: typeof import('../core/vue/components/charts/pie.vue')['default']
         NgDoughnutChart: typeof import('../core/vue/components/charts/doughnut.vue')['default']
         NgSkeletonGroup: typeof import('../core/vue/components/skeleton-group.vue')['default']
+        NgAni: typeof import('../core/vue/components/ani.vue')['default']
     }
 }
 
