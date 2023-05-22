@@ -175,6 +175,14 @@ export const defineQuerySync = <T extends Query>(params: {
             return Object.keys(_diff(def, state)).length !== 0
         }
 
+        const paramsToQuery = (params: Partial<Record<keyof T, string | string[]>>) => {
+            const outputs: Record<string, string | string[]> = {}
+            for (let key in params) {
+                outputs[getKey(key)] = params[key] as any
+            }
+            return outputs
+        }
+
         // =================
         //
         // done
@@ -185,7 +193,8 @@ export const defineQuerySync = <T extends Query>(params: {
             reset,
             event,
             isChange,
-            stateToQuery
+            stateToQuery,
+            paramsToQuery
         }
 
         if (globState.installed === false) {
