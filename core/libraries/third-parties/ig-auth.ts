@@ -37,7 +37,7 @@ export class IgAuth {
         const url = new URL('https://api.instagram.com/oauth/authorize')
         url.searchParams.set('client_id', window.__ng_state.igAuth.config.clientId)
         url.searchParams.set('redirect_uri', params.redirectUri)
-        url.searchParams.set('scope', 'user_profile,user_media')
+        url.searchParams.set('scope', 'user_profile')
         url.searchParams.set('response_type', 'code')
         if (params?.state) {
             url.searchParams.set('state', params.state)
