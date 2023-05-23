@@ -117,7 +117,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    resolve<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         if (this.vueRouter) {
@@ -127,13 +127,20 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
                     params: params as any,
                     query: options?.query
                 })
-                location.href = result.href
+                return result
             } else {
                 throw serviceException.create(`Router ${name as string} not found.`)
             }
         } else {
             throw serviceException.create('Router Plus not installed.')
         }
+    }
+
+    hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+        query?: T[K]['query']
+    }) {
+        const { href } = this.resolve(name, params, options)
+        location.href = href
     }
 
     back(step = 1) {
@@ -145,20 +152,8 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
-        if (this.vueRouter) {
-            if (this.routeMap.has(name as string)) {
-                const result = this.vueRouter.resolve({
-                    name: name as any,
-                    params: params as any,
-                    query: options?.query
-                })
-                window.open(result.href)
-            } else {
-                throw serviceException.create(`Router ${name as string} not found.`)
-            }
-        } else {
-            throw serviceException.create('Router Plus not installed.')
-        }
+        const { href } = this.resolve(name, params, options)
+        window.open(href)
     }
 
     getCurrentRoute<K extends keyof T>(_name?: K): {
