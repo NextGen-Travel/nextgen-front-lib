@@ -71,8 +71,8 @@ export class WechatService {
         url.searchParams.set('appid', config.appId)
         url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('response_type', 'code')
-        url.searchParams.set('scope', 'snsapi_userinfo#wechat_redirect')
+        url.searchParams.set('scope', 'snsapi_userinfo')
         url.searchParams.set('state', params?.state ?? '')
-        return url.toString()
+        return url.toString() + '#wechat_redirect'
     }
 }
