@@ -6,7 +6,6 @@ import { useLibEnv } from '../../index'
 type Message = {
     time: number
     type: Parameters<Interaction['notify']>[0]
-    name: string
     text: string
 }
 
@@ -27,6 +26,10 @@ export class NextgenMessageTrace {
     jobsQueue = new JobsQueue({
         concurrentExecutions: 1
     })
+
+    get size() {
+        return this.messages.length
+    }
 
     setServerUrl(url: string) {
         this.serverUrl = url
@@ -52,8 +55,8 @@ export class NextgenMessageTrace {
                 const result = await fp.get()
                 this.fingerId = result.visitorId
             }
-            const messages = this.clearMessages()
             const env = useLibEnv()
+            const messages = this.clearMessages()
             const sendData: SendData = {
                 fingerId: this.fingerId,
                 visitorId: this.visitorId,
