@@ -22,31 +22,36 @@ type SendData = {
     messages: Message[]
 }
 
+type NextgenMessageTraceParams = {
+    limitSize: number
+    serverUrl: () => string
+}
+
 export class NextgenMessageTrace {
+    params: NextgenMessageTraceParams
     messages: Message[] = []
     fingerId = ''
-    serverUrl = ''
     visitorId = flow.createUuid()
     jobsQueue = new JobsQueue({
         concurrentExecutions: 1
     })
 
+    constructor(params: NextgenMessageTraceParams) {
+        this.params = params
+    }
+
     get size() {
         return this.messages.length
     }
 
-    setServerUrl(url: string) {
-        this.serverUrl = url
-    }
-
     clearMessages() {
-        const messages = this.messages.slice()
+        const messages = this.messages.slice(0, this.params.limitSize)
         this.messages = []
         return messages
     }
 
     collect(message: Omit<Message, 'time'>) {
-        this.messages.push({
+        this.messages.unshift({
             ...message,
             time: Date.now()
         })
@@ -70,7 +75,7 @@ export class NextgenMessageTrace {
                 messages
             }
             if (messages.length !== 0) {
-                await axios.post(this.serverUrl, {
+                await axios.post(this.params.serverUrl(), {
                     body: sendData
                 })
             }
