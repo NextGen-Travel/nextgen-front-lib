@@ -25,7 +25,7 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^9.7.0",
     "pinia": "2.0.36",
-    "power-helper": "^0.6.0",
+    "power-helper": "^0.6.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "vue": "3.3.4",
@@ -37,6 +37,7 @@
   "dependencies": {
     "@amap/amap-jsapi-types": "^0.0.13",
     "@apidevtools/swagger-cli": "^4.0.4",
+    "@fingerprintjs/fingerprintjs": "^3.4.1",
     "@openapi-contrib/openapi-schema-to-json-schema": "3.2.0",
     "@popperjs/core": "^2.11.7",
     "@types/apple-signin-api": "^1.5.1",
