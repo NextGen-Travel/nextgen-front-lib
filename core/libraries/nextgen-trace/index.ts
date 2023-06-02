@@ -78,9 +78,7 @@ export class NextgenMessageTrace {
                 messages
             }
             if (messages.length !== 0) {
-                await axios.post(this.params.serverUrl(), {
-                    body: sendData
-                })
+                await axios.post(this.params.serverUrl(), sendData)
             }
         })
     }
