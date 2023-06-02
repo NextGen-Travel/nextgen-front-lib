@@ -47,13 +47,13 @@ export class NextgenMessageTrace {
     }
 
     clearMessages() {
-        const messages = this.messages.slice(0, this.params.limitSize)
+        const messages = this.messages.slice(-this.params.limitSize)
         this.messages = []
         return messages
     }
 
     collect(message: Omit<Message, 'time'>) {
-        this.messages.unshift({
+        this.messages.push({
             ...message,
             time: Date.now()
         })
