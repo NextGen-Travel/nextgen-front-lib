@@ -1,7 +1,7 @@
 import axios from 'axios'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
-import { flow, JobsQueue } from 'power-helper'
 import { useLibEnv } from '../../index'
+import { flow, JobsQueue } from 'power-helper'
 
 declare type Type = 'step' | 'wrong' | 'notify' | 'fail'
 declare type Level = 'info' | 'warning' | 'danger' | 'success'
@@ -15,6 +15,7 @@ type Message = {
 
 type SendData = {
     fingerId: string
+    clientId: string
     visitorId: string
     url: string
     service: string
@@ -24,6 +25,7 @@ type SendData = {
 
 type NextgenMessageTraceParams = {
     limitSize: number
+    clientId: () => string
     serverUrl: () => string
 }
 
@@ -67,9 +69,10 @@ export class NextgenMessageTrace {
             const env = useLibEnv()
             const messages = this.clearMessages()
             const sendData: SendData = {
-                fingerId: this.fingerId,
-                visitorId: this.visitorId,
                 url: window.location.href,
+                fingerId: this.fingerId,
+                clientId: this.params.clientId(),
+                visitorId: this.visitorId,
                 service: env.service,
                 stage: env.stage,
                 messages
