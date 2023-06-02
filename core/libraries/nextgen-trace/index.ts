@@ -1,12 +1,16 @@
 import axios from 'axios'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
-import { flow, Interaction, JobsQueue } from 'power-helper'
+import { flow, JobsQueue } from 'power-helper'
 import { useLibEnv } from '../../index'
+
+declare type Type = 'step' | 'wrong' | 'notify' | 'fail'
+declare type Level = 'info' | 'warning' | 'danger' | 'success'
 
 type Message = {
     time: number
-    type: Parameters<Interaction['notify']>[0]
+    type: Type
     text: string
+    level: Level
 }
 
 type SendData = {
