@@ -54,5 +54,21 @@ export const config: Record<Stages, {
                 endpoint: 'https://login.nextgen.com.hk'
             }
         }
+    },
+    pro: {
+        organizations: {
+            cas: {
+                url: 'https://cas-api-pro.cloudsatlas.com.hk/api',
+                scrmUrl: 'https://scrm-api-pro.cloudsatlas.com.hk/api',
+                dispensingUrl: 'https://medicine-api-pro.cloudsatlas.com.hk/api',
+                endpoint: 'https://login-pro.cloudsatlas.com.hk'
+            },
+            nextgen: {
+                url: 'https://cas-api-pro.cloudsatlas.com.hk/api',
+                scrmUrl: 'https://scrm-api-pro.cloudsatlas.com.hk/api',
+                dispensingUrl: 'https://medicine-api-pro.cloudsatlas.com.hk/api',
+                endpoint: 'https://login-pro.nextgen.com.hk'
+            }
+        }
     }
 }

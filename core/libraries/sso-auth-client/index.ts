@@ -16,7 +16,7 @@ export type Context = {
     serviceToken: string
 }
 
-export type Stages = 'dev' | 'stage' | 'prod'
+export type Stages = 'dev' | 'stage' | 'prod' | 'pro'
 
 export const QueryKey = 'sso-key'
 export const QueryOriginKey = 'sso-origin'
