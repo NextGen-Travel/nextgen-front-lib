@@ -1,24 +1,17 @@
 <template>
-    <div>
-        <div :style="`height: ${state.contentHeight}px`"></div>
-        <v-toolbar
-            ref="content"
-            class="lib-component-fixed-bar"
-            height="auto"
-            :elevation="elevation"
-            :dark="dark"
-            :color="color"
-            :class="appClass">
-            <slot></slot>
-        </v-toolbar>
-    </div>
+    <v-app-bar
+        height="auto"
+        :elevation="elevation"
+        :dark="dark"
+        :color="color"
+        :position="position"
+        :class="appClass">
+        <slot></slot>
+    </v-app-bar>
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, onMounted, onUnmounted, reactive, ref } from 'vue'
-
-const content = ref()
-const observer = new ResizeObserver(() => refresh())
+import { computed, PropType } from 'vue'
 
 // =================
 //
@@ -55,16 +48,6 @@ const props = defineProps({
 
 // =================
 //
-// state
-//
-
-const state = reactive({
-    style: '',
-    contentHeight: 0
-})
-
-// =================
-//
 // computed
 //
 
@@ -81,49 +64,14 @@ const appClass = computed(() => {
     return outputs.join(' ')
 })
 
-// =================
-//
-// mounted
-//
-
-onMounted(() => {
-    if (content.value) {
-        observer.observe(content.value.$el)
-    }
-    refresh()
-})
-
-onUnmounted(() => {
-    observer.disconnect()
-})
-
-// =================
-//
-// methods
-//
-
-const refresh = () => {
-    if (content.value) {
-        state.contentHeight = content.value.$el.clientHeight
-    }
-}
-
 </script>
 
 <style lang="scss" scoped>
-.lib-component-fixed-bar {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    z-index: 1100;
-}
 .lib-component-fixed-bar-app-top {
-    top: 0;
     padding-top: constant(safe-area-inset-top);
     padding-top: env(safe-area-inset-top);
 }
 .lib-component-fixed-bar-app-bottom {
-    bottom: 0;
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
 }
