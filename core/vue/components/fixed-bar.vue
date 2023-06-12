@@ -115,7 +115,7 @@ const refresh = () => {
     position: fixed;
     left: 0;
     width: 100%;
-    z-index: 1100;
+    z-index: 999;
 }
 .lib-component-fixed-bar-app-top {
     top: 0;
