@@ -74,7 +74,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     }
 
     get vueRouter(): Router {
-        return window.__ng_state.route
+        return window.__ng_state.router
     }
 
     setup(options: RouterOptions) {
