@@ -62,7 +62,7 @@ type Params = {
     home?: () => string
 }
 
-window.__ng_state.router = {}
+window.__ng_state.router = null
 
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params
@@ -74,11 +74,11 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     }
 
     get vueRouter(): Router {
-        return window.__ng_state.router[window.__ng_config.libEnv.service]
+        return window.__ng_state.route
     }
 
     setup(options: RouterOptions) {
-        window.__ng_state.router[window.__ng_config.libEnv.service] = createRouter(options)
+        window.__ng_state.router = createRouter(options)
         this.routeMap = new Set(getRouteNames(options.routes))
         this.vueRouter.afterEach((to, from) => {
             this.emit('after', {
