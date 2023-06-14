@@ -62,19 +62,24 @@ type Params = {
     home?: () => string
 }
 
+window.__ng_state.router = {}
+
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params
     routeMap: Set<string> = new Set()
-    vueRouter!: Router
 
     constructor(params?: Params) {
         super()
         this.params = params || {}
     }
 
+    get vueRouter(): Router {
+        return window.__ng_state.router[window.__ng_config.libEnv.service]
+    }
+
     setup(options: RouterOptions) {
+        window.__ng_state.router[window.__ng_config.libEnv.service] = createRouter(options)
         this.routeMap = new Set(getRouteNames(options.routes))
-        this.vueRouter = createRouter(options)
         this.vueRouter.afterEach((to, from) => {
             this.emit('after', {
                 to,
@@ -89,6 +94,27 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
             next()
         })
         return this.vueRouter
+    }
+
+    isRouteInParent(routeName: string, parentRouteName: string): boolean {
+        let parentRoute = this.vueRouter.getRoutes().find(route => route.name === parentRouteName)
+        if (parentRoute == null) {
+            return false
+        }
+        let childRoutes = parentRoute.children
+        if (childRoutes == null) {
+            return false
+        }
+        let route = childRoutes.find(route => route.name === routeName)
+        if (route) {
+            return true
+        }
+        for (const childRoute of childRoutes) {
+            if (this.isRouteInParent(routeName, childRoute.name as string)) {
+                return true
+            }
+        }
+        return false
     }
 
     toHome() {
