@@ -96,27 +96,6 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         return this.vueRouter
     }
 
-    isRouteInParent(routeName: string, parentRouteName: string): boolean {
-        let parentRoute = this.vueRouter.getRoutes().find(route => route.name === parentRouteName)
-        if (parentRoute == null) {
-            return false
-        }
-        let childRoutes = parentRoute.children
-        if (childRoutes == null) {
-            return false
-        }
-        let route = childRoutes.find(route => route.name === routeName)
-        if (route) {
-            return true
-        }
-        for (const childRoute of childRoutes) {
-            if (this.isRouteInParent(routeName, childRoute.name as string)) {
-                return true
-            }
-        }
-        return false
-    }
-
     toHome() {
         if (this.vueRouter) {
             if (this.params.home) {
