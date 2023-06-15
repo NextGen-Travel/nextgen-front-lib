@@ -9,7 +9,7 @@
                     :color="getColor(message.type)"
                     :close="() => removeMessage(message)"
                     :stop="() => stopMessage(message)">
-                    <v-card outlined @click="stopMessage(message)">
+                    <v-card rounded="lg" outlined @click="stopMessage(message)">
                         <v-progress-linear
                             v-if="message.stopped === false"
                             height="2"
@@ -147,8 +147,8 @@ const removeMessage = (message: Message) => {
     .lib-notification {
         position: fixed;
         z-index: 10000;
-        right: 0;
-        top: 0;
+        right: env(safe-area-inset-right);
+        top: env(safe-area-inset-top);
         .lib-notification-block {
             width: 320px;
             min-width: 260px;
