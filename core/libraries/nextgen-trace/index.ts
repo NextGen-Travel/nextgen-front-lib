@@ -7,6 +7,7 @@ declare type Type = 'step' | 'wrong' | 'notify' | 'fail'
 declare type Level = 'info' | 'warning' | 'danger' | 'success'
 
 type Message = {
+    url: string
     time: number
     type: Type
     text: string
@@ -17,7 +18,6 @@ type SendData = {
     fingerId: string
     clientId: string
     visitorId: string
-    url: string
     service: string
     stage: string
     messages: Message[]
@@ -52,9 +52,10 @@ export class NextgenMessageTrace {
         return messages
     }
 
-    collect(message: Omit<Message, 'time'>) {
+    collect(message: Omit<Message, 'time' | 'url'>) {
         this.messages.push({
             ...message,
+            url: window.location.href,
             time: Date.now()
         })
     }
@@ -69,7 +70,6 @@ export class NextgenMessageTrace {
             const env = useLibEnv()
             const messages = this.clearMessages()
             const sendData: SendData = {
-                url: window.location.href,
                 fingerId: this.fingerId,
                 clientId: this.params.clientId(),
                 visitorId: this.visitorId,
