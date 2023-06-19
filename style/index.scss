@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    min-height: 100svh;
+    min-height: 100dvh;
 }
 
 .required::after {
@@ -54,7 +54,7 @@ $view-box-height: (
     @for $var from 0 through 20 {
         .#{$key}-#{$var * 5} {
             #{$value}: $var * 5vw;
-            #{$value}: $var * 5svw;
+            #{$value}: $var * 5dvw;
         }
     }
 }
@@ -63,7 +63,7 @@ $view-box-height: (
     @for $var from 0 through 20 {
         .#{$key}-#{$var * 5} {
             #{$value}: $var * 5vh;
-            #{$value}: $var * 5svh;
+            #{$value}: $var * 5dvh;
         }
     }
 }
