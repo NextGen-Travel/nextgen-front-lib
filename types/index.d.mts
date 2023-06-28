@@ -1,4 +1,4 @@
-import '@vue/runtime-core'
+import 'vue'
 import '@amap/amap-jsapi-types'
 import 'apple-signin-api'
 import 'facebook-js-sdk'
