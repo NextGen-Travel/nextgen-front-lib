@@ -6,13 +6,11 @@ import 'google.maps'
 import 'google.accounts'
 import './shims'
 
-interface ExtendComponentCustomProperties {
-    $t: (_key: string, ..._args: any[]) => string
-}
-
 declare module 'vue' {
-    interface ComponentCustomProperties extends ExtendComponentCustomProperties {}
-    interface GlobalComponents {
+    export interface ComponentCustomProperties {
+        $t: (_key: string, ..._args: any[]) => string
+    }
+    export interface GlobalComponents {
         NgApp: typeof import('./core/vue/views/app.vue')['default']
         NgMap: typeof import('./core/vue/components/map.vue')['default']
         NgDialog: typeof import('./core/vue/components/dialog.vue')['default']
@@ -55,3 +53,5 @@ declare global {
         }
     }
 }
+
+export {}
