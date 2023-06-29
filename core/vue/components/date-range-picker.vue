@@ -26,7 +26,7 @@ const props = defineProps({
     modelValue : {
         type: Array as unknown as PropType<[number | null, number | null]>,
         required: false,
-        default: () => [Date.now(), Date.now()]
+        default: () => [Date.now(), Date.now()] as [number, number]
     }
 })
 
