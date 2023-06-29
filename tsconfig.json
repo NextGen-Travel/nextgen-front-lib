@@ -20,5 +20,12 @@
       "esnext",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "core/**/*.ts",
+    "core/**/*.d.ts",
+    "core/**/*.tsx",
+    "core/**/*.vue",
+    "types/**/*.d.ts"
+  ]
 }

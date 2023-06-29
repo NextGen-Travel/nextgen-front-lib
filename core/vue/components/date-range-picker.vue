@@ -1,5 +1,5 @@
 <template>
-    <v-date-picker
+    <DatePicker
         ref="picker"
         v-model.number="value"
         is-range
@@ -11,6 +11,7 @@
 <script lang="ts" setup>
 // https://vcalendar.io
 import { watch, computed, onMounted, ref, nextTick, PropType } from 'vue'
+import { DatePicker } from 'v-calendar'
 
 // =================
 //

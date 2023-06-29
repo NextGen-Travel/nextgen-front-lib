@@ -6,7 +6,6 @@ import 'requestidlecallback-polyfill'
 import type { App } from 'vue'
 import { i18n } from './i18n'
 import { Chart, registerables } from 'chart.js'
-import VCalendar from 'v-calendar'
 import Map from './vue/components/map.vue'
 import Ani from './vue/components/ani.vue'
 import Img from './vue/components/img.vue'
@@ -71,7 +70,6 @@ export const NextgenLib = {
         const addComponent = (name: string, component: any) => {
             vue.component(`Ng${name}`, component)
         }
-        vue.use(VCalendar)
         addComponent('App', NgApp)
         addComponent('Img', Img)
         addComponent('Ani', Ani)
