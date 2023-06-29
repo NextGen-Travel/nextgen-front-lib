@@ -67,7 +67,7 @@ function extractFirstParam(content) {
 module.exports = async(params = {
     path: './src'
 }) => {
-    const files = await glob(`${params.path}/**/*.{js,ts,vue}`, { ignore: 'node_modules/**' })
+    const files = await glob(`${params.path}/**/*.{js,ts,tsx,vue}`, { ignore: 'node_modules/**' })
     const outputs = {
         keys: {},
         changes: {}
