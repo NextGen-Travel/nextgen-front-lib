@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :style="`height: ${state.contentHeight}px`"></div>
+        <div v-if="!hideSpace" :style="`height: ${state.contentHeight}px`"></div>
         <v-toolbar
             ref="content"
             class="lib-component-fixed-bar"
@@ -45,6 +45,11 @@ const props = defineProps({
         type: Number,
         required: false,
         default: () => undefined
+    },
+    hideSpace: {
+        type: Boolean,
+        required: false,
+        default: () => false
     },
     position: {
         type: String as PropType<'top' | 'bottom'>,
