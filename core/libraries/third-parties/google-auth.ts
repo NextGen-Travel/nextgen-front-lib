@@ -74,7 +74,7 @@ export class GoogleAuth {
     static get on() {
         return event.on.bind(event)
     }
-    
+
     /** 渲染出登入按鈕 */
 
     static renderButton(element: HTMLElement, options: google.accounts.id.GsiButtonConfiguration) {

@@ -2684,10 +2684,10 @@ postcss@^8.1.10:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.6.1.tgz#212b08209fffa334c1db4488a1404f9575ec0944"
-  integrity sha512-4qRhZogGd8BVwUqAjYkj78UKGPO6u++oG2aPO9nlrY+tzVrft0iMpki8XStsd6PvSQNVdq3rXAyjeNt+S4f3Qw==
+power-helper@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.6.2.tgz#d70bb69966e3714857c2f4003279ff8793b3a767"
+  integrity sha512-ocJ5k1g3dXZjwm3ytWM1GWIgz3fM1a/jsqeZurIOKk5FN/kIZFF8hpSTEqxySPBYLVuv3m7RC+h8HHKsWzy39Q==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
@@ -3297,10 +3297,10 @@ vue@3.3.4:
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
 
-vuetify@3.3.6:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.6.tgz#58f620cedd9445686a4a694b78a61c3f0ecc1369"
-  integrity sha512-9QHh3mY5dK2Y4FGGBHFaIl/RVoP3Wg+XzP/pvruAoglIsUqzMlHrUOYAjO6/SWTxmhsiPI1jl4TyEBlppMXtNQ==
+vuetify@3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.7.tgz#858dceca1a2bcb465b1214b611c70625868ce99b"
+  integrity sha512-+Avd/vXdDZsct7PiXbOlgEKy8ZhxlaWZERv4MZ1x4tyJ5AoTm/jZW33u6TzlwhilqBgqKJFOe2UOH60LkKlukQ==
 
 wcwidth@^1.0.1:
   version "1.0.1"
