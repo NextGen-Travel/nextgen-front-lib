@@ -35,7 +35,8 @@ declare module 'vue' {
     export interface ComponentCustomProperties {
         $t: (_key: string, ..._args: any[]) => string
     }
-    export type GlobalComponents = NgComponents
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface GlobalComponents extends NgComponents {}
 }
 
 declare global {
