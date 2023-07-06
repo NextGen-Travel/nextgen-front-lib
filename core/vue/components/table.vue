@@ -98,7 +98,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 import NgDialog from './dialog.vue'
 import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
@@ -196,7 +196,7 @@ const props = defineProps({
     },
     items: {
         required: true,
-        type: Array as PropType<any[]>
+        type: Array as PropType<T[]>
     },
     loading: {
         type: Boolean,
