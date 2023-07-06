@@ -21,25 +21,27 @@ import PieChart from '../core/vue/components/charts/pie.vue'
 import DoughnutChart from '../core/vue/components/charts/doughnut.vue'
 import SkeletonGroup from '../core/vue/components/skeleton-group.vue'
 
-export const NgAni = Ani
-export const NgApp = App
-export const NgMap = Map
-export const NgDialog = Dialog
-export const NgFixedBar = FixedBar
-export const NgForm = Form
-export const NgImg = Img
-export const NgLoaders = Loaders
-export const NgOutlineText = OutlineText
-export const NgPagination = Pagination
-export const NgTable = Table
-export const NgToolbar = Toolbar
-export const NgUpload = Upload
-export const NgSearch = Search
-export const NgSkeleton = Skeleton
-export const NgDatePicker = DatePicker
-export const NgOverlayLoading = OverlayLoading
-export const NgVisibleLoad = VisibleLoad
-export const NgDateRangePicker = DateRangePicker
-export const NgPieChart = PieChart
-export const NgDoughnutChart = DoughnutChart
-export const NgSkeletonGroup = SkeletonGroup
+import { NgComponents } from '../types/index'
+
+export const NgAni = Ani as NgComponents['NgAni']
+export const NgApp = App as NgComponents['NgApp']
+export const NgMap = Map as NgComponents['NgMap']
+export const NgDialog = Dialog as NgComponents['NgDialog']
+export const NgFixedBar = FixedBar as NgComponents['NgFixedBar']
+export const NgForm = Form as NgComponents['NgForm']
+export const NgImg = Img as NgComponents['NgImg']
+export const NgLoaders = Loaders as NgComponents['NgLoaders']
+export const NgOutlineText = OutlineText as NgComponents['NgOutlineText']
+export const NgPagination = Pagination as NgComponents['NgPagination']
+export const NgTable = Table as NgComponents['NgTable']
+export const NgToolbar = Toolbar as NgComponents['NgToolbar']
+export const NgUpload = Upload as NgComponents['NgUpload']
+export const NgSearch = Search as NgComponents['NgSearch']
+export const NgSkeleton = Skeleton as NgComponents['NgSkeleton']
+export const NgDatePicker = DatePicker as NgComponents['NgDatePicker']
+export const NgOverlayLoading = OverlayLoading as NgComponents['NgOverlayLoading']
+export const NgVisibleLoad = VisibleLoad as NgComponents['NgVisibleLoad']
+export const NgDateRangePicker = DateRangePicker as NgComponents['NgDateRangePicker']
+export const NgPieChart = PieChart as NgComponents['NgPieChart']
+export const NgDoughnutChart = DoughnutChart as NgComponents['NgDoughnutChart']
+export const NgSkeletonGroup = SkeletonGroup as NgComponents['NgSkeletonGroup']
