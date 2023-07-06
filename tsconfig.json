@@ -6,7 +6,7 @@
     "moduleResolution": "Node",
     "strict": true,
     "declaration": true,
-    "outDir": "js",
+    "outDir": "types-vue",
     "noEmit": false,
     "baseUrl": ".",
     "rootDir": ".",
