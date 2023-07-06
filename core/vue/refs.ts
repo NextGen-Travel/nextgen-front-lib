@@ -1,7 +1,8 @@
 import { GlobalComponents, ref } from 'vue'
 import { NgComponents } from '../../types/index'
+import * as VuetifyComponents from 'vuetify/components'
 
-type AllCompoents = GlobalComponents & NgComponents
+type AllCompoents = GlobalComponents & NgComponents & typeof VuetifyComponents
 
 export const refComponents = <
     K extends keyof AllCompoents,
