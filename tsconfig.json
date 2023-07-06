@@ -10,7 +10,6 @@
     "noEmit": false,
     "baseUrl": ".",
     "rootDir": ".",
-    "emitDeclarationOnly": true,
     "allowJs": false,
     "esModuleInterop": true,
     "skipLibCheck": true,

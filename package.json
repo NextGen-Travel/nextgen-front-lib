@@ -6,7 +6,7 @@
   "types": "./types",
   "scripts": {
     "test": "eslint core/** && vue-tsc --noEmit",
-    "build": "npx vue-tsc --project ./tsconfig.json",
+    "build": "npx vue-tsc --emitDeclarationOnly --project ./tsconfig.json",
     "deploy": "rm -rf ./types-vue && npm run build && ts-node ./deploy/index.ts",
     "sync:types": "nextgen-front-lib sync-request-types ./request-types"
   },

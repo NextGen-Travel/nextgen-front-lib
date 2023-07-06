@@ -5,7 +5,6 @@ import 'facebook-js-sdk'
 import 'google.maps'
 import 'google.accounts'
 import '../shims'
-import type VuetifyComponents from 'vuetify/components'
 
 export type NgComponents = {
     NgApp: typeof import('../types-vue/core/vue/views/app.vue.d')['default']
@@ -36,7 +35,19 @@ declare module 'vue' {
     export interface ComponentCustomProperties {
         $t: (_key: string, ..._args: any[]) => string
     }
-    export type GlobalComponents = NgComponents & VuetifyComponents
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface GlobalComponents extends NgComponents {
+
+    }
+}
+declare module '@vue/runtime-core' {
+    export interface ComponentCustomProperties {
+        $t: (_key: string, ..._args: any[]) => string
+    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface GlobalComponents extends NgComponents {
+
+    }
 }
 
 declare global {
