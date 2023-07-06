@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "downlevelIteration": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "declaration": true,
+    "outDir": "types-vue",
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "allowJs": false,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "vuetify"
+    ],
+    "lib": [
+      "esnext",
+      "dom"
+    ]
+  },
+  "include": [
+    "core/**/*.vue",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "types-vue/**/*"
+  ]
+}

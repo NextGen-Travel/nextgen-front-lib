@@ -6,7 +6,8 @@
   "types": "./types",
   "scripts": {
     "test": "eslint core/** && vue-tsc --noEmit",
-    "deploy": "ts-node ./deploy/index.ts",
+    "build": "npx vue-tsc --project ./tsconfig.vue.json",
+    "deploy": "rm -rf ./types-vue && npm run build && ts-node ./deploy/index.ts",
     "sync:types": "nextgen-front-lib sync-request-types ./request-types"
   },
   "bin": {
@@ -31,7 +32,7 @@
     "vue": "3.3.4",
     "vue-i18n": "9.2.2",
     "vue-router": "4.2.0",
-    "vue-tsc": "1.6.5",
+    "vue-tsc": "1.8.4",
     "vuetify": "3.3.6"
   },
   "dependencies": {
