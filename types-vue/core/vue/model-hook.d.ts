@@ -17,6 +17,16 @@ export declare const createLaravelPaginate: <T>() => {
     to: number;
     data: T[];
 };
+export declare const createStrapiList: <T>() => {
+    msg: string;
+    data: T[];
+    pagination: {
+        page: number;
+        pageSize: number;
+        pageCount: number;
+        total: number;
+    };
+};
 export declare const createLaravelResourcePaginate: <T>() => {
     data: T[];
     links: {

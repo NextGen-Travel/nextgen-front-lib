@@ -28,6 +28,19 @@ export const createLaravelPaginate = <T>() => {
     }
 }
 
+export const createStrapiList = <T>() => {
+    return {
+        msg: '',
+        data: [] as Array<T>,
+        pagination: {
+            page: 1,
+            pageSize: 10,
+            pageCount: 0,
+            total: 0
+        }
+    }
+}
+
 export const createLaravelResourcePaginate = <T>() => {
     return {
         data: [] as T[],
