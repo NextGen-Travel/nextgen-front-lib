@@ -15,6 +15,7 @@ export class StaticRoute<P extends Record<string, Route>> {
         this.params = params
     }
 
+    // FIXME: 這裡要避一下 safari 的 bug
     getCurrent<T extends Extract<keyof P, string>>(path: T) {
         const url = new URL(location.href)
         const query: Partial<P[T]['query']> = {}

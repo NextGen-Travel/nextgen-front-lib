@@ -38,9 +38,9 @@ type Params = {
 };
 export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params;
-    routeMap: Set<string>;
     constructor(params?: Params);
     get vueRouter(): Router;
+    get routeMap(): Set<string>;
     setup(options: RouterOptions): Router;
     toHome(): void;
     to<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {

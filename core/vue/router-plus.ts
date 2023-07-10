@@ -63,10 +63,10 @@ type Params = {
 }
 
 window.__ng_state.router = null
+window.__ng_state.routerOptions = null
 
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params
-    routeMap: Set<string> = new Set()
 
     constructor(params?: Params) {
         super()
@@ -77,22 +77,28 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         return window.__ng_state.router
     }
 
+    get routeMap(): Set<string> {
+        return new Set(getRouteNames(window.__ng_state.routerOptions.routes))
+    }
+
     setup(options: RouterOptions) {
-        window.__ng_state.router = createRouter(options)
-        this.routeMap = new Set(getRouteNames(options.routes))
-        this.vueRouter.afterEach((to, from) => {
-            this.emit('after', {
-                to,
-                from
+        if (window.__ng_state.router == null) {
+            window.__ng_state.router = createRouter(options)
+            window.__ng_state.routerOptions = options
+            this.vueRouter.afterEach((to, from) => {
+                this.emit('after', {
+                    to,
+                    from
+                })
             })
-        })
-        this.vueRouter.beforeEach((to, from, next) => {
-            this.emit('before', {
-                to,
-                from
+            this.vueRouter.beforeEach((to, from, next) => {
+                this.emit('before', {
+                    to,
+                    from
+                })
+                next()
             })
-            next()
-        })
+        }
         return this.vueRouter
     }
 
