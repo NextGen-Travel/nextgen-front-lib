@@ -162,12 +162,9 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
 
     blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
-        system?: {
-            open: (_url: string) => void
-        }
     }) {
         const { href } = this.resolve(name, params, options)
-        options?.system?.open(href) || window.open(href)
+        window.open(href)
     }
 
     getCurrentRoute<K extends keyof T>(_name?: K): {
