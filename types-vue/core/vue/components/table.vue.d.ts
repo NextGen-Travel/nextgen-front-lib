@@ -180,9 +180,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     filterTitle: string;
 }, {}>, Partial<Record<string, (_: {
     field: Field;
+    item: null;
     value: string;
 }) => any>> & Partial<Record<string, (_: {
     item: any;
+    field: Field;
     value: any;
 }) => any>> & {
     details?(_: {

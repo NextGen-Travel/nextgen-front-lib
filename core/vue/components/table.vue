@@ -21,7 +21,7 @@
                             'text-end': field.textAlign === 'end',
                             'component-text-nowrap': ['head', 'all'].includes(textNowrap)
                         }">
-                        <slot :name="'h-' + field.key" :field="field" :value="field.label()">
+                        <slot :name="'h-' + field.key" :field="field" :item="null" :value="field.label()">
                             <span>{{ field.label() }}</span>
                         </slot>
                         <v-icon
@@ -58,6 +58,7 @@
                             <slot
                                 :name="'t-' + field.key.replace(/\./g, '-')"
                                 :item="item"
+                                :field="field"
                                 :value="getFieldValue(field, item, ti)">
                                 <div>
                                     {{ getFieldValue(field, item, ti) }}
