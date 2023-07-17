@@ -57,6 +57,9 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channe
     back(step?: number): void;
     blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
+        proxy?: {
+            open: (_url: string) => void;
+        };
     }): void;
     getCurrentRoute<K extends keyof T>(_name?: K): {
         name: string;
