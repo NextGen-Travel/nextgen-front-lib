@@ -57,7 +57,7 @@ declare global {
             libOptions: {
                 lang: 'en-US' | 'zh-TW' | 'zh-CN'
                 staticUrl: string
-                notFoundImage: string
+                notFoundImage: string | (() => string)
             },
             libEnv: {
                 version: number

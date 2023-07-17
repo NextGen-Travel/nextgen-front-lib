@@ -36,7 +36,7 @@ const resource = new Resource({
     def: path => `${staticUrl}/${path}`
 })
 
-const notFound = resource.url(notFoundImage)
+const notFound = resource.url(typeof notFoundImage === 'function' ? notFoundImage() : notFoundImage)
 
 // =================
 //

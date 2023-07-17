@@ -5,7 +5,7 @@ import type { App } from 'vue';
 export declare const useLibOptions: () => {
     lang: "en-US" | "zh-TW" | "zh-CN";
     staticUrl: string;
-    notFoundImage: string;
+    notFoundImage: string | (() => string);
 };
 export declare const useLibEnv: () => {
     version: number;
