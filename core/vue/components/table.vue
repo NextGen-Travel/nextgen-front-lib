@@ -21,7 +21,7 @@
                             'text-end': field.textAlign === 'end',
                             'component-text-nowrap': ['head', 'all'].includes(textNowrap)
                         }">
-                        <slot :name="'h-' + field.key" :item="field" :value="field.label()">
+                        <slot :name="'h-' + field.key" :field="field" :value="field.label()">
                             <span>{{ field.label() }}</span>
                         </slot>
                         <v-icon
@@ -98,7 +98,7 @@
     </div>
 </template>
 
-<script lang="ts" setup generic="T">
+<script lang="ts" setup>
 import NgDialog from './dialog.vue'
 import OverlayLoading from './overlay-loading.vue'
 import { VueSelf } from '../self'
@@ -196,7 +196,7 @@ const props = defineProps({
     },
     items: {
         required: true,
-        type: Array as PropType<T[]>
+        type: Array as PropType<any[]>
     },
     loading: {
         type: Boolean,
