@@ -1,5 +1,5 @@
 import { stringify } from 'qs'
-import { Event, flow, text } from 'power-helper'
+import { Cache, Event, flow, text } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../../error'
 
@@ -100,6 +100,13 @@ export class Request<
 > extends Event<Channels> {
     __names: Extract<keyof ApisDefinition, string> = null as any
     state: Record<string, any> = {}
+    cache = new Cache<{ path: any, data: any }, any>({
+        key: params => JSON.stringify(params),
+        pick: async params => {
+            const result = await this.http(params.path, params.data)
+            return result
+        }
+    })
     private mocks: Partial<Record<keyof ApisDefinition, any>> = {}
     private params: ModuleParams<this>
     private installed = false
@@ -205,6 +212,21 @@ export class Request<
 
     export(): Request<ApisDefinition>['http'] {
         return this.http.bind(this)
+    }
+
+    exportKeep(): Request<ApisDefinition>['http'] {
+        return this.httpKeepAlive.bind(this)
+    }
+
+    async httpKeepAlive<T extends keyof ApisDefinition>(
+        to: T,
+        params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>
+    ): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']> {
+        const result = await this.cache.get({
+            data: params,
+            path: to
+        })
+        return result
     }
 
     async http<T extends keyof ApisDefinition>(

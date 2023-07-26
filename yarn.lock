@@ -2684,10 +2684,10 @@ postcss@^8.1.10:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.6.2.tgz#d70bb69966e3714857c2f4003279ff8793b3a767"
-  integrity sha512-ocJ5k1g3dXZjwm3ytWM1GWIgz3fM1a/jsqeZurIOKk5FN/kIZFF8hpSTEqxySPBYLVuv3m7RC+h8HHKsWzy39Q==
+power-helper@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.6.4.tgz#42dcfcea5f71f759767eaa8f240a28cf4a3bc518"
+  integrity sha512-a3Wd4aJ4ucugJH4wE7ZvFCUSuAlgWsiynXv0fih830emzhneYW8FiOfv1D4+Eywc3FGGZ0dHBb8oEJy7Ae9oig==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

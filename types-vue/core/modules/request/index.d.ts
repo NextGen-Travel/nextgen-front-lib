@@ -91,6 +91,10 @@ export type ApisDefinition<T extends Record<ToFormat, DefinedFormat>> = T;
 export declare class Request<ApisDefinition extends Record<ToFormat, DefinedFormat>> extends Event<Channels> {
     __names: Extract<keyof ApisDefinition, string>;
     state: Record<string, any>;
+    cache: import("power-helper/dist/modules/cache").Cache<{
+        path: any;
+        data: any;
+    }, any>;
     private mocks;
     private params;
     private installed;
@@ -131,6 +135,8 @@ export declare class Request<ApisDefinition extends Record<ToFormat, DefinedForm
     private parseUrl;
     mock<T extends keyof ApisDefinition>(to: T, response: (_ctx: RequestContext) => Extract<ApisDefinition[T], DefinedFormat>['response']): void;
     export(): Request<ApisDefinition>['http'];
+    exportKeep(): Request<ApisDefinition>['http'];
+    httpKeepAlive<T extends keyof ApisDefinition>(to: T, params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']>;
     http<T extends keyof ApisDefinition>(to: T, params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']>;
 }
 export {};
