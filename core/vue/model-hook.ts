@@ -209,9 +209,9 @@ export const defineModelHook = <
             //
 
             watch(() => data, () => {
-                // if (model.diff(data)) {
-                // }
-                model.assign(data)
+                if (model.diff(data)) {
+                    model.assign(data)
+                }
             }, {
                 deep: true
             })
