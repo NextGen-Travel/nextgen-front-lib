@@ -38,6 +38,7 @@ type Params = {
 };
 export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params;
+    interceptLeaves: Map<string, () => Promise<void>>;
     constructor(params?: Params);
     get vueRouter(): Router;
     get routeMap(): Set<string>;
@@ -62,6 +63,9 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channe
         name: string;
         params: RouteParameters<T[K]['path']>;
         query: Partial<T[K]['query']>;
+    };
+    interceptLeave(callback: () => Promise<void>): {
+        close: () => void;
     };
     pushQuery(params: Record<string, undefined | string | number>): Promise<void>;
 }

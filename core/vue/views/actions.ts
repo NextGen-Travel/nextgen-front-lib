@@ -2,10 +2,11 @@ import { useLibConfirmStore, OpenParams } from './store/confirm'
 import { useLibChoicesStore, ChoicesParams } from './store/choices'
 import { useLibNotificationStore, MessageType } from './store/notification'
 
-const openConfirm = (message: string, handler: OpenParams['handler']): void => {
+const openConfirm = (message: string, handler: OpenParams['handler'], onReject?: () => void): void => {
     useLibConfirmStore().open({
         message,
-        handler
+        handler,
+        onReject
     })
 }
 

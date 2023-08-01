@@ -1,4 +1,4 @@
-import { Event, json } from 'power-helper'
+import { Event, flow, json } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../error'
 import { createRouter, Router, RouterOptions, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
@@ -67,6 +67,7 @@ window.__ng_state.routerOptions = null
 
 export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     params: Params
+    interceptLeaves = new Map<string, () => Promise<void>>()
 
     constructor(params?: Params) {
         super()
@@ -97,6 +98,17 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
                     from
                 })
                 next()
+            })
+            this.vueRouter.beforeEach(async() => {
+                for (let [key, callback] of this.interceptLeaves) {
+                    try {
+                        await callback()
+                        this.interceptLeaves.delete(key)
+                    } catch (error) {
+                        return false
+                    }
+                }
+                return true
             })
         }
         return this.vueRouter
@@ -179,6 +191,16 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
                 name: '',
                 query: {},
                 params: {} as any
+            }
+        }
+    }
+
+    interceptLeave(callback: () => Promise<void>) {
+        const id = flow.createUuid()
+        this.interceptLeaves.set(id, callback)
+        return {
+            close: () => {
+                this.interceptLeaves.delete(id)
             }
         }
     }

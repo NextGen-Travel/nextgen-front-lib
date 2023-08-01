@@ -5,6 +5,7 @@ type Handler = (_success: (_state?: boolean) => void) => any
 export type OpenParams = {
     message: string
     handler: Handler
+    onReject?: () => void
     doubleCheckText?: string
 }
 
@@ -19,7 +20,8 @@ export const useLibConfirmStore = defineStore('lib-confirm', () => {
         isOpen: false,
         message: '',
         doubleCheckText: '',
-        handler: null as unknown as Handler
+        handler: null as unknown as Handler,
+        onReject: undefined as undefined | (() => void)
     })
 
     // =================
@@ -27,15 +29,17 @@ export const useLibConfirmStore = defineStore('lib-confirm', () => {
     // actions
     //
 
-    const open = ({ doubleCheckText, message, handler }: OpenParams) => {
+    const open = ({ doubleCheckText, message, handler, onReject }: OpenParams) => {
         state.isOpen = true
         state.message = message
         state.doubleCheckText = doubleCheckText || ''
         state.handler = handler
+        state.onReject = onReject
     }
 
     const cancel = () => {
         state.isOpen = false
+        state.onReject = undefined
     }
 
     // =================

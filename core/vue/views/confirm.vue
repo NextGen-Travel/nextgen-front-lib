@@ -31,7 +31,7 @@
                         variant="text"
                         rounded="pill"
                         :disabled="state.loading"
-                        @click="libConfirmStore.cancel">
+                        @click="cancel">
                         {{ t($t('ng.confirmCancelText')) }}
                     </v-btn>
                     <v-btn
@@ -103,5 +103,12 @@ const success = (success = true) => {
 const commit = async() => {
     state.loading = true
     libConfirmStore.state.handler(success)
+}
+
+const cancel = () => {
+    libConfirmStore.cancel()
+    if (libConfirmStore.state.onReject) {
+        libConfirmStore.state.onReject()
+    }
 }
 </script>
