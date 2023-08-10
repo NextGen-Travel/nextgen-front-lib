@@ -61,28 +61,29 @@ export class FacebookService {
     }> {
         checkInstalled()
         return new Promise((resolve, reject) => {
-            FB.login(res => {
-                if (res.status === 'connected') {
-                    event.emit('login', {
-                        token: res.authResponse.accessToken
-                    })
-                    resolve({
-                        status: 'pass',
-                        response: res.authResponse
-                    })
-                } else {
-                    if (res.status === 'unknown') {
+            FB.logout(() => {
+                FB.login(res => {
+                    if (res.status === 'connected') {
+                        event.emit('login', {
+                            token: res.authResponse.accessToken
+                        })
                         resolve({
-                            status: 'no-action',
-                            response: null
+                            status: 'pass',
+                            response: res.authResponse
                         })
                     } else {
-                        reject(exception.create(res.status))
+                        if (res.status === 'unknown') {
+                            resolve({
+                                status: 'no-action',
+                                response: null
+                            })
+                        } else {
+                            reject(exception.create(res.status))
+                        }
                     }
-                }
-            }, {
-                scope,
-                enable_profile_selector: false
+                }, {
+                    scope
+                })
             })
         })
     }
