@@ -81,7 +81,8 @@ export class FacebookService {
                     }
                 }
             }, {
-                scope
+                scope,
+                enable_profile_selector: true
             })
         })
     }
