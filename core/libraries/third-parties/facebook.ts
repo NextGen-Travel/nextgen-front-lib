@@ -82,7 +82,7 @@ export class FacebookService {
                 }
             }, {
                 scope,
-                enable_profile_selector: true
+                enable_profile_selector: false
             })
         })
     }
