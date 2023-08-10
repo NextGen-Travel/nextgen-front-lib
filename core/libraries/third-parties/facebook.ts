@@ -61,10 +61,7 @@ export class FacebookService {
     }> {
         checkInstalled()
         return new Promise((resolve, reject) => {
-            FB.getLoginStatus(res => {
-                console.log('DDDEEE', res)
-            })
-            FB.logout(() => {
+            const login = () => {
                 FB.login(res => {
                     if (res.status === 'connected') {
                         event.emit('login', {
@@ -87,6 +84,13 @@ export class FacebookService {
                 }, {
                     scope
                 })
+            }
+            FB.getLoginStatus(res => {
+                if (res.status === 'connected') {
+                    FB.logout(() => login())
+                } else {
+                    login()
+                }
             })
         })
     }
