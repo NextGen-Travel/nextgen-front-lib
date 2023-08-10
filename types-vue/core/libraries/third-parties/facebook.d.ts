@@ -33,6 +33,7 @@ export declare class FacebookService {
         status: 'pass' | 'no-action';
         response: null | fb.AuthResponse;
     }>;
+    static signOut(): Promise<unknown>;
     static getLoginUrl(params: {
         state?: string;
         redirectUri: string;

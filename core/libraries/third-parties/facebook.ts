@@ -61,39 +61,41 @@ export class FacebookService {
     }> {
         checkInstalled()
         return new Promise((resolve, reject) => {
-            const login = () => {
-                FB.login(res => {
-                    if (res.status === 'connected') {
-                        event.emit('login', {
-                            token: res.authResponse.accessToken
-                        })
-                        resolve({
-                            status: 'pass',
-                            response: res.authResponse
-                        })
-                    } else {
-                        if (res.status === 'unknown') {
-                            resolve({
-                                status: 'no-action',
-                                response: null
-                            })
-                        } else {
-                            reject(exception.create(res.status))
-                        }
-                    }
-                }, {
-                    scope
-                })
-            }
-            FB.getLoginStatus(res => {
+            FB.login(res => {
                 if (res.status === 'connected') {
-                    FB.logout(() => {
-                        setTimeout(() => {
-                            login()
-                        }, 1000)
+                    event.emit('login', {
+                        token: res.authResponse.accessToken
+                    })
+                    resolve({
+                        status: 'pass',
+                        response: res.authResponse
                     })
                 } else {
-                    login()
+                    if (res.status === 'unknown') {
+                        resolve({
+                            status: 'no-action',
+                            response: null
+                        })
+                    } else {
+                        reject(exception.create(res.status))
+                    }
+                }
+            }, {
+                scope
+            })
+        })
+    }
+
+    static signOut() {
+        checkInstalled()
+        return new Promise((resolve) => {
+            FB.getLoginStatus(res => {
+                if (res.status === 'connected') {
+                    FB.logout(res => {
+                        resolve(res)
+                    })
+                } else {
+                    resolve(null)
                 }
             })
         })
