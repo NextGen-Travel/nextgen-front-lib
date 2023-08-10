@@ -86,9 +86,12 @@ export class FacebookService {
                 })
             }
             FB.getLoginStatus(res => {
-                console.log('EEEAA', res)
                 if (res.status === 'connected') {
-                    FB.logout(() => login())
+                    FB.logout(() => {
+                        setTimeout(() => {
+                            login()
+                        }, 1000)
+                    })
                 } else {
                     login()
                 }
