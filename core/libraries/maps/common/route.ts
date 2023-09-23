@@ -54,7 +54,7 @@ export class MapRoute extends Event<Channels> {
     clearRenderer() {
         if (this.googleDirectionsRenderer) {
             this.googleDirectionsRenderer.setDirections({
-                routes: []
+                routes: [] as any[]
             })
             this.googleDirectionsRenderer.setMap(null)
             this.googleDirectionsRenderer = undefined
