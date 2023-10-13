@@ -5,15 +5,15 @@ type FacebookConfig = {
     clientId: string
 }
 
-const scope = 'public_profile,email'
-const exception = serviceException.checkout('FacebookAuth')
-const event = new Event<Channels>()
-
-type Channels = {
+type Events = {
     login: {
         token: string
     }
 }
+
+const scope = 'public_profile,email'
+const exception = serviceException.checkout('FacebookAuth')
+const event = new Event<Events>()
 
 function checkInstalled() {
     if (!window.__ng_state.afb?.installed) {
@@ -64,7 +64,7 @@ export class FacebookService {
             FB.login(res => {
                 if (res.status === 'connected') {
                     event.emit('login', {
-                        token: res.authResponse.accessToken
+                        token: res.authResponse.accessToken || ''
                     })
                     resolve({
                         status: 'pass',

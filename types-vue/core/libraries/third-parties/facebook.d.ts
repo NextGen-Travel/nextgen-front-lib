@@ -1,7 +1,7 @@
 type FacebookConfig = {
     clientId: string;
 };
-type Channels = {
+type Events = {
     login: {
         token: string;
     };
@@ -9,7 +9,7 @@ type Channels = {
 export declare class FacebookService {
     static install(config: FacebookConfig): Promise<void>;
     static installed(): any;
-    static get on(): <K extends "login">(event: "*" | K, callback: (_data: Channels[K], _context: {
+    static get on(): <K extends "login">(event: "*" | K, callback: (_data: Events[K], _context: {
         id: string;
         off: () => void;
         state: Record<string, any>;
@@ -17,13 +17,13 @@ export declare class FacebookService {
         id: string;
         state: Record<string, any>;
         event: string;
-        callback: (_data: Channels[K], _context: {
+        callback: (_data: Events[K], _context: {
             id: string;
             off: () => void;
             state: Record<string, any>;
         }) => void;
         manager: import("power-helper/dist/modules/event").Event<any>;
-        invoke(data: Channels[K]): void;
+        invoke(data: Events[K]): void;
         off(): void;
     };
     /**
