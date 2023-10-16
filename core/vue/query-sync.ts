@@ -1,11 +1,10 @@
 import { Event, array } from 'power-helper'
 import { useLibEnv } from '../index'
 import { useDebounce } from './debounce'
-import { Debounce } from 'power-helper'
+import { Debounce, record } from 'power-helper'
 import { VueRouterPlus } from './router-plus'
 import { PersistStateManager } from './persist-state'
 import { watch, onUnmounted, reactive } from 'vue'
-import { diff as _diff } from 'deep-object-diff'
 
 type Query = Record<string, undefined | null | string | string[]>
 type Events = {
@@ -172,7 +171,7 @@ export const defineQuerySync = <T extends Query>(params: {
         }
 
         const isChange = () => {
-            return Object.keys(_diff(def, state)).length !== 0
+            return record.simpleCheckDeepDiff(def, state)
         }
 
         const paramsToQuery = (params: Partial<Record<keyof T, string | string[]>>) => {

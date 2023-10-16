@@ -1,6 +1,5 @@
 // https://www.gushiciku.cn/pl/g2DO/zh-tw
 
-import { diff as _diff } from 'deep-object-diff'
 import { reactive, watch } from 'vue'
 import { useListenerGroup } from './listener-group'
 import { createStateManager } from './state-manager'
@@ -134,7 +133,7 @@ export const defineModelHook = <
 
         /** 比較資料是否有異 */
         const diff = (target: S) => {
-            return Object.keys(_diff(data, target)).length !== 0
+            return record.simpleCheckDeepDiff<S>(data, target)
         }
 
         /** 比較現在的狀態與 最後 commit 的資料是否有異 */
