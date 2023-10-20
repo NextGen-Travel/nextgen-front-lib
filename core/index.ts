@@ -48,6 +48,13 @@ export const useLibEnv = () => window.__ng_config.libEnv
 export const t = (key: string, params = {}) => i18n.key(key as any, params).get(window.__ng_config.libOptions.lang)
 
 export const NextgenLib = {
+    setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => {
+        for (let key in options) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            window.__ng_config.libOptions[key] = options[key]
+        }
+    },
     install(vue: App, params: {
         options: typeof window.__ng_config.libOptions
         env: {

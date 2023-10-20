@@ -13,6 +13,7 @@ export declare const useLibEnv: () => {
 };
 export declare const t: (key: string, params?: {}) => string;
 export declare const NextgenLib: {
+    setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => void;
     install(vue: App, params: {
         options: typeof window.__ng_config.libOptions;
         env: {
