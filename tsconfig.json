@@ -10,7 +10,7 @@
     "noEmit": false,
     "baseUrl": ".",
     "rootDir": ".",
-    "allowJs": false,
+    "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,

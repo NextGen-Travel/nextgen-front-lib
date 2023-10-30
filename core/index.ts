@@ -1,3 +1,4 @@
+import 'power-helper'
 import 'urlpattern-polyfill'
 import 'v-calendar/dist/style.css'
 
