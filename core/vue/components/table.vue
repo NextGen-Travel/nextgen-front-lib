@@ -83,11 +83,12 @@
             <template v-for="field in fields" :key="field.key + 'da'">
                 <v-checkbox
                     v-if="field.optionShow"
-                    v-model="state.showFields"
                     hide-details
                     multiple
                     :value="field.key"
-                    :label="field.label()">
+                    :label="field.label()"
+                    :model-value="state.showFields"
+                    @update:model-value="(value: any) => state.showFields = value">
                 </v-checkbox>
             </template>
         </NgDialog>
