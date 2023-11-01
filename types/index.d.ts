@@ -29,6 +29,7 @@ export type NgComponents = {
     NgDoughnutChart: typeof import('../types-vue/core/vue/components/charts/doughnut.vue.d')['default']
     NgSkeletonGroup: typeof import('../types-vue/core/vue/components/skeleton-group.vue.d')['default']
     NgAni: typeof import('../types-vue/core/vue/components/ani.vue.d')['default']
+    NgLineChart: typeof import('../types-vue/core/vue/components/charts/line.vue.d')['default']
 }
 
 declare module 'vue' {

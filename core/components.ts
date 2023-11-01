@@ -20,6 +20,7 @@ import DateRangePicker from '../core/vue/components/date-range-picker.vue'
 import PieChart from '../core/vue/components/charts/pie.vue'
 import DoughnutChart from '../core/vue/components/charts/doughnut.vue'
 import SkeletonGroup from '../core/vue/components/skeleton-group.vue'
+import LineChart from '../core/vue/components/charts/line.vue'
 
 import { NgComponents } from '../types/index'
 
@@ -45,3 +46,4 @@ export const NgDateRangePicker = DateRangePicker as NgComponents['NgDateRangePic
 export const NgPieChart = PieChart as NgComponents['NgPieChart']
 export const NgDoughnutChart = DoughnutChart as NgComponents['NgDoughnutChart']
 export const NgSkeletonGroup = SkeletonGroup as NgComponents['NgSkeletonGroup']
+export const NgLineChart = LineChart as NgComponents['NgLineChart']
