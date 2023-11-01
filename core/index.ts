@@ -26,6 +26,7 @@ import Pagination from './vue/components/pagination.vue'
 import OutlineText from './vue/components/outline-text.vue'
 import OverlayLoading from './vue/components/overlay-loading.vue'
 import ChartPie from './vue/components/charts/pie.vue'
+import ChartLine from './vue/components/charts/line.vue'
 import ChartDoughnut from './vue/components/charts/doughnut.vue'
 
 Chart.register(...registerables)
@@ -96,6 +97,7 @@ export const NextgenLib = {
         addComponent('OverlayLoading', OverlayLoading)
         addComponent('DateRangePicker', DateRangePicker)
         addComponent('PieChart', ChartPie)
+        addComponent('LineChart', ChartLine)
         addComponent('DoughnutChart', ChartDoughnut)
         addComponent('Map', Map)
     }

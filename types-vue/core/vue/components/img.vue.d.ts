@@ -163,10 +163,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     avatar: boolean;
     skeleton: "auto" | "hide" | "always";
     src: string | File;
+    square: boolean;
     radius: string;
     cover: boolean;
     ratio: boolean;
-    square: boolean;
 }, {}>, {
     default?(_: {}): any;
 }>;
