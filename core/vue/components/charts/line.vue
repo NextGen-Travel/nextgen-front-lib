@@ -48,6 +48,7 @@ const chartData = reactive<ChartData<'line'>>({
         return {
             label: e.name(),
             backgroundColor: e.color || undefined,
+            borderColor: e.color || undefined,
             data: e.values
         }
     })
