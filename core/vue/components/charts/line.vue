@@ -13,7 +13,7 @@ import { reactive, PropType } from 'vue'
 import { ChartData, ChartOptions } from 'chart.js'
 
 export type LineChartItem = {
-    name: () => string
+    label: () => string
     color?: string
     values: number[]
 }
@@ -46,7 +46,7 @@ const chartData = reactive<ChartData<'line'>>({
     labels: props.labels,
     datasets: props.items.map(e => {
         return {
-            label: e.name(),
+            label: e.label(),
             backgroundColor: e.color || undefined,
             borderColor: e.color || undefined,
             data: e.values

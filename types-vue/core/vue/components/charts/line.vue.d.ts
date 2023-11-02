@@ -1,6 +1,6 @@
 import { PropType } from 'vue';
 export type LineChartItem = {
-    name: () => string;
+    label: () => string;
     color?: string;
     values: number[];
 };
