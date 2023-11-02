@@ -14,6 +14,7 @@ import { ChartData, ChartOptions } from 'chart.js'
 
 export type LineChartItem = {
     name: () => string
+    color?: string
     values: number[]
 }
 
@@ -46,6 +47,7 @@ const chartData = reactive<ChartData<'line'>>({
     datasets: props.items.map(e => {
         return {
             label: e.name(),
+            backgroundColor: e.color || undefined,
             data: e.values
         }
     })

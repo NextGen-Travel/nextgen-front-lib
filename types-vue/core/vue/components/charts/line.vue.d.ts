@@ -1,6 +1,7 @@
 import { PropType } from 'vue';
 export type LineChartItem = {
     name: () => string;
+    color?: string;
     values: number[];
 };
 declare const _default: import("vue").DefineComponent<{

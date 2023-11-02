@@ -22,6 +22,11 @@ const props = defineProps({
         required: true,
         type: Array as PropType<PieChartItem[]>
     },
+    colors: {
+        required: false,
+        type: Array as PropType<string[]>,
+        default: null
+    },
     width: {
         type: Number,
         default: 600
@@ -41,7 +46,7 @@ const chartData = reactive<ChartData<'pie'>>({
     labels: props.items.map(e => e.label()),
     datasets: [
         {
-            backgroundColor: [
+            backgroundColor: props.colors ? props.colors :[
                 '#FF595E',
                 '#36949D',
                 '#FF924C',

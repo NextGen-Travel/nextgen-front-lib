@@ -8,6 +8,11 @@ declare const _default: import("vue").DefineComponent<{
         required: true;
         type: PropType<PieChartItem[]>;
     };
+    colors: {
+        required: false;
+        type: PropType<string[]>;
+        default: null;
+    };
     width: {
         type: NumberConstructor;
         default: number;
@@ -21,6 +26,11 @@ declare const _default: import("vue").DefineComponent<{
         required: true;
         type: PropType<PieChartItem[]>;
     };
+    colors: {
+        required: false;
+        type: PropType<string[]>;
+        default: null;
+    };
     width: {
         type: NumberConstructor;
         default: number;
@@ -32,5 +42,6 @@ declare const _default: import("vue").DefineComponent<{
 }>>, {
     height: number;
     width: number;
+    colors: string[];
 }, {}>;
 export default _default;
