@@ -31,7 +31,7 @@ export type Routes<Names extends string> = RouteRecordRaw & {
     meta?: Record<string, any>
 }
 
-type RouteQuery<T> = T extends Record<any, any> ? T : object
+type RouteQuery<T> = T extends Record<any, any> ? T : unknown
 
 type Channels = {
     after: {
