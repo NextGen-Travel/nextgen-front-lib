@@ -22,7 +22,7 @@ export type Routes<Names extends string> = RouteRecordRaw & {
     name?: Names | '*' | '/';
     meta?: Record<string, any>;
 };
-type RouteQuery<T> = T extends Record<any, any> ? T : Record<string, never>;
+type RouteQuery<T> = T extends Record<any, any> ? T : object;
 type Channels = {
     after: {
         to: RouteLocationNormalized;
