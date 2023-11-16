@@ -31,7 +31,8 @@ export type Routes<Names extends string> = RouteRecordRaw & {
     meta?: Record<string, any>
 }
 
-type RouteQuery<T> = T extends Record<any, any> ? T : unknown
+// eslint-disable-next-line @typescript-eslint/ban-types
+type RouteQuery<T> = T extends Record<any, any> ? T : {}
 
 type Channels = {
     after: {
