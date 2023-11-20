@@ -1,6 +1,6 @@
 import { Event } from 'power-helper';
 import { RouteParameters } from 'power-helper/types/string';
-type ToFormat = `${'get' | 'post' | 'put' | 'delete'}@${string}`;
+type ToFormat = `${'get' | 'post' | 'put' | 'delete' | 'patch'}@${string}`;
 type ContentTypes = 'application/json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json';
 export type LaravelPaginateQuery<T> = T & {
     page?: number;

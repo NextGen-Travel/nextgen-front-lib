@@ -3,7 +3,7 @@ import { Cache, Event, flow, text } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../../error'
 
-type ToFormat = `${'get' | 'post' | 'put' | 'delete'}@${string}`
+type ToFormat = `${'get' | 'post' | 'put' | 'delete' | 'patch'}@${string}`
 
 // multipart/form-data#json : 要使用formdata格式 但header帶的是json
 type ContentTypes = 'application/json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json'
@@ -175,7 +175,7 @@ export class Request<
                 responseType
             })
         }
-        if (method === 'post' || method === 'put') {
+        if (method === 'post' || method === 'put' || method === 'patch') {
             result = await axios[method](path, body, {
                 params: query,
                 headers,
