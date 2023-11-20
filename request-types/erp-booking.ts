@@ -415,6 +415,32 @@ export type ErpBookingDefinitions = {
         contentType: null;
     };
     /**
+     * [顧客取消預約] - 顧客取消預約
+     * @param {integer} booking_id - The ID of the booking.
+     */
+    "patch@booking/:booking_id/cancel": {
+        body: {
+            /**
+             * @example activity
+             */
+            book_type: "activity" | "product";
+        };
+        query: null;
+        response: {
+            /**
+             * 執行結果(1=成功, 0=失敗)
+             * @example 1
+             */
+            success: boolean;
+            /**
+             * 結果訊息
+             * @example This booking was cancelled
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
      * [服務人員詳細資訊及可預約場次] - 取得指定服務人員詳細資訊及可預約場次
      * @param {string} uuid - ERP Product uuid
      */

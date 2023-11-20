@@ -96,6 +96,78 @@ export type PosNewLayoutDefinitions = {
              */
             date_format: string;
             denominations: number[];
+            /**
+             * 收銀現金額度提醒
+             */
+            alert_pos_cash: number;
+            /**
+             * 是否在”編輯商品資訊“顯示成本
+             */
+            show_cost_on_edit_product: number;
+            /**
+             * 是否啟用人民幣
+             */
+            add_currency_for_cny: number;
+            /**
+             * 港幣及人民幣匯率
+             */
+            exchange_rate_between_hk_and_cny: number;
+            keyboard_shortcuts: {
+                pay_n_ckeckout: {
+                    /**
+                     * 快捷鍵
+                     */
+                    shortcut: string;
+                    /**
+                     * 快捷鍵說明
+                     */
+                    description: string;
+                };
+                cancel: {
+                    /**
+                     * 快捷鍵
+                     */
+                    shortcut: string;
+                    /**
+                     * 快捷鍵說明
+                     */
+                    description: string;
+                };
+                recent_product_quantity: {
+                    /**
+                     * 快捷鍵
+                     */
+                    shortcut: string;
+                    /**
+                     * 快捷鍵說明
+                     */
+                    description: string;
+                };
+                edit_discount: {
+                    /**
+                     * 快捷鍵
+                     */
+                    shortcut: string;
+                    /**
+                     * 快捷鍵說明
+                     */
+                    description: string;
+                };
+                add_payment_row: {
+                    /**
+                     * 快捷鍵
+                     */
+                    shortcut: string;
+                    /**
+                     * 快捷鍵說明
+                     */
+                    description: string;
+                };
+            };
+            /**
+             * 是否允許POS超賣
+             */
+            allow_pos_overselling: number;
         };
         contentType: null;
     };
@@ -506,6 +578,10 @@ export type PosNewLayoutDefinitions = {
                  * 下拉選單的value
                  */
                 value: string;
+                /**
+                 * 匯率(只有custom_pay_pos_1~5有這個欄位)
+                 */
+                ex_rate: number;
             } [];
             links: {
                 /**
@@ -879,6 +955,7 @@ export type PosNewLayoutDefinitions = {
         body: null;
         query: {
             location_id ? : number;
+            search_field ? : string;
             term ? : string;
             tag_id ? : number;
             per_page ? : number;
@@ -915,6 +992,10 @@ export type PosNewLayoutDefinitions = {
                  */
                 variation: string;
                 /**
+                 * 第2衍生規格名稱
+                 */
+                variation_sub: string;
+                /**
                  * 產品售價 (不含稅)
                  */
                 default_sell_price: number;
@@ -923,6 +1004,10 @@ export type PosNewLayoutDefinitions = {
                  */
                 sell_price_inc_tax: number;
                 /**
+                 * 產品成本 (含稅)
+                 */
+                dpp_inc_tax: number;
+                /**
                  * Sub SKU
                  */
                 sub_sku: string;
@@ -930,6 +1015,10 @@ export type PosNewLayoutDefinitions = {
                  * 庫存總數量
                  */
                 qty_available: number;
+                /**
+                 * 產品提醒
+                 */
+                popup_note: string;
                 stock: {
                     /**
                      * 採購單ID
@@ -1708,10 +1797,18 @@ export type PosNewLayoutDefinitions = {
                 transaction_no_6 ? : string;
                 transaction_no_7 ? : string;
                 /**
+                 * 人民幣金額(只有用custom_pay_pos_1~5需要這個欄位)
+                 */
+                cny_total ? : number;
+                /**
                  * 付款註記
                  */
                 note ? : string;
             } [];
+            /**
+             * 是否有港幣找零
+             */
+            hk_cash_change_flag ? : number;
             /**
              * 銷售備註
              */
@@ -1765,6 +1862,10 @@ export type PosNewLayoutDefinitions = {
              * 訂單狀態
              */
             status: string;
+            /**
+             * 人民幣總金額
+             */
+            cny_total ? : number;
         };
         query: null;
         response: {
@@ -1780,6 +1881,10 @@ export type PosNewLayoutDefinitions = {
              * 發票
              */
             receipt: string;
+            /**
+             * 銷售id
+             */
+            transaction_id: number;
         };
         contentType: null;
     };
@@ -1805,6 +1910,10 @@ export type PosNewLayoutDefinitions = {
              * 發票
              */
             receipt: string;
+            /**
+             * 銷售id
+             */
+            transaction_id: number;
         };
         contentType: "x-www-form-urlencoded";
     };
@@ -2120,6 +2229,25 @@ export type PosNewLayoutDefinitions = {
         contentType: "x-www-form-urlencoded";
     };
     /**
+     * [刪除訂單] - 刪除POS訂單.
+     * @param {number} id - 訂單ID
+     */
+    "delete@pos-v2/api/pos/:id": {
+        body: null;
+        query: null;
+        response: {
+            /**
+             * 0=失敗, 1=成功
+             */
+            success: number;
+            /**
+             * 成功訊息
+             */
+            msg: string;
+        };
+        contentType: null;
+    };
+    /**
      * [訂單清單] - 取得訂單清單
      */
     "get@pos-v2/api/orders": {
@@ -2186,6 +2314,18 @@ export type PosNewLayoutDefinitions = {
                  * 銷售備註
                  */
                 additional_note: string;
+                /**
+                 * 已付金額
+                 */
+                total_paid: number;
+                /**
+                 * 總未付金額
+                 */
+                total_unpaid: number;
+                /**
+                 * 是否為負向銷售
+                 */
+                is_negative: number;
             } [];
             links: {
                 /**
@@ -2337,6 +2477,14 @@ export type PosNewLayoutDefinitions = {
                  * EXP
                  */
                 exp: string;
+                /**
+                 * variation
+                 */
+                variation: string;
+                /**
+                 * variation_sub
+                 */
+                variation_sub: string;
             } [];
             /**
              * 商品原價
@@ -2410,6 +2558,10 @@ export type PosNewLayoutDefinitions = {
                  */
                 is_return: boolean;
             };
+            /**
+             * 是否為負向銷售
+             */
+            is_negative: number;
         };
         contentType: null;
     };
@@ -2793,6 +2945,14 @@ export type PosNewLayoutDefinitions = {
                  * 單位成本(最小)
                  */
                 min_purchase_price: string;
+                /**
+                 * 衍生規格名稱
+                 */
+                variation: string;
+                /**
+                 * 第2衍生規格名稱
+                 */
+                variation_sub: string;
             } [];
         };
         contentType: null;
@@ -3071,6 +3231,14 @@ export type PosNewLayoutDefinitions = {
                      * 調節量
                      */
                     adjust_quantity: string;
+                    /**
+                     * variation
+                     */
+                    variation: string;
+                    /**
+                     * variation_sub
+                     */
+                    variation_sub: string;
                 } [];
             };
         };
@@ -3492,6 +3660,9 @@ export type PosNewLayoutDefinitions = {
              * 類型類別
              */
             contact_type: "individual" | "business";
+            /**
+             * 客戶自訂ID
+             */
             member_id: string;
             customer_group_id: number;
             /**
@@ -3600,9 +3771,13 @@ export type PosNewLayoutDefinitions = {
              */
             return_due: number;
             /**
-             * 紅利
+             * 紅利點數
              */
             total_rp: number;
+            /**
+             * 紅利點數可折抵金額
+             */
+            amount_for_rp: number;
             /**
              * 建立日期
              */
@@ -3875,7 +4050,9 @@ export type PosNewLayoutDefinitions = {
      */
     "get@pos-v2/api/employee/duties": {
         body: null;
-        query: null;
+        query: {
+            location_id ? : number;
+        };
         response: {
             /**
              * 總筆數
@@ -4000,11 +4177,19 @@ export type PosNewLayoutDefinitions = {
         };
         response: {
             /**
-             * 訂單ID
+             * POS開帳id
+             */
+            cash_register_id: number;
+            /**
+             * 收銀現金額度提醒
+             */
+            alert_pos_cash: number;
+            /**
+             * 開帳時間
              */
             open_time: string;
             /**
-             * 訂單編號
+             * 關帳時間
              */
             close_time: string;
             /**
@@ -4057,6 +4242,38 @@ export type PosNewLayoutDefinitions = {
                  */
                 value: number;
             } [];
+            cny: {
+                sell: {
+                    /**
+                     * 付費方式
+                     */
+                    key: string;
+                    /**
+                     * 金額
+                     */
+                    value: number;
+                } [];
+                expense: {
+                    /**
+                     * 付費方式
+                     */
+                    key: string;
+                    /**
+                     * 金額
+                     */
+                    value: number;
+                } [];
+                refund: {
+                    /**
+                     * 付費方式
+                     */
+                    key: string;
+                    /**
+                     * 金額
+                     */
+                    value: number;
+                } [];
+            };
         };
         contentType: null;
     };

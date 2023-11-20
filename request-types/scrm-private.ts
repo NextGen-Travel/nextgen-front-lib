@@ -331,6 +331,24 @@ export type ScrmPrivateDefinitions = {
                  * @example true
                  */
                 enable: boolean;
+                /**
+                 * 申請社交平台在messageBird的key
+                 */
+                accessKey: string;
+                /**
+                 * 申請社交平台在messageBird的keyID
+                 */
+                accessKeyID: string;
+                /**
+                 * 只有whatsapp平台必填
+                 * @example 1066553231322
+                 */
+                wabaId: string;
+                /**
+                 * 只有whatsapp平台必填
+                 * @example 12dea546c123asd456
+                 */
+                templateNamespace: string;
             } [];
             sso ? : {};
             /**
@@ -348,6 +366,16 @@ export type ScrmPrivateDefinitions = {
              * @example www.nss.com
              */
             productLink ? : string;
+            /**
+             * 是否開啟自動回覆
+             * @example true
+             */
+            autoReply ? : boolean;
+            /**
+             * 設定只有在自動回覆的多久後會 case closed (單位是小時)
+             * @example 12
+             */
+            cronCloseAutoReplyTime ? : number;
         };
         query: null;
         response: {
@@ -439,6 +467,14 @@ export type ScrmPrivateDefinitions = {
                      * 只有whatsapp才有
                      */
                     templateNamespace: string;
+                    /**
+                     * 申請社交平台在messageBird的key
+                     */
+                    accessKey: string;
+                    /**
+                     * 申請社交平台在messageBird的keyID
+                     */
+                    accessKeyID: string;
                 } [];
             };
         };
@@ -480,6 +516,14 @@ export type ScrmPrivateDefinitions = {
                  */
                 channelId: string;
                 /**
+                 * 申請社交平台在messageBird的key
+                 */
+                accessKey ? : string;
+                /**
+                 * 申請社交平台在messageBird的keyID
+                 */
+                accessKeyID ? : string;
+                /**
                  * 只有whatsapp平台必填
                  * @example 1066553231322
                  */
@@ -517,6 +561,16 @@ export type ScrmPrivateDefinitions = {
              * @example www.nss.girlssecrets.com
              */
             productLink: string;
+            /**
+             * 是否開啟自動回覆
+             * @example true
+             */
+            autoReply: boolean;
+            /**
+             * 設定只有在自動回覆的多久後會 case closed (單位是小時)
+             * @example 12
+             */
+            cronCloseAutoReplyTime: number;
         };
         query: null;
         response: {
@@ -619,6 +673,57 @@ export type ScrmPrivateDefinitions = {
              * @example iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEEElEQVR42uyZP+7krhLECxE45AZwESSu5czOuBYSF4EbEBIg6qmZr2d3430m+S2abD5BC/pPVRv/zr/z5yHZTIO1jiwWenhNZvaD5L0JaEBjq8VaWKicdE4hJ5zHjWMbwNaAAonRkTknhKTZj8i4FTDWFeumVSkMnfPwOHcDhgVQK1ByhBHY9wJAa61OVclaJF9SGLjuP17zZUCStrX6c/LPiTH+ntUvAx9IMhZWFZ2T5gjp+vXnFoCEgZrWTUcmwPuQzit2nLsAooGtcroC2MAUUsgDF/vnrXYArYGGxVrrKqfOZNKZ8b7ife4CABjS1fppIMOHgTDO83uPGwDTQIlSFXmshEAOneN99etTvH8PsK0gJgDFKoDUxS3tYRsAsqHV4upUnGF8GuV5xRg7NgGGxhi6CVeLqikkICR/dFw3dgEwYDNuumlhLTwAD90v/rTqHQCbAQ1cUfJg3kPnoXO/YmTfBTQ2gtO6KneVM4fX8li8fypjAyARStKqCatq0gneexmc5/l0sdcBSpysEiULQs5rdsd+9H1Ak8dCcQXyy/JSXBcV+9NIXwdEtpg2VS1uqqKlboZOOC8+GfU+0IxBo3VTsXL61UFGuK/7ecwdgPTyBlWnq8X6MLwMTnacx6Pt3wfYDI2T14IrHt7rT/E+bWwH0ETMqeIoEoY5QTP583jeagtgloBgsWoljF+1G3kfj8DYAIisbj/6oebhA0XbXzH2R3j/LWBMQ0NxrEUka9KikvJ9fGPYAFCq00yoKaXB1ShDvo+vcN8AGMIYU6e1cHWGIcYagffF+5OTG4AlYkwRL1ksoAcg+RDXVe0C2GBYp5qOVbykeLlVE1fcBawVB6yTlJlW5xFkfssdnSc2AcYYgFMqZ1qXxNCGoeNvOut94JO0oh5ExuiclpYSLfcMtfeB1qSFuEppIFMnr3MK6TyP/mNrdwBmWTkA1ioBRNOGftzn8czu94Emebtql7VIo05aLG0/vgPlfcCQMjFVFUGZB7weq3iv70B5HVjFa6DKkjFr3ZSZGTu+DeZ1gI2tUTQ15bZWLx+47vPbRt8H1mg1EKPlikorY4R47OgOoImcNHYtH1lz0iInM288Y+3/ADTpUrXOn2WSX/kg2XB+tf0GQJISSrKhilod3usu/24D1tKdkg2KBfrj7EP/uocdwIepc2l3qYs8AN1Fsp4bgWXlKoui2CgPcQ/HfcR7F7A2vbRqLb1rTsvB5H782j+8D6wvIGbZyaLK2m8M4Lx+k+7vAxIjxTtQ9P0IEmeOIiB+fRrYABjyKV7vw9Ac5/oEshMAKM7e1QmJESFd9yM3twDLWRdXrBV7EfIIzLnju+rdAHw0rYxNydq1+g9JSyP/Q1e/Cvw7/53zvwAAAP//0ecnbHZ9JNkAAAAASUVORK5CYII=
              */
             data: string;
+        };
+        contentType: null;
+    };
+    /**
+     * [invoke mcli 串接messageBird] - invoke mcli 串接messageBird
+     */
+    "post@companies/invoke-mcli": {
+        body: {
+            /**
+             * 開啟的社交平台名稱 (若有name則必須有account & channelId)
+             * @example whatsapp
+             */
+            name ? : string;
+            /**
+             * 該社交平台的帳號 (account 必須與 channelId同時存在)
+             * @example whatsappId123456
+             */
+            account ? : string;
+            /**
+             * @example test123-wafds-vv654
+             */
+            channelId: string;
+            /**
+             * 申請社交平台在messageBird的key
+             */
+            accessKey: string;
+            /**
+             * 申請社交平台在messageBird的keyID
+             */
+            accessKeyID ? : string;
+            /**
+             * 只有whatsapp平台必填
+             * @example 1066553231322
+             */
+            wabaId ? : string;
+            /**
+             * 只有whatsapp平台必填
+             * @example 12dea546c123asd456
+             */
+            templateNamespace ? : string;
+            /**
+             * @example true
+             */
+            enable: boolean;
+        };
+        query: null;
+        response: {
+            /**
+             * @example Success!
+             */
+            msg: string;
         };
         contentType: null;
     };

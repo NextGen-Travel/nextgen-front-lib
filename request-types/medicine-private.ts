@@ -81,6 +81,10 @@ export type MedicinePrivateDefinitions = {
                  * 若 SSO=true 要有 accessKey
                  */
                 accessKey: string;
+                /**
+                 * 是否啟用訂單內容
+                 */
+                label: boolean;
             };
         };
         query: null;
@@ -226,6 +230,10 @@ export type MedicinePrivateDefinitions = {
                  * 若 SSO=true 要有 accessKey
                  */
                 accessKey: string;
+                /**
+                 * 是否啟用訂單內容
+                 */
+                label: boolean;
             };
         };
         query: null;

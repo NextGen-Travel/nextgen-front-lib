@@ -31,7 +31,7 @@ const descBeautify = (content) => {
  *      path: string
  *      summary: string
  *      description: string
- *      method: 'get' | 'post' | 'put' | 'delete'
+ *      method: 'get' | 'post' | 'put' | 'delete' | 'patch'
  *      body: null | Record<string, any>
  *      query: null | Record<string, any>
  *      response: null | Record<string, any>
@@ -219,7 +219,7 @@ class OpenApiReader {
         /** @type {OutputObject[]} */
         let outputs = []
         for (let path in paths) {
-            let methods = ['get', 'post', 'put', 'delete']
+            let methods = ['get', 'post', 'put', 'delete', 'patch']
             for (let method of methods) {
                 let api = paths[path]
                 if (api) {

@@ -168,7 +168,27 @@ export type PosOriginDefinitions = {
              * 是否成功
              */
             success: boolean;
+            /**
+             * popup訊息
+             */
+            popup_note: string;
         };
+        contentType: null;
+    };
+    /**
+     * [取得客戶分類帳] - 取得客戶分類帳詳細資訊
+     */
+    "get@contacts/ledger": {
+        body: null;
+        query: {
+            contact_id ? : number;
+            start_date ? : number;
+            show_payments ? : boolean;
+            end_date ? : number;
+            format ? : "format_1" | "format_2";
+            location_id ? : number;
+        };
+        response: null;
         contentType: null;
     };
 }

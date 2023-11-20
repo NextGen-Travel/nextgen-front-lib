@@ -2173,6 +2173,10 @@ export type GeniusCartAppDefinitions = {
                  * 最終價格
                  */
                 pay_amount: number;
+                /**
+                 * 稅項
+                 */
+                tax: number;
             };
         };
         contentType: null;

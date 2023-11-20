@@ -278,13 +278,17 @@ export type MedicinePosDefinitions = {
                 custom_caution: string;
                 dosage_form: string;
                 unit: string;
+                /**
+                 * 單位英文簡稱
+                 */
+                unit_short_eng_name: string;
                 usage: number;
                 /**
-                 * 用藥說明第一欄
+                 * 中文用藥說明
                  */
                 sell_line_note: string;
                 /**
-                 * 用藥說明第二欄
+                 * 英文用藥說明
                  */
                 medicine_note: string;
             } [];
