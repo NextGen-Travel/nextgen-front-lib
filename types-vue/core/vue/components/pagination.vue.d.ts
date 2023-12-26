@@ -5,6 +5,11 @@ declare const _default: import("vue").DefineComponent<{
         required: false;
         default: () => boolean;
     };
+    totalVisible: {
+        type: PropType<number>;
+        required: false;
+        default: () => null;
+    };
     color: {
         type: PropType<string>;
         required: false;
@@ -42,6 +47,11 @@ declare const _default: import("vue").DefineComponent<{
         type: PropType<boolean>;
         required: false;
         default: () => boolean;
+    };
+    totalVisible: {
+        type: PropType<number>;
+        required: false;
+        default: () => null;
     };
     color: {
         type: PropType<string>;
@@ -81,6 +91,7 @@ declare const _default: import("vue").DefineComponent<{
     loading: boolean;
     scrollTo: HTMLElement | "top";
     alwaysShow: boolean;
+    totalVisible: number;
     total: number;
     prePage: number;
 }, {}>;

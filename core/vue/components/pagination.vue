@@ -7,7 +7,7 @@
             :length="length"
             :disabled="loading"
             :size="breakpoint.in('sm-and-down') ? 'small' : 'default'"
-            :total-visible="breakpoint.in('sm-and-down') ? (breakpoint.in('xs-only') ? 4 : 5) : 7">
+            :total-visible="totalVisible ? totalVisible : (breakpoint.in('sm-and-down') ? 4 : 7)">
         </v-pagination>
         <v-progress-linear
             v-if="show && loading"
@@ -45,6 +45,11 @@ const props = defineProps({
         type: Boolean as PropType<boolean>,
         required: false,
         default: () => false
+    },
+    totalVisible: {
+        type: Number as PropType<number>,
+        required: false,
+        default: () => null
     },
     color: {
         type: String as PropType<string>,
