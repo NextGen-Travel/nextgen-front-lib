@@ -1,14 +1,15 @@
 <template>
-    <RouterLink v-if="linkMode" v-bind="commandProps">
+    <RouterLink v-if="vueRouterLinkMode" v-bind="commandProps">
         <slot></slot>
     </RouterLink>
-    <div v-else v-bind="commandProps">
+    <a v-else v-bind="commandProps">
         <slot></slot>
-    </div>
+    </a>
 </template>
 
 <script setup lang="ts">
 import { PropType, computed } from 'vue'
+import { text } from 'power-helper'
 
 // =================
 //
@@ -48,11 +49,21 @@ const emit = defineEmits<{
 // computed
 //
 
-const linkMode = computed(() => {
+const linkIsHttp = computed(() => {
+    if (typeof props.to === 'string') {
+        return text.headMatch(props.to, 'http')
+    }
+    return false
+})
+
+const vueRouterLinkMode = computed(() => {
     if (props.disabled) {
         return false
     }
     if (props.useClick) {
+        return false
+    }
+    if (linkIsHttp.value) {
         return false
     }
     return true
@@ -60,15 +71,17 @@ const linkMode = computed(() => {
 
 const commandProps = computed(() => {
     const output: any = {
-        to: {},
-        style: {},
+        style: {
+            color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
+        },
         target: props.target,
         class: {
+            'ng-link': true,
             'd-block': !props.inline,
             'd-inline': props.inline
         }
     }
-    if (props.disabled) {
+    if (props.disabled === false) {
         return output
     }
     if (props.useClick) {
@@ -78,11 +91,11 @@ const commandProps = computed(() => {
         }
         return output
     }
-    output.to = typeof props.to === 'string' ? { path: props.to } : props.to
-    output.class['ng-link'] = true
-    output.style = {
-        color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
+    if (linkIsHttp.value) {
+        output.href = props.to
+        return output
     }
+    output.to = props.to
     return output
 })
 
