@@ -78,7 +78,7 @@ const commandProps = computed(() => {
         }
         return output
     }
-    output.to = props.to
+    output.to = typeof props.to === 'string' ? { path: props.to } : props.to
     output.class['ng-link'] = true
     output.style = {
         color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
