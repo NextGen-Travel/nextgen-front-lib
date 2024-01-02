@@ -10,6 +10,7 @@ import Ani from './vue/components/ani.vue'
 import Img from './vue/components/img.vue'
 import Form from './vue/components/form.vue'
 import NgApp from './vue/views/app.vue'
+import Link from './vue/components/link.vue'
 import Table from './vue/components/table.vue'
 import Dialog from './vue/components/dialog.vue'
 import Upload from './vue/components/upload.vue'
@@ -80,6 +81,7 @@ export const NextgenLib = {
         addComponent('App', NgApp)
         addComponent('Img', Img)
         addComponent('Ani', Ani)
+        addComponent('Link', Link)
         addComponent('Form', Form)
         addComponent('Table', Table)
         addComponent('Search', Search)
