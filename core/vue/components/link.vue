@@ -1,5 +1,5 @@
 <template>
-    <RouterLink v-if="!disabled" v-bind="{ ...attrProps, ...commandProps }">
+    <RouterLink v-if="!disabled" v-bind="commandProps">
         <slot></slot>
     </RouterLink>
     <div v-else v-bind="commandProps">
@@ -35,29 +35,36 @@ const props = defineProps({
 // computed
 //
 
-const attrProps = computed(() => {
-    return {
-        to: props.to,
-        class: {
-            'ms-link': true
+const commandProps = computed(() => {
+    if (props.disabled) {
+        return {
+            to: {},
+            style: {
+                color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
+            },
+            class: {
+                'd-block': !props.inline,
+                'd-inline': props.inline
+            }
         }
     }
-})
-
-const commandProps = computed(() => {
     return {
+        to: props.to,
+        style: {
+            color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
+        },
         class: {
+            'ng-link': true,
             'd-block': !props.inline,
-            'd-inline': props.inline,
+            'd-inline': props.inline
         }
     }
 })
 
 </script>
 
-<style scoped>
-.ms-link {
+<style scoped lang="scss">
+.ng-link {
     text-decoration: none;
-    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
 }
 </style>
