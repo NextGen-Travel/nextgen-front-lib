@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { PropType, computed } from 'vue'
 
 // =================
 //
@@ -17,7 +17,7 @@ import { computed } from 'vue'
 
 const props = defineProps({
     to: {
-        type: Object,
+        type: null as unknown as PropType<string | Record<string, any>>,
         required: true
     },
     target: {
@@ -72,7 +72,8 @@ const commandProps = computed(() => {
         return output
     }
     if (props.useClick) {
-        output.onClick = () => {
+        output.onClick = (event: MouseEvent) => {
+            event.stopPropagation()
             emit('click')
         }
         return output

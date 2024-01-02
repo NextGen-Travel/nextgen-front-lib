@@ -1,6 +1,7 @@
+import { PropType } from 'vue';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     to: {
-        type: ObjectConstructor;
+        type: PropType<string | Record<string, any>>;
         required: true;
     };
     target: {
@@ -24,7 +25,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     click: () => void;
 }, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
     to: {
-        type: ObjectConstructor;
+        type: PropType<string | Record<string, any>>;
         required: true;
     };
     target: {
