@@ -20,6 +20,11 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    target: {
+        type: String,
+        required: false,
+        default: () => '_self'
+    },
     inline: {
         type: Boolean,
         default: false
@@ -53,6 +58,7 @@ const commandProps = computed(() => {
         style: {
             color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
         },
+        target: props.target,
         class: {
             'ng-link': true,
             'd-block': !props.inline,

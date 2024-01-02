@@ -207,7 +207,7 @@ export class VueRouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    defineTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    defineTo<K extends keyof T>(name: K, params?: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         return {
