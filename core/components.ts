@@ -21,6 +21,7 @@ import PieChart from '../core/vue/components/charts/pie.vue'
 import DoughnutChart from '../core/vue/components/charts/doughnut.vue'
 import SkeletonGroup from '../core/vue/components/skeleton-group.vue'
 import LineChart from '../core/vue/components/charts/line.vue'
+import Link from '../core/vue/components/link.vue'
 
 import { NgComponents } from '../types/index'
 
@@ -47,3 +48,4 @@ export const NgPieChart = PieChart as NgComponents['NgPieChart']
 export const NgDoughnutChart = DoughnutChart as NgComponents['NgDoughnutChart']
 export const NgSkeletonGroup = SkeletonGroup as NgComponents['NgSkeletonGroup']
 export const NgLineChart = LineChart as NgComponents['NgLineChart']
+export const NgLink = Link as NgComponents['NgLink']

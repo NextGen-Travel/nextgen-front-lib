@@ -21,3 +21,4 @@ export declare const NgPieChart: any;
 export declare const NgDoughnutChart: any;
 export declare const NgSkeletonGroup: any;
 export declare const NgLineChart: any;
+export declare const NgLink: any;

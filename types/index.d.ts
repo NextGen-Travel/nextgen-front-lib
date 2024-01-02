@@ -11,6 +11,7 @@ export type NgComponents = {
     NgMap: typeof import('../types-vue/core/vue/components/map.vue.d')['default']
     NgDialog: typeof import('../types-vue/core/vue/components/dialog.vue.d')['default']
     NgFixedBar: typeof import('../types-vue/core/vue/components/fixed-bar.vue.d')['default']
+    NgLink: typeof import('../types-vue/core/vue/components/link.vue.d')['default']
     NgForm: typeof import('../types-vue/core/vue/components/form.vue.d')['default']
     NgImg: typeof import('../types-vue/core/vue/components/img.vue.d')['default']
     NgLoaders: typeof import('../types-vue/core/vue/components/loaders.vue.d')['default']
