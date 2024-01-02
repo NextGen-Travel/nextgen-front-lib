@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed } from 'vue'
 import { text } from 'power-helper'
+import { PropType, computed } from 'vue'
 
 // =================
 //
@@ -81,7 +81,7 @@ const ElProps = computed(() => {
             'd-inline': props.inline
         }
     }
-    if (props.disabled === false) {
+    if (props.disabled) {
         return output
     }
     if (props.useClick) {
