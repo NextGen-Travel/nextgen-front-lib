@@ -1,8 +1,8 @@
 <template>
-    <RouterLink v-if="vueRouterLinkMode" v-bind="commandProps">
+    <RouterLink v-if="vueRouterLinkMode" v-bind="ElProps">
         <slot></slot>
     </RouterLink>
-    <a v-else v-bind="commandProps">
+    <a v-else v-bind="ElProps">
         <slot></slot>
     </a>
 </template>
@@ -69,7 +69,7 @@ const vueRouterLinkMode = computed(() => {
     return true
 })
 
-const commandProps = computed(() => {
+const ElProps = computed(() => {
     const output: any = {
         style: {
             color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
