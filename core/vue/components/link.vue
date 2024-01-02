@@ -37,7 +37,10 @@ const props = defineProps({
 
 const attrProps = computed(() => {
     return {
-        to: props.to
+        to: props.to,
+        class: {
+            'ms-link': true
+        }
     }
 })
 
