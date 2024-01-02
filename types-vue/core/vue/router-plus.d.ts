@@ -67,6 +67,13 @@ export declare class VueRouterPlus<T extends RouteMap<any>> extends Event<Channe
     interceptLeave(callback: () => Promise<void>): {
         close: () => void;
     };
+    defineTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+        query?: T[K]['query'];
+    }): {
+        query?: T[K]["query"] | undefined;
+        name: K;
+        params: Partial<RouteParameters<T[K]["path"]>>;
+    };
     pushQuery(params: Record<string, undefined | string | number>): Promise<void>;
 }
 export {};
