@@ -12,11 +12,17 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
+    useClick: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
     disabled: {
         type: BooleanConstructor;
         default: boolean;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    click: () => void;
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
     to: {
         type: ObjectConstructor;
         required: true;
@@ -30,14 +36,21 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: BooleanConstructor;
         default: boolean;
     };
+    useClick: {
+        type: BooleanConstructor;
+        default: boolean;
+    };
     disabled: {
         type: BooleanConstructor;
         default: boolean;
     };
-}>>, {
+}>> & {
+    onClick?: (() => any) | undefined;
+}, {
     target: string;
     disabled: boolean;
     inline: boolean;
+    useClick: boolean;
 }, {}>, {
     default?(_: {}): any;
 }>;

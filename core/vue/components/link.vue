@@ -1,5 +1,5 @@
 <template>
-    <RouterLink v-if="!disabled" v-bind="commandProps">
+    <RouterLink v-if="linkMode" v-bind="commandProps">
         <slot></slot>
     </RouterLink>
     <div v-else v-bind="commandProps">
@@ -29,42 +29,60 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    useClick: {
+        type: Boolean,
+        default: false
+    },
     disabled: {
         type: Boolean,
         default: false
     }
 })
 
+const emit = defineEmits<{
+    click: []
+}>()
+
 // =================
 //
 // computed
 //
 
-const commandProps = computed(() => {
+const linkMode = computed(() => {
     if (props.disabled) {
-        return {
-            to: {},
-            style: {
-                color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
-            },
-            class: {
-                'd-block': !props.inline,
-                'd-inline': props.inline
-            }
-        }
+        return false
     }
-    return {
-        to: props.to,
-        style: {
-            color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
-        },
+    if (props.useClick) {
+        return false
+    }
+    return true
+})
+
+const commandProps = computed(() => {
+    const output: any = {
+        to: {},
+        style: {},
         target: props.target,
         class: {
-            'ng-link': true,
             'd-block': !props.inline,
             'd-inline': props.inline
         }
     }
+    if (props.disabled) {
+        return output
+    }
+    if (props.useClick) {
+        output.onClick = () => {
+            emit('click')
+        }
+        return output
+    }
+    output.to = props.to
+    output.class['ng-link'] = true
+    output.style = {
+        color: 'rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity))'
+    }
+    return output
 })
 
 </script>
