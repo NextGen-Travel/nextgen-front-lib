@@ -84,6 +84,9 @@ const ElProps = computed(() => {
     if (props.disabled) {
         return output
     }
+    output.onClick = (event: MouseEvent) => {
+        event.stopPropagation()
+    }
     if (props.useClick) {
         output.onClick = (event: MouseEvent) => {
             event.stopPropagation()
