@@ -94,7 +94,8 @@ export class GoogleMap extends Event<Channels> {
 
     moveTo(position: LatLng) {
         this.map?.moveCamera({
-            center: position
+            center: position,
+            zoom: this.map.getZoom()
         })
     }
 
