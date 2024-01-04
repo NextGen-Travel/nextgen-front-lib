@@ -29,7 +29,7 @@
                         </v-btn>
                         <slot name="actions" :switch-show="switchShow"></slot>
                     </v-row>
-                    <v-divider></v-divider>
+                    <v-divider v-if="!hideHeader"></v-divider>
                 </div>
                 <div class="pa-3">
                     <slot :switch-show="switchShow"></slot>
