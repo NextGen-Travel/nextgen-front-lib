@@ -1,5 +1,5 @@
 <template>
-    <div v-if="skeleton === 'always' || state.loading" :style="skeletonStyle">
+    <div v-if="skeleton === 'always' || state.loading" ref="wrapper3" :style="skeletonStyle">
         <Skeleton v-if="skeleton !== 'hide'" :avatar="avatar"></Skeleton>
     </div>
     <div v-else-if="self.hasListener('click')" ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
@@ -19,6 +19,7 @@ import { VueSelf } from '../self'
 import { useLibOptions } from '../../index'
 import { StyleString, Resource, JobsQueue, ElementListenerGroup, Debounce } from 'power-helper'
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const { notFoundImage, staticUrl } = useLibOptions()
 
@@ -130,6 +131,7 @@ const emit = defineEmits({
 
 const wrapper = ref<HTMLDivElement>()
 const wrapper2 = ref<HTMLDivElement>()
+const wrapper3 = ref<HTMLDivElement>()
 
 // =================
 //
@@ -170,13 +172,32 @@ watch(() => props.src, () => update())
 
 // =================
 //
+// observer
+//
+
+const intersectionObservers: ReturnType<typeof useIntersectionObserver>[] = []
+
+for (let i = 0; i < 3; i++) {
+    const items = [wrapper, wrapper2, wrapper3]
+    const result = useIntersectionObserver(items[i], ([{ isIntersecting }]) => {
+        if (isIntersecting) {
+            update()
+            intersectionObservers.forEach(item => item.stop())
+        }
+    }, {
+        immediate: true
+    })
+    intersectionObservers.push(result)
+}
+
+// =================
+//
 // mounted
 //
 
 onMounted(() => {
     state.elementListenerGroup = new ElementListenerGroup(window)
     state.elementListenerGroup.add('resize', () => debounce.input(''))
-    update()
     debounce.on('trigger', () => {
         loadStyle(state.image?.width, state.image?.height)
     })
