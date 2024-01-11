@@ -59,7 +59,7 @@ export const defineQuerySync = <T extends Query>(params: {
             if (route.query) {
                 queryToState(route.query)
             }
-        })
+        }, 25)
 
         const changeDebounce = new Debounce<string>({
             delay: 100,
