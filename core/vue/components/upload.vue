@@ -66,7 +66,7 @@ const props = defineProps({
     preupload: {
         type: Function as PropType<(_file: File) => Promise<File>>,
         required: false,
-        default: () => async() => true
+        default: null
     }
 })
 

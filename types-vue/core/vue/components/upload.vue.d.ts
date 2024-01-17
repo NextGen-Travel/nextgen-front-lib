@@ -25,7 +25,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     preupload: {
         type: PropType<(_file: File) => Promise<File>>;
         required: false;
-        default: () => () => Promise<boolean>;
+        default: null;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     error: (args_0: Error) => void;
@@ -51,7 +51,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     preupload: {
         type: PropType<(_file: File) => Promise<File>>;
         required: false;
-        default: () => () => Promise<boolean>;
+        default: null;
     };
 }>> & {
     onError?: ((args_0: Error) => any) | undefined;
