@@ -8,6 +8,16 @@ type MessageContext = {
     error?: any
 }
 
+export type NextGenWorkerFrom<
+    T extends ReturnType<typeof NextGenWorker.define>,
+    E extends Event<any> = T['_event'],
+    M extends Record<string, (..._args: any[]) => Promise<any>> = T['_methods']
+> = {
+    on: E['on']
+    methods: M
+    terminate: () => void
+}
+
 export class NextGenWorker {
     static inWorker() {
         if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
