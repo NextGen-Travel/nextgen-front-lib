@@ -27,7 +27,7 @@
 <script name="ng-update" lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
 import OverlayLoading from './overlay-loading.vue'
-import { Loader } from 'power-helper'
+import { Loader, JobsQueue } from 'power-helper'
 import { VueSelf } from '../self'
 import { PropType, ref } from 'vue'
 
@@ -47,7 +47,7 @@ const self = VueSelf.use()
 // defined
 //
 
-defineProps({
+const props = defineProps({
     loading: {
         type: Boolean as PropType<boolean>,
         required: false,
@@ -107,22 +107,30 @@ const pickFile = async() => {
     if (files && files[0]) {
         let outputFiles: Array<OutputFile> = []
         let loader = new Loader()
+        let queue = new JobsQueue({
+            concurrentExecutions: 1
+        })
         for (let i = 0; i < files.length; i++) {
             let file = files[i]
+            if (props.preupload) {
+                file = await props.preupload(file)
+            }
             loader.push(`file: ${i}`, () => {
-                return new Promise((resolve, reject) => {
-                    let reader = new FileReader()
-                    reader.readAsDataURL(file)
-                    reader.onerror = reject
-                    reader.onload = e => {
-                        if (e.target) {
-                            outputFiles.push({
-                                url: e.target.result,
-                                file
-                            })
+                return queue.pushAndWait(`file: ${i}`, () => {
+                    return new Promise((resolve, reject) => {
+                        let reader = new FileReader()
+                        reader.readAsDataURL(file)
+                        reader.onerror = reject
+                        reader.onload = e => {
+                            if (e.target) {
+                                outputFiles.push({
+                                    url: e.target.result,
+                                    file
+                                })
+                            }
+                            resolve(null)
                         }
-                        resolve(null)
-                    }
+                    })
                 })
             })
         }
