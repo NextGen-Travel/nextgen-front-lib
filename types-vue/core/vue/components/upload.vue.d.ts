@@ -22,12 +22,16 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         required: false;
         default: () => string;
     };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    uploaded: (params: {
-        files: OutputFile[];
-    }) => {
-        files: OutputFile[];
+    preupload: {
+        type: PropType<(_file: File) => Promise<File>>;
+        required: false;
+        default: () => () => Promise<boolean>;
     };
+}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+    error: (args_0: Error) => void;
+    uploaded: (args_0: {
+        files: OutputFile[];
+    }) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     loading: {
         type: PropType<boolean>;
@@ -44,14 +48,21 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         required: false;
         default: () => string;
     };
+    preupload: {
+        type: PropType<(_file: File) => Promise<File>>;
+        required: false;
+        default: () => () => Promise<boolean>;
+    };
 }>> & {
-    onUploaded?: ((params: {
+    onError?: ((args_0: Error) => any) | undefined;
+    onUploaded?: ((args_0: {
         files: OutputFile[];
     }) => any) | undefined;
 }, {
     loading: boolean;
     multiple: boolean;
     fileType: string;
+    preupload: (_file: File) => Promise<File>;
 }, {}>, {
     default?(_: {}): any;
 }>;

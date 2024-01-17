@@ -62,14 +62,20 @@ defineProps({
         type: String as PropType<string>,
         required: false,
         default: () => '*/*'
+    },
+    preupload: {
+        type: Function as PropType<(_file: File) => Promise<File>>,
+        required: false,
+        default: () => async() => true
     }
 })
 
-const emit = defineEmits({
-    uploaded: (params: {
+const emit = defineEmits<{
+    error: [Error]
+    uploaded: [{
         files: OutputFile[]
-    }) => params
-})
+    }]
+}>()
 
 // =================
 //
