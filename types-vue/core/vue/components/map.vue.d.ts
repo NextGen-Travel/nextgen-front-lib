@@ -39,7 +39,7 @@ declare const _default: import("vue").DefineComponent<{
     move: (_latlng: LatLng) => true;
     click: (_latlng: LatLng) => true;
     clickMarker: (_marker: MapMarker) => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     height: {
         type: StringConstructor;
         required: false;

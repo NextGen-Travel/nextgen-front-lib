@@ -75,7 +75,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     onClick: () => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     skeleton: {
         type: PropType<"auto" | "hide" | "always">;
         required: false;
@@ -158,8 +158,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     minHeight: string;
     minWidth: string;
     width: string;
-    loading: boolean;
     block: boolean;
+    loading: boolean;
     avatar: boolean;
     skeleton: "auto" | "hide" | "always";
     src: string | File;

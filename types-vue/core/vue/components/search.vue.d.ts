@@ -23,7 +23,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     closed: () => true;
     changed: () => true;
     selected: (_item: any) => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     searchValue: {
         type: StringConstructor;
         required: true;

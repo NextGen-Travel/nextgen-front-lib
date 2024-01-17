@@ -13,7 +13,7 @@ declare const _default: import("vue").DefineComponent<{
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     'update:modelValue': (_value: [number | null, number | null]) => true;
     selected: () => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     mode: {
         type: PropType<"date" | "datetime">;
         required: false;

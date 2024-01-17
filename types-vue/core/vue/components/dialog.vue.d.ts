@@ -44,7 +44,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     open: () => true;
     close: () => true;
     'update:modelValue': (_value: boolean) => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     fullscreen: {
         type: PropType<boolean>;
         required: false;
@@ -87,8 +87,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }>> & {
     "onUpdate:modelValue"?: ((_value: boolean) => any) | undefined;
-    onOpen?: (() => any) | undefined;
     onClose?: (() => any) | undefined;
+    onOpen?: (() => any) | undefined;
 }, {
     title: string;
     maxWidth: string;

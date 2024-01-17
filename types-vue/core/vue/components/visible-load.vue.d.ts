@@ -12,7 +12,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         error: any;
         message: string;
     }) => true;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     disabled: {
         type: BooleanConstructor;
         required: false;
