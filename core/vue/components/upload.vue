@@ -24,7 +24,7 @@
     </div>
 </template>
 
-<script name="ng-update" lang="ts" setup>
+<script lang="ts" setup>
 // TODO: fileType 也須透過 js 檢查
 import OverlayLoading from './overlay-loading.vue'
 import { Loader, JobsQueue } from 'power-helper'
