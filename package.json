@@ -35,7 +35,7 @@
     "vuetify": "3.4.9"
   },
   "dependencies": {
-    "power-helper": "^0.6.6",
+    "power-helper": "^0.6.8",
     "@amap/amap-jsapi-types": "^0.0.13",
     "@apidevtools/swagger-cli": "^4.0.4",
     "@fingerprintjs/fingerprintjs": "^3.4.1",
