@@ -2,7 +2,7 @@
   "name": "nextgen-front-lib",
   "version": "3.0.0",
   "description": "lib.",
-  "main": "./dists/index.js",
+  "main": "./dist/index.js",
   "types": "./types",
   "scripts": {
     "test": "eslint --quiet core/** && vue-tsc --noEmit",
