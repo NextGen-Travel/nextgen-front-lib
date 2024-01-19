@@ -6,7 +6,7 @@ type Options = {
 }
 
 export const loaclStroageIntercept = (ns: string, options?: Options) => {
-    const _pkey = 'lib-v2'
+    const _pkey = 'lib-v3'
     const _options: Required<Options> = Object.assign({
         version: 1,
         ttl: {}
@@ -57,7 +57,7 @@ export const loaclStroageIntercept = (ns: string, options?: Options) => {
 }
 
 export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
-    const _pkey = 'lib-v2-a'
+    const _pkey = 'lib-v3-a'
     const _options: Required<Options> = Object.assign({
         version: 1,
         ttl: {}

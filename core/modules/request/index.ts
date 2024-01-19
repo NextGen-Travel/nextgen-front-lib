@@ -1,7 +1,7 @@
 import { stringify } from 'qs'
 import { Cache, Event, flow, text } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
-import { serviceException } from '../../error'
+import { serviceException } from '../../exception'
 
 type ToFormat = `${'get' | 'post' | 'put' | 'delete' | 'patch'}@${string}`
 

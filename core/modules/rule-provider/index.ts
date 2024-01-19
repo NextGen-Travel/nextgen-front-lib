@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import type { AnySchema } from 'yup'
 import { BasicRules } from './basic'
-import { serviceException } from '../../error'
+import { serviceException } from '../../exception'
 
 const exception = serviceException.checkout('validate')
 

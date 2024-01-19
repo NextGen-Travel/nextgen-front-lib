@@ -1,7 +1,7 @@
 import { MapRoute } from './common/route'
 import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
-import { serviceException } from '../../../core/error'
+import { serviceException } from '../../exception'
 import { LatLng, MarkerAttr, RouteAttr, NavigationParams } from './types'
 
 type GoogleMapConfig = {

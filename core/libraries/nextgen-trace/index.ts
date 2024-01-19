@@ -1,6 +1,6 @@
 import axios from 'axios'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
-import { useLibEnv } from '../../index'
+import { getLibEnv } from '../../index'
 import { flow, JobsQueue } from 'power-helper'
 
 declare type Type = 'step' | 'wrong' | 'notify' | 'fail'
@@ -67,7 +67,7 @@ export class NextgenMessageTrace {
                 const result = await fp.get()
                 this.fingerId = result.visitorId
             }
-            const env = useLibEnv()
+            const env = getLibEnv()
             const messages = this.clearMessages()
             const sendData: SendData = {
                 fingerId: this.fingerId,

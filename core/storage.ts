@@ -1,8 +1,8 @@
-import { useLibEnv } from './index'
+import { getLibEnv } from './index'
 import { LocalStorage } from 'power-helper'
 
-export const useLocalStorage = () => {
-    const { service, stage, version } = useLibEnv()
+export const getLocalStorage = () => {
+    const { service, stage, version } = getLibEnv()
     const storage = new LocalStorage(`lib-${service}-${stage}`, {
         intercept: {
             get(key, value, { isDefault, defaultValue }) {
@@ -30,8 +30,8 @@ export const useLocalStorage = () => {
     return storage
 }
 
-export const usePersistDataStorage = () => {
-    const { service, stage, version } = useLibEnv()
+export const getPersistDataStorage = () => {
+    const { service, stage, version } = getLibEnv()
     const storage = new LocalStorage(`lib-pd-${service}-${stage}`, {
         storageSystem: sessionStorage,
         intercept: {

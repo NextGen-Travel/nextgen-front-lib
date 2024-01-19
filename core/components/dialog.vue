@@ -1,0 +1,169 @@
+<template>
+    <div>
+        <slot name="active" :switch-show="switchShow"></slot>
+        <v-dialog
+            v-model="state.show"
+            :width="fullscreen ? undefined : '90vw'"
+            :max-width="fullscreen ? undefined : maxWidth"
+            :persistent="loading || persistent"
+            :fullscreen="fullscreen">
+            <v-card v-if="state.show">
+                <OverlayLoading :z-index="502" :model-value="loading"></OverlayLoading>
+                <div
+                    v-for="i in 2" :key="i"
+                    class="w-100"
+                    style="background: rgb(var(--v-theme-surface))"
+                    :class="{
+                        'ng-component-dialog': i === 1,
+                        'ng-component-dialog-fake': i === 2
+                    }">
+                    <v-row v-if="!hideHeader" class="px-3 py-1" style="min-height: 56px;" no-gutters align="center">
+                        <h3 v-if="title">{{ title }}</h3>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            v-if="!hideClose && !self.hasSlot('actions')"
+                            variant="plain"
+                            icon="mdi-close"
+                            :disabled="loading"
+                            @click="state.show = false">
+                        </v-btn>
+                        <slot name="actions" :switch-show="switchShow"></slot>
+                    </v-row>
+                    <v-divider v-if="!hideHeader"></v-divider>
+                </div>
+                <div class="pa-3">
+                    <slot :switch-show="switchShow"></slot>
+                </div>
+                <slot name="footer"></slot>
+            </v-card>
+        </v-dialog>
+    </div>
+</template>
+
+<script lang="ts" setup>
+import OverlayLoading from './overlay-loading.vue'
+import { useSelf } from '../composables/self'
+import { PropType, reactive, watch, onMounted } from 'vue'
+
+const self = useSelf()
+
+// =================
+//
+// defined
+//
+
+const props = defineProps({
+    fullscreen: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
+    },
+    persistent: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
+    },
+    maxWidth: {
+        type: String as PropType<string>,
+        required: false,
+        default: () => '480px'
+    },
+    hideHeader: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
+    title: {
+        type: String as PropType<string>,
+        required: false,
+        default: () => null
+    },
+    modelValue: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => null
+    },
+    hideClose: {
+        type: Boolean,
+        required: false,
+        default: () => false
+    },
+    loading: {
+        type: Boolean as PropType<boolean>,
+        required: false,
+        default: () => false
+    }
+})
+
+const emit = defineEmits({
+    'open': () => true,
+    'close': () => true,
+    'update:modelValue': (_value: boolean) => true
+})
+
+// =================
+//
+// state
+//
+
+const state = reactive({
+    show: false
+})
+
+// =================
+//
+// watch
+//
+
+watch(() => state.show, () => {
+    if (state.show !== props.modelValue) {
+        emit('update:modelValue', state.show)
+        emitStatus()
+    }
+})
+
+watch(() => props.modelValue, () => {
+    if (state.show !== props.modelValue) {
+        state.show = !!props.modelValue
+        emitStatus()
+    }
+})
+
+// =================
+//
+// mounted
+//
+
+onMounted(() => {
+    state.show = !!props.modelValue
+})
+
+// =================
+//
+// metohds
+//
+
+const emitStatus = () => {
+    if (state.show) {
+        emit('open')
+    } else {
+        emit('close')
+    }
+}
+
+const switchShow = () => {
+    state.show = !state.show
+}
+
+</script>
+
+<style>
+    .ng-component-dialog {
+        position: fixed;
+        z-index: 500;
+    }
+    .ng-component-dialog-fake {
+        visibility: hidden;
+        pointer-events: none;
+    }
+</style>

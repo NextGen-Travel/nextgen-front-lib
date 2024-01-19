@@ -1,5 +1,5 @@
 import { element, Event } from 'power-helper'
-import { serviceException } from '../../../core/error'
+import { serviceException } from '../../exception'
 
 type AppleConfig = {
     clientId: string

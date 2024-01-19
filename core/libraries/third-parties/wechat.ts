@@ -1,5 +1,5 @@
 import { element } from 'power-helper'
-import { serviceException } from '../../../core/error'
+import { serviceException } from '../../exception'
 
 type WechatConfig = {
     appId: string

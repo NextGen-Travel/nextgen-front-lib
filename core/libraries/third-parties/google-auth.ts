@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import jwtDecode from 'jwt-decode'
-import { serviceException } from '../../error'
+import { serviceException } from '../../exception'
 import { detect, Event, element } from 'power-helper'
 
 type GoogleConfig = {

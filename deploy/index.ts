@@ -1,8 +1,9 @@
 import inquirer from 'inquirer'
 import simpleGit from 'simple-git'
 import { exec, log } from './tools'
+import { flow } from 'power-helper'
 
-const main = async() => {
+flow.run(async() => {
     const git = simpleGit()
     const print = log.print.bind(log)
     const { current } = await git.branch()
@@ -36,6 +37,4 @@ const main = async() => {
     print('部署完成。')
     print(`可引用： { "nextgen-front-lib": "git+https://github.com/NextGen-Travel/nextgen-front-lib.git#${current}" }`)
     print('或是透過升級： yarn upgrade nextgen-front-lib')
-}
-
-main()
+})

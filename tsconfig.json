@@ -15,6 +15,12 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "types": [
+      "@amap/amap-jsapi-types",
+      "@types/google.maps",
+      "@types/apple-signin-api",
+      "@types/facebook-js-sdk",
+      "@types/google.accounts",
+      "@types/node",
       "vuetify"
     ],
     "lib": [
@@ -28,6 +34,6 @@
     "core/**/*.d.ts",
     "core/**/*.tsx",
     "core/**/*.vue",
-    "types/**/*.d.ts"
+    "./shims.d.ts"
   ]
 }
