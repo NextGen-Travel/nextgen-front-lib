@@ -2,10 +2,10 @@
   "name": "nextgen-front-lib",
   "version": "3.0.0",
   "description": "lib.",
-  "main": "./index.js",
+  "main": "./dists/index.js",
   "types": "./types",
   "scripts": {
-    "test": "eslint core/** && vue-tsc --noEmit",
+    "test": "eslint --quiet core/** && vue-tsc --noEmit",
     "build": "ts-node ./deploy/build.ts",
     "deploy": "npm run build && ts-node ./deploy/index.ts",
     "sync:types": "nextgen-front-lib sync-request-types ./request-types"

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import './index.scss'
 import './components'
 import 'v-calendar/dist/style.css'
