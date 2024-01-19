@@ -6,13 +6,15 @@
     "moduleResolution": "Node",
     "strict": true,
     "declaration": true,
-    "outDir": "types-vue",
     "noEmit": false,
     "baseUrl": ".",
-    "rootDir": ".",
+    "rootDir": "./core",
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "isolatedModules": true,
+    "jsxImportSource": "vue",
+    "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "types": [
       "@amap/amap-jsapi-types",
@@ -33,7 +35,6 @@
     "core/**/*.ts",
     "core/**/*.d.ts",
     "core/**/*.tsx",
-    "core/**/*.vue",
-    "./shims.d.ts"
+    "core/**/*.vue"
   ]
 }
