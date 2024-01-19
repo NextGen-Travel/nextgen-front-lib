@@ -136,7 +136,7 @@ export declare class Request<ApisDefinition extends Record<ToFormat, DefinedForm
     mock<T extends keyof ApisDefinition>(to: T, response: (_ctx: RequestContext) => Extract<ApisDefinition[T], DefinedFormat>['response']): void;
     export(): Request<ApisDefinition>['http'];
     exportKeep(): Request<ApisDefinition>['http'];
-    httpKeepAlive<T extends keyof ApisDefinition>(to: T, params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']>;
+    httpKeepAlive<T extends keyof ApisDefinition>(to: Extract<T, `get@${string}`>, params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']>;
     http<T extends keyof ApisDefinition>(to: T, params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']>;
 }
 export {};

@@ -219,7 +219,7 @@ export class Request<
     }
 
     async httpKeepAlive<T extends keyof ApisDefinition>(
-        to: T,
+        to: Extract<T, `get@${string}`>,
         params: QueryParams<Extract<T, ToFormat>, Extract<ApisDefinition[T], DefinedFormat>>
     ): Promise<Extract<ApisDefinition[T], DefinedFormat>['response']> {
         const result = await this.cache.get({
