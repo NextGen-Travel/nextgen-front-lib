@@ -33242,7 +33242,8 @@ const Gae = (e) => () => {
       ...a,
       id: pn.createUuid(),
       duration: 0,
-      stopped: a.type === "danger"
+      clicked: a.type === "danger",
+      onClick: () => ""
     });
   }, r = () => {
     e.messages = e.messages.filter((a) => a.duration <= 100);

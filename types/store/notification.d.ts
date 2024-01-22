@@ -2,9 +2,10 @@ export type MessageType = 'info' | 'warning' | 'danger' | 'success';
 export type Message = {
     id: string;
     type: MessageType;
-    stopped: boolean;
     content: string;
     duration: number;
+    clicked: boolean;
+    onClick: () => void;
 };
 export declare const createNotificationStore: () => () => {
     push: (params: {
@@ -16,9 +17,10 @@ export declare const createNotificationStore: () => () => {
         messages: {
             id: string;
             type: MessageType;
-            stopped: boolean;
             content: string;
             duration: number;
+            clicked: boolean;
+            onClick: () => void;
         }[];
     }>;
     clear: () => void;
@@ -26,17 +28,19 @@ export declare const createNotificationStore: () => () => {
         messages: {
             id: string;
             type: MessageType;
-            stopped: boolean;
             content: string;
             duration: number;
+            clicked: boolean;
+            onClick: () => void;
         }[];
     };
     messages: import("vue").ComputedRef<{
         id: string;
         type: MessageType;
-        stopped: boolean;
         content: string;
         duration: number;
+        clicked: boolean;
+        onClick: () => void;
     }[]>;
 };
 export declare const notificationStoreToActions: (useStore: () => any) => {

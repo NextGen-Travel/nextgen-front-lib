@@ -330,9 +330,10 @@ export declare const LibStores: {
             messages: {
                 id: string;
                 type: import("./store/notification").MessageType;
-                stopped: boolean;
                 content: string;
                 duration: number;
+                clicked: boolean;
+                onClick: () => void;
             }[];
         }>;
         clear: () => void;
@@ -340,17 +341,19 @@ export declare const LibStores: {
             messages: {
                 id: string;
                 type: import("./store/notification").MessageType;
-                stopped: boolean;
                 content: string;
                 duration: number;
+                clicked: boolean;
+                onClick: () => void;
             }[];
         };
         messages: import("vue").ComputedRef<{
             id: string;
             type: import("./store/notification").MessageType;
-            stopped: boolean;
             content: string;
             duration: number;
+            clicked: boolean;
+            onClick: () => void;
         }[]>;
     };
     confirmStoreToActions: (useStore: () => any) => {

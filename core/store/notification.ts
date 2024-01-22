@@ -6,9 +6,10 @@ export type MessageType = 'info' | 'warning' | 'danger' | 'success'
 export type Message = {
     id: string
     type: MessageType
-    stopped: boolean
     content: string
     duration: number
+    clicked: boolean
+    onClick: () => void
 }
 
 export const createNotificationStore = () => {
@@ -35,7 +36,8 @@ export const createNotificationStore = () => {
                 ...params,
                 id: flow.createUuid(),
                 duration: 0,
-                stopped: params.type === 'danger'
+                clicked: params.type === 'danger',
+                onClick: () => ''
             })
         }
     
