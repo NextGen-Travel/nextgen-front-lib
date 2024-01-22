@@ -8,6 +8,9 @@
                 <v-card-title>
                     {{ title }}
                 </v-card-title>
+                <v-card-text>
+                    {{ message }}
+                </v-card-text>
                 <v-card-actions class="pb-4 px-4">
                     <v-spacer></v-spacer>
                     <v-btn
