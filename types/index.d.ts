@@ -183,7 +183,7 @@ export declare const Utils: {
     };
 };
 export declare const Model: {
-    defineModel: <S extends Record<any, any>, R extends Record<any, any>>(params: {
+    define: <S extends Record<any, any>, R extends Record<any, any>>(params: {
         name: string;
         schema: () => S;
         mixin: (_data: {

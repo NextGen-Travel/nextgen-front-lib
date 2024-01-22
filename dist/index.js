@@ -35394,7 +35394,7 @@ const ece = (e) => () => {
     toHump: Uy
   }
 }, yce = {
-  defineModel: Lle,
+  define: Lle,
   defineSchema: Rle
 }, bce = {
   I18nPlus: Nle,

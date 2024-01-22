@@ -82,7 +82,7 @@ export const Utils = {
 // model
 import { defineModel, defineSchema } from './model'
 export const Model = {
-    defineModel,
+    define: defineModel,
     defineSchema
 }
 
