@@ -83,7 +83,7 @@ export const createConfirmStore = (params: {
     }
 }
 
-export const confirmStoreToActions = (useStore: ReturnType<typeof createConfirmStore>) => {
+export const confirmStoreToActions = (useStore: () => any) => {
     return {
         openConfirmPlus: (params: OpenParams) => {
             useStore().open(params)

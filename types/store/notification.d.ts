@@ -39,6 +39,6 @@ export declare const createNotificationStore: () => () => {
         duration: number;
     }[]>;
 };
-export declare const notificationStoreToActions: (useStore: ReturnType<typeof createNotificationStore>) => {
+export declare const notificationStoreToActions: (useStore: () => any) => {
     showToast: (type: MessageType, content: string) => void;
 };

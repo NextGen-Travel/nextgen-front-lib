@@ -352,65 +352,11 @@ export declare const LibStores: {
             duration: number;
         }[]>;
     };
-    confirmStoreToActions: (useStore: () => {
-        open: ({ message, handler, onReject }: import("./store/confirm").OpenParams) => void;
-        isOpen: import("vue").ComputedRef<boolean>;
-        props: import("vue").ComputedRef<{
-            title: string;
-            confirmText: string;
-            cancelText: string;
-            message: string;
-            isOpen: boolean;
-            clickCancel: () => void;
-            clickConfirm: (success: any) => void;
-        }>;
-        state: {
-            title: string;
-            confirmText: string;
-            cancelText: string;
-            isOpen: boolean;
-            message: string;
-            handler: (_success: (_state?: boolean | undefined) => void) => any;
-            onReject: (() => void) | undefined;
-        };
-        cancel: () => void;
-    }) => {
+    confirmStoreToActions: (useStore: () => any) => {
         openConfirmPlus: (params: import("./store/confirm").OpenParams) => void;
         openConfirm: (message: string, handler: (_success: (_state?: boolean | undefined) => void) => any, onReject?: (() => void) | undefined) => void;
     };
-    notificationStoreToActions: (useStore: () => {
-        push: (params: {
-            type: import("./store/notification").MessageType;
-            content: string;
-        }) => void;
-        props: import("vue").ComputedRef<{
-            onclear: () => void;
-            messages: {
-                id: string;
-                type: import("./store/notification").MessageType;
-                stopped: boolean;
-                content: string;
-                duration: number;
-            }[];
-        }>;
-        clear: () => void;
-        state: {
-            messages: {
-                id: string;
-                type: import("./store/notification").MessageType;
-                stopped: boolean;
-                content: string;
-                duration: number;
-            }[];
-        };
-        messages: import("vue").ComputedRef<{
-            id: string;
-            type: import("./store/notification").MessageType;
-            stopped: boolean;
-            content: string;
-            duration: number;
-        }[]>;
-    }) => {
+    notificationStoreToActions: (useStore: () => any) => {
         showToast: (type: import("./store/notification").MessageType, content: string) => void;
     };
 };

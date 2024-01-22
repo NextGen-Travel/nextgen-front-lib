@@ -71,7 +71,7 @@ export const createNotificationStore = () => {
     }    
 }
 
-export const notificationStoreToActions = (useStore: ReturnType<typeof createNotificationStore>) => {
+export const notificationStoreToActions = (useStore: () => any) => {
     return {
         showToast: (type: MessageType, content: string) => {
             useStore().push({

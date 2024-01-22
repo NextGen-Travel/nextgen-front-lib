@@ -32,7 +32,7 @@ export declare const createConfirmStore: (params: {
     };
     cancel: () => void;
 };
-export declare const confirmStoreToActions: (useStore: ReturnType<typeof createConfirmStore>) => {
+export declare const confirmStoreToActions: (useStore: () => any) => {
     openConfirmPlus: (params: OpenParams) => void;
     openConfirm: (message: string, handler: OpenParams['handler'], onReject?: () => void) => void;
 };
