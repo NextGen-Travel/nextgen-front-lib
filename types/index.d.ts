@@ -196,65 +196,73 @@ export declare const Model: {
     }) => {
         _ModelType: {
             d: import("vue").UnwrapNestedRefs<S>;
-            data: import("vue").UnwrapNestedRefs<S>;
-            diff: (target: S) => boolean;
-            clear: () => void;
-            reset: () => void;
-            event: import("power-helper/dist/modules/event").Event<{
+            m: {
+                raw: () => import("vue").UnwrapNestedRefs<S>;
+                diff: (target: S) => boolean;
+                clear: () => void;
+                reset: () => void;
+                commit: (newData: Partial<S>) => void;
+                assign: (newData: Partial<S>) => void;
+                rebuild: () => void;
+                isModified: () => boolean;
+            };
+            e: import("power-helper/dist/modules/event").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
-            commit: (newData: Partial<S>) => void;
-            assign: (newData: Partial<S>) => void;
-            rebuild: () => void;
-            isModified: () => boolean;
         } & R;
         _SchemaType: S;
-        use: () => {
+        gen: () => {
             d: import("vue").UnwrapNestedRefs<S>;
-            data: import("vue").UnwrapNestedRefs<S>;
-            diff: (target: S) => boolean;
-            clear: () => void;
-            reset: () => void;
-            event: import("power-helper/dist/modules/event").Event<{
+            m: {
+                raw: () => import("vue").UnwrapNestedRefs<S>;
+                diff: (target: S) => boolean;
+                clear: () => void;
+                reset: () => void;
+                commit: (newData: Partial<S>) => void;
+                assign: (newData: Partial<S>) => void;
+                rebuild: () => void;
+                isModified: () => boolean;
+            };
+            e: import("power-helper/dist/modules/event").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
-            commit: (newData: Partial<S>) => void;
-            assign: (newData: Partial<S>) => void;
-            rebuild: () => void;
-            isModified: () => boolean;
         } & R;
         from: (data?: S | undefined) => {
             d: import("vue").UnwrapNestedRefs<S>;
-            data: import("vue").UnwrapNestedRefs<S>;
-            diff: (target: S) => boolean;
-            clear: () => void;
-            reset: () => void;
-            event: import("power-helper/dist/modules/event").Event<{
+            m: {
+                raw: () => import("vue").UnwrapNestedRefs<S>;
+                diff: (target: S) => boolean;
+                clear: () => void;
+                reset: () => void;
+                commit: (newData: Partial<S>) => void;
+                assign: (newData: Partial<S>) => void;
+                rebuild: () => void;
+                isModified: () => boolean;
+            };
+            e: import("power-helper/dist/modules/event").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
-            commit: (newData: Partial<S>) => void;
-            assign: (newData: Partial<S>) => void;
-            rebuild: () => void;
-            isModified: () => boolean;
         } & R;
         raw: () => S;
         sync: (data: S, emit?: ((_data: S) => void) | undefined) => {
             d: import("vue").UnwrapNestedRefs<S>;
-            data: import("vue").UnwrapNestedRefs<S>;
-            diff: (target: S) => boolean;
-            clear: () => void;
-            reset: () => void;
-            event: import("power-helper/dist/modules/event").Event<{
+            m: {
+                raw: () => import("vue").UnwrapNestedRefs<S>;
+                diff: (target: S) => boolean;
+                clear: () => void;
+                reset: () => void;
+                commit: (newData: Partial<S>) => void;
+                assign: (newData: Partial<S>) => void;
+                rebuild: () => void;
+                isModified: () => boolean;
+            };
+            e: import("power-helper/dist/modules/event").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
-            commit: (newData: Partial<S>) => void;
-            assign: (newData: Partial<S>) => void;
-            rebuild: () => void;
-            isModified: () => boolean;
         } & R;
     };
     defineSchema: <D, T_1 extends () => D>(data: T_1) => T_1;

@@ -2,7 +2,6 @@
 
 import { reactive, watch } from 'vue'
 import { genStateManager } from '../mixins/state-manager'
-import { useListenerGroup } from '../composables/listener-group'
 import { Event, record, json } from 'power-helper'
 
 type Context<S> = {
@@ -23,7 +22,7 @@ export const defineModel = <
     schema: () => S
     mixin: (_data: Context<S>) => R
 }) => {
-    const use = () => {
+    const gen = () => {
         const data = reactive(params.schema())
         const oridata = params.schema()
         const stateManager = genStateManager()
@@ -86,10 +85,25 @@ export const defineModel = <
             event.emit('rebuild', {})
         }
 
+        const raw = () => {
+            return json.jpjs(data)
+        }
+
         // =================
         //
         // 輸出資料
         //
+
+        const methods = {
+            raw,
+            diff,
+            clear,
+            reset,
+            commit,
+            assign,
+            rebuild,
+            isModified
+        }
 
         const mixin = params.mixin({
             data,
@@ -104,15 +118,8 @@ export const defineModel = <
 
         return {
             d: data,
-            data,
-            diff,
-            clear,
-            reset,
-            event,
-            commit,
-            assign,
-            rebuild,
-            isModified,
+            m: methods,
+            e: event,
             ...mixin
         }
     }
@@ -120,7 +127,7 @@ export const defineModel = <
     /** 當有存在既有資料時可以進行轉換，例如 vuex */
 
     const from = (data?: S) => {
-        let model = use()
+        let model = gen()
         if (data) {
             model.commit(data)
         }
@@ -128,16 +135,15 @@ export const defineModel = <
     }
 
     return {
-        _ModelType: null as any as ReturnType<typeof use>,
+        _ModelType: null as any as ReturnType<typeof gen>,
         _SchemaType: null as any as S,
-        use,
+        gen,
         from,
         /** 只獲取 schema */
         raw: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data: S, emit?: (_data: S) => void) => {
             const model = from(data)
-            const listenerGroup = useListenerGroup()
 
             // =================
             //
@@ -145,23 +151,20 @@ export const defineModel = <
             //
 
             watch(() => data, () => {
-                if (model.diff(data)) {
-                    model.assign(data)
+                if (model.m.diff(data)) {
+                    model.m.assign(data)
                 }
             }, {
                 deep: true
             })
 
-            // =================
-            //
-            // listener
-            //
-
-            if (emit) {
-                listenerGroup.push([
-                    model.event.on('update', () => emit(model.data))
-                ])
-            }
+            watch(() => model.d, () => {
+                if (emit) {
+                    emit(model.d)
+                }
+            }, {
+                deep: true
+            })
 
             // =================
             //
