@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import { I18n } from 'power-helper'
-import { Locales } from '../../i18n'
+import { SupportLocale } from './index'
 
 const zhTW = {
     '只能為英文': '只能為英文',
@@ -10,7 +10,7 @@ const zhTW = {
     '必須為電子郵件': '必須為電子郵件'
 }
 
-const i18n = new I18n<Locales, keyof typeof zhTW>({
+const i18n = new I18n<SupportLocale, keyof typeof zhTW>({
     def: 'zh-TW',
     locales: {
         'zh-TW': zhTW,
@@ -31,56 +31,57 @@ const i18n = new I18n<Locales, keyof typeof zhTW>({
     }
 })
 
-const t = (key: keyof typeof zhTW) => i18n.key(key).get(window.__ng_config.libOptions.lang)
-
-export const BasicRules = {
-    text: {
-        handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
-            let schema = yup.string()
-            if (meta && meta.min != null) {
-                schema = schema.min(meta.min)
+export const getBasicRules = (locale: SupportLocale) => {
+    const t = (key: keyof typeof zhTW) => i18n.key(key).get(locale)
+    return {
+        text: {
+            handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
+                let schema = yup.string()
+                if (meta && meta.min != null) {
+                    schema = schema.min(meta.min)
+                }
+                if (meta && meta.max != null) {
+                    schema = schema.max(meta.max)
+                }
+                return schema
             }
-            if (meta && meta.max != null) {
-                schema = schema.max(meta.max)
+        },
+        number: {
+            handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
+                let schema = yup.number()
+                if (meta && meta.min != null) {
+                    schema = schema.min(meta.min)
+                }
+                if (meta && meta.max != null) {
+                    schema = schema.max(meta.max)
+                }
+                return schema.typeError(t('必須為數字'))
             }
-            return schema
-        }
-    },
-    number: {
-        handler: (yup: typeof Yup, meta?: { min?: number, max?: number }) => {
-            let schema = yup.number()
-            if (meta && meta.min != null) {
-                schema = schema.min(meta.min)
+        },
+        enum: {
+            handler: (yup: typeof Yup, meta?: { keys: string[] }) => {
+                return yup.string().oneOf(meta?.keys || [])
             }
-            if (meta && meta.max != null) {
-                schema = schema.max(meta.max)
+        },
+        email: {
+            handler: (yup: typeof Yup) => {
+                return yup.string().trim().email(t('必須為電子郵件'))
             }
-            return schema.typeError(t('必須為數字'))
+        },
+        url: {
+            handler: (yup: typeof Yup) => {
+                return yup.string().trim().url(t('必須為網址'))
+            }
+        },
+        english: {
+            handler: (yup: typeof Yup) => {
+                return yup.string().trim().matches(/^[^\u4e00-\u9eff]+$/, t('只能為英文'))
+            }
+        },
+        excludeSpecialChars: {
+            handler: (yup: typeof Yup) => {
+                return yup.string().matches(/^[^()[\]{}<>+*/?"_\\|~`!@#$%^&=]*$/, t('不能含特殊字元'))
+            }
         }
-    },
-    enum: {
-        handler: (yup: typeof Yup, meta?: { keys: string[] }) => {
-            return yup.string().oneOf(meta?.keys || [])
-        }
-    },
-    email: {
-        handler: (yup: typeof Yup) => {
-            return yup.string().trim().email(t('必須為電子郵件'))
-        }
-    },
-    url: {
-        handler: (yup: typeof Yup) => {
-            return yup.string().trim().url(t('必須為網址'))
-        }
-    },
-    english: {
-        handler: (yup: typeof Yup) => {
-            return yup.string().trim().matches(/^[^\u4e00-\u9eff]+$/, t('只能為英文'))
-        }
-    },
-    excludeSpecialChars: {
-        handler: (yup: typeof Yup) => {
-            return yup.string().matches(/^[^()[\]{}<>+*/?"_\\|~`!@#$%^&=]*$/, t('不能含特殊字元'))
-        }
-    }
-} as const
+    } as const    
+}

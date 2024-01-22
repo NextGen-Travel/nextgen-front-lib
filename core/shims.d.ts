@@ -8,7 +8,6 @@ declare global {
         __ng_state: any
         __ng_config: {
             libOptions: {
-                lang: 'en-US' | 'zh-TW' | 'zh-CN'
                 staticUrl: string
                 notFoundImage: string | (() => string)
             },

@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import type { AnySchema } from 'yup';
+export type SupportLocale = 'zh-TW' | 'zh-CN' | 'en-US';
 type Rule = {
     required: boolean;
     handler: (_params: GetParams, _value: any) => string | true;
@@ -26,7 +27,7 @@ export type DefineRule = {
 };
 export declare class RuleProvider<T extends ProviderOptions> {
     options: ProviderOptions;
-    static getBasicRules(): {
+    static getBasicRules(locale?: SupportLocale): {
         readonly text: {
             readonly handler: (yup: typeof Yup, meta?: {
                 min?: number | undefined;

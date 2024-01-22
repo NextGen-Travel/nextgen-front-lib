@@ -2,7 +2,6 @@
 import './index.scss'
 import './components'
 import 'v-calendar/dist/style.css'
-import { i18n } from './i18n'
 import * as components from './components/index'
 import * as layouts from './layouts/index'
 
@@ -101,7 +100,11 @@ import { GoogleAuth } from './libraries/third-parties/google-auth'
 import { FacebookService } from './libraries/third-parties/facebook'
 import { WechatService } from './libraries/third-parties/wechat'
 import { NextgenMessageTrace } from './libraries/nextgen-trace'
+import { GoogleMap } from './libraries/maps/google'
+import { NgAMap } from './libraries/maps/amap'
 export const Libraries = {
+    NgAMap,
+    GoogleMap,
     AppleAuth,
     GoogleAuth,
     FacebookService,
@@ -126,7 +129,6 @@ export type * as NgTypes from './types'
 window.__ng_state = {}
 window.__ng_config = {
     libOptions: {
-        lang: 'en-US',
         staticUrl: '',
         notFoundImage: ''
     },
@@ -141,7 +143,6 @@ export * as NgComponents from './components/index'
 export * as NgLayoutComponents from './layouts/index'
 export const getLibOptions = () => window.__ng_config.libOptions
 export const getLibEnv = () => window.__ng_config.libEnv
-export const t = (key: string, params = {}) => i18n.key(key as any, params).get(window.__ng_config.libOptions.lang)
 export const NextgenLib = {
     setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => {
         for (let key in options) {

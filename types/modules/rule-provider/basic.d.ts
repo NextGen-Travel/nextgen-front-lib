@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-export declare const BasicRules: {
+import { SupportLocale } from './index';
+export declare const getBasicRules: (locale: SupportLocale) => {
     readonly text: {
         readonly handler: (yup: typeof Yup, meta?: {
             min?: number;

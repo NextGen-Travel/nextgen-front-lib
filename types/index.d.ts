@@ -280,7 +280,11 @@ import { GoogleAuth } from './libraries/third-parties/google-auth';
 import { FacebookService } from './libraries/third-parties/facebook';
 import { WechatService } from './libraries/third-parties/wechat';
 import { NextgenMessageTrace } from './libraries/nextgen-trace';
+import { GoogleMap } from './libraries/maps/google';
+import { NgAMap } from './libraries/maps/amap';
 export declare const Libraries: {
+    NgAMap: typeof NgAMap;
+    GoogleMap: typeof GoogleMap;
     AppleAuth: typeof AppleAuth;
     GoogleAuth: typeof GoogleAuth;
     FacebookService: typeof FacebookService;
@@ -414,7 +418,6 @@ export type * as NgTypes from './types';
 export * as NgComponents from './components/index';
 export * as NgLayoutComponents from './layouts/index';
 export declare const getLibOptions: () => {
-    lang: "en-US" | "zh-TW" | "zh-CN";
     staticUrl: string;
     notFoundImage: string | (() => string);
 };
@@ -423,7 +426,6 @@ export declare const getLibEnv: () => {
     stage: string;
     service: string;
 };
-export declare const t: (key: string, params?: {}) => string;
 export declare const NextgenLib: {
     setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => void;
     install(app: import('vue').App, params: {

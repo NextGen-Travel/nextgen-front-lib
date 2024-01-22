@@ -1,9 +1,11 @@
 import * as Yup from 'yup'
 import type { AnySchema } from 'yup'
-import { BasicRules } from './basic'
+import { getBasicRules } from './basic'
 import { serviceException } from '../../exception'
 
 const exception = serviceException.checkout('validate')
+
+export type SupportLocale = 'zh-TW' | 'zh-CN' | 'en-US'
 
 type Rule = {
     required: boolean
@@ -102,8 +104,8 @@ export class RuleProvider<T extends ProviderOptions> {
         requireMessage: () => 'required'
     }
 
-    static getBasicRules() {
-        return BasicRules
+    static getBasicRules(locale: SupportLocale = 'zh-TW') {
+        return getBasicRules(locale)
     }
 
     constructor(options: T) {
