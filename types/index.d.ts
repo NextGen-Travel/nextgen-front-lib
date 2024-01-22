@@ -1,6 +1,5 @@
 import './index.scss';
 import './components';
-import 'v-calendar/dist/style.css';
 export { useSelf } from './composables/self';
 export { useDebounce } from './composables/debounce';
 export { useListenerGroup } from './composables/listener-group';
