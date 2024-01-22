@@ -8,3 +8,5 @@ export type OutputFile = {
 export type UploadData = {
     files: OutputFile[]
 }
+
+export type * as Map from './libraries/maps/types'
