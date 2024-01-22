@@ -1,4 +1,4 @@
-export type { NextGenWorkerFrom } from './modules/worker'
+export type { NextgenWorkerFrom } from './modules/nextgen-worker'
 
 export type OutputFile = {
     url: string | ArrayBuffer | null

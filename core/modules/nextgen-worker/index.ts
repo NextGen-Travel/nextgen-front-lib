@@ -8,8 +8,8 @@ type MessageContext = {
     error?: any
 }
 
-export type NextGenWorkerFrom<
-    T extends ReturnType<typeof NextGenWorker.define>,
+export type NextgenWorkerFrom<
+    T extends ReturnType<typeof NextgenWorker.define>,
     E extends Event<any> = T['_event'],
     M extends Record<string, (..._args: any[]) => Promise<any>> = T['_methods']
 > = {
@@ -18,7 +18,7 @@ export type NextGenWorkerFrom<
     terminate: () => void
 }
 
-export class NextGenWorker {
+export class NextgenWorker {
     static inWorker() {
         if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
             return true
@@ -30,7 +30,7 @@ export class NextGenWorker {
         E extends Event<any>,
         M extends Record<string, (..._args: any[]) => Promise<any>>
     >(cb: (_event: E) => M) {
-        if (NextGenWorker.inWorker()) {
+        if (NextgenWorker.inWorker()) {
             const jobsQueue = new JobsQueue({
                 concurrentExecutions: 1
             })
@@ -97,7 +97,7 @@ export class NextGenWorker {
         }
     }
     static from<
-        T extends ReturnType<typeof NextGenWorker.define>,
+        T extends ReturnType<typeof NextgenWorker.define>,
         E extends Event<any> = T['_event'],
         M extends Record<string, (..._args: any[]) => Promise<any>> = T['_methods']
     >(workerInstance: Worker | (new () => Worker)) {

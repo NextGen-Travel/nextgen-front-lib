@@ -21,9 +21,10 @@ import { Camera } from './modules/camera'
 import { Graphql } from './modules/graphql'
 import { Request } from './modules/request'
 import { CryptoAES } from './modules/crypto'
+import { NextgenMessageTrace } from './modules/nextgen-trace'
 import { RuleProvider } from './modules/rule-provider'
-import { NextGenWorker } from './modules/worker'
-import { NextInteraction } from './modules/next-interaction'
+import { NextgenWorker } from './modules/nextgen-worker'
+import { NextgenInteraction } from './modules/nextgen-interaction'
 import { PersistState } from './modules/persist-state'
 import { QuerySync } from './modules/query-sync'
 export const Modules = {
@@ -33,8 +34,9 @@ export const Modules = {
     Request,
     RuleProvider,
     PersistState,
-    NextGenWorker,
-    NextInteraction,
+    NextgenWorker,
+    NextgenInteraction,
+    NextgenMessageTrace,
     QuerySync
 }
 
@@ -99,7 +101,6 @@ import { AppleAuth } from './libraries/third-parties/apple-auth'
 import { GoogleAuth } from './libraries/third-parties/google-auth'
 import { FacebookService } from './libraries/third-parties/facebook'
 import { WechatService } from './libraries/third-parties/wechat'
-import { NextgenMessageTrace } from './libraries/nextgen-trace'
 import { GoogleMap } from './libraries/maps/google'
 import { NgAMap } from './libraries/maps/amap'
 export const Libraries = {

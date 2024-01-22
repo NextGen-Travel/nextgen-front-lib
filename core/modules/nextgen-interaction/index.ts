@@ -2,7 +2,7 @@ import { getLibEnv } from '../../index'
 import { Interaction } from 'power-helper'
 import { parseMessage } from '../../utils/message'
 
-export class NextInteraction extends Interaction {
+export class NextgenInteraction extends Interaction {
     constructor() {
         super({
             name: 'root',
