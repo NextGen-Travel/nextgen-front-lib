@@ -33264,6 +33264,12 @@ const Gae = (e) => () => {
       type: t,
       content: r
     });
+  },
+  pushNotification: (t) => {
+    e().push({
+      ...t,
+      onClick: t.onClick || (() => null)
+    });
   }
 }), fse = {
   Camera: ol,

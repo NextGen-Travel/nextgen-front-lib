@@ -41,4 +41,9 @@ export declare const createNotificationStore: () => () => {
 };
 export declare const notificationStoreToActions: (useStore: () => any) => {
     showToast: (type: MessageType, content: string) => void;
+    pushNotification: (options: {
+        type: 'info' | 'warning' | 'danger' | 'success';
+        content: string;
+        onClick?: () => void;
+    }) => void;
 };

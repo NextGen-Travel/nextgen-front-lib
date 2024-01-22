@@ -78,6 +78,17 @@ export const notificationStoreToActions = (useStore: () => any) => {
                 type,
                 content
             })
-        }    
+        },
+        pushNotification: (options: {
+            type: 'info' | 'warning' | 'danger' | 'success'
+            content: string
+            onClick?: () => void
+        }) => {
+            const store = useStore()
+            store.push({
+                ...options,
+                onClick: options.onClick || (() => null)
+            })
+        }
     }
 }

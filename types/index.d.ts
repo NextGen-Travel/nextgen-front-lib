@@ -360,6 +360,11 @@ export declare const LibStores: {
     };
     notificationStoreToActions: (useStore: () => any) => {
         showToast: (type: import("./store/notification").MessageType, content: string) => void;
+        pushNotification: (options: {
+            type: "info" | "warning" | "danger" | "success";
+            content: string;
+            onClick?: (() => void) | undefined;
+        }) => void;
     };
 };
 export type * as NgTypes from './types';
