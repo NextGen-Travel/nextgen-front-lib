@@ -31010,7 +31010,7 @@ const m2 = new Ex({
     use: t,
     from: r,
     /** 只獲取 schema */
-    row: () => e.schema(),
+    raw: () => e.schema(),
     /** 同步監聽資料變化 */
     sync: (n, i) => {
       const a = r(n), s = Aj();

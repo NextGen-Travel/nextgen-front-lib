@@ -240,7 +240,7 @@ export declare const Model: {
             rebuild: () => void;
             isModified: () => boolean;
         } & R;
-        row: () => S;
+        raw: () => S;
         sync: (data: S, emit?: ((_data: S) => void) | undefined) => {
             d: import("vue").UnwrapNestedRefs<S>;
             data: import("vue").UnwrapNestedRefs<S>;

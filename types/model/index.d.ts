@@ -60,7 +60,7 @@ export declare const defineModel: <S extends Record<any, any>, R extends Record<
         isModified: () => boolean;
     } & R;
     /** 只獲取 schema */
-    row: () => S;
+    raw: () => S;
     /** 同步監聽資料變化 */
     sync: (data: S, emit?: ((_data: S) => void) | undefined) => {
         d: import("vue").UnwrapNestedRefs<S>;

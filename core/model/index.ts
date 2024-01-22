@@ -133,7 +133,7 @@ export const defineModel = <
         use,
         from,
         /** 只獲取 schema */
-        row: () => params.schema(),
+        raw: () => params.schema(),
         /** 同步監聽資料變化 */
         sync: (data: S, emit?: (_data: S) => void) => {
             const model = from(data)
