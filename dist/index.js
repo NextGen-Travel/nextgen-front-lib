@@ -33230,6 +33230,10 @@ const Gae = (e) => () => {
       handler: r,
       onReject: n
     });
+  },
+  isCheckingConfirm: () => e().isOpen,
+  cancelConfirm: () => {
+    e().cancel();
   }
 }), Zae = () => () => {
   const e = Ce({

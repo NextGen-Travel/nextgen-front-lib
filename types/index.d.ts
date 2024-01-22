@@ -355,6 +355,8 @@ export declare const LibStores: {
     confirmStoreToActions: (useStore: () => any) => {
         openConfirmPlus: (params: import("./store/confirm").OpenParams) => void;
         openConfirm: (message: string, handler: (_success: (_state?: boolean | undefined) => void) => any, onReject?: (() => void) | undefined) => void;
+        isCheckingConfirm: () => any;
+        cancelConfirm: () => void;
     };
     notificationStoreToActions: (useStore: () => any) => {
         showToast: (type: import("./store/notification").MessageType, content: string) => void;

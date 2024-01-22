@@ -94,6 +94,12 @@ export const confirmStoreToActions = (useStore: () => any) => {
                 handler,
                 onReject
             })
-        }        
+        },
+        isCheckingConfirm: () => {
+            return useStore().isOpen
+        },
+        cancelConfirm: () => {
+            useStore().cancel()
+        } 
     }
 }

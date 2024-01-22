@@ -35,5 +35,7 @@ export declare const createConfirmStore: (params: {
 export declare const confirmStoreToActions: (useStore: () => any) => {
     openConfirmPlus: (params: OpenParams) => void;
     openConfirm: (message: string, handler: OpenParams['handler'], onReject?: () => void) => void;
+    isCheckingConfirm: () => any;
+    cancelConfirm: () => void;
 };
 export {};
