@@ -281,7 +281,6 @@ export declare const Model: {
 import { I18nPlus } from './vue-extends/i18n-plus';
 import { RouterPlus } from './vue-extends/router-plus';
 export { NextgenPiniaPlugin, createStoreLifeCycle } from './vue-extends/pinia-plus';
-export type { RouteMap, RouteMixin, Routes } from './vue-extends/router-plus';
 export declare const VueExtends: {
     I18nPlus: typeof I18nPlus;
     RouterPlus: typeof RouterPlus;
