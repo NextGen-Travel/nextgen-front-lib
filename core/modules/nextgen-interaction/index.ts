@@ -30,8 +30,4 @@ export class NextgenInteraction extends Interaction {
             }
         })
     }
-
-    use(stepName = '') {
-        return this.checkout(stepName)
-    }
 }

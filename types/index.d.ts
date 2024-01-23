@@ -189,6 +189,16 @@ export declare const Model: {
         mixin: (_data: {
             data: S;
             commit: (_newData: Partial<S>) => void;
+            methods: {
+                raw: () => Record<any, any>;
+                diff: (target: Record<any, any>) => boolean;
+                clear: () => void;
+                reset: () => void;
+                commit: (newData: Partial<Record<any, any>>) => void;
+                assign: (newData: Partial<Record<any, any>>) => void;
+                rebuild: () => void;
+                isModified: () => boolean;
+            };
             stateManager: {
                 reset: () => void;
                 create: <T extends Record<string, any>>(cb: () => T) => T;
@@ -284,12 +294,11 @@ import { GoogleMap } from './libraries/maps/google';
 import { NgAMap } from './libraries/maps/amap';
 export declare const Libraries: {
     NgAMap: typeof NgAMap;
-    GoogleMap: typeof GoogleMap;
     AppleAuth: typeof AppleAuth;
+    GoogleMap: typeof GoogleMap;
     GoogleAuth: typeof GoogleAuth;
     FacebookService: typeof FacebookService;
     WechatService: typeof WechatService;
-    NextgenMessageTrace: typeof NextgenMessageTrace;
 };
 export declare const LibStores: {
     createConfirmStore: (params: {

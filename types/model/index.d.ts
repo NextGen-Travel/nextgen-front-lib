@@ -2,6 +2,7 @@ import { genStateManager } from '../mixins/state-manager';
 type Context<S> = {
     data: S;
     commit: (_newData: Partial<S>) => void;
+    methods: ReturnType<ReturnType<typeof defineModel>['gen']>['m'];
     stateManager: ReturnType<typeof genStateManager>;
 };
 export type ModelType<T extends {

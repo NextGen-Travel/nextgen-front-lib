@@ -7,6 +7,7 @@ import { Event, record, json } from 'power-helper'
 type Context<S> = {
     data: S
     commit: (_newData: Partial<S>) => void
+    methods: ReturnType<ReturnType<typeof defineModel>['gen']>['m']
     stateManager: ReturnType<typeof genStateManager>
 }
 
@@ -108,6 +109,7 @@ export const defineModel = <
         const mixin = params.mixin({
             data,
             commit,
+            methods,
             stateManager
         })
 

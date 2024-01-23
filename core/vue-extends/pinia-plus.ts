@@ -3,24 +3,24 @@ import { reactive, onUnmounted } from 'vue'
 
 declare module 'pinia' {
     export interface PiniaCustomProperties {
-        $build: () => (() => Promise<void>)
         $destroy: () => void
-        $install: () => Promise<void>
+        $install: (_data: any) => Promise<void>
+        $useInstall: (_data: any) => () => Promise<void>
     }
 }
 
 export const NextgenPiniaPlugin: PiniaPlugin = ({ store, pinia }) => {
-    store.$build = () => {
+    store.$useInstall = (data?: any) => {
         onUnmounted(() => {
             store.$destroy()
         })
         return async() => {
-            await store.$install()
+            await store.$install(data)
         }
     }
-    store.$install = async() => {
+    store.$install = async(data) => {
         if (store.__runInstall) {
-            await store.__runInstall()
+            await store.__runInstall(data)
         }
     }
     store.$destroy = () => {
@@ -32,10 +32,10 @@ export const NextgenPiniaPlugin: PiniaPlugin = ({ store, pinia }) => {
     }
 }
 
-export const createStoreLifeCycle = () => {
+export const createStoreLifeCycle = <D>() => {
     const state = reactive({
         isDestroyed: false,
-        installStack: [] as (() => Promise<void>)[],
+        installStack: [] as ((_data: any) => Promise<void>)[],
         destroyStack: [] as (() => void)[]
     })
     return {
@@ -51,10 +51,13 @@ export const createStoreLifeCycle = () => {
         isDestroyed: () => {
             return state.isDestroyed
         },
-        getOutput: <T>(data: T): T => {
+        genOutput: <T>(data: T): T & {
+            $install: (_data: D extends never ? never : D) => Promise<void>
+            $useInstall: (_data: D extends never ? never : D) => () => Promise<void>
+        } => {
             return Object.assign(data as any, {
-                __runInstall: async () => {
-                    await Promise.all(state.installStack.map(cb => cb()))
+                __runInstall: async (initData: any) => {
+                    await Promise.all(state.installStack.map(cb => cb(initData)))
                 },
                 __runDestroy: () => {
                     state.isDestroyed = true

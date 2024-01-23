@@ -105,12 +105,11 @@ import { GoogleMap } from './libraries/maps/google'
 import { NgAMap } from './libraries/maps/amap'
 export const Libraries = {
     NgAMap,
-    GoogleMap,
     AppleAuth,
+    GoogleMap,
     GoogleAuth,
     FacebookService,
-    WechatService,
-    NextgenMessageTrace
+    WechatService
 }
 
 // store

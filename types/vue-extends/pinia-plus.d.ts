@@ -1,16 +1,19 @@
 import { PiniaPlugin } from 'pinia';
 declare module 'pinia' {
     interface PiniaCustomProperties {
-        $build: () => (() => Promise<void>);
         $destroy: () => void;
-        $install: () => Promise<void>;
+        $install: (_data: any) => Promise<void>;
+        $useInstall: (_data: any) => () => Promise<void>;
     }
 }
 export declare const NextgenPiniaPlugin: PiniaPlugin;
-export declare const createStoreLifeCycle: () => {
+export declare const createStoreLifeCycle: <D>() => {
     onInstall: (cb: () => Promise<void>) => void;
     onDestroy: (cb: () => void) => void;
     isAlive: () => boolean;
     isDestroyed: () => boolean;
-    getOutput: <T>(data: T) => T;
+    genOutput: <T>(data: T) => T & {
+        $install: (_data: D extends never ? never : D) => Promise<void>;
+        $useInstall: (_data: D extends never ? never : D) => () => Promise<void>;
+    };
 };
