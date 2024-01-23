@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import 'highlight.js/styles/github.css'
-import xss from 'xss'
+import xss, { getDefaultWhiteList } from 'xss'
 import css from 'highlight.js/lib/languages/css'
 import hljs from 'highlight.js/lib/core'
 import html from 'highlight.js/lib/languages/xml'
@@ -92,8 +92,6 @@ const render = async() => {
         renderer.code = (code, lang) => {
             const validLanguage = lang && hljs.getLanguage(lang)
             const highlightedCode = validLanguage ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value
-            console.log(lang)
-            console.log('CCC', `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`)
             return `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`
         }
         renderer.heading = (text, level, raw) => {
@@ -102,11 +100,17 @@ const render = async() => {
         const text = await marked(props.content, {
             renderer
         })
+        const whiteList = getDefaultWhiteList()
+        if (whiteList.code == null) {
+            whiteList.code = []
+        }
+        if (whiteList.span == null) {
+            whiteList.span = []
+        }
+        whiteList.code.push('class')
+        whiteList.span.push('class')
         state.content = xss(text, {
-            whiteList: {
-                code: ['class'],
-                span: ['class']
-            }
+            whiteList
         })
     } else {
         state.content = xss(props.content)
