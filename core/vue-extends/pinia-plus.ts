@@ -5,12 +5,12 @@ declare module 'pinia' {
     export interface PiniaCustomProperties {
         $destroy: () => void
         $install: (_data: any) => Promise<void>
-        $useInstall: (_data: any) => () => Promise<void>
+        $useSetup: (_data: any) => () => Promise<void>
     }
 }
 
 export const NextgenPiniaPlugin: PiniaPlugin = ({ store, pinia }) => {
-    store.$useInstall = (data?: any) => {
+    store.$useSetup = (data?: any) => {
         onUnmounted(() => {
             store.$destroy()
         })
@@ -53,7 +53,7 @@ export const createStoreLifeCycle = <D>() => {
         },
         genOutput: <T>(data: T): T & {
             $install: (_data: D extends never ? never : D) => Promise<void>
-            $useInstall: (_data: D extends never ? never : D) => () => Promise<void>
+            $useSetup: (_data: D extends never ? never : D) => () => Promise<void>
         } => {
             return Object.assign(data as any, {
                 __runInstall: async (initData: any) => {

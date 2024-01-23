@@ -3,7 +3,7 @@ declare module 'pinia' {
     interface PiniaCustomProperties {
         $destroy: () => void;
         $install: (_data: any) => Promise<void>;
-        $useInstall: (_data: any) => () => Promise<void>;
+        $useSetup: (_data: any) => () => Promise<void>;
     }
 }
 export declare const NextgenPiniaPlugin: PiniaPlugin;
@@ -14,6 +14,6 @@ export declare const createStoreLifeCycle: <D>() => {
     isDestroyed: () => boolean;
     genOutput: <T>(data: T) => T & {
         $install: (_data: D extends never ? never : D) => Promise<void>;
-        $useInstall: (_data: D extends never ? never : D) => () => Promise<void>;
+        $useSetup: (_data: D extends never ? never : D) => () => Promise<void>;
     };
 };

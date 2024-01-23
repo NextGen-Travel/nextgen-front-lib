@@ -10,6 +10,7 @@
 
 <script lang="ts" setup>
 import xss from 'xss'
+import hljs from 'highlight.js/lib/core'
 import { marked, Renderer } from 'marked'
 import { watch, onMounted, reactive, PropType } from 'vue'
 
@@ -81,10 +82,9 @@ const render = async() => {
                 .replace(/^-+|-+$/g, '')
         }
         renderer.code = (code, lang) => {
-            if (props.langRender) {
-                return props.langRender(code, lang || '')
-            }
-            return `<pre><code class="language-${lang}">${code}</code></pre>`
+            const validLanguage = lang && hljs.getLanguage(lang);
+            const highlightedCode = validLanguage ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value
+            return `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`
         }
         renderer.heading = (text, level, raw) => {
             return `<h${level} style="scroll-margin-top: 128px" id="${slugify(raw)}">${text}</h${level}>\n`
