@@ -1,14 +1,6 @@
 // eslint-disable-next-line
 import './index.scss'
 import './components'
-import hljs from 'highlight.js/lib/core'
-import javascript from 'highlight.js/lib/languages/javascript'
-import html from 'highlight.js/lib/languages/xml'
-import css from 'highlight.js/lib/languages/css'
-
-hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('html', html)
-hljs.registerLanguage('css', css)
 
 import * as components from './components/index'
 import * as layouts from './layouts/index'

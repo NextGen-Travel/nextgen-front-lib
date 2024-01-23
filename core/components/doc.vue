@@ -9,10 +9,18 @@
 </template>
 
 <script lang="ts" setup>
+import 'highlight.js/styles/github.css'
 import xss from 'xss'
+import css from 'highlight.js/lib/languages/css'
 import hljs from 'highlight.js/lib/core'
+import html from 'highlight.js/lib/languages/xml'
+import javascript from 'highlight.js/lib/languages/javascript'
 import { marked, Renderer } from 'marked'
 import { watch, onMounted, reactive, PropType } from 'vue'
+
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('html', html)
+hljs.registerLanguage('css', css)
 
 // =================
 //
@@ -82,7 +90,7 @@ const render = async() => {
                 .replace(/^-+|-+$/g, '')
         }
         renderer.code = (code, lang) => {
-            const validLanguage = lang && hljs.getLanguage(lang);
+            const validLanguage = lang && hljs.getLanguage(lang)
             const highlightedCode = validLanguage ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value
             return `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`
         }
