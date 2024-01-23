@@ -101,7 +101,12 @@ const render = async() => {
         const text = await marked(props.content, {
             renderer
         })
-        state.content = xss(text)
+        state.content = xss(text, {
+            whiteList: {
+                code: ['class'],
+                span: ['class']
+            }
+        })
     } else {
         state.content = xss(props.content)
     }
