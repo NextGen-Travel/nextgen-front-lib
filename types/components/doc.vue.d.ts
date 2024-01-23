@@ -1,4 +1,3 @@
-import 'highlight.js/styles/github.css';
 import { PropType } from 'vue';
 declare const _default: import("vue").DefineComponent<{
     content: {
