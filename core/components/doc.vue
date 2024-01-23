@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts" setup>
+import 'highlight.js/styles/github.css'
 import xss from 'xss'
 import css from 'highlight.js/lib/languages/css'
 import hljs from 'highlight.js/lib/core'
