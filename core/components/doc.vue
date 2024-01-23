@@ -91,6 +91,8 @@ const render = async() => {
         renderer.code = (code, lang) => {
             const validLanguage = lang && hljs.getLanguage(lang)
             const highlightedCode = validLanguage ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value
+            console.log(lang)
+            console.log('CCC', `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`)
             return `<pre><code class="hljs ${validLanguage ? `language-${lang}` : ''}">${highlightedCode}</code></pre>`
         }
         renderer.heading = (text, level, raw) => {

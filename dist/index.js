@@ -20548,7 +20548,7 @@ const cW = { key: 0 }, uW = ["innerHTML"], fW = ["textContent"], dW = ["innerHTM
         const i = new ka(), s = (o) => o.toLowerCase().replace(/[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'<>,.?/]+/g, "-").replace(/^-+|-+$/g, "");
         i.code = (o, l) => {
           const c = l && Ei.getLanguage(l), u = c ? Ei.highlight(l, o).value : Ei.highlightAuto(o).value;
-          return `<pre><code class="hljs ${c ? `language-${l}` : ""}">${u}</code></pre>`;
+          return console.log(l), console.log("CCC", `<pre><code class="hljs ${c ? `language-${l}` : ""}">${u}</code></pre>`), `<pre><code class="hljs ${c ? `language-${l}` : ""}">${u}</code></pre>`;
         }, i.heading = (o, l, c) => `<h${l} style="scroll-margin-top: 128px" id="${s(c)}">${o}</h${l}>
 `;
         const a = await Ie(t.content, {
@@ -20574,7 +20574,7 @@ const cW = { key: 0 }, uW = ["innerHTML"], fW = ["textContent"], dW = ["innerHTM
       }, null, 8, dW)) : ve("", !0)
     ])) : ve("", !0);
   }
-}), pW = /* @__PURE__ */ Fn(hW, [["__scopeId", "data-v-8119d628"]]), em = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}), pW = /* @__PURE__ */ Fn(hW, [["__scopeId", "data-v-ce8caafb"]]), em = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   NgAni: o$,
   NgDatePicker: NB,
