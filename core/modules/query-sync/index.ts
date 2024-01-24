@@ -3,7 +3,7 @@ import { RouterPlus } from '../../vue-extends/router-plus'
 import { useDebounce } from '../../composables/debounce'
 import { Event, array } from 'power-helper'
 import { PersistState } from '../persist-state'
-import { Debounce, record } from 'power-helper'
+import { Debounce, record, JobsQueue } from 'power-helper'
 import { watch, onUnmounted, reactive } from 'vue'
 
 type Query = Record<string, undefined | null | string | string[]>
@@ -42,6 +42,9 @@ export class QuerySync {
         const ns = params.ns()
         const def = params.defs()
         const state = params.persist ? querySyncStateManager.create(ns, params.defs()) : reactive(params.defs())
+        const jobsQueue = new JobsQueue({
+            concurrentExecutions: 1
+        })
         const globState = {
             installed: false
         }
@@ -79,36 +82,40 @@ export class QuerySync {
             //
     
             const stateToQuery = () => {
-                const defs = params.defs()
-                const query: Record<string, undefined | string> = {}
-                for (let key in defs) {
-                    query[getKey(key)] = undefined
-                    let item = state[key]
-                    if (item == null) {
-                        continue
+                jobsQueue.push('', async() => {
+                    const defs = params.defs()
+                    const query: Record<string, undefined | string> = {}
+                    for (let key in defs) {
+                        query[getKey(key)] = undefined
+                        let item = state[key]
+                        if (item == null) {
+                            continue
+                        }
+                        if (item === defs[key]) {
+                            continue
+                        }
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
+                            continue
+                        }
+                        query[getKey(key)] = item as any
                     }
-                    if (item === defs[key]) {
-                        continue
-                    }
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
-                        continue
-                    }
-                    query[getKey(key)] = item as any
-                }
-                router.pushQuery(query)
+                    router.pushQuery(query)
+                })
             }
     
             const queryToState = (query: Query) => {
-                const queryData: any = {}
-                for (let key in query) {
-                    queryData[key.slice(`l-${ns}-`.length)] = query[key]
-                }
-                const newState = record.setMapValue(params.defs(), queryData)
-                if (record.simpleCheckDeepDiff(state, newState)) {
-                    Object.assign(state, newState)
-                }
+                jobsQueue.push('', async() => {
+                    const queryData: any = {}
+                    for (let key in query) {
+                        queryData[key.slice(`l-${ns}-`.length)] = query[key]
+                    }
+                    const newState = record.setMapValue(params.defs(), queryData)
+                    if (record.simpleCheckDeepDiff(state, newState)) {
+                        Object.assign(state, newState)
+                    }
+                })
             }
 
             queryToState(router.getCurrentRoute().query)
