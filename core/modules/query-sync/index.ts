@@ -101,7 +101,11 @@ export class QuerySync {
             }
     
             const queryToState = (query: Query) => {
-                const newState = record.setMapValue(params.defs(), query)
+                const queryData: any = {}
+                for (let key in query) {
+                    queryData[key.slice(`l-${ns}-`.length)] = query[key]
+                }
+                const newState = record.setMapValue(params.defs(), queryData)
                 if (record.simpleCheckDeepDiff(state, newState)) {
                     Object.assign(state, newState)
                 }
