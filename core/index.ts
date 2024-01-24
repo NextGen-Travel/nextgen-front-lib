@@ -5,6 +5,15 @@ import './components'
 import * as components from './components/index'
 import * as layouts from './layouts/index'
 
+// chart
+import { Chart, DoughnutController, LineController, PieController } from 'chart.js'
+
+Chart.register(
+    DoughnutController,
+    LineController,
+    PieController
+)
+
 // composables
 export { useSelf } from './composables/self'
 export { useDebounce } from './composables/debounce'

@@ -84,7 +84,6 @@ export class QuerySync {
                     const query: Record<string, undefined | string> = {}
                     for (let key in defs) {
                         query[getKey(key)] = undefined
-                        console.log('CCC', key, state[key], defs[key])
                         let item = state[key]
                         if (item == null) {
                             continue
