@@ -7,13 +7,14 @@
             :max-width="fullscreen ? undefined : maxWidth"
             :persistent="loading || persistent"
             :fullscreen="fullscreen">
-            <v-card v-if="state.show">
+            <v-card v-if="state.show" rounded="lg">
                 <OverlayLoading :z-index="502" :model-value="loading"></OverlayLoading>
                 <div
                     v-for="i in 2" :key="i"
                     class="w-100"
                     style="background: rgb(var(--v-theme-surface))"
                     :class="{
+                        'rounded-t-lg': true,
                         'ng-component-dialog': i === 1,
                         'ng-component-dialog-fake': i === 2
                     }">

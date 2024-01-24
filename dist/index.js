@@ -6960,7 +6960,10 @@ const i6 = {
           fullscreen: e.fullscreen
         }, {
           default: xe(() => [
-            s.show ? (z(), Oe(p, { key: 0 }, {
+            s.show ? (z(), Oe(p, {
+              key: 0,
+              rounded: "lg"
+            }, {
               default: xe(() => [
                 ae(ts, {
                   "z-index": 502,
@@ -6969,6 +6972,7 @@ const i6 = {
                 (z(), q(Ge, null, xt(2, (v) => ue("div", {
                   key: v,
                   class: Ie(["w-100", {
+                    "rounded-t-lg": !0,
                     "ng-component-dialog": v === 1,
                     "ng-component-dialog-fake": v === 2
                   }]),
