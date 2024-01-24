@@ -36406,7 +36406,7 @@ Y(P$, "define", (t) => {
         for (let _ in b) {
           x[l(_)] = void 0;
           let w = i[_];
-          w != null && w !== b[_] && (Array.isArray(w) && Array.isArray(b[_]) && w.join(",") === b[_].join(",") || (x[l(_)] = w));
+          w != null && w !== b[_] && (Array.isArray(w) && Array.isArray(b[_]) && w.slice().sort().join(",") === b[_].sort().join(",") || (x[l(_)] = w));
         }
         o.pushQuery(x);
       });

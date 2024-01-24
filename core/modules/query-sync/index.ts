@@ -96,7 +96,7 @@ export class QuerySync {
                         }
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
-                        if (Array.isArray(item) && Array.isArray(defs[key]) && item.join(',') === defs[key].join(',')) {
+                        if (Array.isArray(item) && Array.isArray(defs[key]) && item.slice().sort().join(',') === defs[key].sort().join(',')) {
                             continue
                         }
                         query[getKey(key)] = item as any
