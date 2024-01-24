@@ -108,11 +108,15 @@ export class QuerySync {
                     let route = router.getCurrentRoute()
                     if (route.query) {
                         const query = route.query
-                        const queryData: any = {}
-                        for (let key in query) {
-                            queryData[key.slice(`l-${ns}-`.length)] = query[key]
+                        const newState = params.defs()
+                        for (let key in newState) {
+                            const data = query[getKey(key)] = query[getKey(key)] ?? undefined
+                            if (data) {
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore
+                                newState[key] = data
+                            }
                         }
-                        const newState = record.setMapValue(params.defs(), queryData)
                         if (record.simpleCheckDeepDiff(state, newState)) {
                             Object.assign(state, newState)
                         }
