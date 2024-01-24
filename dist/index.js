@@ -36404,7 +36404,7 @@ Y(P$, "define", (t) => {
       s.push("", async () => {
         const b = t.defs(), x = {};
         for (let _ in b) {
-          x[l(_)] = void 0;
+          x[l(_)] = void 0, console.log("CCC", _, i[_], b[_]);
           let w = i[_];
           w != null && w !== b[_] && (Array.isArray(w) && Array.isArray(b[_]) && w.slice().sort().join(",") === b[_].sort().join(",") || (x[l(_)] = w));
         }
