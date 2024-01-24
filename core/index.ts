@@ -6,9 +6,11 @@ import * as components from './components/index'
 import * as layouts from './layouts/index'
 
 // chart
-import { Chart, DoughnutController, ArcElement, LineController, LineElement, PointElement, PieController } from 'chart.js'
+import { Chart, CategoryScale, LinearScale, DoughnutController, ArcElement, LineController, LineElement, PointElement, PieController } from 'chart.js'
 
 Chart.register(
+    CategoryScale,
+    LinearScale,
     ArcElement,
     LineElement,
     PointElement,
