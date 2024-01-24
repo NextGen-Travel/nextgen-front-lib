@@ -59,10 +59,7 @@ export class QuerySync {
             //
     
             const debounce = useDebounce(() => {
-                let route = router.getCurrentRoute()
-                if (route.query) {
-                    queryToState(route.query)
-                }
+                queryToState()
             }, 25)
     
             const changeDebounce = new Debounce<string>({
@@ -106,20 +103,24 @@ export class QuerySync {
                 })
             }
     
-            const queryToState = (query: Query) => {
+            const queryToState = () => {
                 jobsQueue.push('', async() => {
-                    const queryData: any = {}
-                    for (let key in query) {
-                        queryData[key.slice(`l-${ns}-`.length)] = query[key]
-                    }
-                    const newState = record.setMapValue(params.defs(), queryData)
-                    if (record.simpleCheckDeepDiff(state, newState)) {
-                        Object.assign(state, newState)
+                    let route = router.getCurrentRoute()
+                    if (route.query) {
+                        const query = route.query
+                        const queryData: any = {}
+                        for (let key in query) {
+                            queryData[key.slice(`l-${ns}-`.length)] = query[key]
+                        }
+                        const newState = record.setMapValue(params.defs(), queryData)
+                        if (record.simpleCheckDeepDiff(state, newState)) {
+                            Object.assign(state, newState)
+                        }
                     }
                 })
             }
 
-            queryToState(router.getCurrentRoute().query)
+            queryToState()
     
             // =================
             //
