@@ -101,42 +101,12 @@ export class QuerySync {
             }
     
             const queryToState = (query: Query) => {
-                const defs = params.defs()
-                for (let key in defs) {
-                    let item: any = query[getKey(key)]
-                    if (item) {
-                        if (Array.isArray(defs[key])) {
-                            if (Array.isArray(item)) {
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                if (state[key] && item.toString() !== state[key].toString()) {
-                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                    // @ts-ignore
-                                    state[key] = item
-                                }
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            } else if (state[key] && item.toString() !== state[key].toString()) {
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                state[key] = [item]
-                            }
-                            continue
-                        }
-                        if (typeof defs[key] === 'string') {
-                            if (item !== state[key]) {
-                                state[key] = item
-                            }
-                            continue
-                        }
-                    } else {
-                        if (state[key] !== defs[key]) {
-                            state[key] = defs[key]
-                        }
-                    }
+                const newState = record.setMapValue(params.defs(), query)
+                if (record.simpleCheckDeepDiff(state, newState)) {
+                    Object.assign(state, newState)
                 }
             }
-    
+
             queryToState(router.getCurrentRoute().query)
     
             // =================
@@ -145,6 +115,11 @@ export class QuerySync {
             //
     
             const routerEvent = router.on('after', () => debounce.input(''))
+
+            // =================
+            //
+            // mounted
+            //
     
             onUnmounted(() => {
                 routerEvent.off()
