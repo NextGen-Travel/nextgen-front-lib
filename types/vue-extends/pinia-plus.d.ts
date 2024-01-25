@@ -8,7 +8,7 @@ declare module 'pinia' {
 }
 export declare const NextgenPiniaPlugin: PiniaPlugin;
 export declare const createStoreLifeCycle: <D>() => {
-    onInstall: (cb: () => Promise<void>) => void;
+    onInstall: (cb: (_dat: D) => Promise<void>) => void;
     onDestroy: (cb: () => void) => void;
     isAlive: () => boolean;
     isDestroyed: () => boolean;

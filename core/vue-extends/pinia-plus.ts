@@ -39,7 +39,7 @@ export const createStoreLifeCycle = <D>() => {
         destroyStack: [] as (() => void)[]
     })
     return {
-        onInstall: (cb: () => Promise<void>) => {
+        onInstall: (cb: (_dat: D) => Promise<void>) => {
             state.installStack.push(cb)
         },
         onDestroy: (cb: () => void) => {
