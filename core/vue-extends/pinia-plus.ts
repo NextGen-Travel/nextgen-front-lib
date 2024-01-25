@@ -4,8 +4,6 @@ import { reactive, onUnmounted } from 'vue'
 declare module 'pinia' {
     export interface PiniaCustomProperties {
         $destroy: () => void
-        $install: (_data: any) => Promise<void>
-        $useSetup: (_data: any) => () => Promise<void>
     }
 }
 
@@ -18,7 +16,7 @@ export const NextgenPiniaPlugin: PiniaPlugin = ({ store, pinia }) => {
             await store.$install(data)
         }
     }
-    store.$install = async(data) => {
+    store.$install = async(data?: any) => {
         if (store.__runInstall) {
             await store.__runInstall(data)
         }
@@ -52,8 +50,8 @@ export const createStoreLifeCycle = <D>() => {
             return state.isDestroyed
         },
         genOutput: <T>(data: T): T & {
-            $install: (_data: D extends never ? never : D) => Promise<void>
-            $useSetup: (_data: D extends never ? never : D) => () => Promise<void>
+            $install: (_data: D) => Promise<void>
+            $useSetup: (_data: D) => () => Promise<void>
         } => {
             return Object.assign(data as any, {
                 __runInstall: async (initData: any) => {
