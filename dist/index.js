@@ -20941,24 +20941,27 @@ const yY = { key: 0 }, bY = ["innerHTML"], _Y = ["textContent"], wY = ["innerHTM
       r();
     });
     const r = async () => {
+      const i = {
+        ...dw.getDefaultWhiteList(),
+        ...t.xssWhiteList || {}
+      };
       if (t.mode === "markdown") {
-        const i = new za(), s = (l) => l.toLowerCase().replace(/[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'<>,.?/]+/g, "-").replace(/^-+|-+$/g, "");
-        i.code = (l, c) => {
+        const s = new za(), a = (l) => l.toLowerCase().replace(/[\s~`!@#$%^&*()\-_+=[\]{}|\\;:"'<>,.?/]+/g, "-").replace(/^-+|-+$/g, "");
+        s.code = (l, c) => {
           const u = c && qs.getLanguage(c), f = u ? qs.highlight(c, l).value : qs.highlightAuto(l).value;
           return `<pre><code class="hljs ${u ? `language-${c}` : ""}">${f}</code></pre>`;
-        }, i.heading = (l, c, u) => `<h${c} style="scroll-margin-top: 128px" id="${s(u)}">${l}</h${c}>
+        }, s.heading = (l, c, u) => `<h${c} style="scroll-margin-top: 128px" id="${a(u)}">${l}</h${c}>
 `;
-        const a = await Re(t.content, {
-          renderer: i
-        }), o = {
-          ...dw.getDefaultWhiteList(),
-          ...t.xssWhiteList || {}
-        };
-        o.code == null && (o.code = []), o.span == null && (o.span = []), o.code.push("class"), o.span.push("class"), n.content = fm(a, {
-          whiteList: o
+        const o = await Re(t.content, {
+          renderer: s
+        });
+        i.code == null && (i.code = []), i.span == null && (i.span = []), i.code.push("class"), i.span.push("class"), n.content = fm(o, {
+          whiteList: i
         });
       } else
-        n.content = fm(t.content);
+        n.content = fm(t.content, {
+          whiteList: i
+        });
     };
     return (i, s) => n.content ? (z(), q("div", yY, [
       e.mode === "html" ? (z(), q("div", {
@@ -20976,7 +20979,7 @@ const yY = { key: 0 }, bY = ["innerHTML"], _Y = ["textContent"], wY = ["innerHTM
       }, null, 8, wY)) : ve("", !0)
     ])) : ve("", !0);
   }
-}), $Y = /* @__PURE__ */ Rn(EY, [["__scopeId", "data-v-8109994f"]]), Am = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}), $Y = /* @__PURE__ */ Rn(EY, [["__scopeId", "data-v-ecf3a268"]]), Am = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   NgAni: B$,
   NgDatePicker: p6,

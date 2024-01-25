@@ -83,6 +83,10 @@ watch([
 //
 
 const render = async() => {
+    const whiteList = {
+        ...getDefaultWhiteList(),
+        ...props.xssWhiteList || {}
+    }
     if (props.mode === 'markdown') {
         const renderer = new Renderer()
         // 移除所有符號轉成 -
@@ -103,10 +107,6 @@ const render = async() => {
         const text = await marked(props.content, {
             renderer
         })
-        const whiteList = {
-            ...getDefaultWhiteList(),
-            ...props.xssWhiteList || {}
-        }
         if (whiteList.code == null) {
             whiteList.code = []
         }
@@ -119,7 +119,9 @@ const render = async() => {
             whiteList
         })
     } else {
-        state.content = xss(props.content)
+        state.content = xss(props.content, {
+            whiteList
+        })
     }
 }
 
