@@ -37867,7 +37867,7 @@ class zfe extends Rt {
     });
   }
   get routeMap() {
-    return new Set(f$(window.__ng_state.routerOptions.routes));
+    return new Set(f$(this.vueRouter.getRoutes()));
   }
   toHome() {
     this.vueRouter && (this.params.home ? this.to(this.params.home(), {}) : this.vueRouter.push("/"));

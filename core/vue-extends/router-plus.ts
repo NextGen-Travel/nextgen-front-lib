@@ -101,7 +101,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     }
 
     get routeMap(): Set<string> {
-        return new Set(getRouteNames(window.__ng_state.routerOptions.routes))
+        return new Set(getRouteNames(this.vueRouter.getRoutes()))
     }
 
     toHome() {
