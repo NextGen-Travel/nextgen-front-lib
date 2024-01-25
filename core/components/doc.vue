@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import 'highlight.js/styles/github.css'
-import xss, { getDefaultWhiteList } from 'xss'
+import xss, { getDefaultWhiteList, IWhiteList } from 'xss'
 import hljs from 'highlight.js/lib/core'
 import html from 'highlight.js/lib/languages/xml'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -32,6 +32,11 @@ const props = defineProps({
     },
     langRender: {
         type: Function as PropType<(_code: string, _lang: string) => string>,
+        required: false,
+        default: null
+    },
+    xssWhiteList: {
+        type: Object as PropType<IWhiteList>,
         required: false,
         default: null
     },
@@ -98,7 +103,10 @@ const render = async() => {
         const text = await marked(props.content, {
             renderer
         })
-        const whiteList = getDefaultWhiteList()
+        const whiteList = {
+            ...getDefaultWhiteList(),
+            ...props.xssWhiteList || {}
+        }
         if (whiteList.code == null) {
             whiteList.code = []
         }

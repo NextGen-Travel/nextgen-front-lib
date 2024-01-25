@@ -20916,6 +20916,11 @@ const yY = { key: 0 }, bY = ["innerHTML"], _Y = ["textContent"], wY = ["innerHTM
       required: !1,
       default: null
     },
+    xssWhiteList: {
+      type: Object,
+      required: !1,
+      default: null
+    },
     mode: {
       type: String,
       required: !1,
@@ -20945,7 +20950,10 @@ const yY = { key: 0 }, bY = ["innerHTML"], _Y = ["textContent"], wY = ["innerHTM
 `;
         const a = await Re(t.content, {
           renderer: i
-        }), o = dw.getDefaultWhiteList();
+        }), o = {
+          ...dw.getDefaultWhiteList(),
+          ...t.xssWhiteList || {}
+        };
         o.code == null && (o.code = []), o.span == null && (o.span = []), o.code.push("class"), o.span.push("class"), n.content = fm(a, {
           whiteList: o
         });
@@ -20968,7 +20976,7 @@ const yY = { key: 0 }, bY = ["innerHTML"], _Y = ["textContent"], wY = ["innerHTM
       }, null, 8, wY)) : ve("", !0)
     ])) : ve("", !0);
   }
-}), $Y = /* @__PURE__ */ Rn(EY, [["__scopeId", "data-v-af78c87d"]]), Am = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}), $Y = /* @__PURE__ */ Rn(EY, [["__scopeId", "data-v-8109994f"]]), Am = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   NgAni: B$,
   NgDatePicker: p6,

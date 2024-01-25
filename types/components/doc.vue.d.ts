@@ -1,4 +1,5 @@
 import 'highlight.js/styles/github.css';
+import { IWhiteList } from 'xss';
 import { PropType } from 'vue';
 declare const _default: import("vue").DefineComponent<{
     content: {
@@ -7,6 +8,11 @@ declare const _default: import("vue").DefineComponent<{
     };
     langRender: {
         type: PropType<(_code: string, _lang: string) => string>;
+        required: false;
+        default: null;
+    };
+    xssWhiteList: {
+        type: PropType<IWhiteList>;
         required: false;
         default: null;
     };
@@ -25,6 +31,11 @@ declare const _default: import("vue").DefineComponent<{
         required: false;
         default: null;
     };
+    xssWhiteList: {
+        type: PropType<IWhiteList>;
+        required: false;
+        default: null;
+    };
     mode: {
         type: PropType<"html" | "text" | "markdown">;
         required: false;
@@ -33,5 +44,6 @@ declare const _default: import("vue").DefineComponent<{
 }>>, {
     mode: "html" | "text" | "markdown";
     langRender: (_code: string, _lang: string) => string;
+    xssWhiteList: IWhiteList;
 }, {}>;
 export default _default;
