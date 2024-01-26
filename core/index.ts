@@ -1,3 +1,40 @@
+
+// 要兼容 worker 環境
+export const getGlob = (): Window & typeof globalThis => {
+    const gw: any = () => typeof globalThis !== 'undefined'
+        ? globalThis
+        : typeof self !== 'undefined'
+            ? self
+            : typeof global !== 'undefined'
+                ? global
+                : typeof window !== 'undefined'
+                    ? window : {}
+    return new Proxy({}, {
+        get(target, key) {
+            return gw()[key]
+        },
+        set(target, key, value) {
+            gw()[key] = value
+            return true
+        }
+    }) as any
+}
+
+const glob = getGlob()
+glob.__ng_state = {}
+glob.__ng_config = {
+    libOptions: {
+        staticUrl: '',
+        notFoundImage: ''
+    },
+    libEnv: {
+        version: 3,
+        stage: '',
+        service: '',
+    }
+}
+
+
 // eslint-disable-next-line
 import './index.scss'
 import './components'
@@ -139,41 +176,6 @@ export const LibStores = {
 export type * as NgTypes from './types'
 
 // core
-// 要兼容 worker 環境
-export const getGlob = (): Window & typeof globalThis => {
-    const gw: any = () => typeof globalThis !== 'undefined'
-        ? globalThis
-        : typeof self !== 'undefined'
-            ? self
-            : typeof global !== 'undefined'
-                ? global
-                : typeof window !== 'undefined'
-                    ? window : {}
-    return new Proxy({}, {
-        get(target, key) {
-            return gw()[key]
-        },
-        set(target, key, value) {
-            gw()[key] = value
-            return true
-        }
-    }) as any
-}
-
-const glob = getGlob()
-glob.__ng_state = {}
-glob.__ng_config = {
-    libOptions: {
-        staticUrl: '',
-        notFoundImage: ''
-    },
-    libEnv: {
-        version: 3,
-        stage: '',
-        service: '',
-    }
-}
-
 export * as NgComponents from './components/index'
 export * as NgLayoutComponents from './layouts/index'
 export const getLibOptions = () => glob.__ng_config.libOptions

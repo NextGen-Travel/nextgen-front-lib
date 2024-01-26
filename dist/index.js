@@ -38419,7 +38419,29 @@ const dde = (e) => () => {
       onClick: t.onClick || (() => null)
     });
   }
-});
+}), Ln = () => {
+  const e = () => typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {};
+  return new Proxy({}, {
+    get(t, n) {
+      return e()[n];
+    },
+    set(t, n, r) {
+      return e()[n] = r, !0;
+    }
+  });
+}, oi = Ln();
+oi.__ng_state = {};
+oi.__ng_config = {
+  libOptions: {
+    staticUrl: "",
+    notFoundImage: ""
+  },
+  libEnv: {
+    version: 3,
+    stage: "",
+    service: ""
+  }
+};
 Yn.register(
   vd,
   md,
@@ -38488,30 +38510,7 @@ const Sde = {
   createNotificationStore: pde,
   confirmStoreToActions: hde,
   notificationStoreToActions: gde
-}, Ln = () => {
-  const e = () => typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {};
-  return new Proxy({}, {
-    get(t, n) {
-      return e()[n];
-    },
-    set(t, n, r) {
-      return e()[n] = r, !0;
-    }
-  });
-}, oi = Ln();
-oi.__ng_state = {};
-oi.__ng_config = {
-  libOptions: {
-    staticUrl: "",
-    notFoundImage: ""
-  },
-  libEnv: {
-    version: 3,
-    stage: "",
-    service: ""
-  }
-};
-const vde = () => oi.__ng_config.libOptions, $o = () => oi.__ng_config.libEnv, Ide = {
+}, vde = () => oi.__ng_config.libOptions, $o = () => oi.__ng_config.libEnv, Ide = {
   setOptions: (e) => {
     for (let t in e)
       oi.__ng_config.libOptions[t] = e[t];

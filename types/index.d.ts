@@ -1,3 +1,5 @@
+export declare const getGlob: () => Window & typeof globalThis;
+declare const glob: Window & typeof globalThis;
 import './index.scss';
 import './components';
 export { useSelf } from './composables/self';
@@ -379,8 +381,6 @@ export declare const LibStores: {
     };
 };
 export type * as NgTypes from './types';
-export declare const getGlob: () => Window & typeof globalThis;
-declare const glob: Window & typeof globalThis;
 export * as NgComponents from './components/index';
 export * as NgLayoutComponents from './layouts/index';
 export declare const getLibOptions: () => {
