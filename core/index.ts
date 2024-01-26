@@ -1,26 +1,14 @@
 
 // 要兼容 worker 環境
-export const getGlob = (): Window & typeof globalThis => {
-    const gw: any = () => typeof globalThis !== 'undefined'
-        ? globalThis
-        : typeof self !== 'undefined'
-            ? self
-            : typeof global !== 'undefined'
-                ? global
-                : typeof window !== 'undefined'
-                    ? window : {}
-    return new Proxy({}, {
-        get(target, key) {
-            return gw()[key]
-        },
-        set(target, key, value) {
-            gw()[key] = value
-            return true
-        }
-    }) as any
-}
+const glob: any = () => typeof globalThis !== 'undefined'
+    ? globalThis
+    : typeof self !== 'undefined'
+        ? self
+        : typeof global !== 'undefined'
+            ? global
+            : typeof window !== 'undefined'
+                ? window : {}
 
-const glob = getGlob()
 glob.__ng_state = {}
 glob.__ng_config = {
     libOptions: {
@@ -33,7 +21,10 @@ glob.__ng_config = {
         service: '',
     }
 }
-
+                
+export const getGlob = (): Window & typeof globalThis => {
+    return glob
+}
 
 // eslint-disable-next-line
 import './index.scss'

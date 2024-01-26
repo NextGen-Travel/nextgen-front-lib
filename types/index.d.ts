@@ -1,5 +1,5 @@
+declare const glob: any;
 export declare const getGlob: () => Window & typeof globalThis;
-declare const glob: Window & typeof globalThis;
 import './index.scss';
 import './components';
 export { useSelf } from './composables/self';
@@ -383,15 +383,8 @@ export declare const LibStores: {
 export type * as NgTypes from './types';
 export * as NgComponents from './components/index';
 export * as NgLayoutComponents from './layouts/index';
-export declare const getLibOptions: () => {
-    staticUrl: string;
-    notFoundImage: string | (() => string);
-};
-export declare const getLibEnv: () => {
-    version: number;
-    stage: string;
-    service: string;
-};
+export declare const getLibOptions: () => any;
+export declare const getLibEnv: () => any;
 export declare const NextgenLib: {
     setOptions: (options: Partial<typeof glob.__ng_config.libOptions>) => void;
     install(app: import('vue').App, params: {
