@@ -1,5 +1,6 @@
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../exception'
+import { getGlob } from '../../index'
 
 type FacebookConfig = {
     clientId: string
@@ -11,27 +12,28 @@ type Events = {
     }
 }
 
+const glob = getGlob()
 const scope = 'public_profile,email'
 const exception = serviceException.checkout('FacebookAuth')
 const event = new Event<Events>()
 
 function checkInstalled() {
-    if (!window.__ng_state.afb?.installed) {
+    if (!glob.__ng_state.afb?.installed) {
         throw exception.create('facebook sdk not installed.')
     }
 }
 
 export class FacebookService {
     static async install(config: FacebookConfig) {
-        if (window.__ng_state.afb == null) {
-            window.__ng_state.afb = {
+        if (glob.__ng_state.afb == null) {
+            glob.__ng_state.afb = {
                 installed: false,
                 clientId: ''
             }
         }
-        if (window.__ng_state.afb.installed === false) {
-            window.__ng_state.clientId = config.clientId
-            window.fbAsyncInit = () => {
+        if (glob.__ng_state.afb.installed === false) {
+            glob.__ng_state.clientId = config.clientId
+            glob.fbAsyncInit = () => {
                 FB.init({
                     appId: config.clientId,
                     xfbml: true,
@@ -39,12 +41,12 @@ export class FacebookService {
                 })
             }
             await element.importScript('https://connect.facebook.net/en_US/sdk.js')
-            window.__ng_state.afb.installed = true
+            glob.__ng_state.afb.installed = true
         }
     }
 
     static installed() {
-        return window.__ng_state.afb?.installed ?? false
+        return glob.__ng_state.afb?.installed ?? false
     }
 
     static get on() {
@@ -108,7 +110,7 @@ export class FacebookService {
         checkInstalled()
         let url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
         url.searchParams.set('scope', scope)
-        url.searchParams.set('client_id', window.__ng_state.clientId)
+        url.searchParams.set('client_id', glob.__ng_state.clientId)
         url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('state', params?.state ?? '')
         return url.href

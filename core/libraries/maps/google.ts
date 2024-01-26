@@ -3,6 +3,7 @@ import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../exception'
 import { LatLng, MarkerAttr, RouteAttr, NavigationParams } from './types'
+import { getGlob } from '../../index'
 
 type GoogleMapConfig = {
     apiKey: string
@@ -14,10 +15,11 @@ type Channels = {
     clickMarker: MapMarker
 }
 
+const glob = getGlob()
 const exception = serviceException.checkout('GoogleMap')
 
 function checkInstalled() {
-    if (!window.__ng_state.gmap?.installed) {
+    if (!glob.__ng_state.gmap?.installed) {
         throw exception.create('google map not installed.')
     }
 }
@@ -40,22 +42,22 @@ export class GoogleMap extends Event<Channels> {
     }
 
     static async install(config: GoogleMapConfig) {
-        if (window.__ng_state.gmap == null) {
-            window.__ng_state.gmap = {
+        if (glob.__ng_state.gmap == null) {
+            glob.__ng_state.gmap = {
                 installed: false
             }
         }
-        if (window.__ng_state.gmap.installed === false) {
-            window.__ng_state.gmap.installed = true
+        if (glob.__ng_state.gmap.installed === false) {
+            glob.__ng_state.gmap.installed = true
             await new Promise((resolve, reject) => {
-                window.initGoogleMap = () => resolve(null)
+                glob.initGoogleMap = () => resolve(null)
                 element.importScript(`https://maps.googleapis.com/maps/api/js?key=${config.apiKey}&callback=initGoogleMap`).catch(reject)
             })
         }
     }
 
     static isInstalled() {
-        return !!window.__ng_state.gmap?.installed
+        return !!glob.__ng_state.gmap?.installed
     }
 
     constructor() {

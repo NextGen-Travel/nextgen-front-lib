@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 import { serviceException } from '../../exception'
 import { detect, Event, element } from 'power-helper'
+import { getGlob } from '../../index'
 
 type GoogleConfig = {
     /** 彈出視窗模式或是倒轉模式 */
@@ -33,23 +34,24 @@ type Channels = {
     }
 }
 
+const glob = getGlob()
 const exception = serviceException.checkout('GoogleAuth')
 const event = new Event<Channels>()
 
 function checkInstalled() {
-    if (!window.__ng_state.agoogle?.installed) {
+    if (!glob.__ng_state.agoogle?.installed) {
         throw exception.create('gsi not installed.')
     }
 }
 
 export class GoogleAuth {
     static async install(config: GoogleConfig) {
-        if (window.__ng_state.agoogle == null) {
-            window.__ng_state.agoogle = {
+        if (glob.__ng_state.agoogle == null) {
+            glob.__ng_state.agoogle = {
                 installed: false
             }
         }
-        if (window.__ng_state.agoogle.installed === false) {
+        if (glob.__ng_state.agoogle.installed === false) {
             await element.importScript('https://accounts.google.com/gsi/client')
             google.accounts.id.initialize({
                 ux_mode: config.uxMode,
@@ -63,12 +65,12 @@ export class GoogleAuth {
                     })
                 }
             })
-            window.__ng_state.agoogle.installed = true
+            glob.__ng_state.agoogle.installed = true
         }
     }
 
     static installed() {
-        return window.__ng_state.agoogle?.installed ?? false
+        return glob.__ng_state.agoogle?.installed ?? false
     }
 
     static get on() {

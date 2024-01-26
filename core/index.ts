@@ -139,8 +139,14 @@ export const LibStores = {
 export type * as NgTypes from './types'
 
 // core
-window.__ng_state = {}
-window.__ng_config = {
+// 要兼容 worker 環境
+export const getGlob = () => {
+    const r = typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {}
+    return r as Window & typeof globalThis
+}
+const glob = getGlob()
+glob.__ng_state = {}
+glob.__ng_config = {
     libOptions: {
         staticUrl: '',
         notFoundImage: ''
@@ -154,18 +160,18 @@ window.__ng_config = {
 
 export * as NgComponents from './components/index'
 export * as NgLayoutComponents from './layouts/index'
-export const getLibOptions = () => window.__ng_config.libOptions
-export const getLibEnv = () => window.__ng_config.libEnv
+export const getLibOptions = () => glob.__ng_config.libOptions
+export const getLibEnv = () => glob.__ng_config.libEnv
 export const NextgenLib = {
-    setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => {
+    setOptions: (options: Partial<typeof glob.__ng_config.libOptions>) => {
         for (let key in options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            window.__ng_config.libOptions[key] = options[key]
+            glob.__ng_config.libOptions[key] = options[key]
         }
     },
     install(app: import('vue').App, params: {
-        options: typeof window.__ng_config.libOptions
+        options: typeof glob.__ng_config.libOptions
         env: {
             stage: string
             service: string
@@ -174,12 +180,12 @@ export const NextgenLib = {
         for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            window.__ng_config.libOptions[key] = params.options[key]
+            glob.__ng_config.libOptions[key] = params.options[key]
         }
         for (let key in params.env) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            window.__ng_config.libEnv[key] = params.env[key]
+            glob.__ng_config.libEnv[key] = params.env[key]
         }
         for (const name in components) {
             app.component(name, (components as any)[name])

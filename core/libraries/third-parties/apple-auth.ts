@@ -1,3 +1,4 @@
+import { getGlob } from '../../index'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../exception'
 
@@ -21,35 +22,36 @@ type Channels = {
 const exception = serviceException.checkout('AppleAuth')
 const scope = 'name email'
 const event = new Event<Channels>()
+const glob = getGlob()
 
 function checkInstalled() {
-    if (!window.__ng_state.aapple?.installed) {
+    if (!glob.__ng_state.aapple?.installed) {
         throw exception.create('apple login not installed.')
     }
 }
 
 export class AppleAuth {
     static async install(config: AppleConfig) {
-        if (window.__ng_state.aapple == null) {
-            window.__ng_state.aapple = {
+        if (glob.__ng_state.aapple == null) {
+            glob.__ng_state.aapple = {
                 installed: false
             }
         }
-        if (window.__ng_state.aapple.installed === false) {
+        if (glob.__ng_state.aapple.installed === false) {
             await element.importScript('https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js')
-            window.AppleID.auth.init({
+            glob.AppleID.auth.init({
                 clientId: config.clientId,
                 redirectURI: 'https//demo.com',
                 scope,
                 state: '',
                 usePopup: false
             })
-            window.__ng_state.aapple.installed = true
+            glob.__ng_state.aapple.installed = true
         }
     }
 
     static installed() {
-        return window.__ng_state.aapple?.installed ?? false
+        return glob.__ng_state.aapple?.installed ?? false
     }
 
     static get on() {
@@ -69,7 +71,7 @@ export class AppleAuth {
         response: null | AppleSignInAPI.SignInResponseI
     }> {
         checkInstalled()
-        let result = await window.AppleID.auth.signIn({
+        let result = await glob.AppleID.auth.signIn({
             state: params?.state ?? '',
             usePopup: params?.popup ?? true,
             redirectURI: params.redirectURI

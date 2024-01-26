@@ -2,6 +2,7 @@ import { Event, flow, json } from 'power-helper'
 import { RouteParameters } from 'power-helper/types/string'
 import { serviceException } from '../exception'
 import { Router, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
+import { getGlob } from '../index'
 
 export type RouteMixin<
     P extends Route,
@@ -45,6 +46,12 @@ type Channels = {
     }
 }
 
+type Params = {
+    vueRouter: Router
+    home?: () => string
+}
+
+const glob = getGlob()
 const getRouteNames = (routes: readonly RouteRecordRaw[]) => {
     let names: string[] = []
     if (routes) {
@@ -58,11 +65,6 @@ const getRouteNames = (routes: readonly RouteRecordRaw[]) => {
         }
     }
     return names
-}
-
-type Params = {
-    vueRouter: Router
-    home?: () => string
 }
 
 export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
@@ -166,7 +168,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         query?: T[K]['query']
     }) {
         const { href } = this.resolve(name, params, options)
-        window.open(href)
+        glob.open(href)
     }
 
     getCurrentRoute<K extends keyof T>(_name?: K): {

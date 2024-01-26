@@ -1,35 +1,37 @@
 import { element } from 'power-helper'
 import { serviceException } from '../../exception'
+import { getGlob } from '../../index'
 
 type WechatConfig = {
     appId: string
     webAppId: string
 }
 
+const glob = getGlob()
 const exception = serviceException.checkout('WechatAuth')
 
 function checkInstalled() {
-    if (!window.__ng_state.awechat?.installed) {
+    if (!glob.__ng_state.awechat?.installed) {
         throw exception.create('gsi not installed.')
     }
 }
 
 export class WechatService {
     static async install(config: WechatConfig) {
-        if (window.__ng_state.awechat == null) {
-            window.__ng_state.awechat = {
+        if (glob.__ng_state.awechat == null) {
+            glob.__ng_state.awechat = {
                 config,
                 installed: false
             }
         }
-        if (window.__ng_state.awechat.installed === false) {
+        if (glob.__ng_state.awechat.installed === false) {
             await element.importScript('https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js')
-            window.__ng_state.awechat.installed = true
+            glob.__ng_state.awechat.installed = true
         }
     }
 
     static installed() {
-        return window.__ng_state.awechat?.installed ?? false
+        return glob.__ng_state.awechat?.installed ?? false
     }
 
     static isWeixinBrowser() {
@@ -47,8 +49,8 @@ export class WechatService {
         redirectUri: string
     }) {
         checkInstalled()
-        const config = window.__ng_state.awechat.config
-        new window.WxLogin({
+        const config = glob.__ng_state.awechat.config
+        new glob.WxLogin({
             id: params.containerId,
             appid: config.webAppId,
             scope: 'snsapi_login',
@@ -67,7 +69,7 @@ export class WechatService {
         redirectUri: string
     }) {
         const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
-        const config = window.__ng_state.awechat.config
+        const config = glob.__ng_state.awechat.config
         url.searchParams.set('appid', config.appId)
         url.searchParams.set('redirect_uri', params.redirectUri)
         url.searchParams.set('response_type', 'code')

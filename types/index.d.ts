@@ -379,6 +379,8 @@ export declare const LibStores: {
     };
 };
 export type * as NgTypes from './types';
+export declare const getGlob: () => Window & typeof globalThis;
+declare const glob: Window & typeof globalThis;
 export * as NgComponents from './components/index';
 export * as NgLayoutComponents from './layouts/index';
 export declare const getLibOptions: () => {
@@ -391,9 +393,9 @@ export declare const getLibEnv: () => {
     service: string;
 };
 export declare const NextgenLib: {
-    setOptions: (options: Partial<typeof window.__ng_config.libOptions>) => void;
+    setOptions: (options: Partial<typeof glob.__ng_config.libOptions>) => void;
     install(app: import('vue').App, params: {
-        options: typeof window.__ng_config.libOptions;
+        options: typeof glob.__ng_config.libOptions;
         env: {
             stage: string;
             service: string;

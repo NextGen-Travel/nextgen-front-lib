@@ -2,12 +2,15 @@ import { NgAMap } from '../amap'
 import { RouteAttr } from '../types'
 import { GoogleMap } from '../google'
 import { flow, Event } from 'power-helper'
+import { getGlob } from '../../../index'
 
 type Channels = {
     failed: {
         status: any
     }
 }
+
+const glob = getGlob()
 
 export class MapRoute extends Event<Channels> {
     id?: string
@@ -58,7 +61,7 @@ export class MapRoute extends Event<Channels> {
             this.googleDirectionsRenderer = undefined
         }
         if (this.aMap) {
-            const A = window.AMap as any
+            const A = glob.AMap as any
             const Driving = A.Driving
             if (this.aMapDriving ) {
                 this.aMapDriving.clear()

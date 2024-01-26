@@ -3,6 +3,7 @@ import { MapMarker } from './common/marker'
 import { element, Event } from 'power-helper'
 import { serviceException } from '../../exception'
 import { NavigationParams, LatLng, MarkerAttr, RouteAttr } from './types'
+import { getGlob } from '../../index'
 
 type AMapConfig = {
     apiKey: string
@@ -16,10 +17,11 @@ type Channels = {
     clickMarker: MapMarker
 }
 
+const glob = getGlob()
 const exception = serviceException.checkout('AMap')
 
 function checkInstalled() {
-    if (!window.__ng_state.amap?.installed) {
+    if (!glob.__ng_state.amap?.installed) {
         throw exception.create('amap not installed.')
     }
 }
@@ -43,16 +45,17 @@ export class NgAMap extends Event<Channels> {
     }
 
     static async install(config: AMapConfig) {
-        if (window.__ng_state.amap == null) {
-            window.__ng_state.amap = {
+
+        if (glob.__ng_state.amap == null) {
+            glob.__ng_state.amap = {
                 installed: false
             }
         }
-        if (window.__ng_state.amap.installed === false) {
-            window.__ng_state.amap.installed = true
+        if (glob.__ng_state.amap.installed === false) {
+            glob.__ng_state.amap.installed = true
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            window._AMapSecurityConfig = {
+            glob._AMapSecurityConfig = {
                 serviceHost: config.serviceHost,
                 securityJsCode: config.securityJsCode
             }
@@ -61,7 +64,7 @@ export class NgAMap extends Event<Channels> {
     }
 
     static isInstalled() {
-        return !!window.__ng_state.amap?.installed
+        return !!glob.__ng_state.amap?.installed
     }
 
     constructor() {
@@ -74,7 +77,7 @@ export class NgAMap extends Event<Channels> {
         center?: LatLng
     }) {
         if (this.map == null) {
-            this.map = new window.AMap.Map(el, {
+            this.map = new glob.AMap.Map(el, {
                 zoom: options.zoom ?? 10,
                 center: options.center ? [options.center.lng, options.center.lat] : undefined
             })

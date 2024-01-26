@@ -2,6 +2,7 @@ import axios from 'axios'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { getLibEnv } from '../../index'
 import { flow, JobsQueue } from 'power-helper'
+import { getGlob } from '../../index'
 
 declare type Type = 'step' | 'wrong' | 'notify' | 'fail'
 declare type Level = 'info' | 'warning' | 'danger' | 'success'
@@ -29,6 +30,8 @@ type NextgenMessageTraceParams = {
     serverUrl: () => string
 }
 
+const glob = getGlob()
+
 export class NextgenMessageTrace {
     params: NextgenMessageTraceParams
     messages: Message[] = []
@@ -55,7 +58,7 @@ export class NextgenMessageTrace {
     collect(message: Omit<Message, 'time' | 'url'>) {
         this.messages.push({
             ...message,
-            url: window.location.href,
+            url: glob.location.href,
             time: Date.now()
         })
     }
