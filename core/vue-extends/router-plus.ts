@@ -51,7 +51,6 @@ type Params = {
     home?: () => string
 }
 
-const glob = getGlob()
 const getRouteNames = (routes: readonly RouteRecordRaw[]) => {
     let names: string[] = []
     if (routes) {
@@ -167,6 +166,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
     blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
+        const glob = getGlob()
         const { href } = this.resolve(name, params, options)
         glob.open(href)
     }

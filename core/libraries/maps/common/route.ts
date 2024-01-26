@@ -10,8 +10,6 @@ type Channels = {
     }
 }
 
-const glob = getGlob()
-
 export class MapRoute extends Event<Channels> {
     id?: string
     aMap?: NgAMap
@@ -61,6 +59,7 @@ export class MapRoute extends Event<Channels> {
             this.googleDirectionsRenderer = undefined
         }
         if (this.aMap) {
+            const glob = getGlob()
             const A = glob.AMap as any
             const Driving = A.Driving
             if (this.aMapDriving ) {

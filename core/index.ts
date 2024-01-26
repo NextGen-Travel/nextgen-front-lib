@@ -21,7 +21,7 @@ glob.__ng_config = {
         service: '',
     }
 }
-                
+
 export const getGlob = (): Window & typeof globalThis => {
     return glob
 }
@@ -35,17 +35,6 @@ import * as layouts from './layouts/index'
 
 // chart
 import { Chart, CategoryScale, LinearScale, DoughnutController, ArcElement, LineController, LineElement, PointElement, PieController } from 'chart.js'
-
-Chart.register(
-    CategoryScale,
-    LinearScale,
-    ArcElement,
-    LineElement,
-    PointElement,
-    DoughnutController,
-    LineController,
-    PieController
-)
 
 // composables
 export { useSelf } from './composables/self'
@@ -186,6 +175,16 @@ export const NextgenLib = {
             service: string
         }
     }) {
+        Chart.register(
+            CategoryScale,
+            LinearScale,
+            ArcElement,
+            LineElement,
+            PointElement,
+            DoughnutController,
+            LineController,
+            PieController
+        )
         for (let key in params.options) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore

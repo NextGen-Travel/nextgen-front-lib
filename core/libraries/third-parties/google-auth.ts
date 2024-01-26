@@ -34,11 +34,11 @@ type Channels = {
     }
 }
 
-const glob = getGlob()
 const exception = serviceException.checkout('GoogleAuth')
 const event = new Event<Channels>()
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.agoogle?.installed) {
         throw exception.create('gsi not installed.')
     }
@@ -46,6 +46,7 @@ function checkInstalled() {
 
 export class GoogleAuth {
     static async install(config: GoogleConfig) {
+        const glob = getGlob()
         if (glob.__ng_state.agoogle == null) {
             glob.__ng_state.agoogle = {
                 installed: false
@@ -70,6 +71,7 @@ export class GoogleAuth {
     }
 
     static installed() {
+        const glob = getGlob()
         return glob.__ng_state.agoogle?.installed ?? false
     }
 

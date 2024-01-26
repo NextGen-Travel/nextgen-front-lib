@@ -17,10 +17,10 @@ type Channels = {
     clickMarker: MapMarker
 }
 
-const glob = getGlob()
 const exception = serviceException.checkout('AMap')
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.amap?.installed) {
         throw exception.create('amap not installed.')
     }
@@ -45,7 +45,7 @@ export class NgAMap extends Event<Channels> {
     }
 
     static async install(config: AMapConfig) {
-
+        const glob = getGlob()
         if (glob.__ng_state.amap == null) {
             glob.__ng_state.amap = {
                 installed: false
@@ -64,6 +64,7 @@ export class NgAMap extends Event<Channels> {
     }
 
     static isInstalled() {
+        const glob = getGlob()
         return !!glob.__ng_state.amap?.installed
     }
 
@@ -76,6 +77,7 @@ export class NgAMap extends Event<Channels> {
         zoom?: number
         center?: LatLng
     }) {
+        const glob = getGlob()
         if (this.map == null) {
             this.map = new glob.AMap.Map(el, {
                 zoom: options.zoom ?? 10,

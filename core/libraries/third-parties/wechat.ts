@@ -7,10 +7,10 @@ type WechatConfig = {
     webAppId: string
 }
 
-const glob = getGlob()
 const exception = serviceException.checkout('WechatAuth')
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.awechat?.installed) {
         throw exception.create('gsi not installed.')
     }
@@ -18,6 +18,7 @@ function checkInstalled() {
 
 export class WechatService {
     static async install(config: WechatConfig) {
+        const glob = getGlob()
         if (glob.__ng_state.awechat == null) {
             glob.__ng_state.awechat = {
                 config,
@@ -31,6 +32,7 @@ export class WechatService {
     }
 
     static installed() {
+        const glob = getGlob()
         return glob.__ng_state.awechat?.installed ?? false
     }
 
@@ -49,6 +51,7 @@ export class WechatService {
         redirectUri: string
     }) {
         checkInstalled()
+        const glob = getGlob()
         const config = glob.__ng_state.awechat.config
         new glob.WxLogin({
             id: params.containerId,
@@ -68,6 +71,7 @@ export class WechatService {
         state?: string
         redirectUri: string
     }) {
+        const glob = getGlob()
         const url = new URL('https://open.weixin.qq.com/connect/oauth2/authorize')
         const config = glob.__ng_state.awechat.config
         url.searchParams.set('appid', config.appId)

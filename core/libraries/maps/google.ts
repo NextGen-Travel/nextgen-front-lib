@@ -15,10 +15,10 @@ type Channels = {
     clickMarker: MapMarker
 }
 
-const glob = getGlob()
 const exception = serviceException.checkout('GoogleMap')
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.gmap?.installed) {
         throw exception.create('google map not installed.')
     }
@@ -42,6 +42,7 @@ export class GoogleMap extends Event<Channels> {
     }
 
     static async install(config: GoogleMapConfig) {
+        const glob = getGlob()
         if (glob.__ng_state.gmap == null) {
             glob.__ng_state.gmap = {
                 installed: false
@@ -57,6 +58,7 @@ export class GoogleMap extends Event<Channels> {
     }
 
     static isInstalled() {
+        const glob = getGlob()
         return !!glob.__ng_state.gmap?.installed
     }
 

@@ -22,9 +22,9 @@ type Channels = {
 const exception = serviceException.checkout('AppleAuth')
 const scope = 'name email'
 const event = new Event<Channels>()
-const glob = getGlob()
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.aapple?.installed) {
         throw exception.create('apple login not installed.')
     }
@@ -32,6 +32,7 @@ function checkInstalled() {
 
 export class AppleAuth {
     static async install(config: AppleConfig) {
+        const glob = getGlob()
         if (glob.__ng_state.aapple == null) {
             glob.__ng_state.aapple = {
                 installed: false
@@ -51,6 +52,7 @@ export class AppleAuth {
     }
 
     static installed() {
+        const glob = getGlob()
         return glob.__ng_state.aapple?.installed ?? false
     }
 
@@ -71,7 +73,8 @@ export class AppleAuth {
         response: null | AppleSignInAPI.SignInResponseI
     }> {
         checkInstalled()
-        let result = await glob.AppleID.auth.signIn({
+        const glob = getGlob()
+        const result = await glob.AppleID.auth.signIn({
             state: params?.state ?? '',
             usePopup: params?.popup ?? true,
             redirectURI: params.redirectURI

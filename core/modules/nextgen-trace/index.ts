@@ -30,8 +30,6 @@ type NextgenMessageTraceParams = {
     serverUrl: () => string
 }
 
-const glob = getGlob()
-
 export class NextgenMessageTrace {
     params: NextgenMessageTraceParams
     messages: Message[] = []
@@ -56,6 +54,7 @@ export class NextgenMessageTrace {
     }
 
     collect(message: Omit<Message, 'time' | 'url'>) {
+        const glob = getGlob()
         this.messages.push({
             ...message,
             url: glob.location.href,

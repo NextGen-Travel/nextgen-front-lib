@@ -12,12 +12,12 @@ type Events = {
     }
 }
 
-const glob = getGlob()
 const scope = 'public_profile,email'
 const exception = serviceException.checkout('FacebookAuth')
 const event = new Event<Events>()
 
 function checkInstalled() {
+    const glob = getGlob()
     if (!glob.__ng_state.afb?.installed) {
         throw exception.create('facebook sdk not installed.')
     }
@@ -25,6 +25,7 @@ function checkInstalled() {
 
 export class FacebookService {
     static async install(config: FacebookConfig) {
+        const glob = getGlob()
         if (glob.__ng_state.afb == null) {
             glob.__ng_state.afb = {
                 installed: false,
@@ -46,6 +47,7 @@ export class FacebookService {
     }
 
     static installed() {
+        const glob = getGlob()
         return glob.__ng_state.afb?.installed ?? false
     }
 
@@ -108,7 +110,8 @@ export class FacebookService {
         redirectUri: string
     }) {
         checkInstalled()
-        let url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
+        const glob = getGlob()
+        const url = new URL('https://www.facebook.com/v15.0/dialog/oauth')
         url.searchParams.set('scope', scope)
         url.searchParams.set('client_id', glob.__ng_state.clientId)
         url.searchParams.set('redirect_uri', params.redirectUri)
