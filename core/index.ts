@@ -1,6 +1,6 @@
 
 // 要兼容 worker 環境
-const glob: any = () => typeof globalThis !== 'undefined'
+const glob: any = typeof globalThis !== 'undefined'
     ? globalThis
     : typeof self !== 'undefined'
         ? self

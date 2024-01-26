@@ -38425,7 +38425,7 @@ const rde = (e) => () => {
       onClick: t.onClick || (() => null)
     });
   }
-}), Ar = () => typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {};
+}), Ar = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {};
 Ar.__ng_state = {};
 Ar.__ng_config = {
   libOptions: {
