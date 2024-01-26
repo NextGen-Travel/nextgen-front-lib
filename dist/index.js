@@ -38488,7 +38488,17 @@ const Sde = {
   createNotificationStore: pde,
   confirmStoreToActions: hde,
   notificationStoreToActions: gde
-}, Ln = () => typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {}, oi = Ln();
+}, Ln = () => {
+  const e = () => typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof global < "u" ? global : typeof window < "u" ? window : {};
+  return new Proxy({}, {
+    get(t, n) {
+      return e()[n];
+    },
+    set(t, n, r) {
+      return e()[n] = r, !0;
+    }
+  });
+}, oi = Ln();
 oi.__ng_state = {};
 oi.__ng_config = {
   libOptions: {

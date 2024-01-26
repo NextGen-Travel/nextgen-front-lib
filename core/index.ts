@@ -140,10 +140,26 @@ export type * as NgTypes from './types'
 
 // core
 // 要兼容 worker 環境
-export const getGlob = () => {
-    const r = typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {}
-    return r as Window & typeof globalThis
+export const getGlob = (): Window & typeof globalThis => {
+    const gw: any = () => typeof globalThis !== 'undefined'
+        ? globalThis
+        : typeof self !== 'undefined'
+            ? self
+            : typeof global !== 'undefined'
+                ? global
+                : typeof window !== 'undefined'
+                    ? window : {}
+    return new Proxy({}, {
+        get(target, key) {
+            return gw()[key]
+        },
+        set(target, key, value) {
+            gw()[key] = value
+            return true
+        }
+    }) as any
 }
+
 const glob = getGlob()
 glob.__ng_state = {}
 glob.__ng_config = {
