@@ -1,4 +1,4 @@
-import { flow, Event, ElementListenerGroup, JobsQueue } from 'power-helper'
+import { flow, Event, ElementListenerGroup } from 'power-helper'
 
 type MessageContext = {
     id: string
@@ -31,9 +31,6 @@ export class NextgenWorker {
         M extends Record<string, (..._args: any[]) => Promise<any>>
     >(cb: (_event: E) => M) {
         if (NextgenWorker.inWorker()) {
-            const jobsQueue = new JobsQueue({
-                concurrentExecutions: 1
-            })
             const event = new Event() as E
             const methods = cb(event)
             event.on('*', ({ data, event }) => {
@@ -43,27 +40,25 @@ export class NextgenWorker {
                     data
                 })
             })
-            self.addEventListener('message', (e: MessageEvent<Omit<MessageContext, 'error'>>) => {
+            self.addEventListener('message', async (e: MessageEvent<Omit<MessageContext, 'error'>>) => {
                 const { id, type, name, data } = e.data
                 if (type === 'method' && methods[name]) {
-                    jobsQueue.push('', async() => {
-                        try {
-                            const result = await methods[name](...data)
-                            self.postMessage({
-                                id,
-                                name,
-                                type,
-                                data: result,
-                            })
-                        } catch (error) {
-                            self.postMessage({
-                                id,
-                                name,
-                                type,
-                                error
-                            })
-                        }
-                    })
+                    try {
+                        const result = await methods[name](...data)
+                        self.postMessage({
+                            id,
+                            name,
+                            type,
+                            data: result,
+                        })
+                    } catch (error) {
+                        self.postMessage({
+                            id,
+                            name,
+                            type,
+                            error
+                        })
+                    }
                 } else {
                     self.postMessage({
                         id,
