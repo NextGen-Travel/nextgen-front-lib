@@ -7,7 +7,14 @@
         :style="`z-index: ${zIndex};`"
         :opacity="0.5"
         :close-on-back="false">
-        <v-progress-circular class="mx-auto" color="white" indeterminate size="32"></v-progress-circular>
+        <slot>
+            <v-progress-circular
+                class="mx-auto"
+                color="white"
+                indeterminate
+                size="32">
+            </v-progress-circular>
+        </slot>
     </v-overlay>
 </template>
 

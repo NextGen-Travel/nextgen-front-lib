@@ -20,7 +20,9 @@
             :disabled="state.reading || loading"
             @change="pickFile"
         />
-        <OverlayLoading :model-value="loading || state.reading"></OverlayLoading>
+        <OverlayLoading :model-value="loading || state.reading">
+            <slot name="loading"></slot>
+        </OverlayLoading>
     </div>
 </template>
 
