@@ -37790,7 +37790,7 @@ const lp = async (e) => {
     };
   }, n = (r) => {
     let i = t();
-    return r && i.commit(r), i;
+    return r && i.m.commit(r), i;
   };
   return {
     _ModelType: null,

@@ -131,7 +131,7 @@ export const defineModel = <
     const from = (data?: S) => {
         let model = gen()
         if (data) {
-            model.commit(data)
+            model.m.commit(data)
         }
         return model
     }
