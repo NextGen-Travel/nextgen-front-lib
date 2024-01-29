@@ -9045,25 +9045,35 @@ const X6 = /* @__PURE__ */ ye({
         });
         for (let x = 0; x < p.length; x++) {
           let _ = p[x];
-          if (h(_) !== !1) {
-            if (n.preupload)
-              try {
-                _ = await n.preupload(_);
-              } catch (y) {
-                r("error", y);
-                return;
-              }
-            if (v.push(`file: ${x}`, () => m.pushAndWait(`file: ${x}`, () => new Promise((y, b) => {
-              let w = new FileReader();
-              w.readAsDataURL(_), w.onerror = b, w.onload = ($) => {
-                $.target && g.push({
-                  url: $.target.result,
-                  file: _
-                }), y(null);
-              };
-            }))), n.multiple === !1)
-              break;
+          if (h(_) === !1) {
+            r("error", {
+              type: "NoSupportMineType",
+              file: _,
+              error: null
+            });
+            continue;
           }
+          if (n.preupload)
+            try {
+              _ = await n.preupload(_);
+            } catch (y) {
+              r("error", {
+                type: "Unknown",
+                file: _,
+                error: y
+              });
+              return;
+            }
+          if (v.push(`file: ${x}`, () => m.pushAndWait(`file: ${x}`, () => new Promise((y, b) => {
+            let w = new FileReader();
+            w.readAsDataURL(_), w.onerror = b, w.onload = ($) => {
+              $.target && g.push({
+                url: $.target.result,
+                file: _
+              }), y(null);
+            };
+          }))), n.multiple === !1)
+            break;
         }
         a.reading = !0, await v.start({}), a.reading = !1, g.length !== 0 && r("uploaded", {
           files: g
@@ -9090,7 +9100,13 @@ const X6 = /* @__PURE__ */ ye({
       a.reading === !1 && n.disabled === !1 && (p == null || p.preventDefault(), a.draging = !0);
     }, d = (p) => {
       p == null || p.preventDefault(), a.draging = !1;
-    }, h = (p) => n.fileType === "*/*" ? !0 : !!n.fileType.split(",").map((m) => m === "*/*" ? /.*/ : m.indexOf("/*") !== -1 ? new RegExp(m.replace("*", ".+"), "i") : m.startsWith(".") ? new RegExp(`\\${m}$`, "i") : new RegExp(m.replace("/", "\\/"), "i")).some((m) => m.test(p.type) || m.test(p.name));
+    }, h = (p) => n.fileType === "*/*" ? !0 : !!n.fileType.split(",").map((m) => m === ".jpg" || m === ".jpeg" ? [
+      /image\/(jpeg)/i,
+      /image\/(jpg)/i
+    ] : m === ".mp3" ? [
+      /audio\/(mpeg)/i,
+      /audio\/(mp3)/i
+    ] : m === "*/*" ? /.*/ : m.indexOf("/*") !== -1 ? new RegExp(m.replace("*", ".+"), "i") : m.startsWith(".") ? new RegExp(`\\${m}$`, "i") : new RegExp(m.replace("/", "\\/"), "i")).flat().some((m) => m.test(p.type) || m.test(p.name));
     return (p, g) => (j(), q("div", {
       style: { width: "fit-content", height: "fit-content", position: "relative" },
       onClick: o

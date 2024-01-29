@@ -6,6 +6,11 @@ export type OutputFile = {
 export type UploadData = {
     files: OutputFile[];
 };
+export type UploadError = {
+    type: 'NoSupportMineType' | 'Unknown';
+    file: File;
+    error: any;
+};
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     disabled: {
         type: BooleanConstructor;
@@ -38,7 +43,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    error: (args_0: Error) => void;
+    error: (args_0: UploadError) => void;
     uploaded: (args_0: {
         files: OutputFile[];
     }) => void;
@@ -74,7 +79,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: null;
     };
 }>> & {
-    onError?: ((args_0: Error) => any) | undefined;
+    onError?: ((args_0: UploadError) => any) | undefined;
     onUploaded?: ((args_0: {
         files: OutputFile[];
     }) => any) | undefined;

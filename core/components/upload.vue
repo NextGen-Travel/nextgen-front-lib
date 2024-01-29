@@ -52,6 +52,12 @@ export type UploadData = {
     files: OutputFile[]
 }
 
+export type UploadError = {
+    type: 'NoSupportMineType' | 'Unknown'
+    file: File
+    error: any
+}
+
 // =================
 //
 // defined
@@ -91,7 +97,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-    error: [Error]
+    error: [UploadError]
     uploaded: [{
         files: OutputFile[]
     }]
@@ -136,13 +142,22 @@ const readFiles = async (files: File[]) => {
         for (let i = 0; i < files.length; i++) {
             let file = files[i]
             if (checkMine(file) === false) {
+                emit('error', {
+                    type: 'NoSupportMineType',
+                    file,
+                    error: null
+                })
                 continue
             }
             if (props.preupload) {
                 try {
                     file = await props.preupload(file)
                 } catch (error: any) {
-                    emit('error', error)
+                    emit('error', {
+                        type: 'Unknown',
+                        file,
+                        error
+                    })
                     return
                 }
             }
@@ -222,6 +237,18 @@ const checkMine = (file: File) => {
         return true
     }
     const acceptPatterns = props.fileType.split(',').map(type => {
+        if (type === '.jpg' || type === '.jpeg') {
+            return [
+                /image\/(jpeg)/i,
+                /image\/(jpg)/i
+            ]
+        }
+        if (type === '.mp3') {
+            return [
+                /audio\/(mpeg)/i,
+                /audio\/(mp3)/i
+            ]
+        }
         // 接受任何類型的檔案
         if (type === '*/*') {
             return /.*/
@@ -236,8 +263,7 @@ const checkMine = (file: File) => {
         }
         // 完整的 MIME 類型，例如 image/png
         return new RegExp(type.replace('/', '\\/'), 'i')
-        
-    })
+    }).flat()
     // 找到不匹配的檔案，返回 false
     const matches = acceptPatterns.some(pattern => pattern.test(file.type) || pattern.test(file.name))
     if (!matches) {
