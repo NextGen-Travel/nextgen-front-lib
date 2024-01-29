@@ -1,4 +1,4 @@
-import { flow, Event, ElementListenerGroup } from 'power-helper'
+import { flow, Event, ElementListenerGroup, json } from 'power-helper'
 
 type MessageContext = {
     id: string
@@ -54,12 +54,13 @@ export class NextgenWorker {
                             data: result,
                             isError: false
                         })
-                    } catch (error) {
+                    } catch (error: any) {
+                        const e = json.nonStrictJSONStringify(error)
                         self.postMessage({
                             id,
                             name,
                             type,
-                            error,
+                            error: e,
                             isError: true
                         })
                     }
@@ -68,7 +69,7 @@ export class NextgenWorker {
                         id,
                         name,
                         type,
-                        error: new Error(`Method ${name} not found`),
+                        error: `Method ${name} not found`,
                         isError: true
                     })
                 }
