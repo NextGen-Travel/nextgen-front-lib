@@ -109,6 +109,7 @@ export class NextgenWorker {
         const privateEvent = new Event<Record<string, MessageContext>>()
         const elementListenerGroup = new ElementListenerGroup(instance)
         elementListenerGroup.add('message', (e: MessageEvent<MessageContext>) => {
+            console.log('CCC', e)
             let { id, type, name, data } = e.data
             if (type === 'event') {
                 publicEvent.emit(name, data)

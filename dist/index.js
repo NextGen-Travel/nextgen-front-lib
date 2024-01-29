@@ -37506,6 +37506,7 @@ class cp {
       isClosed: !1
     }, r = typeof t == "function" ? new t() : t, i = new Bt(), s = new Bt(), a = new u0(r);
     a.add("message", (l) => {
+      console.log("CCC", l);
       let { id: c, type: u, name: f, data: d } = l.data;
       u === "event" && i.emit(f, d), u === "method" && s.emit(c, l.data);
     });
