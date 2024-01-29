@@ -1,4 +1,4 @@
-import { flow, Event, ElementListenerGroup, json } from 'power-helper'
+import { flow, Event, ElementListenerGroup, Exception } from 'power-helper'
 
 type MessageContext = {
     id: string
@@ -55,12 +55,12 @@ export class NextgenWorker {
                             isError: false
                         })
                     } catch (error: any) {
-                        const e = json.nonStrictJSONStringify(error)
+                        const errorMessage = Exception.basicMessageParser(error) || 'Unknown error'
                         self.postMessage({
                             id,
                             name,
                             type,
-                            error: e,
+                            error: errorMessage,
                             isError: true
                         })
                     }
@@ -110,7 +110,6 @@ export class NextgenWorker {
         const privateEvent = new Event<Record<string, MessageContext>>()
         const elementListenerGroup = new ElementListenerGroup(instance)
         elementListenerGroup.add('message', (e: MessageEvent<MessageContext>) => {
-            console.log('CCC', e)
             let { id, type, name, data } = e.data
             if (type === 'event') {
                 publicEvent.emit(name, data)
