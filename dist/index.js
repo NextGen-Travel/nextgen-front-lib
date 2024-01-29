@@ -37450,7 +37450,8 @@ class cp {
         self.postMessage({
           name: s,
           type: "event",
-          data: i
+          data: i,
+          isError: !1
         });
       }), self.addEventListener("message", async (i) => {
         const { id: s, type: a, name: o, data: l } = i.data;
@@ -37461,14 +37462,16 @@ class cp {
               id: s,
               name: o,
               type: a,
-              data: c
+              data: c,
+              isError: !1
             });
           } catch (c) {
             self.postMessage({
               id: s,
               name: o,
               type: a,
-              error: c
+              error: c,
+              isError: !0
             });
           }
         else
@@ -37476,7 +37479,8 @@ class cp {
             id: s,
             name: o,
             type: a,
-            error: new Error(`Method ${o} not found`)
+            error: new Error(`Method ${o} not found`),
+            isError: !0
           });
       });
     }
@@ -37510,7 +37514,7 @@ class cp {
         return (...u) => n.isClosed ? Promise.reject(new Error("Worker is closed")) : new Promise((f, d) => {
           const h = Sr.createUuid();
           s.on(h, (p, { off: g }) => {
-            g(), p.error ? d(p.error) : f(p.data);
+            g(), p.isError ? d(p.error || new Error("Unknown error")) : f(p.data);
           }), r.postMessage({
             id: h,
             type: "method",

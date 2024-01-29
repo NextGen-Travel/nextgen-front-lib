@@ -6,6 +6,7 @@ type MessageContext = {
     name: string
     data: any
     error?: any
+    isError: boolean
 }
 
 export type NextgenWorkerFrom<
@@ -37,7 +38,8 @@ export class NextgenWorker {
                 self.postMessage({
                     name: event,
                     type: 'event',
-                    data
+                    data,
+                    isError: false
                 })
             })
             self.addEventListener('message', async (e: MessageEvent<Omit<MessageContext, 'error'>>) => {
@@ -50,13 +52,15 @@ export class NextgenWorker {
                             name,
                             type,
                             data: result,
+                            isError: false
                         })
                     } catch (error) {
                         self.postMessage({
                             id,
                             name,
                             type,
-                            error
+                            error,
+                            isError: true
                         })
                     }
                 } else {
@@ -64,7 +68,8 @@ export class NextgenWorker {
                         id,
                         name,
                         type,
-                        error: new Error(`Method ${name} not found`)
+                        error: new Error(`Method ${name} not found`),
+                        isError: true
                     })
                 }
             })
@@ -122,8 +127,8 @@ export class NextgenWorker {
                         const id = flow.createUuid()
                         privateEvent.on(id, (context, { off }) => {
                             off()
-                            if (context.error) {
-                                reject(context.error)
+                            if (context.isError) {
+                                reject(context.error || new Error('Unknown error'))
                             } else {
                                 resolve(context.data)
                             }
