@@ -8,10 +8,10 @@
             @dragend="dragExitHandler"
             @dragleave="dragExitHandler"
             @dragexit="dragExitHandler">
-            <slot :draging="draging" :reading="state.reading"></slot>
+            <slot :draging="state.draging" :reading="state.reading"></slot>
         </div>
         <div v-else>
-            <slot :draging="draging" :reading="state.reading"></slot>
+            <slot :draging="state.draging" :reading="state.reading"></slot>
         </div>
         <input
             v-if="multiple"
@@ -56,11 +56,6 @@ export type UploadData = {
 //
 // defined
 //
-
-const draging = defineModel({
-    type: Boolean,
-    default: false
-})
 
 const props = defineProps({
     disabled: {
@@ -116,7 +111,8 @@ const fileInput = ref<HTMLInputElement>()
 //
 
 const state = reactive({
-    reading: false
+    reading: false,
+    draging: false
 })
 
 // =================
@@ -175,9 +171,11 @@ const readFiles = async (files: File[]) => {
         state.reading = true
         await loader.start({})
         state.reading = false
-        emit('uploaded', {
-            files: outputFiles
-        })
+        if (outputFiles.length !== 0) {
+            emit('uploaded', {
+                files: outputFiles
+            })
+        }
     }
 }
 
@@ -201,7 +199,7 @@ const dropHandler = async (event: DragEvent) => {
                 }
             }
         }
-        draging.value = false
+        state.draging = false
         await readFiles(files)
     }
 }
@@ -209,13 +207,13 @@ const dropHandler = async (event: DragEvent) => {
 const dragOverHandler = (event: DragEvent) => {
     if (state.reading === false && props.disabled === false) {
         event?.preventDefault()
-        draging.value = true
+        state.draging = true
     }
 }
 
 const dragExitHandler = (event: DragEvent) => {
     event?.preventDefault()
-    draging.value = false
+    state.draging = false
 }
 
 const checkMine = (file: File) => {
@@ -245,7 +243,6 @@ const checkMine = (file: File) => {
     if (!matches) {
         return false
     }
-    // 所有檔案都符合規格
     return true
 }
 

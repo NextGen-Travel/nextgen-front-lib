@@ -7,7 +7,6 @@ export type UploadData = {
     files: OutputFile[];
 };
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    modelValue: PropType<any>;
     disabled: {
         type: BooleanConstructor;
         required: false;
@@ -44,7 +43,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         files: OutputFile[];
     }) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
-    modelValue: PropType<any>;
     disabled: {
         type: BooleanConstructor;
         required: false;
