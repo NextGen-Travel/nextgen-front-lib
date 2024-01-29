@@ -7,6 +7,17 @@ export type UploadData = {
     files: OutputFile[];
 };
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
+    modelValue: PropType<any>;
+    disabled: {
+        type: BooleanConstructor;
+        required: false;
+        default: () => boolean;
+    };
+    enabledDrag: {
+        type: PropType<boolean>;
+        required: false;
+        default: () => boolean;
+    };
     loading: {
         type: PropType<boolean>;
         required: false;
@@ -33,6 +44,17 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         files: OutputFile[];
     }) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+    modelValue: PropType<any>;
+    disabled: {
+        type: BooleanConstructor;
+        required: false;
+        default: () => boolean;
+    };
+    enabledDrag: {
+        type: PropType<boolean>;
+        required: false;
+        default: () => boolean;
+    };
     loading: {
         type: PropType<boolean>;
         required: false;
@@ -59,12 +81,17 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         files: OutputFile[];
     }) => any) | undefined;
 }, {
+    disabled: boolean;
     loading: boolean;
     multiple: boolean;
+    enabledDrag: boolean;
     fileType: string;
     preupload: (_file: File) => Promise<File>;
 }, {}>, {
-    default?(_: {}): any;
+    default?(_: {
+        draging: boolean;
+        reading: boolean;
+    }): any;
     loading?(_: {}): any;
 }>;
 export default _default;
