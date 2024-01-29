@@ -135,7 +135,7 @@ const readFiles = async (files: File[]) => {
         })
         for (let i = 0; i < files.length; i++) {
             let file = files[i]
-            if (checkMine(file)) {
+            if (checkMine(file) === false) {
                 continue
             }
             if (props.preupload) {

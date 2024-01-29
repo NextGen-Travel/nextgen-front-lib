@@ -9045,7 +9045,7 @@ const X6 = /* @__PURE__ */ ye({
         });
         for (let x = 0; x < p.length; x++) {
           let _ = p[x];
-          if (!h(_)) {
+          if (h(_) !== !1) {
             if (n.preupload)
               try {
                 _ = await n.preupload(_);
