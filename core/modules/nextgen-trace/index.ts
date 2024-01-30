@@ -21,11 +21,15 @@ type SendData = {
     visitorId: string
     service: string
     stage: string
+    platform: 'web' | 'android' | 'ios' | 'server'
+    appVersion: string
     messages: Message[]
 }
 
 type NextgenMessageTraceParams = {
     limitSize: number
+    platform: 'web' | 'android' | 'ios' | 'server'
+    appVersion: () => Promise<string>
     clientId: () => string
     serverUrl: () => string
 }
@@ -75,6 +79,8 @@ export class NextgenMessageTrace {
                 fingerId: this.fingerId,
                 clientId: this.params.clientId(),
                 visitorId: this.visitorId,
+                platform: this.params.platform,
+                appVersion: await this.params.appVersion(),
                 service: env.service,
                 stage: env.stage,
                 messages

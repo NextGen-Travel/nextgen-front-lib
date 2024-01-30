@@ -34438,6 +34438,8 @@ class TQ {
         fingerId: this.fingerId,
         clientId: this.params.clientId(),
         visitorId: this.visitorId,
+        platform: this.params.platform,
+        appVersion: await this.params.appVersion(),
         service: t.service,
         stage: t.stage,
         messages: n

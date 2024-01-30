@@ -9,6 +9,8 @@ type Message = {
 };
 type NextgenMessageTraceParams = {
     limitSize: number;
+    platform: 'web' | 'android' | 'ios' | 'server';
+    appVersion: () => Promise<string>;
     clientId: () => string;
     serverUrl: () => string;
 };
