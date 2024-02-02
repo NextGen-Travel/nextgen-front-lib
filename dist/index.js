@@ -37767,7 +37767,7 @@ const fp = async (e) => {
     }
   }
 }), Nfe = (e, t) => {
-  const n = "lib-v3", r = Object.assign({
+  const n = "lib-v3.1", r = Object.assign({
     version: 1,
     ttl: {}
   }, t || {});
@@ -37798,7 +37798,7 @@ const fp = async (e) => {
     }
   };
 }, Lfe = (e, t) => {
-  const n = "lib-v3-a", r = Object.assign({
+  const n = "lib-v3.1-a", r = Object.assign({
     version: 1,
     ttl: {}
   }, t || {});
