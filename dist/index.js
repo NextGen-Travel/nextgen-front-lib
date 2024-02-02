@@ -37800,6 +37800,7 @@ const fp = async (e) => {
 }, Lfe = (e, t) => {
   const n = Object.assign({
     version: 1,
+    encrypt: !1,
     ttl: {}
   }, t || {});
   return {
@@ -37812,7 +37813,7 @@ const fp = async (e) => {
           const d = await o();
           return await s.remove(r), d;
         } else
-          return JSON.parse(qa.decrypt("crypto-js", i.data, u));
+          return n.encrypt ? JSON.parse(qa.decrypt("crypto-js", i.data, u)) : i.data;
       } catch {
         return await s.remove(r), await o();
       }
@@ -37820,7 +37821,7 @@ const fp = async (e) => {
     async set(r, i) {
       const s = Date.now(), a = await Wd.load(), { visitorId: o } = await a.get();
       return {
-        data: qa.encrypt("crypto-js", JSON.stringify(i), o),
+        data: n.encrypt ? qa.encrypt("crypto-js", JSON.stringify(i), o) : i,
         version: n.version,
         expiredAt: n.ttl[r] ? s + n.ttl[r] : -1,
         createdAt: s

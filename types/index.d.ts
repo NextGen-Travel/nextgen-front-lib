@@ -134,13 +134,15 @@ export declare const Utils: {
         };
     };
     storage: {
-        asyncLoaclStroageIntercept: (ns: string, options?: {
+        asyncLoaclStroageIntercept: (ns: string, options?: ({
             ttl?: Record<string, number> | undefined;
             version?: number | undefined;
-        } | undefined) => {
+        } & {
+            encrypt?: boolean | undefined;
+        }) | undefined) => {
             get(key: string, value: any, { storage, isDefault, defaultValue }: any): Promise<any>;
             set(key: string, value: any): Promise<{
-                data: string;
+                data: any;
                 version: number;
                 expiredAt: number;
                 createdAt: number;

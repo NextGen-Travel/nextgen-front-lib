@@ -57,9 +57,10 @@ export const loaclStroageIntercept = (ns: string, options?: Options) => {
     }
 }
 
-export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
-    const _options: Required<Options> = Object.assign({
+export const asyncLoaclStroageIntercept = (ns: string, options?: Options & { encrypt?: boolean }) => {
+    const _options: Required<Options & { encrypt?: boolean }> = Object.assign({
         version: 1,
+        encrypt: false,
         ttl: {}
     }, options || {})
     return {
@@ -85,7 +86,7 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
                     await storage.remove(key as any)
                     return def
                 } else {
-                    return JSON.parse(CryptoAES.decrypt('crypto-js', value.data, visitorId))
+                    return _options.encrypt ? JSON.parse(CryptoAES.decrypt('crypto-js', value.data, visitorId)) : value.data
                 }
             } catch (error) {
                 await storage.remove(key as any)
@@ -97,7 +98,7 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
             const now = Date.now()
             const fp = await FingerprintJS.load()
             const { visitorId } = await fp.get()
-            const data = CryptoAES.encrypt('crypto-js', JSON.stringify(value), visitorId)
+            const data = _options.encrypt ? CryptoAES.encrypt('crypto-js', JSON.stringify(value), visitorId) : value
             return {
                 data,
                 version: _options.version,
