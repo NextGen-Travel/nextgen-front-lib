@@ -1,4 +1,5 @@
 import { CryptoAES } from '../modules/crypto'
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 type Options = {
     ttl?: Record<string, number>
@@ -87,7 +88,9 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
                     await storage.remove(key as any)
                     return def
                 } else {
-                    return value.data
+                    const fp = await FingerprintJS.load()
+                    const { visitorId } = await fp.get()
+                    return CryptoAES.decrypt('crypto-js', value.data, visitorId)
                 }
             } catch (error) {
                 await storage.remove(key as any)
@@ -97,9 +100,11 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
         },
         async set(key: string, value: any) {
             const now = Date.now()
+            const fp = await FingerprintJS.load()
+            const { visitorId } = await fp.get()
             return {
                 hash: CryptoAES.encrypt('crypto-js', JSON.stringify(value), `${ns}/${_pkey}`),
-                data: value,
+                data: CryptoAES.encrypt('crypto-js', value, visitorId),
                 version: _options.version,
                 expiredAt: _options.ttl[key] ? now + _options.ttl[key] : -1,
                 createdAt: now

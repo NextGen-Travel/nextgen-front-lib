@@ -141,7 +141,7 @@ export declare const Utils: {
             get(key: string, value: any, { storage, isDefault, defaultValue }: any): Promise<any>;
             set(key: string, value: any): Promise<{
                 hash: string;
-                data: any;
+                data: string;
                 version: number;
                 expiredAt: number;
                 createdAt: number;
