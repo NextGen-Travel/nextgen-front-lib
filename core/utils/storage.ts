@@ -58,7 +58,6 @@ export const loaclStroageIntercept = (ns: string, options?: Options) => {
 }
 
 export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
-    const _pkey = 'lib-v3.1-a'
     const _options: Required<Options> = Object.assign({
         version: 1,
         ttl: {}
@@ -69,27 +68,23 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
                 return value
             }
             const now = Date.now()
-            const noPass = () => {
-                let data = CryptoAES.decrypt('crypto-js', value.hash, `${ns}/${_pkey}`)
-                if (data !== JSON.stringify(value.data)) {
-                    return true
-                }
-                if (value.version !== _options.version) {
-                    return true
-                }
-                if (value.expiredAt !== -1 && now > value.expiredAt) {
-                    return true
-                }
-                return false
-            }
+            const fp = await FingerprintJS.load()
+            const { visitorId } = await fp.get()
             try {
+                const noPass = () => {
+                    if (value.version !== _options.version) {
+                        return true
+                    }
+                    if (value.expiredAt !== -1 && now > value.expiredAt) {
+                        return true
+                    }
+                    return false
+                }
                 if (noPass()) {
                     const def = await defaultValue()
                     await storage.remove(key as any)
                     return def
                 } else {
-                    const fp = await FingerprintJS.load()
-                    const { visitorId } = await fp.get()
                     return JSON.parse(CryptoAES.decrypt('crypto-js', value.data, visitorId))
                 }
             } catch (error) {
@@ -104,7 +99,6 @@ export const asyncLoaclStroageIntercept = (ns: string, options?: Options) => {
             const { visitorId } = await fp.get()
             const data = CryptoAES.encrypt('crypto-js', JSON.stringify(value), visitorId)
             return {
-                hash: CryptoAES.encrypt('crypto-js', data, `${ns}/${_pkey}`),
                 data,
                 version: _options.version,
                 expiredAt: _options.ttl[key] ? now + _options.ttl[key] : -1,
