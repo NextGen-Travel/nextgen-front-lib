@@ -37813,17 +37813,17 @@ const fp = async (e) => {
           return await a.remove(i), f;
         } else {
           const f = await Wd.load(), { visitorId: d } = await f.get();
-          return Jr.decrypt("crypto-js", s.data, d);
+          return JSON.parse(Jr.decrypt("crypto-js", s.data, d));
         }
       } catch {
         return await a.remove(i), await l();
       }
     },
     async set(i, s) {
-      const a = Date.now(), o = await Wd.load(), { visitorId: l } = await o.get();
+      const a = Date.now(), o = await Wd.load(), { visitorId: l } = await o.get(), c = Jr.encrypt("crypto-js", JSON.stringify(s), l);
       return {
-        hash: Jr.encrypt("crypto-js", JSON.stringify(s), `${e}/${n}`),
-        data: Jr.encrypt("crypto-js", s, l),
+        hash: Jr.encrypt("crypto-js", c, `${e}/${n}`),
+        data: c,
         version: r.version,
         expiredAt: r.ttl[i] ? a + r.ttl[i] : -1,
         createdAt: a
