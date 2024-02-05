@@ -1,4 +1,5 @@
 /// <reference types="@types/apple-signin-api" />
+import { Event } from 'power-helper';
 type AppleConfig = {
     clientId: string;
 };
@@ -30,7 +31,7 @@ export declare class AppleAuth {
             off: () => void;
             state: Record<string, any>;
         }) => void;
-        manager: import("power-helper/dist/modules/event").Event<any>;
+        manager: Event<any>;
         invoke(data: Channels[K]): void;
         off(): void;
     };

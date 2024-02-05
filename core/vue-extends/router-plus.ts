@@ -1,5 +1,5 @@
 import { Event, flow, json } from 'power-helper'
-import { RouteParameters } from 'power-helper/types/string'
+import { TString } from 'power-helper'
 import { serviceException } from '../exception'
 import { Router, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import { getGlob } from '../index'
@@ -115,7 +115,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    to<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    to<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         if (this.vueRouter) {
@@ -131,7 +131,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    resolve<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    resolve<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         if (this.vueRouter) {
@@ -150,7 +150,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    hrefTo<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         const { href } = this.resolve(name, params, options)
@@ -163,7 +163,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    blank<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         const glob = getGlob()
@@ -173,7 +173,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
 
     getCurrentRoute<K extends keyof T>(_name?: K): {
         name: string
-        params: RouteParameters<T[K]['path']>
+        params: TString.RouteParameters<T[K]['path']>
         query: Partial<T[K]['query']>
     } {
         if (this.vueRouter) {
@@ -197,7 +197,7 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
-    defineTo<K extends keyof T>(name: K, params?: Partial<RouteParameters<T[K]['path']>>, options?: {
+    defineTo<K extends keyof T>(name: K, params?: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {
         return {

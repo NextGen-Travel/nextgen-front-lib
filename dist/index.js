@@ -37679,7 +37679,7 @@ const fp = async (e) => {
   fetch: async (n) => await e(n)
 }), p$ = new w1({
   key: () => "cache",
-  keepAlive: B$.toMs("h", 1),
+  ttl: B$.toMs("h", 1),
   pick: async () => {
     try {
       const { data: e } = await nt.get("https://ipapi.co/json/");

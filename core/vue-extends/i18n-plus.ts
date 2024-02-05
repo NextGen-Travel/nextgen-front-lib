@@ -1,5 +1,5 @@
 import { text } from 'power-helper'
-import { VarParameters } from 'power-helper/types/string'
+import { TString } from 'power-helper'
 
 export class I18nPlus<Keys extends string> {
     vueI18n: import('vue-i18n').I18n
@@ -19,7 +19,7 @@ export class I18nPlus<Keys extends string> {
 
     tt<
         T extends Keys | `##${string}`,
-        V extends VarParameters<'{', '}', T extends string ? T : ''>
+        V extends TString.VarParameters<'{', '}', T extends string ? T : ''>
     >(key: T, ...vars: T extends `${string}{${string}}${string}` ? [V] : any[]) {
         if (key.slice(0, 2) === '##') {
             return text.replaceVar({
@@ -42,7 +42,7 @@ export class I18nPlus<Keys extends string> {
 
     export<T extends Keys | `##${string}`>(locale: string): <K extends T>(
         _key: K,
-        ..._vars: K extends `${string}{${string}}${string}` ? [VarParameters<'{', '}', K>] : any[]
+        ..._vars: K extends `${string}{${string}}${string}` ? [TString.VarParameters<'{', '}', K>] : any[]
     ) => string {
         return (key: string, ...vars: any[])=> {
             if (key.slice(0, 2) === '##') {

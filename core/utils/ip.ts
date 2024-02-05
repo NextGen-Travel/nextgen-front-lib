@@ -9,7 +9,7 @@ type Location = {
 
 const cache = new Cache<string, Location>({
     key: () => 'cache',
-    keepAlive: calc.toMs('h', 1),
+    ttl: calc.toMs('h', 1),
     pick: async() => {
         try {
             const { data } = await axios.get('https://ipapi.co/json/')

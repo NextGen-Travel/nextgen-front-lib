@@ -1,5 +1,5 @@
-import { Event } from 'power-helper';
-import { RouteParameters } from 'power-helper/types/string';
+import { Cache, Event } from 'power-helper';
+import { TString } from 'power-helper';
 type ToFormat = `${'get' | 'post' | 'put' | 'delete' | 'patch'}@${string}`;
 type ContentTypes = 'application/json' | 'form' | 'x-www-form-urlencoded' | 'multipart/form-data' | 'multipart/form-data#json';
 export type LaravelPaginateQuery<T> = T & {
@@ -44,7 +44,7 @@ export type RequestContext<T extends string = string> = {
     contentType: ContentTypes;
     responseType?: 'arraybuffer' | 'application/json';
 };
-type StringParams<T extends string, P = RouteParameters<T>> = P extends Record<string, never> ? {
+type StringParams<T extends string, P = TString.RouteParameters<T>> = P extends Record<string, never> ? {
     params?: any;
 } : {
     params: {
@@ -91,7 +91,7 @@ export type ApisDefinition<T extends Record<ToFormat, DefinedFormat>> = T;
 export declare class Request<ApisDefinition extends Record<ToFormat, DefinedFormat>> extends Event<Channels> {
     __names: Extract<keyof ApisDefinition, string>;
     state: Record<string, any>;
-    cache: import("power-helper/dist/modules/cache").Cache<{
+    cache: Cache<{
         path: any;
         data: any;
     }, any>;

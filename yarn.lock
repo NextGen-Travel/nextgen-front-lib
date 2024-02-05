@@ -3022,10 +3022,10 @@ postcss@^8.4.32, postcss@^8.4.33:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-power-helper@^0.6.8:
-  version "0.6.8"
-  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.6.8.tgz#ca25dd7e5e81968f70a5cc6948cd14f02333d3fb"
-  integrity sha512-kTaE356eWHB5Gd64FQ9y2gjgqIEvpxhrS6+pxyc6W9SdHQ7PD5Or46VzTaOhPMf9k9GfuJm/5yW1aidzqmvUCg==
+power-helper@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/power-helper/-/power-helper-0.7.0.tgz#d90ec25ef6167003d237eac0a3f694e87b9b921b"
+  integrity sha512-raolcMdxuoZgkBfaWw/A7HgnP0Am0LO0uiAApszPnlkY8/iDT5p0BMk2tdDI2pyC8PsT2WvCuHapMKEmcqyTyQ==
 
 prelude-ls@^1.2.1:
   version "1.2.1"

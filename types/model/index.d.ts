@@ -1,4 +1,5 @@
 import { genStateManager } from '../mixins/state-manager';
+import { Event } from 'power-helper';
 type Context<S> = {
     data: S;
     commit: (_newData: Partial<S>) => void;
@@ -26,7 +27,7 @@ export declare const defineModel: <S extends Record<any, any>, R extends Record<
             rebuild: () => void;
             isModified: () => boolean;
         };
-        e: import("power-helper/dist/modules/event").Event<{
+        e: Event<{
             update: Record<string, any>;
             rebuild: Record<string, any>;
         }>;
@@ -44,7 +45,7 @@ export declare const defineModel: <S extends Record<any, any>, R extends Record<
             rebuild: () => void;
             isModified: () => boolean;
         };
-        e: import("power-helper/dist/modules/event").Event<{
+        e: Event<{
             update: Record<string, any>;
             rebuild: Record<string, any>;
         }>;
@@ -61,7 +62,7 @@ export declare const defineModel: <S extends Record<any, any>, R extends Record<
             rebuild: () => void;
             isModified: () => boolean;
         };
-        e: import("power-helper/dist/modules/event").Event<{
+        e: Event<{
             update: Record<string, any>;
             rebuild: Record<string, any>;
         }>;
@@ -81,7 +82,7 @@ export declare const defineModel: <S extends Record<any, any>, R extends Record<
             rebuild: () => void;
             isModified: () => boolean;
         };
-        e: import("power-helper/dist/modules/event").Event<{
+        e: Event<{
             update: Record<string, any>;
             rebuild: Record<string, any>;
         }>;

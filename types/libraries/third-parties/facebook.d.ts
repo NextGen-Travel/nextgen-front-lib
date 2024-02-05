@@ -1,4 +1,5 @@
 /// <reference types="@types/facebook-js-sdk" />
+import { Event } from 'power-helper';
 type FacebookConfig = {
     clientId: string;
 };
@@ -23,7 +24,7 @@ export declare class FacebookService {
             off: () => void;
             state: Record<string, any>;
         }) => void;
-        manager: import("power-helper/dist/modules/event").Event<any>;
+        manager: Event<any>;
         invoke(data: Events[K]): void;
         off(): void;
     };

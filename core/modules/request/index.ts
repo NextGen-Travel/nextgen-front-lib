@@ -1,6 +1,6 @@
 import { stringify } from 'qs'
 import { Cache, Event, flow, text } from 'power-helper'
-import { RouteParameters } from 'power-helper/types/string'
+import { TString } from 'power-helper'
 import { serviceException } from '../../exception'
 
 type ToFormat = `${'get' | 'post' | 'put' | 'delete' | 'patch'}@${string}`
@@ -58,7 +58,7 @@ export type RequestContext<T extends string = string> = {
 
 type StringParams<
     T extends string,
-    P = RouteParameters<T>
+    P = TString.RouteParameters<T>
 > = P extends Record<string, never> ? { params?: any } : {
     params: {
         [K in keyof P]: K | string | number

@@ -1,4 +1,5 @@
 /// <reference types="@types/google.accounts" />
+import { Event } from 'power-helper';
 type GoogleConfig = {
     /** 彈出視窗模式或是倒轉模式 */
     uxMode: 'popup' | 'redirect';
@@ -43,7 +44,7 @@ export declare class GoogleAuth {
             off: () => void;
             state: Record<string, any>;
         }) => void;
-        manager: import("power-helper/dist/modules/event").Event<any>;
+        manager: Event<any>;
         invoke(data: Channels[K]): void;
         off(): void;
     };

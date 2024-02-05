@@ -1,5 +1,5 @@
 import { Event } from 'power-helper';
-import { RouteParameters } from 'power-helper/types/string';
+import { TString } from 'power-helper';
 import { Router, RouteRecordRaw, RouteLocationNormalized } from 'vue-router';
 export type RouteMixin<P extends Route, T extends Route> = {
     path: `${P['path']}/${T['path']}`;
@@ -44,30 +44,30 @@ export declare class RouterPlus<T extends RouteMap<any>> extends Event<Channels>
     constructor(params: Params);
     get routeMap(): Set<string>;
     toHome(): void;
-    to<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    to<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): void;
-    resolve<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    resolve<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): import("vue-router").RouteLocation & {
         href: string;
     };
-    hrefTo<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    hrefTo<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): void;
     back(step?: number): void;
-    blank<K extends keyof T>(name: K, params: Partial<RouteParameters<T[K]['path']>>, options?: {
+    blank<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): void;
     getCurrentRoute<K extends keyof T>(_name?: K): {
         name: string;
-        params: RouteParameters<T[K]['path']>;
+        params: TString.RouteParameters<T[K]['path']>;
         query: Partial<T[K]['query']>;
     };
     interceptLeave(callback: () => Promise<void>): {
         close: () => void;
     };
-    defineTo<K extends keyof T>(name: K, params?: Partial<RouteParameters<T[K]['path']>>, options?: {
+    defineTo<K extends keyof T>(name: K, params?: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): {
         query?: T[K]["query"] | undefined;

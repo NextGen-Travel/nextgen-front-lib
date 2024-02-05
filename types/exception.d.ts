@@ -1,1 +1,2 @@
-export declare const serviceException: import("power-helper/dist/modules/exception").Exception;
+import { Exception } from 'power-helper';
+export declare const serviceException: Exception;

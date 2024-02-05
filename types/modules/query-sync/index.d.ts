@@ -26,7 +26,7 @@ export declare class QuerySync {
     }) => () => {
         state: T | import("vue").UnwrapNestedRefs<T>;
         reset: () => void;
-        event: import("power-helper/dist/modules/event").Event<Events>;
+        event: Event<Events>;
         isChange: () => boolean;
         stateToQuery: () => void;
         paramsToQuery: (params: Partial<Record<keyof T, string | string[]>>) => Record<string, string | string[]>;

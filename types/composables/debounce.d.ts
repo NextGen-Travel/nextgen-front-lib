@@ -1,1 +1,2 @@
-export declare const useDebounce: (cb: () => void, delay?: number, maxValueLength?: number) => import("power-helper/dist/modules/debounce").Debounce<unknown>;
+import { Debounce } from 'power-helper';
+export declare const useDebounce: (cb: () => void, delay?: number, maxValueLength?: number) => Debounce<unknown>;

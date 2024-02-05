@@ -220,7 +220,7 @@ export declare const Model: {
                 rebuild: () => void;
                 isModified: () => boolean;
             };
-            e: import("power-helper/dist/modules/event").Event<{
+            e: import("power-helper").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
@@ -238,7 +238,7 @@ export declare const Model: {
                 rebuild: () => void;
                 isModified: () => boolean;
             };
-            e: import("power-helper/dist/modules/event").Event<{
+            e: import("power-helper").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
@@ -255,7 +255,7 @@ export declare const Model: {
                 rebuild: () => void;
                 isModified: () => boolean;
             };
-            e: import("power-helper/dist/modules/event").Event<{
+            e: import("power-helper").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;
@@ -273,7 +273,7 @@ export declare const Model: {
                 rebuild: () => void;
                 isModified: () => boolean;
             };
-            e: import("power-helper/dist/modules/event").Event<{
+            e: import("power-helper").Event<{
                 update: Record<string, any>;
                 rebuild: Record<string, any>;
             }>;

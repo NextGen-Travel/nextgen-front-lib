@@ -1,4 +1,5 @@
-export declare const getLocalStorage: () => import("power-helper/dist/modules/local-storage").LocalStorage<{
+import { LocalStorage } from 'power-helper';
+export declare const getLocalStorage: () => LocalStorage<{
     tablefilterMemories: Record<string, string[]>;
 }>;
-export declare const getPersistDataStorage: () => import("power-helper/dist/modules/local-storage").LocalStorage<Record<string, any>>;
+export declare const getPersistDataStorage: () => LocalStorage<Record<string, any>>;
