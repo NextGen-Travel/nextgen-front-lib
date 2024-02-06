@@ -22,3 +22,4 @@ export { default as NgDoughnutChart } from './charts/doughnut.vue';
 export { default as NgLineChart } from './charts/line.vue';
 export { default as NgPieChart } from './charts/pie.vue';
 export { default as NgDoc } from './doc.vue';
+export { default as NgSugTextarea } from './sug-textarea.vue';
