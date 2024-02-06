@@ -52,16 +52,73 @@
 </template>
 
 <script lang="ts" setup>
-import { VTextarea } from 'vuetify/components'
 import { ElementListenerGroup } from 'power-helper'
 import { PropType, computed, onMounted, ref, onUnmounted, reactive, watch } from 'vue'
+
+type TextareaProps = {
+    flat: boolean
+    reverse: boolean
+    variant: 'filled' | 'outlined' | 'plain' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
+    error: boolean
+    active: boolean
+    direction: 'horizontal' | 'vertical'
+    style: string
+    autofocus: boolean
+    disabled: boolean
+    readonly: boolean | null
+    messages: string | readonly string[]
+    density: null | 'default' | 'comfortable' | 'compact'
+    clearIcon: string
+    focused: boolean
+    errorMessages: string | readonly string[] | null
+    maxErrors: string | number
+    rules: any[]
+    hideSpinButtons: boolean
+    persistentHint: boolean
+    clearable: boolean
+    dirty: boolean
+    persistentClear: boolean
+    singleLine: boolean
+    persistentPlaceholder: boolean
+    persistentCounter: boolean
+    autoGrow: boolean
+    noResize: boolean
+    rows: string | number
+    id: string
+    name: string
+    color: string
+    loading: string | boolean
+    label: string
+    prefix: string
+    class: any
+    placeholder: string
+    theme: string
+    counter: string | number | true
+    rounded: string | number | boolean
+    modelValue: any
+    bgColor: string
+    prependIcon: string
+    appendIcon: string
+    baseColor: string
+    appendInnerIcon: string
+    prependInnerIcon: string
+    validateOn: 'lazy' | ('input' | 'blur' | 'submit') | 'input lazy' | 'blur lazy' | 'submit lazy' | 'lazy input' | 'lazy blur' | 'lazy submit'
+    validationValue: any
+    centerAffix: boolean
+    hint: string
+    hideDetails: boolean | 'auto'
+    suffix: string
+    counterValue: ((_value: any) => number)
+    modelModifiers: Record<string, boolean>
+    maxRows: string | number
+}
 
 // =================
 //
 // refs
 //
 
-const textInput = ref<InstanceType<typeof VTextarea>>()
+const textInput = ref<{ $el: HTMLTextAreaElement }>()
 
 // =================
 //
@@ -91,9 +148,9 @@ const props = defineProps({
         default: false
     },
     textareaProps: {
-        type: Object as PropType<VTextarea['$props']>,
+        type: Object as PropType<Partial<TextareaProps>>,
         requreid: false,
-        default: (): VTextarea['$props'] => ({})
+        default: () => ({})
     }
 })
 
@@ -204,7 +261,7 @@ const prevRecommand = () => {
     z-index: 1;
 }
 
-.sug-content:deep(.v-field) {
+.sug-content:deep .v-field {
     background: transparent !important;
     box-shadow: none !important;
 }

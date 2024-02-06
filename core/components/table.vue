@@ -407,7 +407,7 @@ const sortKey = (key: string) => {
         height: auto !important;
         padding: 0 !important;
     }
-    .component-shadow-right :deep(.v-table__wrapper) {
+    .component-shadow-right :deep .v-table__wrapper {
         box-shadow: inset -15px 0px  10px -15px rgba(0, 0, 0, .4);
     }
     .component-table-sort-btn {

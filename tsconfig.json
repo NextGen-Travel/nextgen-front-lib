@@ -17,6 +17,7 @@
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "types": [
+      "vite/client",
       "@amap/amap-jsapi-types",
       "@types/google.maps",
       "@types/apple-signin-api",
