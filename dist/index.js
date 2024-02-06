@@ -38132,6 +38132,9 @@ class Zfe extends Bt {
   toHome() {
     this.vueRouter && (this.params.home ? this.to(this.params.home(), {}) : this.vueRouter.push("/"));
   }
+  pushPath(n) {
+    return this.vueRouter.push(n);
+  }
   to(n, r, i) {
     this.vueRouter && (this.routeMap.has(n) ? this.vueRouter.push({
       name: n,

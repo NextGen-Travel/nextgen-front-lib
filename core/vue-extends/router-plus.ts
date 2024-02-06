@@ -115,6 +115,10 @@ export class RouterPlus<T extends RouteMap<any>> extends Event<Channels> {
         }
     }
 
+    pushPath(path: string) {
+        return this.vueRouter.push(path)
+    }
+
     to<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query']
     }) {

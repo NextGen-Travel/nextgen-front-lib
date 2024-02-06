@@ -44,6 +44,7 @@ export declare class RouterPlus<T extends RouteMap<any>> extends Event<Channels>
     constructor(params: Params);
     get routeMap(): Set<string>;
     toHome(): void;
+    pushPath(path: string): Promise<void | import("vue-router").NavigationFailure | undefined>;
     to<K extends keyof T>(name: K, params: Partial<TString.RouteParameters<T[K]['path']>>, options?: {
         query?: T[K]['query'];
     }): void;
