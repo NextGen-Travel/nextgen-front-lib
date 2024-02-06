@@ -79,7 +79,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => {};
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
-    getRecommand: () => void;
+    getRecommand: (args_0: string) => void;
 }, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: PropType<any>;
     autocompleteKey: {
@@ -103,7 +103,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => {};
     };
 }>> & {
-    onGetRecommand?: (() => any) | undefined;
+    onGetRecommand?: ((args_0: string) => any) | undefined;
 }, {
     autocompleteKey: string;
     sugTexts: string[];

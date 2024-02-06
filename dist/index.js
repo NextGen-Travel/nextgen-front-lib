@@ -21100,8 +21100,8 @@ const AY = { key: 0 }, kY = ["innerHTML"], DY = ["textContent"], CY = ["innerHTM
     const n = ve(), r = F$(e, "modelValue"), i = e, s = t, a = Fe({
       recommandIndex: 0,
       sugText: ""
-    }), o = H0(async () => {
-      r.value.trim() !== "" && a.sugText === r.value && s("getRecommand");
+    }), o = H0(() => {
+      r.value.trim() !== "" && a.sugText === r.value && s("getRecommand", a.sugText);
     });
     ye(() => r.value, () => {
       i.sugTexts.find((g) => g.startsWith(r.value)) || r.value.trim() !== "" && (a.sugText = r.value, o.input(""));
@@ -21228,7 +21228,7 @@ const AY = { key: 0 }, kY = ["innerHTML"], DY = ["textContent"], CY = ["innerHTM
       ]);
     };
   }
-}), FY = /* @__PURE__ */ En(MY, [["__scopeId", "data-v-55c7476d"]]), Tm = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}), FY = /* @__PURE__ */ En(MY, [["__scopeId", "data-v-e0024d60"]]), Tm = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   NgAni: H$,
   NgDatePicker: y6,

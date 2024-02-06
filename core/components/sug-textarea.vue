@@ -156,7 +156,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-    getRecommand: []
+    getRecommand: [string]
 }>()
 
 // =================
@@ -174,9 +174,9 @@ const state = reactive({
 // debounce
 //
 
-const debounce = useDebounce(async() => {
+const debounce = useDebounce(() => {
     if (modelValue.value.trim() !== '' && state.sugText === modelValue.value) {
-        emit('getRecommand')
+        emit('getRecommand', state.sugText)
     }
 })
 
