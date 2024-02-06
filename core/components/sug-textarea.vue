@@ -52,6 +52,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useDebounce } from '../composables/debounce'
 import { ElementListenerGroup } from 'power-helper'
 import { PropType, computed, onMounted, ref, onUnmounted, reactive, watch } from 'vue'
 
@@ -154,13 +155,44 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits<{
+    getRecommand: []
+}>()
+
 // =================
 //
 // state
 //
 
 const state = reactive({
-    recommandIndex: 0
+    recommandIndex: 0,
+    sugText: ''
+})
+
+// =================
+//
+// debounce
+//
+
+const debounce = useDebounce(async() => {
+    if (modelValue.value.trim() !== '' && state.sugText === modelValue.value) {
+        emit('getRecommand')
+    }
+})
+
+// =================
+//
+// watch
+//
+
+watch(() => modelValue.value, () => {
+    if (props.sugTexts.find(e => e.startsWith(modelValue.value))) {
+        return
+    }
+    if (modelValue.value.trim() !== '') {
+        state.sugText = modelValue.value
+        debounce.input('')
+    }
 })
 
 // =================
