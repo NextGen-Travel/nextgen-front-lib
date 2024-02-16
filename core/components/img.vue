@@ -10,28 +10,28 @@
         :style="state.style"
         @click="click">
         <img
-            class="component-picture"
+            class="component-picture w-100 h-100"
             :src="state.src"
             :style="{
-                width: '100%',
-                height: '100%',
                 objectFit: props.cover ? 'cover' : 'contain'
             }"
         >
-        <slot></slot>
+        <div class="w-100 h-100" style="position: absolute; z-index: 1;">
+            <slot></slot>
+        </div>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
     <div v-else ref="wrapper2" class="component-img-basic" :style="state.style">
         <img
-            class="component-picture"
+            class="component-picture w-100 h-100"
             :src="state.src"
             :style="{
-                width: '100%',
-                height: '100%',
                 objectFit: props.cover ? 'cover' : 'contain'
             }"
         >
-        <slot></slot>
+        <div class="w-100 h-100" style="position: absolute; z-index: 1;">
+            <slot></slot>
+        </div>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
 </template>
