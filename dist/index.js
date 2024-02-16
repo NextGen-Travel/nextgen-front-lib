@@ -7728,10 +7728,10 @@ const z6 = Lc({
       loading: !0,
       elementListenerGroup: null
     }), v = R(() => {
-      let E = new Ea();
+      const E = new Ea();
       return E.set("width", u.width, "100%"), E.set("height", u.square ? u.width : u.height, "200px"), E.set("maxWidth", u.maxWidth), E.set("maxHeight", u.maxHeight), E.set("overflow", "hidden"), E.set("borderRadius", u.radius), E.set("display", u.block ? "block" : "inline-block"), E.join();
     });
-    ye(() => u.src, () => y());
+    ye(() => u.src, () => y(), { deep: !0 });
     const m = [];
     for (let E = 0; E < 3; E++) {
       const D = k1([d, h, p][E], ([{ isIntersecting: $ }]) => {
@@ -7836,7 +7836,7 @@ const z6 = Lc({
       ie(is, { "model-value": e.loading }, null, 8, ["model-value"])
     ], 4));
   }
-}), e5 = /* @__PURE__ */ An(Q6, [["__scopeId", "data-v-6ae8c324"]]), t5 = /* @__PURE__ */ be({
+}), e5 = /* @__PURE__ */ An(Q6, [["__scopeId", "data-v-709ed67c"]]), t5 = /* @__PURE__ */ be({
   __name: "link",
   props: {
     to: {
