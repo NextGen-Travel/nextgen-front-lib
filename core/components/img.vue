@@ -9,12 +9,28 @@
         class="component-img-basic"
         :style="state.style"
         @click="click">
-        <img class="component-picture" :style="state.style" :src="state.src">
+        <img
+            class="component-picture"
+            :src="state.src"
+            :style="{
+                width: '100%',
+                height: '100%',
+                objectFit: props.cover ? 'cover' : 'contain'
+            }"
+        >
         <slot></slot>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
     <div v-else ref="wrapper2" class="component-img-basic" :style="state.style">
-        <img class="component-picture" :style="state.style" :src="state.src">
+        <img
+            class="component-picture"
+            :src="state.src"
+            :style="{
+                width: '100%',
+                height: '100%',
+                objectFit: props.cover ? 'cover' : 'contain'
+            }"
+        >
         <slot></slot>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
@@ -112,7 +128,7 @@ const props = defineProps({
         default: () => true
     },
     src: {
-        type: null as unknown as PropType<string | File | string[] | [Display, string]>,
+        type: null as unknown as PropType<string | File | (string | [Display, string])[]>,
         required: false,
         default: () => ''
     },
@@ -240,21 +256,20 @@ const getTargetImage = async() => {
         return resource.url(props.src)
     }
     if (Array.isArray(props.src)) {
-        if (typeof Array.isArray(props.src[0]) === 'string') {
-            const image = await getSupportImages(props.src)
-            if (image) {
-                return image
-            } else {
-                return notFound
+        const images = props.src.filter(e => {
+            if (typeof e === 'string') {
+                return true
             }
+            if (display[e[0] as Display].value) {
+                return true
+            }
+            return false
+        })
+        const image = await getSupportImages(images.map(e => typeof e === 'string' ? e : e[1]))
+        if (image) {
+            return image
         } else {
-            const images = props.src.filter(e => display[e[0] as Display].value)
-            const image = await getSupportImages(images)
-            if (image) {
-                return image
-            } else {
-                return notFound
-            }
+            return notFound
         }
     }
     return notFound
@@ -265,6 +280,9 @@ const update = () => {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise(async (resolve) => {
             const target = await getTargetImage()
+            if (state.image && state.image.src === target) {
+                return
+            }
             state.image = new Image()
             state.image.addEventListener('error', () => {
                 state.src = notFound
@@ -292,9 +310,6 @@ const loadStyle = (width?: number, height?: number) => {
     code.set('maxHeight', props.maxHeight)
     code.set('minHeight', props.minHeight)
     code.set('borderRadius', props.radius)
-    if (props.cover) {
-        code.set('backgroundSize', 'cover')
-    }
     if (props.height == null) {
         code.set('height', `${height}px`)
     }
@@ -340,6 +355,6 @@ const getContentWidth = () => {
         position: absolute;
         display: block;
         top: 0;
-        right: 0;
+        left: 0;
     }
 </style>
