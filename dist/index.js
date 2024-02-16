@@ -37524,6 +37524,10 @@ const kfe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty(
     url: {
       handler: (n) => n.string().trim().url(t("必須為網址"))
     },
+    path: {
+      // 我要檢查是否為路徑，但不要檢查是否為網址
+      handler: (n) => n.string().trim().matches(/^\/[^?#]+$/, t("必須為網址"))
+    },
     english: {
       handler: (n) => n.string().trim().matches(/^[^\u4e00-\u9eff]+$/, t("只能為英文"))
     },

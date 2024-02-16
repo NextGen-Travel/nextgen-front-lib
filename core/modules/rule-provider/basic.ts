@@ -73,6 +73,12 @@ export const getBasicRules = (locale: SupportLocale) => {
                 return yup.string().trim().url(t('必須為網址'))
             }
         },
+        path: {
+            // 我要檢查是否為路徑，但不要檢查是否為網址
+            handler: (yup: typeof Yup) => {
+                return yup.string().trim().matches(/^[^()[\]{}<>+*/?"_\\|~`!@#$%^&=]*$/, t('不能含特殊字元'))
+            }
+        },
         english: {
             handler: (yup: typeof Yup) => {
                 return yup.string().trim().matches(/^[^\u4e00-\u9eff]+$/, t('只能為英文'))
