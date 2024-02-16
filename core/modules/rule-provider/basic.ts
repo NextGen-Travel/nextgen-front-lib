@@ -68,6 +68,11 @@ export const getBasicRules = (locale: SupportLocale) => {
                 return yup.string().trim().email(t('必須為電子郵件'))
             }
         },
+        path: {
+            handler: (yup: typeof Yup) => {
+                return yup.string().trim().email(t('必須為電子郵件'))
+            }
+        },
         url: {
             handler: (yup: typeof Yup) => {
                 return yup.string().trim().url(t('必須為網址'))

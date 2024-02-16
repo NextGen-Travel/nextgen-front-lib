@@ -37582,6 +37582,9 @@ const Rfe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty(
     email: {
       handler: (n) => n.string().trim().email(t("必須為電子郵件"))
     },
+    path: {
+      handler: (n) => n.string().trim().email(t("必須為電子郵件"))
+    },
     url: {
       handler: (n) => n.string().trim().url(t("必須為網址"))
     },

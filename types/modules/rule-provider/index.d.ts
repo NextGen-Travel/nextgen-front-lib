@@ -48,6 +48,9 @@ export declare class RuleProvider<T extends ProviderOptions> {
         readonly email: {
             readonly handler: (yup: typeof Yup) => Yup.StringSchema<string | undefined, import("yup/lib/types").AnyObject, string | undefined>;
         };
+        readonly path: {
+            readonly handler: (yup: typeof Yup) => Yup.StringSchema<string | undefined, import("yup/lib/types").AnyObject, string | undefined>;
+        };
         readonly url: {
             readonly handler: (yup: typeof Yup) => Yup.StringSchema<string | undefined, import("yup/lib/types").AnyObject, string | undefined>;
         };
