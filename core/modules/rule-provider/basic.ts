@@ -76,7 +76,7 @@ export const getBasicRules = (locale: SupportLocale) => {
         path: {
             // 我要檢查是否為路徑，但不要檢查是否為網址
             handler: (yup: typeof Yup) => {
-                return yup.string().trim().matches(/^[^()[\]{}<>+*/?"_\\|~`!@#$%^&=]*$/, t('不能含特殊字元'))
+                return yup.string().trim().matches(/^\/[^?#]+$/, t('必須為網址'))
             }
         },
         english: {
