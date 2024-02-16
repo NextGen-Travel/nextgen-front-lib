@@ -2,11 +2,19 @@
     <div v-if="skeleton === 'always' || state.loading" ref="wrapper3" :style="skeletonStyle">
         <Skeleton v-if="skeleton !== 'hide'" :avatar="avatar"></Skeleton>
     </div>
-    <div v-else-if="self.hasListener('click')" ref="wrapper" style="cursor: pointer;" class="component-img-basic" :style="state.style" @click="click">
+    <div
+        v-else-if="self.hasListener('click')"
+        ref="wrapper"
+        style="cursor: pointer;"
+        class="component-img-basic"
+        :style="state.style"
+        @click="click">
+        <img class="component-picture" :style="state.style" :src="state.src">
         <slot></slot>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
     <div v-else ref="wrapper2" class="component-img-basic" :style="state.style">
+        <img class="component-picture" :style="state.style" :src="state.src">
         <slot></slot>
         <OverlayLoading :model-value="loading"></OverlayLoading>
     </div>
@@ -20,10 +28,15 @@ import { getLibOptions } from '../index'
 import { StyleString, Resource, JobsQueue, ElementListenerGroup, Debounce } from 'power-helper'
 import { PropType, ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { useDisplay } from 'vuetify'
+import { getSupportImages } from '../utils/image-support'
+
+type Display = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'smAndUp' | 'mdAndUp' | 'lgAndUp' | 'xlAndUp' | 'smAndDown' | 'mdAndDown' | 'lgAndDown' | 'xlAndDown'
 
 const { notFoundImage, staticUrl } = getLibOptions()
 
 const self = useSelf()
+const display = useDisplay()
 
 const jobsQueue = new JobsQueue({
     concurrentExecutions: 1
@@ -99,7 +112,7 @@ const props = defineProps({
         default: () => true
     },
     src: {
-        type: null as unknown as PropType<string | File>,
+        type: null as unknown as PropType<string | File | string[] | [Display, string]>,
         required: false,
         default: () => ''
     },
@@ -219,11 +232,40 @@ const click = () => {
     emit('onClick')
 }
 
+const getTargetImage = async() => {
+    if (!props.src) {
+        return notFound
+    }
+    if (typeof props.src === 'string') {
+        return resource.url(props.src)
+    }
+    if (Array.isArray(props.src)) {
+        if (typeof Array.isArray(props.src[0]) === 'string') {
+            const image = await getSupportImages(props.src)
+            if (image) {
+                return image
+            } else {
+                return notFound
+            }
+        } else {
+            const images = props.src.filter(e => display[e[0] as Display].value)
+            const image = await getSupportImages(images)
+            if (image) {
+                return image
+            } else {
+                return notFound
+            }
+        }
+    }
+    return notFound
+}
+
 const update = () => {
     jobsQueue.push('update', () => {
-        return new Promise((resolve) => {
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise(async (resolve) => {
+            const target = await getTargetImage()
             state.image = new Image()
-            let target = props.src ? resource.url(props.src) : notFound
             state.image.addEventListener('error', () => {
                 state.src = notFound
                 state.loading = false
@@ -262,9 +304,6 @@ const loadStyle = (width?: number, height?: number) => {
     if (props.block) {
         code.set('display', 'block')
     }
-    if (state.src) {
-        code.set('backgroundImage', `url('${state.src}')`)
-    }
     state.style = code.join()
     if (props.square) {
         self.nextTick(() => {
@@ -295,9 +334,12 @@ const getContentWidth = () => {
 <style lang="scss" scoped>
     .component-img-basic {
         display: inline-block;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
         position: relative;
+    }
+    .component-picture {
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 0;
     }
 </style>

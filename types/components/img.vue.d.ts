@@ -1,4 +1,5 @@
 import { PropType } from 'vue';
+type Display = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'smAndUp' | 'mdAndUp' | 'lgAndUp' | 'xlAndUp' | 'smAndDown' | 'mdAndDown' | 'lgAndDown' | 'xlAndDown';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     skeleton: {
         type: PropType<"auto" | "hide" | "always">;
@@ -54,7 +55,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: () => boolean;
     };
     src: {
-        type: PropType<string | File>;
+        type: PropType<string | string[] | File | [Display, string]>;
         required: false;
         default: () => string;
     };
@@ -130,7 +131,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         default: () => boolean;
     };
     src: {
-        type: PropType<string | File>;
+        type: PropType<string | string[] | File | [Display, string]>;
         required: false;
         default: () => string;
     };
@@ -162,7 +163,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     loading: boolean;
     avatar: boolean;
     skeleton: "auto" | "hide" | "always";
-    src: string | File;
+    src: string | string[] | File | [Display, string];
     square: boolean;
     radius: string;
     cover: boolean;
